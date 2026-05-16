@@ -61,6 +61,9 @@ Key questions:
 - Which artifacts are canonical enough to build against?
 - Where does recent Proflog SJAS work live relative to `jpt4/sjas`?
 
+Status: accepted in `docs/adr/0003-source-manifest.md`. The first manifest is
+`sources/manifest.json`, with notes in `docs/source-manifest.md`.
+
 ## ADR-0004: First Executable Probe
 
 Goal: pick one tiny artifact that tests the AS integration story.

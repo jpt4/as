@@ -41,3 +41,11 @@
   `docs/adr/0002-afs-requirements.md` to turn AFS from a placeholder name into
   a concrete requirement matrix with a gap register and a recommended first
   executable probe.
+
+## 2026-05-16 - Source Manifest
+
+- Added `sources/manifest.json` to pin the reviewed source baseline for AS,
+  AFS, PRC, SJAS, and adjacent Proflog.
+- Added `docs/source-manifest.md` and `docs/adr/0003-source-manifest.md` to
+  explain the manifest, verification commands, and status of each source.
+- Verified that `jq` is available for structural manifest checks.

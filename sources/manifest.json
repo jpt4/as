@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-05-16",
+  "purpose": "Pinned source manifest for Autarkic Systems and the subordinate or adjacent repositories used to define its first working requirements.",
+  "repositories": [
+    {
+      "id": "as",
+      "name": "Autarkic Systems",
+      "relationship": "root",
+      "url": "https://github.com/jpt4/as",
+      "clone_url": "https://github.com/jpt4/as.git",
+      "local_path": "/home/sean/Projects/as",
+      "default_branch": "main",
+      "reviewed_commit": "9a4c098a0b7bddf651025785ac0c59260fccb3fb",
+      "public_remote_head_at_review": "1a2fc06b75f5d33aee6655956c2a56df07a7bfb0",
+      "public_pushed_at": "2026-05-16T22:49:41Z",
+      "status": "local integration branch is ahead of public remote because push is denied to the current GitHub account",
+      "role": "Umbrella project coordinating AFS, PRC, SJAS, and later executable artifacts.",
+      "note": "The AS reviewed commit is the local integration baseline before ADR-0003. The commit containing this manifest necessarily advances the local repository beyond this value."
+    },
+    {
+      "id": "afs",
+      "name": "Autarkic Formal Systems",
+      "relationship": "subordinate",
+      "url": "https://github.com/jpt4/afs",
+      "clone_url": "https://github.com/jpt4/afs.git",
+      "local_path": "/home/sean/Projects/_upstream/afs",
+      "default_branch": "main",
+      "reviewed_commit": "a61592eab02a93d480149ce3465af5e3271ca213",
+      "public_remote_head_at_review": "a61592eab02a93d480149ce3465af5e3271ca213",
+      "public_pushed_at": "2025-04-19T17:36:01Z",
+      "status": "placeholder README only at reviewed snapshot",
+      "role": "Named formal-systems layer that AS must make operational."
+    },
+    {
+      "id": "prc",
+      "name": "Pervasively Reconfigurable Computing",
+      "relationship": "subordinate",
+      "url": "https://github.com/jpt4/prc",
+      "clone_url": "https://github.com/jpt4/prc.git",
+      "local_path": "/home/sean/Projects/_upstream/prc",
+      "default_branch": "master",
+      "reviewed_commit": "7e82c73fac8f108faac801a5c65e2c2b92653ba5",
+      "public_remote_head_at_review": "7e82c73fac8f108faac801a5c65e2c2b92653ba5",
+      "public_pushed_at": "2020-08-12T01:09:08Z",
+      "status": "research archive with Scheme simulator and theory notes; not yet a verified AS dependency",
+      "role": "Embodied substrate and reconfigurable hardware program."
+    },
+    {
+      "id": "sjas",
+      "name": "Self-Justifying Axiom Systems",
+      "relationship": "subordinate",
+      "url": "https://github.com/jpt4/sjas",
+      "clone_url": "https://github.com/jpt4/sjas.git",
+      "local_path": "/home/sean/Projects/_upstream/sjas",
+      "default_branch": "master",
+      "reviewed_commit": "f1c11af5f310d39f487c3b91ee1ca70f4ade8871",
+      "public_remote_head_at_review": "f1c11af5f310d39f487c3b91ee1ca70f4ade8871",
+      "public_pushed_at": "2026-05-15T01:18:38Z",
+      "status": "active research and literature archive; executable frontier partly points outside this repository",
+      "role": "Formal self-confidence and self-justifying logic program."
+    },
+    {
+      "id": "proflog",
+      "name": "Proflog",
+      "relationship": "adjacent",
+      "url": "https://github.com/jpt4/proflog",
+      "clone_url": "https://github.com/jpt4/proflog.git",
+      "local_path": "/home/sean/Projects/_upstream/proflog",
+      "default_branch": "main",
+      "reviewed_commit": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
+      "public_remote_head_at_review": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
+      "public_pushed_at": "2026-02-18T18:53:40Z",
+      "status": "public main does not expose the newer Proflog ADR-006x frontier described by SJAS logs; guile proflog.scm fails with an unbound example symbol in this environment",
+      "role": "Candidate semantic-tableaux implementation background for SJAS/AFS proof apparatus work."
+    }
+  ],
+  "verification": {
+    "json_parse": "jq -e . sources/manifest.json",
+    "local_commit_check": "git -C <local_path> rev-parse HEAD",
+    "remote_commit_check": "git ls-remote <clone_url> HEAD",
+    "note": "For the AS root repository, compare the manifest's reviewed_commit to the parent baseline rather than expecting HEAD equality after the manifest commit itself."
+  }
+}

@@ -26,3 +26,6 @@
   `Unbound variable: even` at the embedded example program, so it should not be
   treated as passing executable evidence without further repair or a different
   intended Scheme environment.
+- `sources/manifest.json` is the repo-owned source baseline for AS, AFS, PRC,
+  SJAS, and adjacent Proflog; update it when reviewed commits or source status
+  changes.
