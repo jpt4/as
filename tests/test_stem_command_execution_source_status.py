@@ -32,6 +32,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
 
         execution_gap = self.status["formal_model_execution_anchor"]["as_gap"]
         self.assertIn("narrow self-target init command-buffer dispatch", execution_gap)
+        self.assertIn("unsupported completed command-buffer append boundary", execution_gap)
         self.assertIn("does not route neighbor-target commands", execution_gap)
 
     def test_formal_model_command_table_matches_adr_0026_map(self):
@@ -92,7 +93,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
 
         self.assertTrue(allowed)
         self.assertTrue(
-            any("self-target init command-buffer dispatch" in item for item in allowed)
+            any("unsupported completed command-buffer append boundary" in item for item in allowed)
         )
         self.assertTrue(
             any("neighbor-target command delivery" in item for item in allowed)

@@ -1,0 +1,46 @@
+# Command Buffer Unsupported Claim
+
+Status: named claim and proof-certificate surface, 2026-05-17.
+
+ADR-0041 promotes the unsupported completed command-buffer boundary into the
+transition-claim surface. The claim is
+`UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED` in
+`claims/transition_claims.json`, checked by
+`stem_command_buffer_preserves_unsupported_completion` in
+`autarkic_systems/transition_predicates.py`.
+
+## Claim Boundary
+
+The claim covers command-buffer transitions where a standard-signal append
+completes a five-bit buffer that is outside the ADR-0037 self-target
+init-family execution slice. That includes:
+
+- neighbor-target completed buffers;
+- self-target `standard-signal`;
+- self-target `write-buf-zero`;
+- self-target `write-buf-one`.
+
+The predicate checks that the transition remains at `stem-buffer-appended`,
+clears consumed input, preserves output, preserves role/memory/upstream,
+preserves the control rail, keeps automail and `self_mailbox` empty, and leaves
+the completed five-bit buffer intact.
+
+The claim does not define neighbor routing, self-target `standard-signal`,
+write-buffer commands, or full command-buffer execution.
+
+## Proof Surface
+
+`claims/proof_certificates.json` covers the claim with `manifest-example`
+steps for positive self non-init and neighbor-target examples plus a negative
+wrongly processed neighbor example.
+
+## Verification
+
+Run:
+
+```sh
+python -m unittest tests.test_command_buffer_unsupported_claim
+```
+
+The tests cover the predicate, manifest examples, proof certificate coverage,
+and object-language predicate vocabulary.

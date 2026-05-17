@@ -176,3 +176,7 @@
   `tests/test_self_command_buffer_init_svg.py`. The SVG renderer now gives
   command-buffer init dispatch its own summary branch before generic
   reconfiguration or buffer rendering.
+- ADR-0041 promotes completed command buffers outside the self-target init
+  slice into `UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED` and
+  `stem_command_buffer_preserves_unsupported_completion`. Neighbor-target and
+  self non-init completed buffers still stop at `stem-buffer-appended`.

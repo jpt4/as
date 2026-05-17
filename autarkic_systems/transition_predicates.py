@@ -307,7 +307,86 @@ def stem_command_buffer_executes_self_init(
     return PredicateResult(name, True, "self-target init command buffer executed")
 
 
+def stem_command_buffer_preserves_unsupported_completion(
+    before: Cell,
+    result: StepResult,
+) -> PredicateResult:
+    """Check the unsupported completed-buffer append boundary."""
+
+    name = "stem_command_buffer_preserves_unsupported_completion"
+    decoded = _completed_command_buffer(before)
+    if decoded is None:
+        return PredicateResult(name, True, "precondition not active")
+
+    target_id, command_id, completed_buffer = decoded
+    if target_id == "self" and command_id in SELF_MAILBOX_INIT_TARGETS:
+        return PredicateResult(
+            name,
+            True,
+            "precondition not active: supported self init",
+        )
+
+    if result.status != "stem-buffer-appended":
+        return PredicateResult(
+            name,
+            False,
+            f"expected stem-buffer-appended, got {result.status}",
+        )
+    if result.cell.role != before.role or result.cell.memory != before.memory:
+        return PredicateResult(
+            name,
+            False,
+            "unsupported completion changed role or memory",
+        )
+    if result.cell.upstream != before.upstream:
+        return PredicateResult(name, False, "unsupported completion changed upstream")
+    if result.cell.input != EMPTY:
+        return PredicateResult(
+            name,
+            False,
+            "unsupported completion left input uncleared",
+        )
+    if result.cell.output != EMPTY:
+        return PredicateResult(name, False, "unsupported completion changed output")
+    if result.cell.automail != "_" or result.cell.self_mailbox != "_":
+        return PredicateResult(
+            name,
+            False,
+            "unsupported completion changed command mail",
+        )
+    if result.cell.control != before.control:
+        return PredicateResult(
+            name,
+            False,
+            "unsupported completion changed control rail",
+        )
+    if result.cell.buffer != completed_buffer:
+        return PredicateResult(
+            name,
+            False,
+            f"expected buffer {completed_buffer}, got {result.cell.buffer}",
+        )
+    return PredicateResult(
+        name,
+        True,
+        f"unsupported {target_id}/{command_id} completion stayed at append boundary",
+    )
+
+
 def _completed_self_init_target(before: Cell) -> tuple[str, str] | None:
+    decoded = _completed_command_buffer(before)
+    if decoded is None:
+        return None
+
+    target_id, command_id, _completed_buffer = decoded
+    if target_id != "self":
+        return None
+    return SELF_MAILBOX_INIT_TARGETS.get(command_id)
+
+
+def _completed_command_buffer(
+    before: Cell,
+) -> tuple[str, str, tuple[object, ...]] | None:
     if (
         before.role != "stem"
         or before.automail != "_"
@@ -317,6 +396,7 @@ def _completed_self_init_target(before: Cell) -> tuple[str, str] | None:
         or not before.control
         or len(before.buffer) != COMMAND_BUFFER_WIDTH - 1
         or not _is_one_hot_standard_signal(before.input)
+        or not _is_one_hot_standard_signal(before.control)
     ):
         return None
 
@@ -329,9 +409,12 @@ def _completed_self_init_target(before: Cell) -> tuple[str, str] | None:
     value = 0
     for bit in completed_buffer:
         value = (value << 1) | bit
-    if value >= 8:
-        return None
-
+    target_id = (
+        "self" if value <= 7
+        else "neighbor-a" if value <= 15
+        else "neighbor-b" if value <= 23
+        else "neighbor-c"
+    )
     command_id = (
         "standard-signal",
         "stem-init",
@@ -341,8 +424,8 @@ def _completed_self_init_target(before: Cell) -> tuple[str, str] | None:
         "proc-l-init",
         "write-buf-zero",
         "write-buf-one",
-    )[value]
-    return SELF_MAILBOX_INIT_TARGETS.get(command_id)
+    )[value % 8]
+    return target_id, command_id, completed_buffer
 
 
 def _is_one_hot_standard_signal(signal: tuple[object, object, object]) -> bool:

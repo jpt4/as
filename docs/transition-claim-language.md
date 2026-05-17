@@ -21,7 +21,9 @@ command boundary.
 ADR-0037 adds `stem-command-buffer-self-processed` to the status vocabulary for
 the first narrow self-target init command-buffer dispatch. ADR-0038 adds
 `stem_command_buffer_executes_self_init` for the corresponding transition
-claim.
+claim. ADR-0041 adds
+`stem_command_buffer_preserves_unsupported_completion` for completed command
+buffers that remain at the append boundary.
 
 The point is to stop relying on implicit Python/JSON shape as the only syntax
 boundary. Current claims can now be checked against named syntax classes before

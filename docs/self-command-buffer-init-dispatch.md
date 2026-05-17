@@ -10,6 +10,8 @@ semantics and returns `stem-command-buffer-self-processed`.
 ADR-0038 promotes this behavior into the named claim
 `UC-STEM-COMMAND-BUFFER-SELF-INIT`.
 ADR-0039 records the same bounded behavior as a schematic-linked trace.
+ADR-0041 promotes the remaining completed-buffer append boundary into the
+named claim `UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED`.
 
 ## Execution Boundary
 

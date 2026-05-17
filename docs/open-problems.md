@@ -22,7 +22,8 @@ proof clauses remain open.
 Status update: ADR-0031 promotes the self-mailbox init-command execution subset
 into a named transition claim with manifest examples and proof-certificate
 coverage. ADR-0034 promotes the unresolved self-mailbox command boundary into a
-preservation claim.
+preservation claim. ADR-0041 promotes the unsupported completed command-buffer
+append boundary into a named claim.
 
 ## P2: Expand From Fixed Roles To Stem/Reconfiguration
 
@@ -61,7 +62,9 @@ init-family commands when the fifth buffer bit is appended.
 ADR-0038 promotes that dispatch into a named claim with proof-certificate
 coverage. ADR-0039 adds the corresponding schematic-linked trace for one
 completed `self/proc-l-init` command buffer. ADR-0040 adds the rendered SVG
-view of that trace.
+view of that trace. ADR-0041 adds the named claim for completed command buffers
+that still stop at the append boundary because they are neighbor-target or
+self-target non-init commands.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -160,3 +163,4 @@ neighbor routing and self-target non-init commands open.
 ADR-0038 adds the corresponding claim/proof surface.
 ADR-0039 adds the corresponding schematic-linked trace.
 ADR-0040 adds the corresponding rendered SVG view.
+ADR-0041 adds the corresponding unsupported completed-buffer boundary claim.

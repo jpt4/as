@@ -740,3 +740,24 @@ Status: accepted in `docs/adr/0040-self-command-buffer-init-svg.md`.
 Implemented in `autarkic_systems/schematic_svg.py` and
 `schematics/self_command_buffer_init_trace.svg`, with tests in
 `tests/test_self_command_buffer_init_svg.py`.
+
+## ADR-0041: Command Buffer Unsupported Claim
+
+Goal: promote completed command buffers outside the self-target init slice into
+the named append-boundary claim surface.
+
+Deliverables:
+
+- `stem_command_buffer_preserves_unsupported_completion` predicate;
+- `UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED` manifest claim with positive
+  self non-init and neighbor-target examples plus a negative processed example;
+- proof-certificate coverage for the new claim;
+- transition-language predicate vocabulary update;
+- tests proving predicate behavior, manifest evaluation, certificate coverage,
+  and object-language validation.
+
+Status: accepted in `docs/adr/0041-command-buffer-unsupported-claim.md`.
+Implemented in `autarkic_systems/transition_predicates.py`,
+`claims/transition_claims.json`, `claims/proof_certificates.json`, and
+`language/transition_claim_language.json`, with tests in
+`tests/test_command_buffer_unsupported_claim.py`.

@@ -847,3 +847,27 @@
   7 tests, the adjacent schematic SVG/trace suite passed 58 tests,
   `python -m unittest discover` passed 224 tests, py_compile passed for the
   touched module and test, and `git diff --check` passed.
+
+## 2026-05-17 - Command Buffer Unsupported Claim
+
+- Added ADR-0041 to promote completed command buffers outside the self-target
+  init slice into a named append-boundary claim.
+- Wrote `tests/test_command_buffer_unsupported_claim.py` before
+  implementation. The red run failed because
+  `stem_command_buffer_preserves_unsupported_completion` did not exist in
+  `autarkic_systems.transition_predicates`.
+- Added `stem_command_buffer_preserves_unsupported_completion`,
+  `UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED`, proof-certificate coverage,
+  and the transition-language predicate symbol.
+- Added `docs/command-buffer-unsupported-claim.md` as the human-facing claim
+  boundary note.
+- Updated the stem command execution source-status artifact to name the
+  unsupported completed command-buffer append boundary as current AS evidence.
+- Updated README, roadmap, literature map, open problems, transition-claim
+  language note, self command-buffer dispatch note, project memory, and
+  lessons.
+- Verified `python -m unittest tests.test_command_buffer_unsupported_claim`
+  passed 6 tests, the adjacent command-buffer/claim/source-status suite passed
+  51 tests, `python -m unittest discover` passed 230 tests, py_compile passed
+  for the touched Python files, JSON parsing passed for the claim/proof/
+  language/source-status manifests, and `git diff --check` passed.

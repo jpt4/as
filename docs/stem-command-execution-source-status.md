@@ -19,10 +19,11 @@ channel-token representation, ADR-0030 processes the init-family
 self-mailbox commands, and ADR-0037 dispatches just-completed self-target
 init-family command buffers through that self-mailbox path. ADR-0034 records
 the remaining self-mailbox `standard-signal` and write-buffer commands as an
-explicit preserve-and-report unsupported boundary. Legacy simulator sketches
-still diverge from the formal table in ways that should be resolved before AS
-treats them as executable authority, and AS still does not route or execute
-full command buffers.
+explicit preserve-and-report unsupported boundary, and ADR-0041 records the
+remaining completed command-buffer cases as an append-boundary claim. Legacy
+simulator sketches still diverge from the formal table in ways that should be
+resolved before AS treats them as executable authority, and AS still does not
+route or execute full command buffers.
 
 ## Evidence
 

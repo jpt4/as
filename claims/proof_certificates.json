@@ -145,6 +145,26 @@
           "expected": false
         }
       ]
+    },
+    {
+      "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "self write buffer command remains appended",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "neighbor command remains appended",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "neighbor command wrongfully processed",
+          "expected": false
+        }
+      ]
     }
   ]
 }

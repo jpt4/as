@@ -77,6 +77,8 @@ the project legible:
   command-buffer-to-behavior slice for self-target init commands.
 - `docs/self-command-buffer-init-claim.md` records the named claim and
   proof-certificate surface for that command-buffer slice.
+- `docs/command-buffer-unsupported-claim.md` records the named append-boundary
+  claim for unsupported completed command buffers.
 - `docs/self-command-buffer-init-trace.md` records the schematic-linked trace
   for one self-target command-buffer init dispatch.
 - `docs/self-command-buffer-init-svg.md` records the rendered view of that
@@ -93,7 +95,8 @@ the project legible:
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, and self-target
-  command-buffer init dispatch.
+  command-buffer init dispatch plus unsupported completed-buffer append
+  boundary.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
   those transition claims.
 - `sources/willard_definition_map.json` makes the Willard anchor map
