@@ -138,3 +138,7 @@
   `self_mailbox_executes_init_command`, and matching proof-certificate
   coverage. It still does not claim write-buffer, standard-signal, neighbor
   delivery, or full command-buffer execution.
+- ADR-0032 adds `schematics/self_mailbox_init_trace.json`, a schematic-linked
+  replay for one `proc-l-init` self-mailbox command. The validator now routes
+  stem traces with non-empty `self_mailbox` through a self-mailbox init
+  alignment check instead of the stem buffer check.

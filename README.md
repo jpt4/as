@@ -63,6 +63,8 @@ the project legible:
   execution is still blocked after the decoder map.
 - `docs/self-mailbox-init-claim.md` records the named claim and
   proof-certificate surface for the self-mailbox init-command subset.
+- `docs/self-mailbox-init-trace.md` records the schematic-linked trace for one
+  self-mailbox init command.
 - `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
   state for future self-target command execution.
 - Universal Cell channel tuples can represent command-message tokens, but
@@ -100,6 +102,8 @@ the project legible:
   accumulation schematic trace machine-checkable.
 - `schematics/stem_buffer_accumulation_trace.svg` is the generated rendered
   view checked against the stem buffer JSON trace.
+- `schematics/self_mailbox_init_trace.json` makes the self-mailbox init-command
+  schematic trace machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

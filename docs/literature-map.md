@@ -40,6 +40,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS command channel-token representation | `autarkic_systems/universal_cell.py` and `language/transition_claim_language.json` | Channel tuples can now carry ADR-0026 command-message tokens. | Covers representation only; delivery and execution remain open. |
 | AS self mailbox init commands | `autarkic_systems/universal_cell.py` and `tests/test_self_mailbox_init_commands.py` | First self-mailbox execution slice for init-family commands. | Executes source-stable init commands while keeping write-buffer, standard-signal, and neighbor delivery open. |
 | AS self mailbox init claim | `docs/self-mailbox-init-claim.md`, `claims/transition_claims.json`, and `claims/proof_certificates.json` | Named claim and proof-certificate surface for self-mailbox init-command execution. | Keeps the ADR-0030 execution subset available to later proof/object-language work without widening command execution. |
+| AS self mailbox init trace | `docs/self-mailbox-init-trace.md` and `schematics/self_mailbox_init_trace.json` | Schematic-linked trace for one `proc-l-init` self-mailbox command. | Extends P7 evidence to the ADR-0030/ADR-0031 execution subset without adding wider command execution. |
 
 ## SJAS: Formal Confidence
 
@@ -92,6 +93,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | Neighbor-target stem command work needs command-message channel tokens before delivery. | PRC formal model process-buffer sketch, `autarkic_systems/universal_cell.py`, and `language/transition_claim_language.json`. | Implemented in ADR-0029 as representation only, with blocked-output preservation and no command execution. |
 | Self-mailbox init commands are a safe first execution subset. | PRC formal model process-special-message sketch and legacy fsmsim/semsim init functions. | Implemented in ADR-0030, excluding write-buffer and standard-signal commands. |
 | Self-mailbox init execution belongs in the named claim surface before wider command-buffer execution depends on it. | `claims/transition_claims.json`, `claims/proof_certificates.json`, and `autarkic_systems/transition_predicates.py`. | Implemented in ADR-0031 with positive/negative manifest examples and certificate coverage. |
+| Schematic-linked evidence should cover the self-mailbox init subset before larger command-routing traces. | `schematics/self_mailbox_init_trace.json`, `autarkic_systems/schematic_trace.py`, and `tests/test_self_mailbox_init_trace.py`. | Implemented in ADR-0032 with replay and drift rejection. |
 
 ## Evidence Gaps
 
@@ -107,7 +109,8 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   self-mailbox representation blocker and ADR-0029 clears the command-token
   representation blocker only. ADR-0030 adds self-mailbox init-command
   execution but not full command-buffer execution. ADR-0031 adds a claim and
-  proof-certificate surface for that bounded execution subset.
+  proof-certificate surface for that bounded execution subset. ADR-0032 adds a
+  schematic-linked trace for one `proc-l-init` self-mailbox command.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

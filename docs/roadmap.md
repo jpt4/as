@@ -567,3 +567,21 @@ Status: accepted in `docs/adr/0031-self-mailbox-init-claim.md`. Implemented in
 `language/transition_claim_language.json`, with tests in
 `tests/test_self_mailbox_init_claim.py` and the refined default-preservation
 test in `tests/test_self_mailbox_representation.py`.
+
+## ADR-0032: Self Mailbox Init Trace
+
+Goal: add a schematic-linked trace for one self-mailbox init command.
+
+Deliverables:
+
+- `schematics/self_mailbox_init_trace.json`;
+- self-mailbox init artifact identity in the schematic-trace validator;
+- validation that separates self-mailbox init from automail and buffer stem
+  traces;
+- tests for artifact identity, schema vocabulary, recorded mailbox flow,
+  execution replay, witness-map validation, and drift rejection.
+
+Status: accepted in `docs/adr/0032-self-mailbox-init-trace.md`. Implemented in
+`autarkic_systems/schematic_trace.py` and
+`schematics/self_mailbox_init_trace.json`, with tests in
+`tests/test_self_mailbox_init_trace.py`.

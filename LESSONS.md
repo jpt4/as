@@ -70,3 +70,6 @@
 - Once a bounded execution subset is stable, give it a named claim before using
   it as a dependency. That keeps later command work tied to manifest examples
   and proof-certificate coverage rather than raw transition behavior alone.
+- Stem schematic traces need dispatch by the active stem mechanism. Empty
+  automail plus non-empty `self_mailbox` is mailbox execution, not buffer
+  accumulation, even though both use `step_stem_cell`.

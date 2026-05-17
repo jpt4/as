@@ -31,11 +31,15 @@ STEM_AUTOMAIL_RECONFIGURATION_TRACE_ARTIFACT_ID = (
 STEM_BUFFER_ACCUMULATION_TRACE_ARTIFACT_ID = (
     "stem-buffer-accumulation-schematic-and-uc-transition-trace"
 )
+SELF_MAILBOX_INIT_TRACE_ARTIFACT_ID = (
+    "self-mailbox-init-schematic-and-uc-transition-trace"
+)
 VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     SINGLE_NODE_TRACE_ARTIFACT_ID,
     PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID,
     STEM_AUTOMAIL_RECONFIGURATION_TRACE_ARTIFACT_ID,
     STEM_BUFFER_ACCUMULATION_TRACE_ARTIFACT_ID,
+    SELF_MAILBOX_INIT_TRACE_ARTIFACT_ID,
 )
 
 REQUIRED_INTERPRETIVE_LAYERS = (
@@ -395,6 +399,8 @@ def _validate_schematic_trace_alignment(
     if before_role == "stem":
         if schematic_trace.trace.before_cell.get("automail") != "_":
             results.extend(_validate_stem_automail_trace_alignment(schematic_trace))
+        elif schematic_trace.trace.before_cell.get("self_mailbox") != "_":
+            results.extend(_validate_self_mailbox_init_trace_alignment(schematic_trace))
         else:
             results.extend(_validate_stem_buffer_trace_alignment(schematic_trace))
         return results
@@ -589,6 +595,84 @@ def _validate_stem_buffer_trace_alignment(
             _accepted(
                 "stem-buffer-accumulation",
                 "stem buffer append state matches",
+            )
+        )
+
+    return results
+
+
+def _validate_self_mailbox_init_trace_alignment(
+    schematic_trace: SingleNodeSchematicTrace,
+) -> list[SchematicTraceValidation]:
+    results: list[SchematicTraceValidation] = []
+
+    if schematic_trace.schematic.geometry != "triangular-rlem-node":
+        results.append(_rejected("geometry", "schematic geometry is not triangular"))
+    else:
+        results.append(_accepted("geometry", "schematic geometry is triangular"))
+
+    before = schematic_trace.trace.before_cell
+    after = schematic_trace.trace.expected_after_cell
+    init_targets = {
+        "stem-init": ("stem", "right"),
+        "wire-r-init": ("wire", "right"),
+        "wire-l-init": ("wire", "left"),
+        "proc-r-init": ("proc", "right"),
+        "proc-l-init": ("proc", "left"),
+    }
+    command = before.get("self_mailbox")
+    target = init_targets.get(command)
+    if target is None:
+        results.append(_rejected("self-mailbox-init", "unknown init mailbox command"))
+        return results
+
+    expected_role, expected_memory = target
+    if schematic_trace.schematic.memory_direction != expected_memory:
+        results.append(
+            _rejected(
+                "memory_direction",
+                "schematic memory does not match mailbox target",
+            )
+        )
+    else:
+        results.append(_accepted("memory_direction", "schematic memory matches target"))
+
+    expected_flow = (
+        f"self_mailbox[{command}] -> role {expected_role}",
+        f"self_mailbox[{command}] -> memory {expected_memory}",
+        f"self_mailbox[{command}] consumed -> _",
+        "control/buffer cleared",
+    )
+    if schematic_trace.trace.routed_signal_flow != expected_flow:
+        results.append(_rejected("routed_signal_flow", "self mailbox flow mismatch"))
+    else:
+        results.append(_accepted("routed_signal_flow", "self mailbox flow explicit"))
+
+    if (
+        schematic_trace.trace.expected_status != "self-mailbox-processed"
+        or before.get("automail") != "_"
+        or before.get("input") != ["_", "_", "_"]
+        or before.get("output") != ["_", "_", "_"]
+        or after.get("role") != expected_role
+        or after.get("memory") != expected_memory
+        or after.get("input") != ["_", "_", "_"]
+        or after.get("output") != ["_", "_", "_"]
+        or after.get("automail") != "_"
+        or after.get("self_mailbox") != "_"
+        or after.get("control") != []
+        or after.get("buffer") != []
+    ):
+        results.append(
+            _rejected(
+                "self-mailbox-init",
+                "self mailbox init state mismatch",
+            )
+        )
+    else:
+        results.append(
+            _accepted(
+                "self-mailbox-init",
+                "self mailbox init target and clearing match",
             )
         )
 

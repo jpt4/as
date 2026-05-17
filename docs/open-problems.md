@@ -49,7 +49,8 @@ open. ADR-0029 adds command-message channel tokens, leaving delivery and
 execution semantics open. ADR-0030 adds the first self-mailbox init-command
 execution slice while leaving write-buffer, `standard-signal`, and neighbor
 delivery semantics open. ADR-0031 adds the corresponding named claim and
-proof-certificate surface for that init-command execution slice.
+proof-certificate surface for that init-command execution slice. ADR-0032 adds
+a schematic-linked trace for one `proc-l-init` self-mailbox command.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -137,4 +138,5 @@ the state model for command-message outputs and self-target consumption is
 explicit; ADR-0028 covers representation of the self mailbox, and ADR-0029
 covers representation of command-message channel tokens. ADR-0030 executes
 self-mailbox init-family commands only, with ADR-0031 adding the matching claim
-and proof-certificate surface.
+and proof-certificate surface. ADR-0032 adds a schematic-linked trace for the
+same bounded behavior.

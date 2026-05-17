@@ -652,3 +652,22 @@
   `python -m unittest discover` passed 161 tests, py_compile passed for the
   touched Python files, JSON parsing passed for the claim/proof/language
   manifests, and `git diff --check` passed.
+
+## 2026-05-17 - Self Mailbox Init Trace
+
+- Added ADR-0032 for a schematic-linked trace of one `proc-l-init`
+  self-mailbox command.
+- Wrote `tests/test_self_mailbox_init_trace.py` before implementation. The red
+  run failed because `SELF_MAILBOX_INIT_TRACE_ARTIFACT_ID` did not exist in
+  `autarkic_systems.schematic_trace`.
+- Added `schematics/self_mailbox_init_trace.json` and a schematic-trace
+  validator branch for self-mailbox init alignment.
+- Added `docs/self-mailbox-init-trace.md` as the human-facing trace boundary
+  note.
+- Updated README, roadmap, literature map, open problems, project memory, and
+  lessons.
+- Verified `python -m unittest tests.test_self_mailbox_init_trace` passed 9
+  tests, the adjacent schematic trace suite passed 40 tests,
+  `python -m unittest discover` passed 170 tests, py_compile passed for the
+  touched module and test, JSON parsing passed for
+  `schematics/self_mailbox_init_trace.json`, and `git diff --check` passed.
