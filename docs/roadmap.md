@@ -1675,3 +1675,19 @@ Deliverables:
 Status: accepted in `docs/adr/0087-chain-registry-json-failure-summary.md`.
 Implemented in `autarkic_systems/chain_evidence_bundle.py`, with tests in
 `tests/test_chain_evidence_bundle_registry.py`.
+
+## ADR-0088: Chain Bundle JSON Failure Summary
+
+Goal: make single-bundle chain evidence JSON output report rejected validation
+subjects directly.
+
+Deliverables:
+
+- `failed_subjects` array in `chain_evidence_bundle_report_payload`;
+- focused success/failure payload tests in
+  `tests/test_neighbor_delivery_chain_evidence_bundle.py`;
+- documentation update for the chain evidence bundle JSON contract.
+
+Status: accepted in `docs/adr/0088-chain-bundle-json-failure-summary.md`.
+Implemented in `autarkic_systems/chain_evidence_bundle.py`, with tests in
+`tests/test_neighbor_delivery_chain_evidence_bundle.py`.

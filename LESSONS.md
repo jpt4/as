@@ -240,3 +240,5 @@
   the manifest.
 - Registry JSON should also summarize why it failed. A small `failed_subjects`
   list saves automation from reimplementing result scanning.
+- Keep bundle JSON and registry JSON contracts parallel where the semantics
+  match; automation should not need different failure-scanning code for each.

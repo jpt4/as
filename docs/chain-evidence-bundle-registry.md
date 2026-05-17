@@ -39,6 +39,8 @@ ADR-0086 makes the JSON payload self-describing by including a `bundles` array
 with each registered bundle ID, path, chain claim ID, and expected status.
 ADR-0087 adds `failed_subjects`, an ordered list of rejected validation
 subjects for failed registry runs.
+ADR-0088 adds the same `failed_subjects` contract to single-bundle chain
+evidence JSON output.
 
 ADR-0085 makes the target selection explicit: `--bundle` and `--registry` are
 mutually exclusive. Supplying both fails during argument parsing with exit code

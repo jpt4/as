@@ -50,6 +50,9 @@ acceptance, chain proof certificate verification, chain language validation,
 chain trace validation, chain SVG validation, both underlying transition evidence bundles,
 source-status JSON, and boundary terms.
 
+ADR-0088 adds `failed_subjects` to the single-bundle JSON payload so failed
+bundle validation reports rejected validation subjects directly.
+
 ADR-0084 adds the chain evidence registry so this bundle is discoverable and
 batch-validatable without merging it into the single-transition evidence
 registry.

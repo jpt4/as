@@ -3,6 +3,7 @@ import io
 import json
 import subprocess
 import sys
+import tempfile
 import unittest
 from dataclasses import replace
 from pathlib import Path
@@ -142,12 +143,25 @@ class NeighborDeliveryChainEvidenceBundleTests(unittest.TestCase):
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["bundle_id"], BUNDLE_ID)
         self.assertEqual(payload["chain_claim_id"], CLAIM_ID)
+        self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(payload["result_count"], len(results))
         self.assertTrue(
             any(
                 result["subject"] == "boundary" and result["accepted"]
                 for result in payload["results"]
             )
+        )
+
+    def test_json_payload_summarizes_failed_subjects(self):
+        drifted = replace(self.bundle, expected_status="recipient-not-consumed")
+        results = validate_transition_chain_evidence_bundle(drifted)
+
+        payload = chain_evidence_bundle_report_payload(drifted, results)
+
+        self.assertFalse(payload["accepted"])
+        self.assertEqual(
+            payload["failed_subjects"],
+            ["chain-claim-example", "chain-trace"],
         )
 
     def test_cli_returns_zero_for_checked_in_bundle(self):
@@ -181,7 +195,39 @@ class NeighborDeliveryChainEvidenceBundleTests(unittest.TestCase):
         payload = json.loads(completed.stdout)
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(payload["chain_claim_id"], CLAIM_ID)
+
+    def test_module_execution_emits_json_failure_summary_for_drifted_bundle(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            drifted_bundle = Path(tmp) / "drifted_chain_bundle.json"
+            data = json.loads(BUNDLE.read_text(encoding="utf-8"))
+            data["expected_status"] = "recipient-not-consumed"
+            drifted_bundle.write_text(json.dumps(data), encoding="utf-8")
+
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "autarkic_systems.chain_evidence_bundle",
+                    "--bundle",
+                    str(drifted_bundle),
+                    "--format",
+                    "json",
+                ],
+                check=False,
+                cwd=Path.cwd(),
+                capture_output=True,
+                text=True,
+            )
+
+        payload = json.loads(completed.stdout)
+        self.assertEqual(completed.returncode, 1, payload)
+        self.assertFalse(payload["accepted"])
+        self.assertEqual(
+            payload["failed_subjects"],
+            ["chain-claim-example", "chain-trace"],
+        )
 
 
 if __name__ == "__main__":

@@ -218,6 +218,9 @@ def chain_evidence_bundle_report_payload(
         "bundle_id": bundle.bundle_id,
         "accepted": all(result.accepted for result in results),
         "chain_claim_id": bundle.chain_claim_id,
+        "failed_subjects": [
+            result.subject for result in results if not result.accepted
+        ],
         "result_count": len(results),
         "results": [
             {

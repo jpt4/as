@@ -1974,3 +1974,22 @@
   `result_count: 9`, `py_compile` passed for the touched module and focused
   test, `git diff --check` passed, and `python -m unittest discover` passed
   506 tests.
+
+## 2026-05-17 - Chain Bundle JSON Failure Summary
+
+- Added ADR-0088 to make single-bundle chain evidence JSON output summarize
+  rejected validation subjects directly.
+- Updated `tests/test_neighbor_delivery_chain_evidence_bundle.py` before
+  implementation. The red run failed because `chain_evidence_bundle_report_payload`
+  did not include `failed_subjects`.
+- Added `failed_subjects` to chain bundle JSON output. Successful bundle runs
+  report an empty list; a drifted expected chain status reports
+  `chain-claim-example` and `chain-trace`.
+- Updated the chain evidence bundle note, chain registry note, roadmap, memory,
+  and lessons with the parallel bundle/registry failure-summary contract.
+- Focused verification passed 10 bundle tests; adjacent chain bundle, registry,
+  and CLI target-selection verification passed 24 tests. Bundle JSON reported
+  `accepted: true`, `result_count: 9`, and `failed_subjects: []`; registry JSON
+  reported `accepted: true`, `bundle_count: 1`, and `failed_subjects: []`.
+  `py_compile`, `git diff --check`, and the full default suite passed, with
+  `python -m unittest discover` running 508 tests.
