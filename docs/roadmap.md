@@ -467,3 +467,21 @@ Status: accepted in `docs/adr/0026-stem-command-buffer-map.md`. Implemented in
 `sources/stem_command_buffer_map.json` and
 `autarkic_systems/stem_command_map.py`, with tests in
 `tests/test_stem_command_buffer_map.py`.
+
+## ADR-0027: Stem Command Execution Source Status
+
+Goal: block premature full command execution by recording the source-status
+gaps between the formal command table, formal process-buffer sketch, and legacy
+simulator divergences.
+
+Deliverables:
+
+- structured command-execution source-status artifact;
+- human-facing source-status note;
+- tests proving the blocking decision, ADR-0026 command-table dependency,
+  legacy divergences, and narrower allowed next slices.
+
+Status: accepted in `docs/adr/0027-stem-command-execution-source-status.md`.
+Implemented in `sources/stem_command_execution_source_status.json` and
+`docs/stem-command-execution-source-status.md`, with tests in
+`tests/test_stem_command_execution_source_status.py`.

@@ -37,7 +37,9 @@ predicate and manifest claim. ADR-0023 added the corresponding
 `stem_buffer_accumulates` predicate and manifest claim for the buffer
 accumulation subset. ADR-0024 added a schematic-linked trace for one matching
 buffer append. ADR-0026 added the explicit five-bit target/command map needed
-before command execution.
+before command execution. ADR-0027 records the command-execution source-status
+blockers: self mailbox state, command-message output representation, and
+legacy source divergences.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -120,4 +122,5 @@ automail reconfiguration trace. ADR-0020 added a generated SVG render for the
 processor trace. ADR-0021 added a generated SVG render for the stem trace. Full
 stem command decoding, dynamic reconfiguration, larger GELC examples, and
 physical-simulation renders remain open. ADR-0025 added a generated SVG render
-for the stem buffer trace.
+for the stem buffer trace. ADR-0027 blocks full stem command execution until
+the state model for self mailbox and command-message outputs is explicit.

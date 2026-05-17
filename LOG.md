@@ -545,3 +545,24 @@
   tests, `python -m unittest discover` passed 132 tests, py_compile passed for
   the new module and test, `jq -e . sources/stem_command_buffer_map.json`
   passed, and `git diff --check` passed.
+
+## 2026-05-17 - Stem Command Execution Source Status
+
+- Added ADR-0027 to block premature full stem command execution after the
+  ADR-0026 decoder map.
+- Wrote `tests/test_stem_command_execution_source_status.py` before the
+  structured source-status artifact. The red run failed because
+  `sources/stem_command_execution_source_status.json` did not exist.
+- Added `sources/stem_command_execution_source_status.json`, recording the
+  formal command table dependency, formal process-buffer execution anchor,
+  legacy `raa.scm` target/command divergence, legacy semsim/fsmsim
+  special-message divergence, and implementation blockers.
+- Added `docs/stem-command-execution-source-status.md` as the human-facing
+  blocking decision note.
+- Updated README, roadmap, literature map, open problems, stem command map
+  note, project memory, and lessons.
+- Verified `python -m unittest tests.test_stem_command_execution_source_status`
+  passed 4 tests, `python -m unittest discover` passed 136 tests, py_compile
+  passed for the new test,
+  `jq -e . sources/stem_command_execution_source_status.json` passed, and
+  `git diff --check` passed.

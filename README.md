@@ -59,6 +59,8 @@ the project legible:
   buffer append trace.
 - `docs/stem-command-buffer-map.md` records the source-backed five-bit stem
   command-buffer decoding map.
+- `docs/stem-command-execution-source-status.md` records why full stem command
+  execution is still blocked after the decoder map.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
@@ -71,6 +73,8 @@ the project legible:
   witness map machine-checkable.
 - `sources/stem_command_buffer_map.json` makes the PRC stem command-buffer
   target/command map machine-checkable.
+- `sources/stem_command_execution_source_status.json` makes the stem command
+  execution source-status decision machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first
   schematic-linked transition trace machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.svg` is the generated rendered

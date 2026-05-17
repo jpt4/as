@@ -37,7 +37,8 @@ work must preserve or explicitly revise that convention.
 
 This map only decodes target and command identity. It does not mutate a
 `Cell`, deliver a message to a neighbor, interpret `standard-signal`, or execute
-write-buffer commands.
+write-buffer commands. ADR-0027 records why that execution boundary remains in
+place after source review.
 
 ## Verification
 

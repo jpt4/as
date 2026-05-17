@@ -117,3 +117,7 @@
   `docs/stem-command-buffer-map.md` map five-bit stem command buffers to
   target/command pairs. This is decoder preparation only, not command
   execution.
+- `sources/stem_command_execution_source_status.json` and
+  `docs/stem-command-execution-source-status.md` record that full stem command
+  execution is blocked until AS models self mailbox delivery, command-message
+  outputs, and the observed legacy source divergences.

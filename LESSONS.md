@@ -55,3 +55,6 @@
 - Decode maps should become structured artifacts before execution code depends
   on them. This keeps command semantics reviewable and avoids magic numbers in
   transition logic.
+- A source-backed decoder is not the same as source-backed execution. When
+  legacy sketches disagree about target and command interpretation, record the
+  disagreement before mutating the substrate model.
