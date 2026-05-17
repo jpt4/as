@@ -9,7 +9,8 @@ schema and replaying the recorded transition through the existing
 `step_fixed_cell` implementation.
 
 The structured artifact lives in
-`schematics/processor_memory_toggle_trace.json`.
+`schematics/processor_memory_toggle_trace.json`. ADR-0020 renders the same trace
+as `schematics/processor_memory_toggle_trace.svg`.
 
 ## Trace Shape
 
@@ -38,8 +39,8 @@ Running that cell through `step_fixed_cell` produces status `routed`, output
 ## Boundary
 
 This is a schematic-linked witness for behavior AS already implements. It does
-not introduce new processor semantics, render a processor SVG, simulate
-circulator physics, or address stem automail. Those remain separate ADRs.
+not introduce new processor semantics, simulate circulator physics, or address
+stem automail. ADR-0020 covers the separate processor SVG render.
 
 ## Verification
 

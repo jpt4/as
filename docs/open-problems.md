@@ -109,5 +109,6 @@ is to decide how larger GELC examples should be reconstructed. ADR-0017 added
 a generated SVG render for the first structured key, with tests preventing
 drift from the JSON trace. ADR-0018 added a processor memory-toggle trace using
 the same schema and executable replay path. ADR-0019 added the first stem
-automail reconfiguration trace, while full stem buffering and dynamic
-reconfiguration remain open.
+automail reconfiguration trace. ADR-0020 added a generated SVG render for the
+processor trace. Full stem buffering, stem rendering, dynamic reconfiguration,
+larger GELC examples, and physical-simulation renders remain open.

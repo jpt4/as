@@ -80,6 +80,11 @@
   `tests/test_processor_memory_toggle_trace.py` add the second P7 schematic
   trace. It covers processor `step_fixed_cell` behavior with left-memory
   routing and memory toggle to right.
+- `schematics/processor_memory_toggle_trace.svg`,
+  `docs/processor-memory-toggle-svg.md`, and
+  `tests/test_processor_memory_toggle_svg.py` render the processor trace. The
+  generic SVG renderer must keep both wire and processor SVGs exactly matched
+  to their JSON traces.
 - `schematics/stem_automail_reconfiguration_trace.json`,
   `docs/stem-automail-reconfiguration-trace.md`, and
   `tests/test_stem_automail_reconfiguration_trace.py` add the third P7

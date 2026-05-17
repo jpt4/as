@@ -1,8 +1,8 @@
-"""SVG rendering for the single-node PRC schematic trace.
+"""SVG rendering for structured PRC schematic traces.
 
-The renderer keeps `schematics/single_node_triangular_rlem_trace.json` as the
-source of truth. The checked-in SVG must match this module's output exactly, so
-the visual artifact cannot silently drift away from the executable trace.
+The renderer keeps the JSON schematic trace as the source of truth. Checked-in
+SVG artifacts must match this module's output exactly, so visual artifacts
+cannot silently drift away from the executable traces.
 """
 
 from __future__ import annotations
@@ -15,6 +15,7 @@ from autarkic_systems.schematic_trace import SchematicPort, SingleNodeSchematicT
 
 
 SVG_ARTIFACT = Path("schematics/single_node_triangular_rlem_trace.svg")
+PROCESSOR_SVG_ARTIFACT = Path("schematics/processor_memory_toggle_trace.svg")
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 
 PORT_LAYOUT = {
@@ -52,7 +53,16 @@ class SchematicSvgValidation:
 
 
 def render_single_node_schematic_svg(trace: SingleNodeSchematicTrace) -> str:
-    """Render one SVG view from the structured single-node schematic trace."""
+    """Render the original ADR-0017 SVG view."""
+
+    return render_schematic_svg(trace)
+
+
+def render_schematic_svg(trace: SingleNodeSchematicTrace) -> str:
+    """Render one SVG view from a structured schematic trace."""
+
+    before = trace.trace.before_cell
+    after = trace.trace.expected_after_cell
 
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
@@ -93,7 +103,8 @@ def render_single_node_schematic_svg(trace: SingleNodeSchematicTrace) -> str:
         "    <path class=\"route\" d=\"M 480 112 C 416 232 336 336 256 432\" />",
         "    <path class=\"route\" d=\"M 256 432 C 386 476 574 476 704 432\" />",
         f"    <text class=\"label\" x=\"480\" y=\"324\" text-anchor=\"middle\">memory: {_text(trace.schematic.memory_direction)}</text>",
-        f"    <text class=\"small\" x=\"480\" y=\"350\" text-anchor=\"middle\">transition: {_text(trace.trace.transition_function)}</text>",
+        f"    <text class=\"small\" x=\"480\" y=\"350\" text-anchor=\"middle\">role: {_text(before['role'])}</text>",
+        f"    <text class=\"small\" x=\"480\" y=\"374\" text-anchor=\"middle\">transition: {_text(trace.trace.transition_function)}</text>",
     ]
 
     for port in trace.schematic.ports:
@@ -108,11 +119,13 @@ def render_single_node_schematic_svg(trace: SingleNodeSchematicTrace) -> str:
             f"    <text class=\"small\" x=\"52\" y=\"100\">status: {_text(trace.trace.expected_status)}</text>",
             f"    <text class=\"small\" x=\"52\" y=\"124\">input: {_text(_cell_field(trace.trace.before_cell, 'input'))}</text>",
             f"    <text class=\"small\" x=\"52\" y=\"148\">output: {_text(_cell_field(trace.trace.expected_after_cell, 'output'))}</text>",
-            '    <text class="small" x="52" y="184">routed signal flow</text>',
+            f"    <text class=\"small\" x=\"52\" y=\"172\">memory before: {_text(before['memory'])}</text>",
+            f"    <text class=\"small\" x=\"52\" y=\"196\">memory after: {_text(after['memory'])}</text>",
+            '    <text class="small" x="52" y="232">routed signal flow</text>',
         ]
     )
     for index, flow in enumerate(trace.trace.routed_signal_flow):
-        y = 210 + index * 24
+        y = 258 + index * 24
         lines.append(f"    <text class=\"small\" x=\"72\" y=\"{y}\">{_text(flow)}</text>")
     lines.append("  </g>")
 
@@ -129,10 +142,20 @@ def validate_single_node_schematic_svg(
     *,
     svg_text: str,
 ) -> list[SchematicSvgValidation]:
+    """Validate the original ADR-0017 SVG view."""
+
+    return validate_schematic_svg(trace, svg_text=svg_text)
+
+
+def validate_schematic_svg(
+    trace: SingleNodeSchematicTrace,
+    *,
+    svg_text: str,
+) -> list[SchematicSvgValidation]:
     """Validate that an SVG is parseable and exactly matches renderer output."""
 
     results: list[SchematicSvgValidation] = []
-    expected = render_single_node_schematic_svg(trace)
+    expected = render_schematic_svg(trace)
 
     if svg_text != expected:
         results.append(_rejected("rendered-svg", "SVG does not match renderer output"))

@@ -338,3 +338,21 @@ Status: accepted in `docs/adr/0019-stem-automail-reconfiguration-trace.md`.
 Implemented in `schematics/stem_automail_reconfiguration_trace.json` and
 `autarkic_systems/schematic_trace.py`, with tests in
 `tests/test_stem_automail_reconfiguration_trace.py`.
+
+## ADR-0020: Processor Memory Toggle SVG
+
+Goal: render the ADR-0018 processor memory-toggle trace as a checked SVG while
+keeping the JSON artifact authoritative.
+
+Deliverables:
+
+- generic schematic SVG renderer/validator path for structured traces;
+- checked-in processor memory-toggle SVG generated from the JSON trace;
+- human-facing note for the processor render boundary;
+- tests proving source metadata, ports, layers, processor role, memory
+  before/after, routed flow, exact renderer match, and drift rejection.
+
+Status: accepted in `docs/adr/0020-processor-memory-toggle-svg.md`.
+Implemented in `schematics/processor_memory_toggle_trace.svg` and
+`autarkic_systems/schematic_svg.py`, with tests in
+`tests/test_processor_memory_toggle_svg.py`.

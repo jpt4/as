@@ -31,6 +31,9 @@
 - Reusing the schematic trace schema for processor behavior is better than
   adding a one-off artifact. It keeps wire and processor evidence comparable
   while still testing role-specific behavior.
+- When a second SVG render is added, generalize the renderer while preserving
+  compatibility wrappers and exact-output tests for the first SVG. That keeps
+  visual reuse from weakening drift protection.
 - Stem reconfiguration evidence must name what it does not cover. A tested
   automail trace is useful, but it is not full stem buffering or dynamic
   circuit reconfiguration.

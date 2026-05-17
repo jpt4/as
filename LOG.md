@@ -379,3 +379,27 @@
   and new test, `jq -e .
   schematics/stem_automail_reconfiguration_trace.json` passed, and
   `git diff --check` passed.
+
+## 2026-05-17 - Processor Memory Toggle SVG
+
+- Added ADR-0020 for rendering the ADR-0018 processor memory-toggle trace as a
+  generated SVG while keeping the JSON trace authoritative.
+- Wrote `tests/test_processor_memory_toggle_svg.py` before implementation. The
+  red run failed because `PROCESSOR_SVG_ARTIFACT` was not yet exported from
+  `autarkic_systems.schematic_svg`.
+- Generalized `autarkic_systems/schematic_svg.py` with
+  `render_schematic_svg` and `validate_schematic_svg` while preserving the
+  ADR-0017 single-node wrappers.
+- Added `schematics/processor_memory_toggle_trace.svg`, showing the processor
+  role, left-memory routing, before/after memory, trace metadata, and
+  interpretive layer IDs.
+- Added `docs/processor-memory-toggle-svg.md` as the human-facing render
+  boundary note.
+- Updated README, roadmap, literature map, open problems, processor trace note,
+  project memory, and lessons so P7 now has generated SVG renders for both
+  wire and processor fixed-role traces.
+- Verified `python -m unittest tests.test_processor_memory_toggle_svg
+  tests.test_single_node_schematic_svg` passed 14 tests, `python -m unittest
+  discover` passed 91 tests, py_compile passed for the touched module and new
+  test, XML parsing passed for both checked-in SVGs, and `git diff --check`
+  passed.
