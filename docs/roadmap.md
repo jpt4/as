@@ -1743,3 +1743,21 @@ Status: accepted in
 `docs/adr/0091-neighbor-delivery-rejection-chain-claim.md`. Implemented in
 `autarkic_systems/transition_chain_predicates.py`, with tests in
 `tests/test_neighbor_delivery_chain_claim.py`.
+
+## ADR-0092: Neighbor Delivery Rejection Chain Trace
+
+Goal: record the delivered non-init recipient rejection chain as a
+machine-checked composed-chain trace.
+
+Deliverables:
+
+- `schematics/chains/neighbor_delivery_rejection_chain_trace.json`;
+- trace validator support for expected rejected chain statuses;
+- focused trace tests covering the rejection artifact, handoff, replay, and
+  validation;
+- chain trace documentation and project navigation updates.
+
+Status: accepted in
+`docs/adr/0092-neighbor-delivery-rejection-chain-trace.md`. Implemented in
+`autarkic_systems/chain_trace.py`, with tests in
+`tests/test_neighbor_delivery_chain_trace.py`.

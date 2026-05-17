@@ -251,3 +251,6 @@
 - Important negative composed paths deserve positive claim names. A rejection
   boundary should be proved as itself, not only as a false example of a green
   consumption claim.
+- Trace validity should mean recorded replay matches the declared status and
+  cells, not that the chain predicate accepted. Negative boundary traces are
+  valid artifacts when the expected rejection is exact.

@@ -128,8 +128,8 @@ the project legible:
 - `docs/neighbor-delivery-recipient-chain.md` records the first executable
   two-step handoff from neighbor command-buffer delivery into recipient
   init-family command consumption.
-- `docs/neighbor-delivery-chain-trace.md` records the first composed-chain
-  trace for that two-step handoff.
+- `docs/neighbor-delivery-chain-trace.md` records the composed-chain traces
+  for the consumed init handoff and rejected non-init handoff.
 - `docs/neighbor-delivery-chain-svg.md` records the rendered SVG view of that
   composed-chain trace.
 - `docs/neighbor-delivery-chain-claim.md` records the named consumed and
@@ -196,8 +196,8 @@ the project legible:
 - `autarkic_systems/transition_chains.py` composes one neighbor delivery step
   with one recipient step, proving the delivered init-family token can be
   consumed without adding a general multi-cell simulator.
-- `autarkic_systems/chain_trace.py` validates the first recorded
-  transition-chain trace for that two-step handoff.
+- `autarkic_systems/chain_trace.py` validates the recorded transition-chain
+  traces for consumed and rejected neighbor-delivery handoffs.
 - `autarkic_systems/chain_svg.py` renders and validates the first
   transition-chain SVG view for that two-step handoff.
 - `autarkic_systems/chain_claims.py` validates the transition-chain

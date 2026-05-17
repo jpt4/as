@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "artifact_id": "neighbor-delivery-recipient-rejection-chain-trace",
+  "reviewed_at": "2026-05-17",
+  "purpose": "Record the composed two-step handoff from neighbor command-buffer delivery into recipient non-init command rejection.",
+  "claim_id": "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED",
+  "chain_helper": "execute_neighbor_delivery_recipient_chain",
+  "expected_status": "recipient-not-consumed",
+  "recipient_initial_cell": {
+    "role": "wire",
+    "memory": "right",
+    "upstream": [
+      "_",
+      "_",
+      "_"
+    ],
+    "input": [
+      "_",
+      "_",
+      "_"
+    ],
+    "output": [
+      "_",
+      "_",
+      "_"
+    ],
+    "automail": "_",
+    "self_mailbox": "_",
+    "control": [],
+    "buffer": []
+  },
+  "sender_step": {
+    "step_id": "sender-neighbor-non-init-delivery",
+    "transition_function": "step_stem_cell",
+    "before_cell": {
+      "role": "stem",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        0,
+        1,
+        0
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [
+        0,
+        1,
+        0
+      ],
+      "buffer": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "expected_status": "stem-command-buffer-neighbor-delivered",
+    "expected_after_cell": {
+      "role": "stem",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "write-buf-one"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [],
+      "buffer": []
+    },
+    "routed_signal_flow": [
+      "control[0,1,0] active",
+      "input[0,1,0] matches control -> append 1",
+      "buffer[1,1,1,1] -> buffer[1,1,1,1,1]",
+      "decode value 31 -> neighbor-c/write-buf-one",
+      "neighbor command[write-buf-one] -> output[2]",
+      "command buffer delivered; control/buffer cleared"
+    ]
+  },
+  "handoff": {
+    "source_step": "sender-neighbor-non-init-delivery",
+    "source_field": "output",
+    "target_step": "recipient-non-init-rejection",
+    "target_field": "upstream",
+    "delivered_tuple": [
+      "_",
+      "_",
+      "write-buf-one"
+    ],
+    "expected_recipient_before_cell": {
+      "role": "wire",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "write-buf-one"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [],
+      "buffer": []
+    }
+  },
+  "recipient_step": {
+    "step_id": "recipient-non-init-rejection",
+    "transition_function": "step_fixed_cell",
+    "before_cell": {
+      "role": "wire",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "write-buf-one"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [],
+      "buffer": []
+    },
+    "expected_status": "rejected-input",
+    "expected_after_cell": {
+      "role": "wire",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [],
+      "buffer": []
+    },
+    "routed_signal_flow": [
+      "sender output[2] -> recipient upstream[2]",
+      "command[write-buf-one] rejected as recipient non-init command-message",
+      "role/memory preserved",
+      "recipient upstream cleared; command state cleared",
+      "write-buffer command execution remains source-blocked"
+    ]
+  },
+  "boundaries": [
+    "This trace covers only the non-init neighbor delivery recipient rejection chain.",
+    "It records a two-step handoff, not a scheduler, topology model, or multi-cell timing semantics.",
+    "Recipient non-init command messages are rejected, not executed.",
+    "standard-signal command-token execution and write-buffer command-token execution remain source-blocked."
+  ]
+}

@@ -64,3 +64,4 @@ recipient-init transition bundles, and the source-status boundary records.
 
 ADR-0082 adds a dedicated chain trace for the same accepted handoff, giving the
 claim a single recorded sender-step, handoff, and recipient-step artifact.
+ADR-0092 adds the matching trace layer for the rejection claim.

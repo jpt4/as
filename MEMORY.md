@@ -436,3 +436,7 @@
 - ADR-0091 adds `neighbor_delivery_rejected_by_recipient` and
   `UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED`, naming the delivered
   non-init recipient rejection boundary as a second transition-chain claim.
+- ADR-0092 adds
+  `schematics/chains/neighbor_delivery_rejection_chain_trace.json` and lets
+  chain traces validate expected rejection statuses when replayed status and
+  cells match.

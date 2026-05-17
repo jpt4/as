@@ -2052,3 +2052,24 @@
   accepted with `result_count: 9` and `failed_subjects: []`. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed, with the full
   suite running 518 tests.
+
+## 2026-05-17 - Neighbor Delivery Rejection Chain Trace
+
+- Added ADR-0092 to record the delivered non-init recipient rejection boundary
+  as a composed-chain trace before SVG or evidence-bundle promotion.
+- Updated `tests/test_neighbor_delivery_chain_trace.py` before implementation.
+  The red run failed because
+  `NEIGHBOR_DELIVERY_REJECTION_CHAIN_TRACE_ARTIFACT_ID` did not exist.
+- Added `schematics/chains/neighbor_delivery_rejection_chain_trace.json` for
+  the `neighbor-c/write-buf-one` delivery, handoff, recipient rejection, and
+  `recipient-not-consumed` chain status.
+- Updated `autarkic_systems.chain_trace` so trace validation can accept an
+  expected rejection status when replayed status and cells match the artifact.
+- Updated README, the chain trace note, open problems, roadmap, memory, and
+  lessons with the rejection-trace layer.
+- Verified the focused chain trace test passed 11 tests; adjacent trace,
+  claim, object-language, and CLI tests passed 31 tests; adjacent evidence,
+  registry, and demo tests passed 29 tests. Chain evidence JSON remained
+  accepted with `result_count: 9` and `failed_subjects: []`. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed, with the full
+  suite running 522 tests.

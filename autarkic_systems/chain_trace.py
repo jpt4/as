@@ -12,7 +12,13 @@ from autarkic_systems.universal_cell import Cell, step_fixed_cell, step_stem_cel
 
 
 NEIGHBOR_DELIVERY_CHAIN_TRACE_ARTIFACT_ID = "neighbor-delivery-recipient-chain-trace"
-VALID_CHAIN_TRACE_ARTIFACT_IDS = (NEIGHBOR_DELIVERY_CHAIN_TRACE_ARTIFACT_ID,)
+NEIGHBOR_DELIVERY_REJECTION_CHAIN_TRACE_ARTIFACT_ID = (
+    "neighbor-delivery-recipient-rejection-chain-trace"
+)
+VALID_CHAIN_TRACE_ARTIFACT_IDS = (
+    NEIGHBOR_DELIVERY_CHAIN_TRACE_ARTIFACT_ID,
+    NEIGHBOR_DELIVERY_REJECTION_CHAIN_TRACE_ARTIFACT_ID,
+)
 REQUIRED_CELL_FIELDS = (
     "role",
     "memory",
@@ -263,8 +269,6 @@ def _validate_chain_execution(trace: TransitionChainTrace) -> ChainTraceValidati
     failures: list[str] = []
     if execution.status != trace.expected_status:
         failures.append(f"status mismatch: {execution.status}")
-    if not execution.accepted:
-        failures.append(f"chain rejected: {execution.detail}")
     if execution.sender_after_cell != trace.sender_step.expected_after_cell:
         failures.append("sender after-cell mismatch")
     if execution.recipient_before_cell != trace.handoff.expected_recipient_before_cell:
