@@ -139,6 +139,8 @@ the project legible:
 - `docs/neighbor-delivery-chain-evidence-bundle.md` records the first
   transition-chain evidence bundle, tying the two-step handoff to its claim,
   proof, language, underlying transition bundles, and source-status boundaries.
+- `docs/chain-evidence-bundle-registry.md` records the registry for
+  discovering and batch-validating transition-chain evidence bundles.
 - `docs/evidence-bundle-registry.md` records the registry for discovering and
   batch-validating transition evidence bundles.
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
@@ -204,7 +206,7 @@ the project legible:
 - `autarkic_systems/chain_evidence_bundle.py` validates the first
   transition-chain evidence bundle and exposes
   `python -m autarkic_systems.chain_evidence_bundle` for direct text/JSON
-  validation.
+  validation of one bundle or a chain registry.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -223,6 +225,9 @@ the project legible:
   transition-chain claim validation report as machine-readable JSON.
 - `python -m autarkic_systems.chain_evidence_bundle --format json` emits the
   neighbor-delivery chain evidence-bundle validation report as
+  machine-readable JSON.
+- `python -m autarkic_systems.chain_evidence_bundle --registry evidence/chains/manifest.json --format json`
+  emits the transition-chain evidence registry validation report as
   machine-readable JSON.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
@@ -277,6 +282,8 @@ the project legible:
   neighbor-delivery recipient-consumption chain inspectable across its claim,
   proof, language, chain trace, chain SVG, underlying transition bundles, and
   source-status layers.
+- `evidence/chains/manifest.json` indexes transition-chain evidence bundles
+  for batch-validation.
 - `evidence/manifest.json` indexes transition evidence bundles for
   batch-validation.
 - `schematics/chains/neighbor_delivery_recipient_chain_trace.json` records the

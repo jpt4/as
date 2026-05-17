@@ -42,9 +42,14 @@ Run:
 python -m unittest tests.test_neighbor_delivery_chain_evidence_bundle
 python -m autarkic_systems.chain_evidence_bundle
 python -m autarkic_systems.chain_evidence_bundle --format json
+python -m autarkic_systems.chain_evidence_bundle --registry evidence/chains/manifest.json
 ```
 
 The validator checks schema, executable chain example status, chain predicate
 acceptance, chain proof certificate verification, chain language validation,
 chain trace validation, chain SVG validation, both underlying transition evidence bundles,
 source-status JSON, and boundary terms.
+
+ADR-0084 adds the chain evidence registry so this bundle is discoverable and
+batch-validatable without merging it into the single-transition evidence
+registry.

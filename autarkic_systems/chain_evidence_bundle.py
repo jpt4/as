@@ -71,6 +71,28 @@ class ChainEvidenceBundleValidation:
     detail: str
 
 
+@dataclass(frozen=True)
+class ChainEvidenceBundleRegistryEntry:
+    """One registered transition-chain evidence bundle."""
+
+    bundle_id: str
+    path: Path
+    chain_claim_id: str
+    expected_status: str
+
+
+@dataclass(frozen=True)
+class ChainEvidenceBundleRegistry:
+    """Project-level index of transition-chain evidence bundles."""
+
+    schema_version: int
+    registry_id: str
+    reviewed_at: str
+    purpose: str
+    bundles: tuple[ChainEvidenceBundleRegistryEntry, ...]
+    source_path: Path | None = None
+
+
 def load_transition_chain_evidence_bundle(
     path: Path | str,
 ) -> TransitionChainEvidenceBundle:
@@ -108,6 +130,26 @@ def load_transition_chain_evidence_bundle(
     )
 
 
+def load_chain_evidence_bundle_registry(
+    path: Path | str,
+) -> ChainEvidenceBundleRegistry:
+    """Load the project transition-chain evidence bundle registry."""
+
+    registry_path = Path(path)
+    data = json.loads(registry_path.read_text(encoding="utf-8"))
+    bundles = data.get("bundles")
+    if not isinstance(bundles, list) or not bundles:
+        raise ValueError("chain evidence registry must contain a non-empty bundles list")
+    return ChainEvidenceBundleRegistry(
+        schema_version=_required_int(data, "schema_version"),
+        registry_id=_required_text(data, "registry_id"),
+        reviewed_at=_required_text(data, "reviewed_at"),
+        purpose=_required_text(data, "purpose"),
+        bundles=tuple(_parse_registry_entry(entry) for entry in bundles),
+        source_path=registry_path,
+    )
+
+
 def validate_transition_chain_evidence_bundle(
     bundle: TransitionChainEvidenceBundle,
 ) -> list[ChainEvidenceBundleValidation]:
@@ -126,6 +168,20 @@ def validate_transition_chain_evidence_bundle(
     return results
 
 
+def validate_chain_evidence_bundle_registry(
+    registry: ChainEvidenceBundleRegistry,
+) -> list[ChainEvidenceBundleValidation]:
+    """Validate every chain bundle listed in a registry."""
+
+    return [
+        _validate_registry_schema(registry),
+        _validate_registry_entries(registry),
+        _validate_registry_bundle_paths(registry),
+        _validate_registry_bundles(registry),
+        _validate_registry_completeness(registry),
+    ]
+
+
 def format_chain_evidence_bundle_report(
     bundle: TransitionChainEvidenceBundle,
     results: list[ChainEvidenceBundleValidation],
@@ -133,6 +189,19 @@ def format_chain_evidence_bundle_report(
     """Format a concise operator report for chain bundle validation."""
 
     lines = [f"Transition chain evidence bundle: {bundle.bundle_id}"]
+    for result in results:
+        prefix = "OK" if result.accepted else "FAIL"
+        lines.append(f"{prefix} {result.subject}: {result.detail}")
+    return "\n".join(lines)
+
+
+def format_chain_registry_validation_report(
+    registry: ChainEvidenceBundleRegistry,
+    results: list[ChainEvidenceBundleValidation],
+) -> str:
+    """Format a concise operator report for chain registry validation."""
+
+    lines = [f"Transition chain evidence registry: {registry.registry_id}"]
     for result in results:
         prefix = "OK" if result.accepted else "FAIL"
         lines.append(f"{prefix} {result.subject}: {result.detail}")
@@ -161,6 +230,28 @@ def chain_evidence_bundle_report_payload(
     }
 
 
+def chain_registry_validation_report_payload(
+    registry: ChainEvidenceBundleRegistry,
+    results: list[ChainEvidenceBundleValidation],
+) -> dict[str, Any]:
+    """Return a structured chain registry validation report payload."""
+
+    return {
+        "registry_id": registry.registry_id,
+        "accepted": all(result.accepted for result in results),
+        "bundle_count": len(registry.bundles),
+        "result_count": len(results),
+        "results": [
+            {
+                "subject": result.subject,
+                "accepted": result.accepted,
+                "detail": result.detail,
+            }
+            for result in results
+        ],
+    }
+
+
 def run_chain_evidence_bundle_cli(argv: list[str] | None = None) -> int:
     """Run transition-chain evidence bundle validation."""
 
@@ -170,8 +261,13 @@ def run_chain_evidence_bundle_cli(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "--bundle",
-        default="evidence/chains/neighbor_delivery_chain_bundle.json",
+        default=None,
         help="Path to the transition-chain evidence bundle JSON.",
+    )
+    parser.add_argument(
+        "--registry",
+        default=None,
+        help="Path to a transition-chain evidence bundle registry JSON.",
     )
     parser.add_argument(
         "--format",
@@ -181,7 +277,18 @@ def run_chain_evidence_bundle_cli(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    bundle = load_transition_chain_evidence_bundle(args.bundle)
+    if args.registry is not None:
+        registry = load_chain_evidence_bundle_registry(args.registry)
+        results = validate_chain_evidence_bundle_registry(registry)
+        if args.format == "json":
+            payload = chain_registry_validation_report_payload(registry, results)
+            print(json.dumps(payload, sort_keys=True))
+        else:
+            print(format_chain_registry_validation_report(registry, results))
+        return 0 if all(result.accepted for result in results) else 1
+
+    bundle_path = args.bundle or "evidence/chains/neighbor_delivery_chain_bundle.json"
+    bundle = load_transition_chain_evidence_bundle(bundle_path)
     results = validate_transition_chain_evidence_bundle(bundle)
     if args.format == "json":
         payload = chain_evidence_bundle_report_payload(bundle, results)
@@ -189,6 +296,115 @@ def run_chain_evidence_bundle_cli(argv: list[str] | None = None) -> int:
     else:
         print(format_chain_evidence_bundle_report(bundle, results))
     return 0 if all(result.accepted for result in results) else 1
+
+
+def _validate_registry_schema(
+    registry: ChainEvidenceBundleRegistry,
+) -> ChainEvidenceBundleValidation:
+    if registry.schema_version != 1:
+        return _rejected(
+            "registry-schema",
+            f"unsupported schema version {registry.schema_version}",
+        )
+    if not registry.registry_id:
+        return _rejected("registry-schema", "registry id is empty")
+    if not registry.bundles:
+        return _rejected("registry-schema", "registry has no bundles")
+    return _accepted("registry-schema", "registry schema accepted")
+
+
+def _validate_registry_entries(
+    registry: ChainEvidenceBundleRegistry,
+) -> ChainEvidenceBundleValidation:
+    bundle_ids = [entry.bundle_id for entry in registry.bundles]
+    paths = [entry.path for entry in registry.bundles]
+    duplicate_ids = sorted(_duplicates(bundle_ids))
+    duplicate_paths = sorted(str(path) for path in _duplicates(paths))
+    details: list[str] = []
+    if duplicate_ids:
+        details.append(f"duplicate bundle ids: {', '.join(duplicate_ids)}")
+    if duplicate_paths:
+        details.append(f"duplicate bundle paths: {', '.join(duplicate_paths)}")
+    if details:
+        return _rejected("registry-entries", "; ".join(details))
+    return _accepted("registry-entries", f"registered {len(registry.bundles)} bundles")
+
+
+def _validate_registry_bundle_paths(
+    registry: ChainEvidenceBundleRegistry,
+) -> ChainEvidenceBundleValidation:
+    missing = [str(entry.path) for entry in registry.bundles if not entry.path.exists()]
+    if missing:
+        return _rejected("registry-bundle-paths", f"missing bundle: {', '.join(missing)}")
+    return _accepted("registry-bundle-paths", "all registered bundle paths exist")
+
+
+def _validate_registry_bundles(
+    registry: ChainEvidenceBundleRegistry,
+) -> ChainEvidenceBundleValidation:
+    failures: list[str] = []
+    for entry in registry.bundles:
+        try:
+            bundle = load_transition_chain_evidence_bundle(entry.path)
+        except Exception as exc:
+            failures.append(f"{entry.path}: {exc}")
+            continue
+
+        if bundle.bundle_id != entry.bundle_id:
+            failures.append(f"{entry.path}: bundle id mismatch {bundle.bundle_id}")
+        if bundle.chain_claim_id != entry.chain_claim_id:
+            failures.append(f"{entry.path}: chain claim id mismatch {bundle.chain_claim_id}")
+        if bundle.expected_status != entry.expected_status:
+            failures.append(f"{entry.path}: status mismatch {bundle.expected_status}")
+
+        bundle_results = validate_transition_chain_evidence_bundle(bundle)
+        rejected = [result.detail for result in bundle_results if not result.accepted]
+        if rejected:
+            failures.append(f"{entry.path}: {'; '.join(rejected)}")
+
+    if failures:
+        return _rejected("registry-bundle-validation", " | ".join(failures))
+    return _accepted(
+        "registry-bundle-validation",
+        f"validated {len(registry.bundles)} bundles",
+    )
+
+
+def _validate_registry_completeness(
+    registry: ChainEvidenceBundleRegistry,
+) -> ChainEvidenceBundleValidation:
+    registry_dir = _registry_directory(registry)
+    registered = {_normalized_path(entry.path) for entry in registry.bundles}
+    discovered = {
+        _normalized_path(path)
+        for path in sorted(registry_dir.glob("*_bundle.json"))
+    }
+    unregistered = sorted(discovered - registered)
+    if unregistered:
+        display = ", ".join(str(path) for path in unregistered)
+        return _rejected(
+            "registry-completeness",
+            f"unregistered bundle files: {display}",
+        )
+    return _accepted(
+        "registry-completeness",
+        f"all {len(discovered)} discovered bundle files are registered",
+    )
+
+
+def _registry_directory(registry: ChainEvidenceBundleRegistry) -> Path:
+    if registry.source_path is None:
+        return Path("evidence/chains")
+    return registry.source_path.parent
+
+
+def _parse_registry_entry(item: dict[str, Any]) -> ChainEvidenceBundleRegistryEntry:
+    return ChainEvidenceBundleRegistryEntry(
+        bundle_id=_required_text(item, "bundle_id"),
+        path=Path(_required_text(item, "path")),
+        chain_claim_id=_required_text(item, "chain_claim_id"),
+        expected_status=_required_text(item, "expected_status"),
+    )
 
 
 def _validate_schema(
@@ -487,6 +703,20 @@ def _accepted(subject: str, detail: str) -> ChainEvidenceBundleValidation:
 
 def _rejected(subject: str, detail: str) -> ChainEvidenceBundleValidation:
     return ChainEvidenceBundleValidation(subject=subject, accepted=False, detail=detail)
+
+
+def _duplicates(items: list[Any]) -> set[Any]:
+    seen: set[Any] = set()
+    duplicates: set[Any] = set()
+    for item in items:
+        if item in seen:
+            duplicates.add(item)
+        seen.add(item)
+    return duplicates
+
+
+def _normalized_path(path: Path) -> Path:
+    return path.resolve(strict=False)
 
 
 def _required_dict(item: dict[str, Any], key: str) -> dict[str, Any]:

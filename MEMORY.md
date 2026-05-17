@@ -412,3 +412,8 @@
   `autarkic_systems/chain_svg.py`, and
   `tests/test_neighbor_delivery_chain_svg.py`. The checked SVG must exactly
   match renderer output, and the ADR-0081 evidence bundle now validates it.
+- ADR-0084 adds `docs/chain-evidence-bundle-registry.md`,
+  `evidence/chains/manifest.json`, and
+  `tests/test_chain_evidence_bundle_registry.py`. The registry validates
+  transition-chain evidence bundles separately from the top-level
+  single-transition `evidence/manifest.json` registry.

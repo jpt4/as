@@ -122,6 +122,8 @@ boundaries.
 ADR-0082 records that handoff as a dedicated two-step chain trace before any
 SVG rendering work.
 ADR-0083 adds the checked SVG render for that chain trace.
+ADR-0084 adds a closed registry for transition-chain evidence bundles so future
+chain bundles cannot sit unvalidated beside the manifest.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -293,6 +295,9 @@ ADR-0082 adds a dedicated transition-chain trace for the same handoff, replaying
 the sender step, delivered tuple, recipient step, and whole-chain helper.
 ADR-0083 renders that trace as an exact-output checked SVG while keeping the
 JSON trace as authority.
+ADR-0084 adds `evidence/chains/manifest.json` and registry validation for
+composed-chain evidence bundles, keeping that index separate from the
+single-transition evidence registry.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.

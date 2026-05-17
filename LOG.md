@@ -1888,3 +1888,27 @@
   transition evidence registry JSON CLI still reported 8 accepted bundles,
   `git diff --check` passed, and `python -m unittest discover` passed 492
   tests.
+
+## 2026-05-17 - Chain Evidence Registry
+
+- Added ADR-0084 to make transition-chain evidence bundles discoverable and
+  batch-validatable without merging them into the single-transition evidence
+  registry.
+- Wrote `tests/test_chain_evidence_bundle_registry.py` before implementation.
+  The red run failed because the chain registry loader/report functions were
+  absent from `autarkic_systems.chain_evidence_bundle`.
+- Added `evidence/chains/manifest.json`, registering the neighbor delivery
+  recipient-chain evidence bundle.
+- Extended `autarkic_systems/chain_evidence_bundle.py` with registry dataclasses,
+  loader, validator, text report, JSON payload, and `--registry` CLI support
+  while preserving the existing single-bundle default.
+- Added `docs/chain-evidence-bundle-registry.md` and updated README, roadmap,
+  literature map, open problems, chain evidence note, memory, and lessons.
+- Verified the focused chain registry test passed 10 tests, adjacent
+  registry/bundle tests passed 18 tests, the chain registry CLI passed in text
+  and JSON modes with `accepted: true` and `bundle_count: 1`, the existing
+  single-bundle chain evidence JSON CLI still reported `accepted: true` and
+  `result_count: 9`, the existing transition evidence registry JSON CLI still
+  reported 8 accepted bundles, `jq` parsed the new registry, `py_compile`
+  passed for the touched module and focused test, `git diff --check` passed,
+  and `python -m unittest discover` passed 502 tests.

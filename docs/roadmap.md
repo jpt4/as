@@ -1612,3 +1612,20 @@ Deliverables:
 Status: accepted in `docs/adr/0083-neighbor-delivery-chain-svg.md`.
 Implemented in `schematics/chains/neighbor_delivery_recipient_chain_trace.svg`,
 with tests in `tests/test_neighbor_delivery_chain_svg.py`.
+
+## ADR-0084: Chain Evidence Registry
+
+Goal: make composed-chain evidence bundles discoverable and batch-validatable
+without merging them into the single-transition evidence registry.
+
+Deliverables:
+
+- `evidence/chains/manifest.json`;
+- registry loader, validator, text report, JSON payload, and `--registry` CLI
+  support in `autarkic_systems/chain_evidence_bundle.py`;
+- `tests/test_chain_evidence_bundle_registry.py`;
+- human-facing chain registry note and project navigation updates.
+
+Status: accepted in `docs/adr/0084-chain-evidence-registry.md`. Implemented in
+`evidence/chains/manifest.json`, with tests in
+`tests/test_chain_evidence_bundle_registry.py`.

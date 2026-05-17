@@ -231,3 +231,5 @@
 - Chain SVGs need the same renderer lock as single-transition SVGs. If the
   visual is checked in, validate exact renderer output and route it through the
   composed evidence bundle.
+- Once chain evidence has its own artifact family, give it its own closed
+  registry instead of relaxing the single-transition registry boundary.
