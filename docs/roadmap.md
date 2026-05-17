@@ -827,3 +827,25 @@ Implemented in `autarkic_systems/universal_cell.py`,
 `language/transition_claim_language.json`,
 `sources/stem_command_execution_source_status.json`, and the adjacent
 command-buffer tests.
+
+## ADR-0045: Neighbor Command Buffer Delivery Claim
+
+Goal: promote ADR-0044 neighbor-target command-buffer delivery into the named
+transition-claim and proof-certificate surface.
+
+Deliverables:
+
+- `stem_command_buffer_delivers_neighbor_command` predicate;
+- `UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED` manifest claim with positive
+  delivery and negative wrong-channel examples;
+- proof-certificate coverage for the new claim;
+- transition-language predicate vocabulary update;
+- tests proving predicate behavior for all three neighbor targets, manifest
+  evaluation, certificate coverage, and object-language validation.
+
+Status: accepted in
+`docs/adr/0045-neighbor-command-buffer-delivery-claim.md`. Implemented in
+`autarkic_systems/transition_predicates.py`, `claims/transition_claims.json`,
+`claims/proof_certificates.json`, and
+`language/transition_claim_language.json`, with tests in
+`tests/test_neighbor_command_buffer_delivery_claim.py`.

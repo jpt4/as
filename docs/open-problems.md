@@ -172,3 +172,4 @@ ADR-0043 adds the corresponding rendered SVG view.
 ADR-0044 delivers neighbor-target command buffers to output channels, narrowing
 the remaining open command-buffer questions to recipient-side consumption and
 self-target non-init commands.
+ADR-0045 promotes that delivery behavior into the named claim/proof surface.

@@ -516,6 +516,61 @@
           }
         }
       ]
+    },
+    {
+      "id": "UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED",
+      "predicate": "stem_command_buffer_delivers_neighbor_command",
+      "description": "A stem cell that completes a neighbor-target command buffer delivers the decoded command token to the corresponding output channel.",
+      "examples": [
+        {
+          "name": "neighbor b proc left command delivered",
+          "expected": true,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "input": [1, 0, 0],
+            "control": [1, 0, 0],
+            "buffer": [1, 0, 1, 0]
+          },
+          "result": {
+            "status": "stem-command-buffer-neighbor-delivered",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "output": ["_", "proc-l-init", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        },
+        {
+          "name": "neighbor b command delivered to wrong channel",
+          "expected": false,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "input": [1, 0, 0],
+            "control": [1, 0, 0],
+            "buffer": [1, 0, 1, 0]
+          },
+          "result": {
+            "status": "stem-command-buffer-neighbor-delivered",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "proc-l-init"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        }
+      ]
     }
   ]
 }

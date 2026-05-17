@@ -949,3 +949,26 @@
   252 tests, py_compile passed for the touched Python modules and tests, JSON
   parsing passed for the claim/proof/language/source-status/trace manifests,
   and `git diff --check` passed.
+
+## 2026-05-17 - Neighbor Command Buffer Delivery Claim
+
+- Added ADR-0045 to promote ADR-0044 neighbor-target command-buffer delivery
+  into the named transition-claim and proof-certificate surface.
+- Wrote `tests/test_neighbor_command_buffer_delivery_claim.py` before
+  implementation. The red run failed because
+  `stem_command_buffer_delivers_neighbor_command` did not exist in
+  `autarkic_systems.transition_predicates`.
+- Added `stem_command_buffer_delivers_neighbor_command`,
+  `UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED`, proof-certificate coverage, and
+  the transition-language predicate symbol.
+- Added `docs/neighbor-command-buffer-delivery-claim.md` as the human-facing
+  delivery claim note.
+- Updated README, roadmap, literature map, open problems, transition-claim
+  language note, stem command execution source-status note/artifact, project
+  memory, and lessons.
+- Verified `python -m unittest tests.test_neighbor_command_buffer_delivery_claim`
+  passed 6 tests and the adjacent neighbor/source-status/claim/object-language
+  suite passed 32 tests. `python -m unittest discover` passed 258 tests,
+  py_compile passed for the touched Python module and tests, JSON parsing
+  passed for the claim/proof/language/source-status manifests, and
+  `git diff --check` passed.

@@ -198,3 +198,8 @@
   neighbor-target command-buffer delivery onto output channels 0, 1, and 2 for
   `neighbor-a`, `neighbor-b`, and `neighbor-c`. It still does not execute
   command-message inputs on recipient cells.
+- ADR-0045 promotes ADR-0044 neighbor-target command-buffer delivery into
+  `UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED` and
+  `stem_command_buffer_delivers_neighbor_command`, with manifest examples and
+  proof-certificate coverage. Recipient-side command-message consumption
+  remains open.

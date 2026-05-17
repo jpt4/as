@@ -95,13 +95,13 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertTrue(allowed)
         self.assertTrue(
             any(
-                "neighbor-target command delivery into a named claim" in item
+                "schematic trace and SVG for neighbor-target command delivery" in item
                 for item in allowed
             )
         )
         self.assertTrue(
             any(
-                "schematic trace and SVG for neighbor-target command delivery" in item
+                "recipient-side command-message consumption" in item
                 for item in allowed
             )
         )

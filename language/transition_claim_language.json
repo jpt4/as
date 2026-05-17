@@ -70,7 +70,8 @@
         "self_mailbox_executes_init_command",
         "self_mailbox_preserves_unsupported_command",
         "stem_command_buffer_executes_self_init",
-        "stem_command_buffer_preserves_unsupported_completion"
+        "stem_command_buffer_preserves_unsupported_completion",
+        "stem_command_buffer_delivers_neighbor_command"
       ],
       "form": "predicate(before_cell, step_result)"
     },

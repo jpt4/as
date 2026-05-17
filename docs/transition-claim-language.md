@@ -25,7 +25,9 @@ claim. ADR-0041 adds
 `stem_command_buffer_preserves_unsupported_completion` for completed command
 buffers that remain at the append boundary. ADR-0044 adds
 `stem-command-buffer-neighbor-delivered` for neighbor-target command buffers
-that deliver decoded command tokens onto output channels.
+that deliver decoded command tokens onto output channels. ADR-0045 adds
+`stem_command_buffer_delivers_neighbor_command` for the corresponding named
+transition claim.
 
 The point is to stop relying on implicit Python/JSON shape as the only syntax
 boundary. Current claims can now be checked against named syntax classes before

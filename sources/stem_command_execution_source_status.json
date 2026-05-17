@@ -80,8 +80,8 @@
     }
   ],
   "allowed_next_slices": [
-    "Promote neighbor-target command delivery into a named claim.",
     "Add a schematic trace and SVG for neighbor-target command delivery.",
+    "Promote recipient-side command-message consumption into a source-status decision before executing delivered neighbor commands.",
     "Resolve or further document self-target standard-signal and write-buffer semantics before executing them.",
     "Add more source-status tests if another PRC source resolves the target or command-order divergence."
   ]

@@ -36,6 +36,11 @@ SELF_MAILBOX_UNSUPPORTED_COMMANDS = {
     "write-buf-zero",
     "write-buf-one",
 }
+NEIGHBOR_OUTPUT_INDEX = {
+    "neighbor-a": 0,
+    "neighbor-b": 1,
+    "neighbor-c": 2,
+}
 COMMAND_BUFFER_WIDTH = 5
 
 
@@ -376,6 +381,63 @@ def stem_command_buffer_preserves_unsupported_completion(
         name,
         True,
         f"unsupported {target_id}/{command_id} completion stayed at append boundary",
+    )
+
+
+def stem_command_buffer_delivers_neighbor_command(
+    before: Cell,
+    result: StepResult,
+) -> PredicateResult:
+    """Check completed-buffer delivery to the decoded neighbor output channel."""
+
+    name = "stem_command_buffer_delivers_neighbor_command"
+    decoded = _completed_command_buffer(before)
+    if decoded is None:
+        return PredicateResult(name, True, "precondition not active")
+
+    target_id, command_id, _completed_buffer = decoded
+    output_index = NEIGHBOR_OUTPUT_INDEX.get(target_id)
+    if output_index is None:
+        return PredicateResult(name, True, "precondition not active: not neighbor")
+
+    if result.status != "stem-command-buffer-neighbor-delivered":
+        return PredicateResult(
+            name,
+            False,
+            "expected stem-command-buffer-neighbor-delivered, "
+            f"got {result.status}",
+        )
+
+    expected_output = list(EMPTY)
+    expected_output[output_index] = command_id
+    if result.cell.output != tuple(expected_output):
+        return PredicateResult(
+            name,
+            False,
+            f"expected output {tuple(expected_output)}, got {result.cell.output}",
+        )
+    if result.cell.role != before.role or result.cell.memory != before.memory:
+        return PredicateResult(
+            name,
+            False,
+            "neighbor delivery changed role or memory",
+        )
+    if result.cell.upstream != before.upstream:
+        return PredicateResult(name, False, "neighbor delivery changed upstream")
+    if result.cell.input != EMPTY:
+        return PredicateResult(name, False, "neighbor delivery left input uncleared")
+    if result.cell.automail != "_" or result.cell.self_mailbox != "_":
+        return PredicateResult(name, False, "neighbor delivery changed command mail")
+    if result.cell.control or result.cell.buffer:
+        return PredicateResult(
+            name,
+            False,
+            "control or buffer was not cleared",
+        )
+    return PredicateResult(
+        name,
+        True,
+        f"{target_id}/{command_id} delivered to output channel {output_index}",
     )
 
 

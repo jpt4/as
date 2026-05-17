@@ -107,3 +107,6 @@
 - Unsupported command-buffer renders must show preservation as an active fact.
   When a once-unsupported neighbor command becomes delivered behavior, revise
   the trace and render instead of preserving stale evidence.
+- New command-buffer behavior should enter the named claim surface before
+  schematic evidence depends on it. That keeps later traces tied to explicit
+  proof obligations instead of direct behavior tests alone.

@@ -22,6 +22,8 @@ the remaining self-mailbox `standard-signal` and write-buffer commands as an
 explicit preserve-and-report unsupported boundary, ADR-0041 records the
 self-target non-init command-buffer cases as an append-boundary claim, and
 ADR-0044 delivers decoded neighbor-target command buffers onto output channels.
+ADR-0045 promotes that delivery behavior into the named transition-claim
+surface.
 ADR-0042/ADR-0043 now cover the self-target `write-buf-one` append boundary.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still

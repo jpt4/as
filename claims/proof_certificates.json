@@ -160,6 +160,21 @@
           "expected": false
         }
       ]
+    },
+    {
+      "claim_id": "UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "neighbor b proc left command delivered",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "neighbor b command delivered to wrong channel",
+          "expected": false
+        }
+      ]
     }
   ]
 }
