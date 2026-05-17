@@ -24,6 +24,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | Universal Cell Scheme simulator | `/home/sean/Projects/_upstream/prc/practice/asmsim.scm` | Executable research artifact for UC behavior. | Background only; not yet treated as trusted because first review found rough edges. |
 | RALA, Morita RLEM, switchable circulator references | PRC README and GELC note reference sections | Prior art for reconfigurable asynchronous logic, reversible logic elements with memory, and possible physical implementation. | Needed for later hardware/schematic review. |
 | AS PRC hardware witness map | `docs/prc-hardware-witness-map.md` and `sources/prc_hardware_witness_map.json` | Names the first exact PRC hardware/schematic witnesses and constraints before AS draws or simulates PRC-derived hardware. | Active anchor map for P7 and the next single-node schematic/trace ADR. |
+| AS single-node schematic trace | `docs/single-node-schematic-trace.md` and `schematics/single_node_triangular_rlem_trace.json` | First AS-owned schematic key connecting one triangular RLEM/UC node to an executable Universal Cell transition. | Active P7 artifact for schematic-linked trace work. |
 
 ## SJAS: Formal Confidence
 
@@ -60,6 +61,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS should start proof work with a tiny local certificate checker. | Current claim manifest, LeanTAP source, public Proflog source, SJAS Proflog boundary log. | Decision recorded in ADR-0010 and `docs/proof-apparatus-options.md`. |
 | AS cannot claim Willard-style formal confidence until it preserves exact syntax, proof-code, deduction-method, and consistency-level anchors. | Willard 2001 Definitions 1.1/1.2 and Theorem 4.3; Willard 2011 Definitions 3.4/5.6/5.7 and Theorem 5.9; Willard 2016 Definitions 3.2/3.4/4.1 and Theorem 6.7; Willard 2020 Definitions 3.2/3.4 and Theorems 4.4/4.5. | First anchored in ADR-0013, `docs/willard-definition-map.md`, and `sources/willard_definition_map.json`. |
 | AS hardware/schematic artifacts must preserve PRC's actual commitments rather than merely resembling PRC diagrams. | PRC README, GELC universality note, Morita RLEM witness, PRC formal model, ASM simulator, old Thiel/RALA notes, and PRC figures. | First anchored in ADR-0015, `docs/prc-hardware-witness-map.md`, and `sources/prc_hardware_witness_map.json`. |
+| A PRC-derived schematic key can be tied to executable AS behavior before larger circuit design. | ADR-0015 witness map, AS Universal Cell probe, and `schematics/single_node_triangular_rlem_trace.json`. | First implemented in ADR-0016 with validation in `tests/test_single_node_schematic_trace.py`. |
 
 ## Evidence Gaps
 
@@ -68,8 +70,8 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   in the SJAS paper archive.
 - PRC's Scheme simulator and TLA+ sketch need deeper verification before AS
   treats either as canonical.
-- AS has not yet drawn or simulated the first PRC-derived hardware artifact;
-  ADR-0015 is a source-backed witness map only.
+- AS has not yet rendered the first PRC-derived schematic as SVG or another
+  visual asset; ADR-0016 is a structured schematic key and executable trace.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

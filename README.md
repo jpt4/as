@@ -36,6 +36,8 @@ the project legible:
   dependency-ready AS proof apparatus.
 - `docs/prc-hardware-witness-map.md` records the first source-backed
   hardware/schematic evidence path for PRC-derived work.
+- `docs/single-node-schematic-trace.md` records the first schematic-linked
+  Universal Cell transition trace.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
@@ -46,6 +48,8 @@ the project legible:
   decision machine-checkable.
 - `sources/prc_hardware_witness_map.json` makes the PRC hardware/schematic
   witness map machine-checkable.
+- `schematics/single_node_triangular_rlem_trace.json` makes the first
+  schematic-linked transition trace machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.
@@ -66,7 +70,8 @@ proof-certificate, and object-language support in
 `autarkic_systems/claim_manifest.py`, `autarkic_systems/proof_certificates.py`,
 `autarkic_systems/object_language.py`, and
 `autarkic_systems/willard_map.py`. Source-backed structured maps also live in
-`autarkic_systems/prc_hardware_map.py`. They are covered by `tests/`.
+`autarkic_systems/prc_hardware_map.py`, with schematic-linked trace support in
+`autarkic_systems/schematic_trace.py`. They are covered by `tests/`.
 
 ## Subordinate Programs
 

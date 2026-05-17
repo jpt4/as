@@ -66,3 +66,8 @@
   `autarkic_systems/prc_hardware_map.py` are the P7 hardware/schematic witness
   layer. The next recommended artifact is
   `single-node-triangular-rlem-schematic-and-uc-transition-trace`.
+- `schematics/single_node_triangular_rlem_trace.json`,
+  `docs/single-node-schematic-trace.md`, and
+  `autarkic_systems/schematic_trace.py` implement that first P7 schematic trace:
+  one triangular RLEM/Universal Cell key plus one executable `step_fixed_cell`
+  replay. It is structured, not yet visually rendered.

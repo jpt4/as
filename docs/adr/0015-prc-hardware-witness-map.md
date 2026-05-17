@@ -98,3 +98,9 @@ Coverage limits:
 - The first recommended artifact is intentionally a single-node schematic and
   trace; full GELC universality diagrams, 3-D lattice work, and circulator
   physics simulation remain later work.
+
+Follow-up:
+
+- ADR-0016 implemented the recommended next artifact as
+  `schematics/single_node_triangular_rlem_trace.json` with executable
+  validation in `autarkic_systems/schematic_trace.py`.

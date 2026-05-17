@@ -22,3 +22,6 @@
   are structured. The first useful artifact is a witness map that separates
   symbolic RLEM behavior, GELC geometry, UC state, reconfiguration support, and
   candidate physical implementation claims.
+- A schematic trace is more useful when it is executable. Recording a diagram
+  key and replaying its claimed transition through the Universal Cell probe
+  catches drift that a static drawing would hide.

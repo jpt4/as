@@ -263,3 +263,22 @@ Status: accepted in `docs/adr/0015-prc-hardware-witness-map.md`. Implemented
 in `sources/prc_hardware_witness_map.json` and
 `autarkic_systems/prc_hardware_map.py`, with tests in
 `tests/test_prc_hardware_witness_map.py`.
+
+## ADR-0016: Single-Node Schematic Trace
+
+Goal: implement ADR-0015's recommended next artifact as a structured
+schematic-linked Universal Cell transition trace.
+
+Deliverables:
+
+- single-node triangular RLEM/Universal Cell schematic artifact;
+- loader and validator for ports, interpretive layers, PRC witness references,
+  Cell field coverage, and executable transition replay;
+- human-facing note for the schematic key and trace;
+- tests proving the recorded transition matches the existing AS Universal Cell
+  probe.
+
+Status: accepted in `docs/adr/0016-single-node-schematic-trace.md`.
+Implemented in `schematics/single_node_triangular_rlem_trace.json` and
+`autarkic_systems/schematic_trace.py`, with tests in
+`tests/test_single_node_schematic_trace.py`.

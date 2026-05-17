@@ -281,3 +281,26 @@
   the new module and tests, `jq -e .
   sources/prc_hardware_witness_map.json` passed, and `git diff --check`
   passed.
+
+## 2026-05-17 - Single-Node Schematic Trace
+
+- Added ADR-0016 for the first concrete artifact after the PRC hardware witness
+  map: `single-node-triangular-rlem-schematic-and-uc-transition-trace`.
+- Wrote `tests/test_single_node_schematic_trace.py` before implementation. The
+  red run failed because `autarkic_systems.schematic_trace` did not exist.
+- Added `schematics/single_node_triangular_rlem_trace.json` with one triangular
+  RLEM/Universal Cell key, north/east/west ports, four interpretive layers, all
+  current AS `Cell` fields, and one fixed-role wire transition trace.
+- Added `autarkic_systems/schematic_trace.py` to load and validate the
+  schematic trace against ADR-0015's witness map and replay the recorded
+  transition through the existing Universal Cell probe.
+- Added `docs/single-node-schematic-trace.md` as the human-facing explanation
+  of the schematic key, layer boundaries, and executable trace.
+- Updated README, roadmap, literature map, open problems, the PRC hardware
+  witness note, ADR-0015 follow-up, project memory, and lessons so P7 now has a
+  structured schematic trace rather than only a source witness map.
+- Verified `python -m unittest tests.test_single_node_schematic_trace` passed 8
+  tests, `python -m unittest discover` passed 62 tests, py_compile passed for
+  the new module and tests, `jq -e .
+  schematics/single_node_triangular_rlem_trace.json` passed, and
+  `git diff --check` passed.

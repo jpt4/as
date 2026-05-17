@@ -8,6 +8,10 @@ future hardware work from quietly dropping PRC's actual commitments.
 
 The structured source lives in `sources/prc_hardware_witness_map.json`.
 
+Status update: ADR-0016 implements the recommended next artifact as
+`schematics/single_node_triangular_rlem_trace.json` with validation in
+`autarkic_systems/schematic_trace.py`.
+
 ## Recommended Next Artifact
 
 `single-node-triangular-rlem-schematic-and-uc-transition-trace`
@@ -67,9 +71,10 @@ relevance, simulation constraints, and the recommended next artifact.
 
 ## Open Follow-Ups
 
-- Draw the single-node triangular RLEM schematic key as an AS-owned artifact.
-- Add one schematic-linked UC transition trace over the existing Python Cell
-  fields.
+- Render the structured single-node triangular RLEM key as SVG or another
+  visual artifact.
+- Add processor and stem schematic-linked UC transition traces over the existing
+  Python Cell fields.
 - Decide whether larger GELC examples should be copied/redrawn from
   `figures.pdf` or reconstructed from a structured circuit description.
 - Keep physical circulator simulation separate until symbolic RLEM/GELC

@@ -103,5 +103,7 @@ Status: started by ADR-0015. `docs/prc-hardware-witness-map.md` and
 `sources/prc_hardware_witness_map.json` now map the required PRC witnesses for
 RLEM, GELC geometry, circulator physical hypotheses, RALA/reconfiguration
 pressure, the UC formal model, the ASM simulator, and schematic figures.
-Remaining work is to draw the first AS-owned single-node triangular RLEM
-schematic key and pair it with one executable Universal Cell transition trace.
+ADR-0016 added the first AS-owned single-node triangular RLEM schematic key and
+paired it with one executable Universal Cell transition trace. Remaining work
+is to render that structured key visually, add processor/stem traces, and
+decide how larger GELC examples should be reconstructed.
