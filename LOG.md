@@ -587,3 +587,23 @@
   `python -m unittest discover` passed 143 tests, py_compile passed for the
   touched modules and new test, JSON parsing passed for the language manifest
   and all four checked trace artifacts, and `git diff --check` passed.
+
+## 2026-05-17 - Command Channel Token Representation
+
+- Added ADR-0029 for representing ADR-0026 command-message tokens in Universal
+  Cell channel tuples without executing command buffers.
+- Wrote `tests/test_command_channel_tokens.py` before implementation. The red
+  run failed because command-message channel values were rejected and the
+  object-language `signals` vocabulary did not list them.
+- Expanded `Signal` and channel validation in `autarkic_systems/universal_cell.py`
+  to accept the eight command-message tokens.
+- Updated `language/transition_claim_language.json` so `terms.signals` matches
+  the expanded channel-token vocabulary.
+- Updated README, roadmap, literature map, open problems, transition-claim
+  language note, stem command execution source-status note, project memory, and
+  lessons.
+- Verified `python -m unittest tests.test_command_channel_tokens` passed 6
+  tests, `python -m unittest discover` passed 149 tests, py_compile passed for
+  the touched module and new test, `jq -e .
+  language/transition_claim_language.json` passed, and `git diff --check`
+  passed.

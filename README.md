@@ -63,6 +63,8 @@ the project legible:
   execution is still blocked after the decoder map.
 - `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
   state for future self-target command execution.
+- Universal Cell channel tuples can represent command-message tokens, but
+  command-buffer execution is still intentionally absent.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over

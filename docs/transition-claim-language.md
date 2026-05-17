@@ -10,7 +10,8 @@ claims that AS can currently execute, not the full IS(A) or SJAS arithmetic
 language. ADR-0023 extends the current predicate vocabulary with
 `stem_buffer_accumulates` for the stem buffer accumulation subset. ADR-0028
 extends the term vocabulary with `command_messages` and the `self_mailbox` cell
-field without adding command execution.
+field without adding command execution. ADR-0029 extends `signals` so channel
+tuples can represent command-message tokens for future neighbor delivery.
 
 The point is to stop relying on implicit Python/JSON shape as the only syntax
 boundary. Current claims can now be checked against named syntax classes before
@@ -20,7 +21,7 @@ later proof or self-reference work builds on them.
 
 | Class | Current meaning |
 | --- | --- |
-| `terms` | Universal Cell term vocabulary: roles, memory values, signals, automail commands, command-message mailbox values, statuses, and cell fields. |
+| `terms` | Universal Cell term vocabulary: roles, memory values, channel tokens, automail commands, command-message mailbox values, statuses, and cell fields. |
 | `formulae` | Predicate applications of the form `predicate(before_cell, step_result)`. |
 | `sentences` | Transition-claim sentences named by claim IDs such as `UC-FIXED-OUTPUT-PRESERVED`. |
 | `proof_objects` | Proof-certificate steps. The only current rule is `manifest-example`. |

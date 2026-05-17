@@ -125,3 +125,7 @@
   `language/transition_claim_language.json`, and self-mailbox coverage in the
   checked schematic traces. This is representation only, not command
   execution.
+- ADR-0029 expands Universal Cell channel tokens and transition-language
+  `signals` to include ADR-0026 command messages. This is representation only:
+  command-message input is still rejected by current stem behavior rather than
+  executed.

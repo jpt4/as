@@ -61,3 +61,6 @@
 - Representation unblockers should propagate through every schema boundary.
   A new `Cell` field is not real project state until claim manifests, object
   language, and schematic traces all preserve it.
+- Broadening what state can represent is not the same as broadening what
+  transitions execute. Tests should prove command tokens are preserved or
+  rejected at the current boundary before later routing semantics are added.

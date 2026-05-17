@@ -12,7 +12,20 @@ from dataclasses import dataclass
 from typing import Literal
 
 
-Signal = Literal[0, 1, "_", "si"]
+Signal = Literal[
+    0,
+    1,
+    "_",
+    "si",
+    "standard-signal",
+    "stem-init",
+    "wire-r-init",
+    "wire-l-init",
+    "proc-r-init",
+    "proc-l-init",
+    "write-buf-zero",
+    "write-buf-one",
+]
 Role = Literal["wire", "proc", "stem"]
 Memory = Literal["right", "left"]
 Automail = Literal["_", "wr", "wl", "pr", "pl"]
@@ -44,6 +57,20 @@ VALID_ROLES = {"wire", "proc", "stem"}
 FIXED_ROLES = {"wire", "proc"}
 VALID_MEMORY = {"right", "left"}
 VALID_AUTOMAIL = {"_", "wr", "wl", "pr", "pl"}
+VALID_CHANNEL_TOKENS = {
+    0,
+    1,
+    "_",
+    "si",
+    "standard-signal",
+    "stem-init",
+    "wire-r-init",
+    "wire-l-init",
+    "proc-r-init",
+    "proc-l-init",
+    "write-buf-zero",
+    "write-buf-one",
+}
 VALID_SELF_MAILBOX = {
     "_",
     "standard-signal",
@@ -299,5 +326,5 @@ def _validate_channels(name: str, value: tuple[Signal, ...]) -> None:
 
 def _validate_signal_tuple(name: str, value: tuple[Signal, ...]) -> None:
     for channel in value:
-        if channel not in (0, 1, "_", "si"):
+        if channel not in VALID_CHANNEL_TOKENS:
             raise ValueError(f"{name} contains invalid channel value {channel!r}")

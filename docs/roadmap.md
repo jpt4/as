@@ -506,3 +506,21 @@ Implemented in `autarkic_systems/universal_cell.py`,
 `autarkic_systems/claim_manifest.py`, `autarkic_systems/object_language.py`,
 `autarkic_systems/schematic_trace.py`, and checked trace artifacts, with tests
 in `tests/test_self_mailbox_representation.py`.
+
+## ADR-0029: Command Channel Token Representation
+
+Goal: allow channel tuples to represent ADR-0026 command-message tokens without
+executing or routing command buffers.
+
+Deliverables:
+
+- expanded Universal Cell channel-token vocabulary;
+- transition-claim language `signals` update;
+- tests proving command-message output representation, blocked-output
+  preservation, command-message input rejection without execution, continued
+  `si` stem-init behavior, and object-language validation.
+
+Status: accepted in `docs/adr/0029-command-channel-token-representation.md`.
+Implemented in `autarkic_systems/universal_cell.py` and
+`language/transition_claim_language.json`, with tests in
+`tests/test_command_channel_tokens.py`.
