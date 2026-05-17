@@ -1993,3 +1993,22 @@
   reported `accepted: true`, `bundle_count: 1`, and `failed_subjects: []`.
   `py_compile`, `git diff --check`, and the full default suite passed, with
   `python -m unittest discover` running 508 tests.
+
+## 2026-05-17 - Vertical Chain Demo Report
+
+- Added ADR-0089 to make the current transition-chain work visible as one
+  operator-facing claim-to-evidence report.
+- Wrote `tests/test_chain_demo_report.py` before implementation. The red run
+  failed because `autarkic_systems.chain_demo` did not exist.
+- Added `autarkic_systems/chain_demo.py`, reusing the existing chain evidence
+  validator and formatting the bundle, claim, predicate, positive example,
+  chain function, expected status, validation summary, trace, SVG, lower-level
+  transition bundles, source-status files, and boundary terms as text or JSON.
+- Updated README, the chain evidence bundle note, open problems, roadmap,
+  memory, lessons, and the dedicated vertical demo report note.
+- Verified the focused demo test passed 6 tests; adjacent demo, chain bundle,
+  chain registry, and CLI target-selection tests passed 30 tests. The text CLI
+  printed the full claim-to-evidence path, JSON CLI reported `accepted: true`,
+  `validation.result_count: 9`, and `validation.failed_subjects: []`,
+  `py_compile` and `git diff --check` passed, and
+  `python -m unittest discover` passed 514 tests.

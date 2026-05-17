@@ -43,6 +43,7 @@ python -m unittest tests.test_neighbor_delivery_chain_evidence_bundle
 python -m autarkic_systems.chain_evidence_bundle
 python -m autarkic_systems.chain_evidence_bundle --format json
 python -m autarkic_systems.chain_evidence_bundle --registry evidence/chains/manifest.json
+python -m autarkic_systems.chain_demo
 ```
 
 The validator checks schema, executable chain example status, chain predicate
@@ -52,6 +53,10 @@ source-status JSON, and boundary terms.
 
 ADR-0088 adds `failed_subjects` to the single-bundle JSON payload so failed
 bundle validation reports rejected validation subjects directly.
+
+ADR-0089 adds `python -m autarkic_systems.chain_demo` as a first-run report
+over the same validated bundle, claim, trace, SVG, transition-bundle, and
+source-status surface.
 
 ADR-0084 adds the chain evidence registry so this bundle is discoverable and
 batch-validatable without merging it into the single-transition evidence

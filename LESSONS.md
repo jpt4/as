@@ -242,3 +242,6 @@
   list saves automation from reimplementing result scanning.
 - Keep bundle JSON and registry JSON contracts parallel where the semantics
   match; automation should not need different failure-scanning code for each.
+- Once an evidence stack becomes deep enough, add a vertical demo surface that
+  reuses validators and makes the integrated artifact inspectable from one
+  command.

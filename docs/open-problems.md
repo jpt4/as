@@ -124,6 +124,12 @@ SVG rendering work.
 ADR-0083 adds the checked SVG render for that chain trace.
 ADR-0084 adds a closed registry for transition-chain evidence bundles so future
 chain bundles cannot sit unvalidated beside the manifest.
+ADR-0085 makes chain evidence CLI target selection explicit.
+ADR-0086 and ADR-0087 make chain registry JSON self-describing and
+failure-summarizing.
+ADR-0088 gives single-bundle chain JSON the same failure summary.
+ADR-0089 adds a vertical chain demo report so the current claim-to-evidence
+path can be inspected from one command.
 
 ## P3: Choose The First Proof Apparatus
 

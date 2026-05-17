@@ -426,3 +426,7 @@
   failed registry runs summarize rejected validation subjects directly.
 - ADR-0088 adds `failed_subjects` to single-bundle chain evidence JSON output
   so failed bundle runs summarize rejected validation subjects directly.
+- ADR-0089 adds `autarkic_systems.chain_demo`, a text/JSON first-run report
+  over the current transition-chain claim, validation result, trace, SVG,
+  lower-level evidence bundles, source-status boundaries, and explicit
+  boundary terms.

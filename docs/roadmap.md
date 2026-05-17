@@ -1691,3 +1691,19 @@ Deliverables:
 Status: accepted in `docs/adr/0088-chain-bundle-json-failure-summary.md`.
 Implemented in `autarkic_systems/chain_evidence_bundle.py`, with tests in
 `tests/test_neighbor_delivery_chain_evidence_bundle.py`.
+
+## ADR-0089: Vertical Chain Demo Report
+
+Goal: expose the current transition-chain evidence path as one compact
+operator-facing report.
+
+Deliverables:
+
+- `autarkic_systems/chain_demo.py`;
+- `tests/test_chain_demo_report.py`;
+- text and JSON CLI output through `python -m autarkic_systems.chain_demo`;
+- human-facing demo report documentation and public navigation updates.
+
+Status: accepted in `docs/adr/0089-vertical-chain-demo-report.md`.
+Implemented in `autarkic_systems/chain_demo.py`, with tests in
+`tests/test_chain_demo_report.py`.

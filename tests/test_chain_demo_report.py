@@ -1,0 +1,174 @@
+import contextlib
+import io
+import json
+import subprocess
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+from autarkic_systems.chain_demo import (
+    build_chain_demo_report,
+    format_chain_demo_report,
+    run_chain_demo_cli,
+)
+
+
+BUNDLE = Path("evidence/chains/neighbor_delivery_chain_bundle.json")
+BUNDLE_ID = "neighbor-delivery-recipient-chain-evidence-bundle"
+CLAIM_ID = "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-CONSUMED"
+TRACE = "schematics/chains/neighbor_delivery_recipient_chain_trace.json"
+SVG = "schematics/chains/neighbor_delivery_recipient_chain_trace.svg"
+
+
+class ChainDemoReportTests(unittest.TestCase):
+    def test_payload_maps_the_vertical_chain_evidence_surface(self):
+        report = build_chain_demo_report(BUNDLE)
+
+        self.assertTrue(report["accepted"])
+        self.assertEqual(report["bundle_id"], BUNDLE_ID)
+        self.assertEqual(report["chain_claim_id"], CLAIM_ID)
+        self.assertEqual(
+            report["predicate"],
+            "neighbor_delivery_consumed_by_recipient",
+        )
+        self.assertEqual(
+            report["transition_chain_function"],
+            "execute_neighbor_delivery_recipient_chain",
+        )
+        self.assertEqual(report["validation"]["failed_subjects"], [])
+        self.assertEqual(report["validation"]["result_count"], 9)
+
+        layers = {(layer["role"], layer["path"]) for layer in report["evidence_layers"]}
+        self.assertIn(("chain-claim-manifest", "claims/transition_chain_claims.json"), layers)
+        self.assertIn(
+            (
+                "chain-proof-certificates",
+                "claims/transition_chain_proof_certificates.json",
+            ),
+            layers,
+        )
+        self.assertIn(("chain-language", "language/transition_chain_claim_language.json"), layers)
+        self.assertIn(("chain-trace", TRACE), layers)
+        self.assertIn(("chain-svg", SVG), layers)
+        self.assertIn(
+            (
+                "transition-bundle",
+                "evidence/neighbor_command_buffer_delivery_bundle.json",
+            ),
+            layers,
+        )
+        self.assertIn(
+            (
+                "transition-bundle",
+                "evidence/recipient_init_command_message_bundle.json",
+            ),
+            layers,
+        )
+        self.assertIn(
+            (
+                "source-status",
+                "sources/recipient_command_consumption_source_status.json",
+            ),
+            layers,
+        )
+        self.assertGreaterEqual(len(report["boundaries"]), 1)
+
+    def test_text_report_summarizes_claim_validation_and_artifacts(self):
+        report = build_chain_demo_report(BUNDLE)
+
+        text = format_chain_demo_report(report)
+
+        self.assertIn("Vertical chain demo: neighbor-delivery-recipient-chain-evidence-bundle", text)
+        self.assertIn(f"Claim: {CLAIM_ID}", text)
+        self.assertIn("Validation: accepted", text)
+        self.assertIn(f"Trace: {TRACE}", text)
+        self.assertIn(f"SVG: {SVG}", text)
+        self.assertIn("Transition bundles: 2", text)
+        self.assertIn("Source-status boundaries: 5", text)
+        self.assertNotIn("FAIL", text)
+
+    def test_json_mode_preserves_failed_subject_summary_for_success(self):
+        stdout = io.StringIO()
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = run_chain_demo_cli(
+                ["--bundle", str(BUNDLE), "--format", "json"]
+            )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 0, payload)
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["validation"]["failed_subjects"], [])
+        self.assertTrue(
+            any(layer["role"] == "chain-svg" and layer["path"] == SVG for layer in payload["evidence_layers"])
+        )
+
+    def test_drifted_bundle_report_exposes_validation_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            drifted_bundle = Path(tmp) / "drifted_chain_bundle.json"
+            data = json.loads(BUNDLE.read_text(encoding="utf-8"))
+            data["expected_status"] = "recipient-not-consumed"
+            drifted_bundle.write_text(json.dumps(data), encoding="utf-8")
+
+            report = build_chain_demo_report(drifted_bundle)
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["validation"]["failed_subjects"],
+            ["chain-claim-example", "chain-trace"],
+        )
+
+    def test_module_execution_runs_text_demo_report(self):
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "autarkic_systems.chain_demo",
+                "--bundle",
+                str(BUNDLE),
+            ],
+            check=False,
+            cwd=Path.cwd(),
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn("Vertical chain demo:", completed.stdout)
+        self.assertIn("Validation: accepted", completed.stdout)
+
+    def test_module_execution_returns_one_for_drifted_json_demo_report(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            drifted_bundle = Path(tmp) / "drifted_chain_bundle.json"
+            data = json.loads(BUNDLE.read_text(encoding="utf-8"))
+            data["expected_status"] = "recipient-not-consumed"
+            drifted_bundle.write_text(json.dumps(data), encoding="utf-8")
+
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "autarkic_systems.chain_demo",
+                    "--bundle",
+                    str(drifted_bundle),
+                    "--format",
+                    "json",
+                ],
+                check=False,
+                cwd=Path.cwd(),
+                capture_output=True,
+                text=True,
+            )
+
+        payload = json.loads(completed.stdout)
+        self.assertEqual(completed.returncode, 1, payload)
+        self.assertFalse(payload["accepted"])
+        self.assertEqual(
+            payload["validation"]["failed_subjects"],
+            ["chain-claim-example", "chain-trace"],
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()
