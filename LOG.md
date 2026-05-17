@@ -628,3 +628,27 @@
   the touched module and new test, `jq -e .
   language/transition_claim_language.json` passed, and `git diff --check`
   passed.
+
+## 2026-05-17 - Self Mailbox Init Claim
+
+- Added ADR-0031 to promote the self-mailbox init-command execution subset
+  into the named claim and proof-certificate surface.
+- Wrote `tests/test_self_mailbox_init_claim.py` before implementation. The red
+  run failed because `self_mailbox_executes_init_command` did not exist in
+  `autarkic_systems.transition_predicates`.
+- Added `self_mailbox_executes_init_command`,
+  `UC-STEM-SELF-MAILBOX-INIT-COMMAND`, proof-certificate coverage, and the
+  transition-language predicate symbol.
+- Refined the ADR-0028 default-preservation test so it checks omitted
+  `self_mailbox` fields default to `_` while permitting explicit mailbox
+  examples in later claims.
+- Added `docs/self-mailbox-init-claim.md` as the human-facing claim boundary
+  note.
+- Updated README, roadmap, literature map, open problems, transition-claim
+  language note, project memory, and lessons.
+- Verified `python -m unittest tests.test_self_mailbox_init_claim` passed 5
+  tests, the adjacent self-mailbox representation/transition predicate/claim
+  manifest/proof certificate/object-language suite passed 38 tests,
+  `python -m unittest discover` passed 161 tests, py_compile passed for the
+  touched Python files, JSON parsing passed for the claim/proof/language
+  manifests, and `git diff --check` passed.

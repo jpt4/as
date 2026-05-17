@@ -308,6 +308,59 @@
           }
         }
       ]
+    },
+    {
+      "id": "UC-STEM-SELF-MAILBOX-INIT-COMMAND",
+      "predicate": "self_mailbox_executes_init_command",
+      "description": "A stem cell with a supported self-mailbox init command reconfigures to the commanded role and clears the mailbox.",
+      "examples": [
+        {
+          "name": "processor left mailbox init",
+          "expected": true,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "self_mailbox": "proc-l-init",
+            "control": [0, 1, 0],
+            "buffer": [1]
+          },
+          "result": {
+            "status": "self-mailbox-processed",
+            "cell": {
+              "role": "proc",
+              "memory": "left",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        },
+        {
+          "name": "wrong mailbox init target",
+          "expected": false,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "self_mailbox": "wire-r-init"
+          },
+          "result": {
+            "status": "self-mailbox-processed",
+            "cell": {
+              "role": "proc",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        }
+      ]
     }
   ]
 }

@@ -545,3 +545,25 @@ Status: accepted in `docs/adr/0030-self-mailbox-init-commands.md`.
 Implemented in `autarkic_systems/universal_cell.py` and
 `language/transition_claim_language.json`, with tests in
 `tests/test_self_mailbox_init_commands.py`.
+
+## ADR-0031: Self Mailbox Init Claim
+
+Goal: promote the ADR-0030 self-mailbox init-command execution subset into the
+named transition-claim and proof-certificate surface.
+
+Deliverables:
+
+- `self_mailbox_executes_init_command` predicate;
+- `UC-STEM-SELF-MAILBOX-INIT-COMMAND` manifest claim with positive and
+  negative executable examples;
+- proof-certificate coverage for the new claim;
+- transition-language predicate vocabulary update;
+- tests proving predicate behavior, manifest evaluation, certificate coverage,
+  object-language validation, and preservation of omitted mailbox defaults.
+
+Status: accepted in `docs/adr/0031-self-mailbox-init-claim.md`. Implemented in
+`autarkic_systems/transition_predicates.py`,
+`claims/transition_claims.json`, `claims/proof_certificates.json`, and
+`language/transition_claim_language.json`, with tests in
+`tests/test_self_mailbox_init_claim.py` and the refined default-preservation
+test in `tests/test_self_mailbox_representation.py`.

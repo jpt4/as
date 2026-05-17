@@ -100,6 +100,21 @@
           "expected": false
         }
       ]
+    },
+    {
+      "claim_id": "UC-STEM-SELF-MAILBOX-INIT-COMMAND",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "processor left mailbox init",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "wrong mailbox init target",
+          "expected": false
+        }
+      ]
     }
   ]
 }

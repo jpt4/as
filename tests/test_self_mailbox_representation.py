@@ -1,3 +1,4 @@
+import json
 import unittest
 from pathlib import Path
 
@@ -74,18 +75,17 @@ class SelfMailboxRepresentationTests(unittest.TestCase):
         self.assertEqual(result.cell.buffer, (1, 1))
         self.assertEqual(result.cell.self_mailbox, "stem-init")
 
-    def test_claim_manifest_loader_preserves_self_mailbox_default(self):
+    def test_claim_manifest_loader_preserves_omitted_self_mailbox_default(self):
+        raw_claims = json.loads(CLAIMS.read_text(encoding="utf-8"))["claims"]
         claims = load_transition_claims(CLAIMS)
 
-        cells = [
-            example.before
-            for claim in claims
-            for example in claim.examples
-        ] + [
-            example.result.cell
-            for claim in claims
-            for example in claim.examples
-        ]
+        cells = []
+        for raw_claim, claim in zip(raw_claims, claims, strict=True):
+            for raw_example, example in zip(raw_claim["examples"], claim.examples, strict=True):
+                if "self_mailbox" not in raw_example["before"]:
+                    cells.append(example.before)
+                if "self_mailbox" not in raw_example["result"]["cell"]:
+                    cells.append(example.result.cell)
 
         self.assertTrue(cells)
         self.assertTrue(all(cell.self_mailbox == "_" for cell in cells))

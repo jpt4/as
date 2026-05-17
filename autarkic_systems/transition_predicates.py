@@ -24,6 +24,13 @@ STEM_BUFFER_STATUSES = {
     "stem-buffer-full",
     "rejected-input",
 }
+SELF_MAILBOX_INIT_TARGETS = {
+    "stem-init": ("stem", "right"),
+    "wire-r-init": ("wire", "right"),
+    "wire-l-init": ("wire", "left"),
+    "proc-r-init": ("proc", "right"),
+    "proc-l-init": ("proc", "left"),
+}
 
 
 @dataclass(frozen=True)
@@ -185,6 +192,50 @@ def stem_buffer_accumulates(before: Cell, result: StepResult) -> PredicateResult
         return PredicateResult(name, True, "stem buffer accumulated expected bit")
 
     return PredicateResult(name, False, f"unexpected stem buffer status {result.status}")
+
+
+def self_mailbox_executes_init_command(
+    before: Cell,
+    result: StepResult,
+) -> PredicateResult:
+    """Check the source-stable self-mailbox init-command execution subset."""
+
+    name = "self_mailbox_executes_init_command"
+    expected = SELF_MAILBOX_INIT_TARGETS.get(before.self_mailbox)
+    if (
+        before.role != "stem"
+        or before.automail != "_"
+        or before.input != EMPTY
+        or before.output != EMPTY
+        or expected is None
+    ):
+        return PredicateResult(name, True, "precondition not active")
+
+    if result.status != "self-mailbox-processed":
+        return PredicateResult(
+            name,
+            False,
+            f"expected self-mailbox-processed, got {result.status}",
+        )
+
+    expected_role, expected_memory = expected
+    if (result.cell.role, result.cell.memory) != expected:
+        return PredicateResult(
+            name,
+            False,
+            "expected "
+            f"{expected_role}/{expected_memory}, got "
+            f"{result.cell.role}/{result.cell.memory}",
+        )
+    if result.cell.self_mailbox != "_":
+        return PredicateResult(name, False, "self mailbox was not cleared")
+    if result.cell.input != EMPTY or result.cell.output != EMPTY:
+        return PredicateResult(name, False, "input or output was not cleared")
+    if result.cell.automail != "_":
+        return PredicateResult(name, False, "automail was not cleared")
+    if result.cell.control or result.cell.buffer:
+        return PredicateResult(name, False, "control or buffer was not cleared")
+    return PredicateResult(name, True, "self mailbox init command executed")
 
 
 def _is_one_hot_standard_signal(signal: tuple[object, object, object]) -> bool:

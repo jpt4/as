@@ -61,6 +61,8 @@ the project legible:
   command-buffer decoding map.
 - `docs/stem-command-execution-source-status.md` records why full stem command
   execution is still blocked after the decoder map.
+- `docs/self-mailbox-init-claim.md` records the named claim and
+  proof-certificate surface for the self-mailbox init-command subset.
 - `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
   state for future self-target command execution.
 - Universal Cell channel tuples can represent command-message tokens, but
@@ -68,7 +70,8 @@ the project legible:
 - `step_stem_cell` processes the self-mailbox init-family commands while
   leaving full command-buffer execution open.
 - `claims/transition_claims.json` names the current executable transition
-  claims and examples.
+  claims and examples, including the self-mailbox init-command execution
+  subset.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
   those transition claims.
 - `sources/willard_definition_map.json` makes the Willard anchor map

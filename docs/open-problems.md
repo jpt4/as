@@ -19,6 +19,10 @@ or proof-apparatus clauses behind those claim IDs. ADR-0011 adds the first
 minimal proof certificates over the manifest examples; richer object-language
 proof clauses remain open.
 
+Status update: ADR-0031 promotes the self-mailbox init-command execution subset
+into a named transition claim with manifest examples and proof-certificate
+coverage.
+
 ## P2: Expand From Fixed Roles To Stem/Reconfiguration
 
 Question: Which stem-cell transition subset is small enough to test without
@@ -44,7 +48,8 @@ but still leaves command-message output representation and execution semantics
 open. ADR-0029 adds command-message channel tokens, leaving delivery and
 execution semantics open. ADR-0030 adds the first self-mailbox init-command
 execution slice while leaving write-buffer, `standard-signal`, and neighbor
-delivery semantics open.
+delivery semantics open. ADR-0031 adds the corresponding named claim and
+proof-certificate surface for that init-command execution slice.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -131,4 +136,5 @@ for the stem buffer trace. ADR-0027 blocks full stem command execution until
 the state model for command-message outputs and self-target consumption is
 explicit; ADR-0028 covers representation of the self mailbox, and ADR-0029
 covers representation of command-message channel tokens. ADR-0030 executes
-self-mailbox init-family commands only.
+self-mailbox init-family commands only, with ADR-0031 adding the matching claim
+and proof-certificate surface.

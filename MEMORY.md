@@ -133,3 +133,8 @@
   (`stem-init`, `wire-r-init`, `wire-l-init`, `proc-r-init`, `proc-l-init`) in
   `step_stem_cell`. It intentionally leaves `standard-signal`,
   `write-buf-zero`, `write-buf-one`, and neighbor delivery open.
+- ADR-0031 promotes that self-mailbox init execution subset into
+  `UC-STEM-SELF-MAILBOX-INIT-COMMAND`,
+  `self_mailbox_executes_init_command`, and matching proof-certificate
+  coverage. It still does not claim write-buffer, standard-signal, neighbor
+  delivery, or full command-buffer execution.

@@ -67,3 +67,6 @@
 - When command semantics diverge by source, split the stable init-family cases
   from unresolved write-buffer or standard-signal cases instead of forcing one
   execution rule too early.
+- Once a bounded execution subset is stable, give it a named claim before using
+  it as a dependency. That keeps later command work tied to manifest examples
+  and proof-certificate coverage rather than raw transition behavior alone.
