@@ -77,6 +77,8 @@ the project legible:
   command-buffer-to-behavior slice for self-target init commands.
 - `docs/self-command-buffer-init-claim.md` records the named claim and
   proof-certificate surface for that command-buffer slice.
+- `docs/self-command-buffer-init-trace.md` records the schematic-linked trace
+  for one self-target command-buffer init dispatch.
 - `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
   state for future self-target command execution.
 - Universal Cell channel tuples can represent command-message tokens, but
@@ -126,6 +128,8 @@ the project legible:
   self-mailbox preservation trace machine-checkable.
 - `schematics/self_mailbox_unsupported_trace.svg` is the generated rendered
   view checked against the unsupported self-mailbox JSON trace.
+- `schematics/self_command_buffer_init_trace.json` makes the self-target
+  command-buffer init dispatch trace machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

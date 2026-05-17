@@ -47,6 +47,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS self mailbox unsupported SVG | `docs/self-mailbox-unsupported-svg.md` and `schematics/self_mailbox_unsupported_trace.svg` | Visible render of the unsupported self-mailbox trace. | Checked against generic renderer output and exposes mailbox plus control/buffer preservation. |
 | AS self command-buffer init dispatch | `docs/self-command-buffer-init-dispatch.md`, `autarkic_systems/universal_cell.py`, and `tests/test_self_command_buffer_init_dispatch.py` | First narrow command-buffer-to-behavior path for self-target init-family commands. | Dispatches completed self init buffers while leaving neighbor routing and self non-init semantics open. |
 | AS self command-buffer init claim | `docs/self-command-buffer-init-claim.md`, `claims/transition_claims.json`, and `claims/proof_certificates.json` | Named claim and proof-certificate surface for the narrow self-target init command-buffer dispatch. | Keeps ADR-0037 behavior available to later proof/object-language and schematic work without widening command execution. |
+| AS self command-buffer init trace | `docs/self-command-buffer-init-trace.md` and `schematics/self_command_buffer_init_trace.json` | Schematic-linked trace for one completed `self/proc-l-init` command buffer. | Extends P7 evidence to the ADR-0037/ADR-0038 slice without adding neighbor routing or self non-init semantics. |
 
 ## SJAS: Formal Confidence
 
@@ -104,6 +105,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | A self-mailbox unsupported render must expose preservation rather than implying command execution. | `autarkic_systems/schematic_svg.py`, `schematics/self_mailbox_unsupported_trace.svg`, and `tests/test_self_mailbox_unsupported_svg.py`. | Implemented in ADR-0036 with exact renderer-output matching and drift rejection. |
 | Self-target init-family command buffers can safely dispatch after the self-mailbox path is explicit. | ADR-0026 command map, ADR-0030 self-mailbox init execution, and `autarkic_systems/universal_cell.py`. | Implemented in ADR-0037 for self-target init commands only. |
 | The self-target init command-buffer dispatch belongs in the named claim surface before trace/render work depends on it. | `claims/transition_claims.json`, `claims/proof_certificates.json`, and `autarkic_systems/transition_predicates.py`. | Implemented in ADR-0038 with positive/negative manifest examples and certificate coverage. |
+| Schematic-linked evidence can cover completed self-target init command buffers without widening command execution. | `schematics/self_command_buffer_init_trace.json`, `autarkic_systems/schematic_trace.py`, and `tests/test_self_command_buffer_init_trace.py`. | Implemented in ADR-0039 with replay and drift rejection. |
 | Schematic-linked evidence should cover the self-mailbox init subset before larger command-routing traces. | `schematics/self_mailbox_init_trace.json`, `autarkic_systems/schematic_trace.py`, and `tests/test_self_mailbox_init_trace.py`. | Implemented in ADR-0032 with replay and drift rejection. |
 | A self-mailbox init render must expose mailbox consumption rather than only role reconfiguration. | `autarkic_systems/schematic_svg.py`, `schematics/self_mailbox_init_trace.svg`, and `tests/test_self_mailbox_init_svg.py`. | Implemented in ADR-0033 with exact renderer-output matching and drift rejection. |
 
@@ -128,7 +130,8 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   ADR-0035 adds a schematic-linked trace for one unsupported `write-buf-one`
   self-mailbox command. ADR-0036 adds a generated SVG render for that trace.
   ADR-0037 dispatches completed self-target init-family command buffers only,
-  and ADR-0038 adds the corresponding claim/proof surface.
+  ADR-0038 adds the corresponding claim/proof surface, and ADR-0039 adds a
+  schematic-linked trace for one completed `self/proc-l-init` command buffer.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

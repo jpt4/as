@@ -16,6 +16,11 @@ from autarkic_systems.prc_hardware_map import (
     PRCHardwareWitnessMap,
     REQUIRED_WITNESS_IDS,
 )
+from autarkic_systems.stem_command_map import (
+    COMMAND_BUFFER_WIDTH,
+    EXPECTED_COMMANDS,
+    EXPECTED_TARGET_RANGES,
+)
 from autarkic_systems.universal_cell import Cell, step_fixed_cell, step_stem_cell
 
 
@@ -37,6 +42,9 @@ SELF_MAILBOX_INIT_TRACE_ARTIFACT_ID = (
 SELF_MAILBOX_UNSUPPORTED_TRACE_ARTIFACT_ID = (
     "self-mailbox-unsupported-schematic-and-uc-transition-trace"
 )
+SELF_COMMAND_BUFFER_INIT_TRACE_ARTIFACT_ID = (
+    "self-command-buffer-init-schematic-and-uc-transition-trace"
+)
 VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     SINGLE_NODE_TRACE_ARTIFACT_ID,
     PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID,
@@ -44,6 +52,7 @@ VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     STEM_BUFFER_ACCUMULATION_TRACE_ARTIFACT_ID,
     SELF_MAILBOX_INIT_TRACE_ARTIFACT_ID,
     SELF_MAILBOX_UNSUPPORTED_TRACE_ARTIFACT_ID,
+    SELF_COMMAND_BUFFER_INIT_TRACE_ARTIFACT_ID,
 )
 
 REQUIRED_INTERPRETIVE_LAYERS = (
@@ -410,6 +419,13 @@ def _validate_schematic_trace_alignment(
                 )
             else:
                 results.extend(_validate_self_mailbox_init_trace_alignment(schematic_trace))
+        elif (
+            schematic_trace.trace.expected_status
+            == "stem-command-buffer-self-processed"
+        ):
+            results.extend(
+                _validate_self_command_buffer_init_trace_alignment(schematic_trace)
+            )
         else:
             results.extend(_validate_stem_buffer_trace_alignment(schematic_trace))
         return results
@@ -747,6 +763,111 @@ def _validate_self_mailbox_unsupported_trace_alignment(
     return results
 
 
+def _validate_self_command_buffer_init_trace_alignment(
+    schematic_trace: SingleNodeSchematicTrace,
+) -> list[SchematicTraceValidation]:
+    results: list[SchematicTraceValidation] = []
+
+    if schematic_trace.schematic.geometry != "triangular-rlem-node":
+        results.append(_rejected("geometry", "schematic geometry is not triangular"))
+    else:
+        results.append(_accepted("geometry", "schematic geometry is triangular"))
+
+    before = schematic_trace.trace.before_cell
+    after = schematic_trace.trace.expected_after_cell
+    decode = _completed_command_buffer_decode(before)
+    if decode is None:
+        results.append(
+            _rejected(
+                "self-command-buffer-init",
+                "trace does not complete a decodable five-bit command buffer",
+            )
+        )
+        return results
+
+    value, completed_buffer, target_id, command_id = decode
+    init_targets = {
+        "stem-init": ("stem", "right"),
+        "wire-r-init": ("wire", "right"),
+        "wire-l-init": ("wire", "left"),
+        "proc-r-init": ("proc", "right"),
+        "proc-l-init": ("proc", "left"),
+    }
+    target = init_targets.get(command_id)
+    if target_id != "self" or target is None:
+        results.append(
+            _rejected(
+                "self-command-buffer-init",
+                "command buffer is not a self-target init command",
+            )
+        )
+        return results
+
+    expected_role, expected_memory = target
+    if schematic_trace.schematic.memory_direction != expected_memory:
+        results.append(
+            _rejected(
+                "memory_direction",
+                "schematic memory does not match command-buffer target",
+            )
+        )
+    else:
+        results.append(_accepted("memory_direction", "schematic memory matches target"))
+
+    bit = completed_buffer[-1]
+    match_text = "matches" if bit == 1 else "differs from"
+    expected_flow = (
+        f"control{_compact_list(before.get('control'))} active",
+        (
+            f"input{_compact_list(before.get('input'))} {match_text} control "
+            f"-> append {bit}"
+        ),
+        (
+            f"buffer{_compact_list(before.get('buffer'))} -> "
+            f"buffer{_compact_list(completed_buffer)}"
+        ),
+        f"decode value {value} -> {target_id}/{command_id}",
+        f"self command[{command_id}] -> role {expected_role}",
+        f"self command[{command_id}] -> memory {expected_memory}",
+        "command buffer consumed; control/buffer cleared",
+    )
+    if schematic_trace.trace.routed_signal_flow != expected_flow:
+        results.append(_rejected("routed_signal_flow", "command buffer flow mismatch"))
+    else:
+        results.append(
+            _accepted("routed_signal_flow", "command buffer flow explicit")
+        )
+
+    if (
+        before.get("automail") != "_"
+        or before.get("self_mailbox") != "_"
+        or before.get("output") != ["_", "_", "_"]
+        or after.get("role") != expected_role
+        or after.get("memory") != expected_memory
+        or after.get("input") != ["_", "_", "_"]
+        or after.get("output") != ["_", "_", "_"]
+        or after.get("automail") != "_"
+        or after.get("self_mailbox") != "_"
+        or after.get("control") != []
+        or after.get("buffer") != []
+    ):
+        results.append(
+            _rejected(
+                "self-command-buffer-init",
+                "self command-buffer init state mismatch",
+            )
+        )
+    else:
+        results.append(
+            _accepted(
+                "self-command-buffer-init",
+                "self command-buffer init target and clearing match",
+            )
+        )
+
+    return results
+
+
 def _validate_trace_contract(
     trace: RecordedTransitionTrace,
 ) -> list[SchematicTraceValidation]:
@@ -905,3 +1026,57 @@ def _compact_list(value: object) -> str:
     if isinstance(value, list):
         return "[" + ",".join(str(item) for item in value) + "]"
     return str(value)
+
+
+def _completed_command_buffer_decode(
+    before: dict[str, Any],
+) -> tuple[int, list[int], str, str] | None:
+    input_signal = before.get("input")
+    control = before.get("control")
+    buffer = before.get("buffer")
+
+    if (
+        not isinstance(input_signal, list)
+        or not isinstance(control, list)
+        or not isinstance(buffer, list)
+        or len(buffer) != COMMAND_BUFFER_WIDTH - 1
+        or any(bit not in (0, 1) for bit in buffer)
+        or not _one_hot_signal(input_signal)
+        or not _one_hot_signal(control)
+    ):
+        return None
+
+    bit = 1 if input_signal == control else 0
+    completed_buffer = [*buffer, bit]
+    value = 0
+    for command_bit in completed_buffer:
+        value = (value << 1) | command_bit
+
+    target_id = next(
+        (
+            target
+            for start, end, target in EXPECTED_TARGET_RANGES
+            if start <= value <= end
+        ),
+        None,
+    )
+    command_id = next(
+        (
+            command
+            for offset, command in EXPECTED_COMMANDS
+            if offset == value % len(EXPECTED_COMMANDS)
+        ),
+        None,
+    )
+    if target_id is None or command_id is None:
+        return None
+    return value, completed_buffer, target_id, command_id
+
+
+def _one_hot_signal(value: object) -> bool:
+    return (
+        isinstance(value, list)
+        and len(value) == 3
+        and all(bit in (0, 1) for bit in value)
+        and sum(value) == 1
+    )

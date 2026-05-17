@@ -803,3 +803,26 @@
   tests, `python -m unittest discover` passed 208 tests, py_compile passed for
   the touched module and test, JSON parsing passed for the claim/proof/language
   manifests, and `git diff --check` passed.
+
+## 2026-05-17 - Self Command Buffer Init Trace
+
+- Added ADR-0039 for a schematic-linked trace of one completed self-target
+  init command buffer.
+- Wrote `tests/test_self_command_buffer_init_trace.py` before implementation.
+  The red run failed because `SELF_COMMAND_BUFFER_INIT_TRACE_ARTIFACT_ID` did
+  not exist in `autarkic_systems.schematic_trace`.
+- Added `schematics/self_command_buffer_init_trace.json` for the completed
+  `self/proc-l-init` buffer `00101`.
+- Added `SELF_COMMAND_BUFFER_INIT_TRACE_ARTIFACT_ID` and a dedicated
+  `stem-command-buffer-self-processed` validation path so completed-buffer
+  dispatch is not mistaken for ordinary stem buffer accumulation.
+- Added `docs/self-command-buffer-init-trace.md` as the human-facing trace
+  boundary note.
+- Updated README, roadmap, literature map, open problems, related command
+  buffer notes, project memory, and lessons.
+- Verified `python -m unittest tests.test_self_command_buffer_init_trace`
+  passed 9 tests, the adjacent schematic/command-buffer suite passed 68 tests,
+  `python -m unittest discover` passed 217 tests, py_compile passed for the
+  touched module and test, JSON parsing passed for
+  `schematics/self_command_buffer_init_trace.json`, and `git diff --check`
+  passed.

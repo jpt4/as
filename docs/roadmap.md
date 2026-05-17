@@ -703,3 +703,22 @@ Implemented in `autarkic_systems/transition_predicates.py`,
 `claims/transition_claims.json`, `claims/proof_certificates.json`, and
 `language/transition_claim_language.json`, with tests in
 `tests/test_self_command_buffer_init_claim.py`.
+
+## ADR-0039: Self Command Buffer Init Trace
+
+Goal: add a schematic-linked trace for one completed self-target init command
+buffer.
+
+Deliverables:
+
+- `schematics/self_command_buffer_init_trace.json`;
+- command-buffer self-init artifact identity in the schematic-trace validator;
+- validation that separates completed self-init buffer dispatch from ordinary
+  buffer accumulation and direct self-mailbox execution;
+- tests for artifact identity, schema vocabulary, decode flow, execution
+  replay, witness-map validation, and drift rejection.
+
+Status: accepted in `docs/adr/0039-self-command-buffer-init-trace.md`.
+Implemented in `autarkic_systems/schematic_trace.py` and
+`schematics/self_command_buffer_init_trace.json`, with tests in
+`tests/test_self_command_buffer_init_trace.py`.

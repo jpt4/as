@@ -165,3 +165,9 @@
   `stem_command_buffer_executes_self_init`, with manifest examples and
   proof-certificate coverage. It still excludes neighbor routing and self
   non-init command semantics.
+- ADR-0039 adds `schematics/self_command_buffer_init_trace.json`,
+  `docs/self-command-buffer-init-trace.md`, and
+  `tests/test_self_command_buffer_init_trace.py` for one completed
+  `self/proc-l-init` command-buffer dispatch. The schematic trace validator
+  now separates `stem-command-buffer-self-processed` traces from ordinary
+  buffer accumulation.

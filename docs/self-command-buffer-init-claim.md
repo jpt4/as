@@ -7,6 +7,8 @@ the transition-claim surface. The claim is
 `UC-STEM-COMMAND-BUFFER-SELF-INIT` in `claims/transition_claims.json`, checked
 by `stem_command_buffer_executes_self_init` in
 `autarkic_systems/transition_predicates.py`.
+ADR-0039 adds a schematic-linked trace that replays one positive
+`self/proc-l-init` command-buffer example through the same transition.
 
 ## Claim Boundary
 

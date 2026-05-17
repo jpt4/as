@@ -91,3 +91,6 @@
 - Once a command-buffer behavior is executable, claim it before drawing it.
   The schematic layer should rest on named transition claims where practical,
   not just ad hoc replay behavior.
+- Completed-buffer traces need their own validation path when they share the
+  same visible fields as accumulation traces. Status-dispatch keeps a
+  processed command buffer from being mistaken for another append.

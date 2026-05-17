@@ -9,6 +9,7 @@ self-target init-family command, AS reuses the direct self-mailbox init
 semantics and returns `stem-command-buffer-self-processed`.
 ADR-0038 promotes this behavior into the named claim
 `UC-STEM-COMMAND-BUFFER-SELF-INIT`.
+ADR-0039 records the same bounded behavior as a schematic-linked trace.
 
 ## Execution Boundary
 
