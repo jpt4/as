@@ -41,7 +41,9 @@
         "stem-buffer-appended",
         "stem-buffer-full",
         "stem-control-selected",
-        "stem-init"
+        "stem-init",
+        "self-mailbox-processed",
+        "self-mailbox-unsupported"
       ],
       "cell_fields": [
         "role",

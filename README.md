@@ -65,6 +65,8 @@ the project legible:
   state for future self-target command execution.
 - Universal Cell channel tuples can represent command-message tokens, but
   command-buffer execution is still intentionally absent.
+- `step_stem_cell` processes the self-mailbox init-family commands while
+  leaving full command-buffer execution open.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over

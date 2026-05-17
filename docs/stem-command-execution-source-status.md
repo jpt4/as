@@ -14,10 +14,11 @@ Do not implement full stem command execution yet.
 
 The PRC formal model gives the canonical target and command table now used by
 AS, but the execution path requires state that AS only partially models:
-ADR-0028 adds self mailbox representation, and ADR-0029 adds command-message
-channel-token representation. Legacy simulator sketches still diverge from the
-formal table in ways that should be resolved before AS treats them as
-executable authority, and AS still does not route or execute command buffers.
+ADR-0028 adds self mailbox representation, ADR-0029 adds command-message
+channel-token representation, and ADR-0030 processes the init-family
+self-mailbox commands. Legacy simulator sketches still diverge from the formal
+table in ways that should be resolved before AS treats them as executable
+authority, and AS still does not route or execute full command buffers.
 
 ## Evidence
 
@@ -52,10 +53,9 @@ ADR-0026 remains correct as a command-buffer decoder because it uses the formal
 model's explicit command table. Execution is a different claim. To execute
 commands honestly, AS first needs to choose:
 
-- how future self-target execution consumes the explicit `self_mailbox` field;
 - how output-channel command tokens are delivered to neighbors;
-- how `standard-signal` behaves when selected as a command rather than received
-  as ordinary input.
+- how `standard-signal`, `write-buf-zero`, and `write-buf-one` behave when
+  selected as self-mailbox commands.
 
 ## Verification
 

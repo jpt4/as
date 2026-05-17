@@ -42,7 +42,9 @@ blockers: self mailbox state, command-message output representation, and
 legacy source divergences. ADR-0028 adds explicit `self_mailbox` representation
 but still leaves command-message output representation and execution semantics
 open. ADR-0029 adds command-message channel tokens, leaving delivery and
-execution semantics open.
+execution semantics open. ADR-0030 adds the first self-mailbox init-command
+execution slice while leaving write-buffer, `standard-signal`, and neighbor
+delivery semantics open.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -128,4 +130,5 @@ physical-simulation renders remain open. ADR-0025 added a generated SVG render
 for the stem buffer trace. ADR-0027 blocks full stem command execution until
 the state model for command-message outputs and self-target consumption is
 explicit; ADR-0028 covers representation of the self mailbox, and ADR-0029
-covers representation of command-message channel tokens.
+covers representation of command-message channel tokens. ADR-0030 executes
+self-mailbox init-family commands only.

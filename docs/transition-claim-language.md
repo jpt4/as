@@ -12,6 +12,8 @@ language. ADR-0023 extends the current predicate vocabulary with
 extends the term vocabulary with `command_messages` and the `self_mailbox` cell
 field without adding command execution. ADR-0029 extends `signals` so channel
 tuples can represent command-message tokens for future neighbor delivery.
+ADR-0030 extends `statuses` for the first self-mailbox init-command execution
+slice.
 
 The point is to stop relying on implicit Python/JSON shape as the only syntax
 boundary. Current claims can now be checked against named syntax classes before

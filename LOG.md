@@ -607,3 +607,24 @@
   the touched module and new test, `jq -e .
   language/transition_claim_language.json` passed, and `git diff --check`
   passed.
+
+## 2026-05-17 - Self Mailbox Init Commands
+
+- Added ADR-0030 for processing self-mailbox init-family commands while keeping
+  full command-buffer execution out of scope.
+- Wrote `tests/test_self_mailbox_init_commands.py` before implementation. The
+  red run failed because self-mailbox commands were idle and the
+  transition-language status vocabulary did not include the new outcomes.
+- Added self-mailbox handling for `stem-init`, `wire-r-init`, `wire-l-init`,
+  `proc-r-init`, and `proc-l-init` in `autarkic_systems/universal_cell.py`.
+- Added explicit `self-mailbox-unsupported` behavior for `standard-signal`,
+  `write-buf-zero`, and `write-buf-one`.
+- Updated `language/transition_claim_language.json` with the new statuses.
+- Updated README, roadmap, literature map, open problems, transition-claim
+  language note, stem command execution source-status note, project memory, and
+  lessons.
+- Verified `python -m unittest tests.test_self_mailbox_init_commands` passed 7
+  tests, `python -m unittest discover` passed 156 tests, py_compile passed for
+  the touched module and new test, `jq -e .
+  language/transition_claim_language.json` passed, and `git diff --check`
+  passed.

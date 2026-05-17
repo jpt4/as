@@ -50,6 +50,8 @@ Status = Literal[
     "stem-buffer-appended",
     "stem-buffer-full",
     "stem-control-selected",
+    "self-mailbox-processed",
+    "self-mailbox-unsupported",
 ]
 
 EMPTY: tuple[Signal, Signal, Signal] = ("_", "_", "_")
@@ -88,6 +90,13 @@ AUTOMAIL_RECONFIGURATION: dict[Automail, tuple[Role, Memory]] = {
     "wl": ("wire", "left"),
     "pr": ("proc", "right"),
     "pl": ("proc", "left"),
+}
+SELF_MAILBOX_INIT_TARGETS: dict[CommandMessage, tuple[Role, Memory]] = {
+    "stem-init": ("stem", "right"),
+    "wire-r-init": ("wire", "right"),
+    "wire-l-init": ("wire", "left"),
+    "proc-r-init": ("proc", "right"),
+    "proc-l-init": ("proc", "left"),
 }
 
 
@@ -178,6 +187,9 @@ def step_stem_cell(cell: Cell) -> StepResult:
         return StepResult("blocked-output", cell)
 
     if cell.automail == "_":
+        if _empty(cell.input) and cell.self_mailbox != "_":
+            return _process_self_mailbox(cell)
+
         if _empty(cell.input):
             return StepResult("idle", cell)
 
@@ -202,6 +214,30 @@ def step_stem_cell(cell: Cell) -> StepResult:
     role, memory = AUTOMAIL_RECONFIGURATION[cell.automail]
     return StepResult(
         "automail-reconfigured",
+        _replace(
+            cell,
+            role=role,
+            memory=memory,
+            input=EMPTY,
+            output=EMPTY,
+            automail="_",
+            self_mailbox="_",
+            control=(),
+            buffer=(),
+        ),
+    )
+
+
+def _process_self_mailbox(cell: Cell) -> StepResult:
+    """Process the source-stable self-mailbox init-command subset."""
+
+    target = SELF_MAILBOX_INIT_TARGETS.get(cell.self_mailbox)
+    if target is None:
+        return StepResult("self-mailbox-unsupported", cell)
+
+    role, memory = target
+    return StepResult(
+        "self-mailbox-processed",
         _replace(
             cell,
             role=role,

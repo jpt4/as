@@ -38,6 +38,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS stem command execution source status | `docs/stem-command-execution-source-status.md` and `sources/stem_command_execution_source_status.json` | Source-status decision for why full command execution is blocked after decoding. | Separates the formal command table from unresolved self-mailbox, output-token, and legacy divergence questions. |
 | AS self mailbox representation | `autarkic_systems/universal_cell.py`, `language/transition_claim_language.json`, and checked schematic traces | Explicit Cell field for self-target command delivery preparation. | Covers representation only; command execution and neighbor command outputs remain open. |
 | AS command channel-token representation | `autarkic_systems/universal_cell.py` and `language/transition_claim_language.json` | Channel tuples can now carry ADR-0026 command-message tokens. | Covers representation only; delivery and execution remain open. |
+| AS self mailbox init commands | `autarkic_systems/universal_cell.py` and `tests/test_self_mailbox_init_commands.py` | First self-mailbox execution slice for init-family commands. | Executes source-stable init commands while keeping write-buffer, standard-signal, and neighbor delivery open. |
 
 ## SJAS: Formal Confidence
 
@@ -88,6 +89,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | Stem command execution needs source-status separation before AS trusts legacy simulator sketches. | PRC formal model, legacy `raa.scm`, legacy `semsim.scm`, legacy `fsmsim.scm`, and `sources/stem_command_execution_source_status.json`. | Implemented in ADR-0027 as a do-not-execute-yet decision with allowed narrower next slices. |
 | Self-target stem command work needs a first-class mailbox field before execution. | PRC formal model process-buffer sketch, `autarkic_systems/universal_cell.py`, and `language/transition_claim_language.json`. | Implemented in ADR-0028 as representation only, with reset clearing and parser/trace preservation. |
 | Neighbor-target stem command work needs command-message channel tokens before delivery. | PRC formal model process-buffer sketch, `autarkic_systems/universal_cell.py`, and `language/transition_claim_language.json`. | Implemented in ADR-0029 as representation only, with blocked-output preservation and no command execution. |
+| Self-mailbox init commands are a safe first execution subset. | PRC formal model process-special-message sketch and legacy fsmsim/semsim init functions. | Implemented in ADR-0030, excluding write-buffer and standard-signal commands. |
 
 ## Evidence Gaps
 
@@ -101,7 +103,8 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   execution, larger GELC, and physical-simulation renders remain open. ADR-0027
   records the current source-status blockers for execution; ADR-0028 clears the
   self-mailbox representation blocker and ADR-0029 clears the command-token
-  representation blocker only.
+  representation blocker only. ADR-0030 adds self-mailbox init-command
+  execution but not full command-buffer execution.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

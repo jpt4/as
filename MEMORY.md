@@ -129,3 +129,7 @@
   `signals` to include ADR-0026 command messages. This is representation only:
   command-message input is still rejected by current stem behavior rather than
   executed.
+- ADR-0030 processes self-mailbox init-family commands
+  (`stem-init`, `wire-r-init`, `wire-l-init`, `proc-r-init`, `proc-l-init`) in
+  `step_stem_cell`. It intentionally leaves `standard-signal`,
+  `write-buf-zero`, `write-buf-one`, and neighbor delivery open.

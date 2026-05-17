@@ -64,3 +64,6 @@
 - Broadening what state can represent is not the same as broadening what
   transitions execute. Tests should prove command tokens are preserved or
   rejected at the current boundary before later routing semantics are added.
+- When command semantics diverge by source, split the stable init-family cases
+  from unresolved write-buffer or standard-signal cases instead of forcing one
+  execution rule too early.

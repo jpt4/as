@@ -524,3 +524,24 @@ Status: accepted in `docs/adr/0029-command-channel-token-representation.md`.
 Implemented in `autarkic_systems/universal_cell.py` and
 `language/transition_claim_language.json`, with tests in
 `tests/test_command_channel_tokens.py`.
+
+## ADR-0030: Self Mailbox Init Commands
+
+Goal: process the source-stable self-mailbox init-family command subset without
+implementing full command-buffer execution.
+
+Deliverables:
+
+- self-mailbox handling for `stem-init`, `wire-r-init`, `wire-l-init`,
+  `proc-r-init`, and `proc-l-init`;
+- explicit unsupported boundary for `standard-signal`, `write-buf-zero`, and
+  `write-buf-one`;
+- transition-language statuses for processed and unsupported self-mailbox
+  outcomes;
+- tests proving init reconfiguration, reset clearing, unsupported preservation,
+  output blocking, automail priority, and language status coverage.
+
+Status: accepted in `docs/adr/0030-self-mailbox-init-commands.md`.
+Implemented in `autarkic_systems/universal_cell.py` and
+`language/transition_claim_language.json`, with tests in
+`tests/test_self_mailbox_init_commands.py`.
