@@ -304,3 +304,25 @@
   the new module and tests, `jq -e .
   schematics/single_node_triangular_rlem_trace.json` passed, and
   `git diff --check` passed.
+
+## 2026-05-17 - Single-Node Schematic SVG
+
+- Added ADR-0017 for the first visible render of the structured single-node
+  schematic trace.
+- Wrote `tests/test_single_node_schematic_svg.py` before implementation. The
+  red run failed because `autarkic_systems.schematic_svg` did not exist.
+- Added `autarkic_systems/schematic_svg.py` to render a deterministic SVG from
+  `schematics/single_node_triangular_rlem_trace.json` and validate that a given
+  SVG exactly matches renderer output.
+- Added `schematics/single_node_triangular_rlem_trace.svg`, showing the
+  triangular RLEM/Universal Cell node, north/east/west ports, right-memory
+  routing, trace metadata, and interpretive layer IDs.
+- Added `docs/single-node-schematic-svg.md` as the human-facing render-boundary
+  note.
+- Updated README, roadmap, literature map, open problems, ADR-0016 follow-up,
+  project memory, and lessons so P7 now has a generated visual schematic view.
+- Verified `python -m unittest tests.test_single_node_schematic_svg` passed 7
+  tests, `python -m unittest discover` passed 69 tests, py_compile passed for
+  the new module and tests, XML parsing passed for
+  `schematics/single_node_triangular_rlem_trace.svg`, and `git diff --check`
+  passed.

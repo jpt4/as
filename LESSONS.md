@@ -25,3 +25,6 @@
 - A schematic trace is more useful when it is executable. Recording a diagram
   key and replaying its claimed transition through the Universal Cell probe
   catches drift that a static drawing would hide.
+- A rendered schematic should be generated from the structured trace whenever
+  practical. Otherwise the human-facing diagram becomes a second, weaker source
+  of truth.

@@ -89,3 +89,9 @@ Coverage limits:
 - It exercises one fixed-role wire transition only. Processor toggling, stem
   automail, larger GELC circuits, and dynamic reconfiguration remain separate
   ADRs.
+
+Follow-up:
+
+- ADR-0017 rendered the structured trace as
+  `schematics/single_node_triangular_rlem_trace.svg`, with exact output
+  validation in `autarkic_systems/schematic_svg.py`.

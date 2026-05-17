@@ -70,4 +70,8 @@
   `docs/single-node-schematic-trace.md`, and
   `autarkic_systems/schematic_trace.py` implement that first P7 schematic trace:
   one triangular RLEM/Universal Cell key plus one executable `step_fixed_cell`
-  replay. It is structured, not yet visually rendered.
+  replay. It is the structured source for the rendered SVG.
+- `schematics/single_node_triangular_rlem_trace.svg`,
+  `docs/single-node-schematic-svg.md`, and `autarkic_systems/schematic_svg.py`
+  render that first P7 trace. The SVG is generated from the JSON trace and must
+  exactly match renderer output in tests.

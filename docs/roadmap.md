@@ -282,3 +282,21 @@ Status: accepted in `docs/adr/0016-single-node-schematic-trace.md`.
 Implemented in `schematics/single_node_triangular_rlem_trace.json` and
 `autarkic_systems/schematic_trace.py`, with tests in
 `tests/test_single_node_schematic_trace.py`.
+
+## ADR-0017: Single-Node Schematic SVG
+
+Goal: render the ADR-0016 structured schematic trace as a visible SVG while
+keeping the JSON artifact authoritative.
+
+Deliverables:
+
+- SVG renderer for `SingleNodeSchematicTrace`;
+- checked-in SVG view generated from the JSON trace;
+- human-facing note for the render boundary;
+- tests proving the committed SVG is parseable, nonblank, source-linked, and
+  identical to renderer output.
+
+Status: accepted in `docs/adr/0017-single-node-schematic-svg.md`. Implemented
+in `schematics/single_node_triangular_rlem_trace.svg` and
+`autarkic_systems/schematic_svg.py`, with tests in
+`tests/test_single_node_schematic_svg.py`.

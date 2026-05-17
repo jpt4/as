@@ -10,6 +10,10 @@ AS Universal Cell transition.
 The structured artifact lives in
 `schematics/single_node_triangular_rlem_trace.json`.
 
+Status update: ADR-0017 renders this structured trace as
+`schematics/single_node_triangular_rlem_trace.svg`. The SVG is generated from
+the JSON trace and checked against renderer output.
+
 ## Schematic Key
 
 The node is a triangular RLEM/Universal Cell key with three oriented ports:
@@ -80,8 +84,8 @@ the executable transition result.
 
 ## Open Follow-Ups
 
-- Add an SVG or other rendered view generated from the structured schematic.
 - Add a processor-memory-toggle schematic trace.
 - Add a stem automail schematic trace.
+- Improve the generated SVG rendering while preserving JSON-as-source tests.
 - Decide whether larger GELC examples should be reconstructed as structured
   diagrams or redrawn from `figures.pdf`.
