@@ -28,3 +28,6 @@
 - A rendered schematic should be generated from the structured trace whenever
   practical. Otherwise the human-facing diagram becomes a second, weaker source
   of truth.
+- Reusing the schematic trace schema for processor behavior is better than
+  adding a one-off artifact. It keeps wire and processor evidence comparable
+  while still testing role-specific behavior.

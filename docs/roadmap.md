@@ -300,3 +300,22 @@ Status: accepted in `docs/adr/0017-single-node-schematic-svg.md`. Implemented
 in `schematics/single_node_triangular_rlem_trace.svg` and
 `autarkic_systems/schematic_svg.py`, with tests in
 `tests/test_single_node_schematic_svg.py`.
+
+## ADR-0018: Processor Memory Toggle Trace
+
+Goal: add a second schematic-linked Universal Cell trace covering processor
+routing and memory toggle behavior.
+
+Deliverables:
+
+- processor memory-toggle schematic trace artifact;
+- generic schematic-trace loader and validator path while preserving the
+  ADR-0016 single-node wrapper;
+- human-facing note for the processor trace;
+- tests proving schema reuse, left-memory signal flow, executable replay, and
+  rejection of a drifted expected memory.
+
+Status: accepted in `docs/adr/0018-processor-memory-toggle-trace.md`.
+Implemented in `schematics/processor_memory_toggle_trace.json` and
+`autarkic_systems/schematic_trace.py`, with tests in
+`tests/test_processor_memory_toggle_trace.py`.

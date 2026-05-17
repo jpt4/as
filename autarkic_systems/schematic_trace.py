@@ -22,6 +22,13 @@ from autarkic_systems.universal_cell import Cell, step_fixed_cell, step_stem_cel
 SINGLE_NODE_TRACE_ARTIFACT_ID = (
     "single-node-triangular-rlem-schematic-and-uc-transition-trace"
 )
+PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID = (
+    "processor-memory-toggle-schematic-and-uc-transition-trace"
+)
+VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
+    SINGLE_NODE_TRACE_ARTIFACT_ID,
+    PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID,
+)
 
 REQUIRED_INTERPRETIVE_LAYERS = (
     "symbolic-rlem-behavior",
@@ -131,8 +138,8 @@ class SchematicTraceExecution:
     after_cell: dict[str, Any]
 
 
-def load_single_node_schematic_trace(path: Path | str) -> SingleNodeSchematicTrace:
-    """Load the single-node schematic trace artifact from JSON."""
+def load_schematic_trace(path: Path | str) -> SingleNodeSchematicTrace:
+    """Load a schematic trace artifact from JSON."""
 
     data = json.loads(Path(path).read_text(encoding="utf-8"))
     return SingleNodeSchematicTrace(
@@ -148,7 +155,13 @@ def load_single_node_schematic_trace(path: Path | str) -> SingleNodeSchematicTra
     )
 
 
-def validate_single_node_schematic_trace(
+def load_single_node_schematic_trace(path: Path | str) -> SingleNodeSchematicTrace:
+    """Load the ADR-0016 single-node schematic trace artifact from JSON."""
+
+    return load_schematic_trace(path)
+
+
+def validate_schematic_trace(
     schematic_trace: SingleNodeSchematicTrace,
     *,
     hardware_witness_map: PRCHardwareWitnessMap,
@@ -157,6 +170,35 @@ def validate_single_node_schematic_trace(
 
     results: list[SchematicTraceValidation] = []
     witnesses_by_id = hardware_witness_map.witnesses_by_id()
+
+    if schematic_trace.artifact_id not in VALID_SCHEMATIC_TRACE_ARTIFACT_IDS:
+        results.append(
+            _rejected("artifact_id", "artifact id is not a known schematic trace")
+        )
+    else:
+        results.append(_accepted("artifact_id", "artifact id is known"))
+
+    results.extend(_validate_required_witnesses(schematic_trace, witnesses_by_id))
+    results.extend(_validate_ports(schematic_trace.schematic.ports))
+    results.extend(_validate_layers(schematic_trace.schematic.layers, witnesses_by_id))
+    results.extend(_validate_schematic_trace_alignment(schematic_trace))
+    results.extend(_validate_trace_contract(schematic_trace.trace))
+    results.extend(_validate_trace_execution(schematic_trace))
+
+    return results
+
+
+def validate_single_node_schematic_trace(
+    schematic_trace: SingleNodeSchematicTrace,
+    *,
+    hardware_witness_map: PRCHardwareWitnessMap,
+) -> list[SchematicTraceValidation]:
+    """Validate the original ADR-0016 trace against ADR-0015's recommendation."""
+
+    results = validate_schematic_trace(
+        schematic_trace,
+        hardware_witness_map=hardware_witness_map,
+    )
 
     if schematic_trace.artifact_id != SINGLE_NODE_TRACE_ARTIFACT_ID:
         results.append(
@@ -176,13 +218,6 @@ def validate_single_node_schematic_trace(
         results.append(
             _accepted("hardware_witness_map", "artifact matches witness-map target")
         )
-
-    results.extend(_validate_required_witnesses(schematic_trace, witnesses_by_id))
-    results.extend(_validate_ports(schematic_trace.schematic.ports))
-    results.extend(_validate_layers(schematic_trace.schematic.layers, witnesses_by_id))
-    results.extend(_validate_schematic_trace_alignment(schematic_trace))
-    results.extend(_validate_trace_contract(schematic_trace.trace))
-    results.extend(_validate_trace_execution(schematic_trace))
 
     return results
 
@@ -360,17 +395,44 @@ def _validate_schematic_trace_alignment(
     else:
         results.append(_accepted("memory_direction", "schematic memory matches trace"))
 
-    if schematic_trace.schematic.memory_direction == "right":
-        expected_flow = (
+    expected_flow_by_memory = {
+        "right": (
             "input[2] -> output[0]",
             "input[0] -> output[1]",
             "input[1] -> output[2]",
-        )
-        if schematic_trace.trace.routed_signal_flow != expected_flow:
-            results.append(_rejected("routed_signal_flow", "right-memory flow mismatch"))
+        ),
+        "left": (
+            "input[1] -> output[0]",
+            "input[2] -> output[1]",
+            "input[0] -> output[2]",
+        ),
+    }
+    expected_flow = expected_flow_by_memory.get(schematic_trace.schematic.memory_direction)
+    if expected_flow is None:
+        results.append(_rejected("memory_direction", "unknown schematic memory"))
+    elif schematic_trace.trace.routed_signal_flow != expected_flow:
+        results.append(_rejected("routed_signal_flow", "memory flow mismatch"))
+    else:
+        results.append(_accepted("routed_signal_flow", "memory flow is explicit"))
+
+    before_role = schematic_trace.trace.before_cell.get("role")
+    before_memory = schematic_trace.trace.before_cell.get("memory")
+    after_memory = schematic_trace.trace.expected_after_cell.get("memory")
+    if before_role == "proc":
+        expected_after_memory = "right" if before_memory == "left" else "left"
+        if after_memory != expected_after_memory:
+            results.append(
+                _rejected(
+                    "processor-memory-toggle",
+                    "processor trace does not toggle memory",
+                )
+            )
         else:
             results.append(
-                _accepted("routed_signal_flow", "right-memory flow is explicit")
+                _accepted(
+                    "processor-memory-toggle",
+                    "processor trace toggles memory",
+                )
             )
 
     return results

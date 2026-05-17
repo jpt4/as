@@ -26,6 +26,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS PRC hardware witness map | `docs/prc-hardware-witness-map.md` and `sources/prc_hardware_witness_map.json` | Names the first exact PRC hardware/schematic witnesses and constraints before AS draws or simulates PRC-derived hardware. | Active anchor map for P7 and the next single-node schematic/trace ADR. |
 | AS single-node schematic trace | `docs/single-node-schematic-trace.md` and `schematics/single_node_triangular_rlem_trace.json` | First AS-owned schematic key connecting one triangular RLEM/UC node to an executable Universal Cell transition. | Active P7 artifact for schematic-linked trace work. |
 | AS single-node schematic SVG | `docs/single-node-schematic-svg.md` and `schematics/single_node_triangular_rlem_trace.svg` | First visible render of the structured single-node schematic trace. | Checked against renderer output so the diagram cannot drift from the JSON trace. |
+| AS processor memory-toggle trace | `docs/processor-memory-toggle-trace.md` and `schematics/processor_memory_toggle_trace.json` | Second schematic-linked trace, covering processor routing plus memory toggle. | Extends P7 fixed-role coverage beyond wire behavior. |
 
 ## SJAS: Formal Confidence
 
@@ -64,6 +65,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS hardware/schematic artifacts must preserve PRC's actual commitments rather than merely resembling PRC diagrams. | PRC README, GELC universality note, Morita RLEM witness, PRC formal model, ASM simulator, old Thiel/RALA notes, and PRC figures. | First anchored in ADR-0015, `docs/prc-hardware-witness-map.md`, and `sources/prc_hardware_witness_map.json`. |
 | A PRC-derived schematic key can be tied to executable AS behavior before larger circuit design. | ADR-0015 witness map, AS Universal Cell probe, and `schematics/single_node_triangular_rlem_trace.json`. | First implemented in ADR-0016 with validation in `tests/test_single_node_schematic_trace.py`. |
 | A rendered schematic can stay subordinate to a structured executable trace. | `schematics/single_node_triangular_rlem_trace.json`, `autarkic_systems/schematic_svg.py`, and `schematics/single_node_triangular_rlem_trace.svg`. | First implemented in ADR-0017 with exact renderer-output matching tests. |
+| Schematic-linked traces can cover processor memory toggle without adding new UC semantics. | AS Universal Cell processor probe and `schematics/processor_memory_toggle_trace.json`. | Implemented in ADR-0018 with validation in `tests/test_processor_memory_toggle_trace.py`. |
 
 ## Evidence Gaps
 
@@ -72,8 +74,9 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   in the SJAS paper archive.
 - PRC's Scheme simulator and TLA+ sketch need deeper verification before AS
   treats either as canonical.
-- AS has rendered only the first single-node PRC-derived schematic; processor,
-  stem, larger GELC, and physical-simulation renders remain open.
+- AS has rendered only the first single-node PRC-derived schematic; processor
+  rendering, stem traces, larger GELC, and physical-simulation renders remain
+  open.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

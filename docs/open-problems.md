@@ -105,6 +105,7 @@ RLEM, GELC geometry, circulator physical hypotheses, RALA/reconfiguration
 pressure, the UC formal model, the ASM simulator, and schematic figures.
 ADR-0016 added the first AS-owned single-node triangular RLEM schematic key and
 paired it with one executable Universal Cell transition trace. Remaining work
-is to add processor/stem traces and decide how larger GELC examples should be
+is to add stem traces and decide how larger GELC examples should be
 reconstructed. ADR-0017 added a generated SVG render for the first structured
-key, with tests preventing drift from the JSON trace.
+key, with tests preventing drift from the JSON trace. ADR-0018 added a
+processor memory-toggle trace using the same schema and executable replay path.

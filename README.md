@@ -40,6 +40,8 @@ the project legible:
   Universal Cell transition trace.
 - `docs/single-node-schematic-svg.md` records the first rendered view of that
   structured schematic trace.
+- `docs/processor-memory-toggle-trace.md` records the second schematic-linked
+  Universal Cell trace, covering processor memory toggle behavior.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
@@ -54,6 +56,8 @@ the project legible:
   schematic-linked transition trace machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.svg` is the generated rendered
   view checked against the JSON trace.
+- `schematics/processor_memory_toggle_trace.json` makes the processor
+  memory-toggle schematic trace machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

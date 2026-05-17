@@ -326,3 +326,29 @@
   the new module and tests, XML parsing passed for
   `schematics/single_node_triangular_rlem_trace.svg`, and `git diff --check`
   passed.
+
+## 2026-05-17 - Processor Memory Toggle Trace
+
+- Added ADR-0018 for the second schematic-linked Universal Cell trace: a
+  processor cell with left memory that routes a standard signal and toggles
+  memory to right.
+- Wrote `tests/test_processor_memory_toggle_trace.py` before implementation.
+  The red run failed because `PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID` was
+  not yet exported from `autarkic_systems.schematic_trace`.
+- Added `schematics/processor_memory_toggle_trace.json` with the processor
+  role, left-memory signal flow, expected output, complete AS `Cell` field
+  mapping, PRC witness references, and expected memory toggle.
+- Generalized `autarkic_systems/schematic_trace.py` with
+  `load_schematic_trace` and `validate_schematic_trace` while preserving the
+  ADR-0016 single-node loader/validator wrappers.
+- Added `docs/processor-memory-toggle-trace.md` as the human-facing trace
+  boundary note.
+- Updated README, roadmap, literature map, open problems, single-node trace
+  note, project memory, and lessons so P7 now has both wire and processor
+  schematic-linked traces.
+- Verified `python -m unittest tests.test_single_node_schematic_trace
+  tests.test_single_node_schematic_svg tests.test_processor_memory_toggle_trace`
+  passed 22 tests, `python -m unittest discover` passed 76 tests, py_compile
+  passed for the touched module and new test, `jq -e .
+  schematics/processor_memory_toggle_trace.json` passed, and `git diff --check`
+  passed.

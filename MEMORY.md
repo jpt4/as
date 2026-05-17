@@ -75,3 +75,8 @@
   `docs/single-node-schematic-svg.md`, and `autarkic_systems/schematic_svg.py`
   render that first P7 trace. The SVG is generated from the JSON trace and must
   exactly match renderer output in tests.
+- `schematics/processor_memory_toggle_trace.json`,
+  `docs/processor-memory-toggle-trace.md`, and
+  `tests/test_processor_memory_toggle_trace.py` add the second P7 schematic
+  trace. It covers processor `step_fixed_cell` behavior with left-memory
+  routing and memory toggle to right.

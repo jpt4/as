@@ -14,6 +14,10 @@ Status update: ADR-0017 renders this structured trace as
 `schematics/single_node_triangular_rlem_trace.svg`. The SVG is generated from
 the JSON trace and checked against renderer output.
 
+Status update: ADR-0018 adds the next schematic-linked trace,
+`schematics/processor_memory_toggle_trace.json`, covering processor routing and
+memory toggle behavior with the same schema.
+
 ## Schematic Key
 
 The node is a triangular RLEM/Universal Cell key with three oriented ports:
@@ -84,8 +88,8 @@ the executable transition result.
 
 ## Open Follow-Ups
 
-- Add a processor-memory-toggle schematic trace.
 - Add a stem automail schematic trace.
+- Add a rendered SVG for the processor memory-toggle trace.
 - Improve the generated SVG rendering while preserving JSON-as-source tests.
 - Decide whether larger GELC examples should be reconstructed as structured
   diagrams or redrawn from `figures.pdf`.
