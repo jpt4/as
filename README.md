@@ -26,6 +26,8 @@ the project legible:
   `sources/manifest.json`.
 - `docs/literature-map.md` and `docs/open-problems.md` connect reviewed
   sources to AS claims and next ADRs.
+- `docs/proof-apparatus-options.md` records the first proof-apparatus
+  direction decision.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.

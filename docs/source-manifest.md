@@ -10,7 +10,9 @@ context:
 - `prc`: the embodied substrate and reconfigurable hardware program;
 - `sjas`: the self-justifying logic program;
 - `proflog`: an adjacent semantic-tableaux candidate referenced by current
-  SJAS notes but not yet confirmed as the active executable frontier.
+  SJAS notes but not yet confirmed as the active executable frontier;
+- `leantap`: an adjacent transparent tableaux reference named by ISLA notes and
+  reviewed for ADR-0010.
 
 ## Verification
 
@@ -28,6 +30,7 @@ git -C /home/sean/Projects/_upstream/afs rev-parse HEAD
 git -C /home/sean/Projects/_upstream/prc rev-parse HEAD
 git -C /home/sean/Projects/_upstream/sjas rev-parse HEAD
 git -C /home/sean/Projects/_upstream/proflog rev-parse HEAD
+git -C /home/sean/Projects/_upstream/leanTAP rev-parse HEAD
 ```
 
 ## Notes
@@ -44,3 +47,5 @@ git -C /home/sean/Projects/_upstream/proflog rev-parse HEAD
   public Proflog main branch does not contain the newer ADR-006x material.
 - Public Proflog did not pass an execution smoke test under Guile in this
   environment. That failure is a gap to track, not a reason to block AS work.
+- LeanTAP is included as a design witness for a compact transparent tableaux
+  prover. ADR-0010 does not make it a required runtime dependency.

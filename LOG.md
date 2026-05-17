@@ -136,3 +136,19 @@
   tests, `python -m unittest tests.test_claim_manifest` passed 4 tests,
   `python -m unittest discover` passed 30 tests, JSON checks passed, and
   `git diff --check` passed.
+
+## 2026-05-17 - Proof Apparatus Options
+
+- Re-read `/home/sean/Projects/AGENTS.md`, the AS `AGENTS.md`, and the active
+  thread goal before continuing. The project remains an open end-of-month AS
+  work goal, and the live branch is `adr-0010-proof-apparatus-options`.
+- Cloned and reviewed `namin/leanTAP` at
+  `c17864a911c0c3cbd727b43743fdcb19b43714b8` because SJAS ISLA notes point to
+  alphaLeanTAP as a possible tableaux direction.
+- Reviewed the visible public Proflog source and the SJAS `nachlass/LOG.md`
+  Proflog boundary notes again. Public Proflog remains relevant background, but
+  it still does not expose the active ADR-006x frontier described by SJAS.
+- Added ADR-0010 and `docs/proof-apparatus-options.md`. The decision is to
+  start with a minimal AS-local proof-certificate checker for the current
+  transition claims, use LeanTAP as a transparent design reference, and defer
+  Proflog as a dependency until its active frontier is recovered or replaced.

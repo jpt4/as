@@ -38,8 +38,13 @@ Proflog, or a reference to another transparent tableaux implementation?
 Why it matters: SJAS requirements depend on proof apparatus details; AS cannot
 claim formal self-confidence without one.
 
-Likely next artifact: an ADR comparing Fitting/Proflog, LeanTAP, and a minimal
-local checker against transparency, testability, and Willard compatibility.
+Status: decided by ADR-0010. AS will start with a minimal local
+proof-certificate checker over the current transition-claim surface, use
+LeanTAP as a transparent tableaux reference, and keep Proflog/Fitting as the
+long-term SJAS-aligned path once the active frontier is recovered or replaced.
+
+Likely next artifact: ADR-0011 should define the first proof-object syntax and
+red tests for a local checker.
 
 ## P4: Define The First Object Language
 

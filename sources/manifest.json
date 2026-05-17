@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "reviewed_at": "2026-05-16",
+  "reviewed_at": "2026-05-17",
   "purpose": "Pinned source manifest for Autarkic Systems and the subordinate or adjacent repositories used to define its first working requirements.",
   "repositories": [
     {
@@ -73,6 +73,20 @@
       "public_pushed_at": "2026-02-18T18:53:40Z",
       "status": "public main does not expose the newer Proflog ADR-006x frontier described by SJAS logs; guile proflog.scm fails with an unbound example symbol in this environment",
       "role": "Candidate semantic-tableaux implementation background for SJAS/AFS proof apparatus work."
+    },
+    {
+      "id": "leantap",
+      "name": "leanTAP",
+      "relationship": "adjacent",
+      "url": "https://github.com/namin/leanTAP",
+      "clone_url": "https://github.com/namin/leanTAP.git",
+      "local_path": "/home/sean/Projects/_upstream/leanTAP",
+      "default_branch": "master",
+      "reviewed_commit": "c17864a911c0c3cbd727b43743fdcb19b43714b8",
+      "public_remote_head_at_review": "c17864a911c0c3cbd727b43743fdcb19b43714b8",
+      "public_pushed_at": "2024-06-14T16:57:03-04:00",
+      "status": "reviewed as a compact transparent tableaux reference for ADR-0010; not adopted as a runtime dependency",
+      "role": "Adjacent first-order classical tableaux prover reference named by SJAS ISLA notes."
     }
   ],
   "verification": {

@@ -163,3 +163,19 @@ Deliverables:
 Status: accepted in `docs/adr/0009-stem-automail-claim.md`. Implemented in
 `autarkic_systems/transition_predicates.py`, `claims/transition_claims.json`,
 and `autarkic_systems/claim_manifest.py`.
+
+## ADR-0010: Proof Apparatus Options
+
+Goal: choose the first proof-side apparatus direction before implementing proof
+objects.
+
+Deliverables:
+
+- comparison of Proflog/Fitting, LeanTAP, and a minimal AS-local checker;
+- source-manifest and literature-map updates for LeanTAP;
+- explicit next ADR shape for proof-certificate syntax.
+
+Status: accepted in `docs/adr/0010-proof-apparatus-options.md`. The decision is
+to start with a minimal AS-local proof-certificate checker, use LeanTAP as a
+transparent reference, and defer public Proflog as a dependency until the
+active SJAS/Proflog frontier is recovered or replaced.

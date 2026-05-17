@@ -41,7 +41,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | --- | --- | --- | --- |
 | Proflog public repo | `/home/sean/Projects/_upstream/proflog/proflog.scm` | Candidate Fitting-style semantic-tableaux implementation. | Background only; public main failed the local Guile smoke test and does not expose the newer SJAS ADR-006x frontier. |
 | Fitting, "Tableaux for Logic Programming" | `/home/sean/Projects/_upstream/proflog/LPTableaus.pdf` | The immediate source for Proflog's intended proof/refutation apparatus. | Candidate proof-apparatus source for AFS-R3. |
-| LeanTAP reference from ISLA notes | External reference in ISLA notes | Candidate transparent tableaux prover direction. | Not yet reviewed in AS; possible future source. |
+| LeanTAP/alphaLeanTAP | `/home/sean/Projects/_upstream/leanTAP` | Candidate transparent tableaux prover direction referenced by ISLA notes. | Reviewed for ADR-0010; useful as a design reference, not the first AS dependency. |
 
 ## Claim-To-Source Map
 
@@ -53,6 +53,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | Fixed-role transition predicates are only a bridge, not a proof of PRC. | PRC formal model has broader stem/automail/buffer behavior. | Explicit coverage limit in ADR-0004 and ADR-0005. |
 | SJAS work requires careful expressivity/proof-apparatus tradeoffs. | SJAS README and Willard witness archive. | Strong enough for AFS requirements; detailed theorem claims still need paper-level annotation. |
 | Proflog is relevant but not currently a passing dependency. | SJAS `nachlass/LOG.md`, public Proflog repo, failed Guile run. | Gap recorded in `docs/afs-requirements.md` and `sources/manifest.json`. |
+| AS should start proof work with a tiny local certificate checker. | Current claim manifest, LeanTAP source, public Proflog source, SJAS Proflog boundary log. | Decision recorded in ADR-0010 and `docs/proof-apparatus-options.md`. |
 
 ## Evidence Gaps
 
@@ -65,3 +66,5 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   public Proflog `main`.
 - AS has not yet annotated the actual Willard papers at theorem/definition
   granularity; current use is repository-level and README-level.
+- LeanTAP has now been reviewed as a transparency reference, but AS has not
+  ported or executed it as a project dependency.
