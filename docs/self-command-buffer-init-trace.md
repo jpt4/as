@@ -24,6 +24,11 @@ This is not full command-buffer execution. It does not cover neighbor routing,
 self-target `standard-signal`, write-buffer commands, larger GELC examples, or
 physical simulation.
 
+ADR-0074 registers this trace in
+`evidence/self_command_buffer_init_bundle.json`, so the integrated evidence
+validator checks the claim example, proof certificate, JSON trace, SVG render,
+and source-status boundaries together.
+
 ## Schematic Role
 
 The artifact uses the same triangular RLEM/GELC schematic vocabulary as the

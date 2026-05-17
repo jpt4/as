@@ -1432,3 +1432,21 @@ Status: accepted in
 `docs/adr/0073-self-mailbox-unsupported-evidence-bundle.md`. Implemented in
 `evidence/self_mailbox_unsupported_bundle.json`, with tests in
 `tests/test_self_mailbox_unsupported_evidence_bundle.py`.
+
+## ADR-0074: Self Command-Buffer Init Evidence Bundle
+
+Goal: add the completed self-target command-buffer init dispatch as the sixth
+transition evidence bundle.
+
+Deliverables:
+
+- `evidence/self_command_buffer_init_bundle.json`;
+- registry entry in `evidence/manifest.json`;
+- tests proving bundle fields, artifact paths, cross-layer validation,
+  registry coverage, and drifted claim-ID rejection;
+- human-facing evidence-bundle note and stem command source-status cross-link.
+
+Status: accepted in
+`docs/adr/0074-self-command-buffer-init-evidence-bundle.md`. Implemented in
+`evidence/self_command_buffer_init_bundle.json`, with tests in
+`tests/test_self_command_buffer_init_evidence_bundle.py`.

@@ -33,6 +33,12 @@
       "path": "evidence/self_mailbox_unsupported_bundle.json",
       "claim_id": "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
       "expected_status": "self-mailbox-unsupported"
+    },
+    {
+      "bundle_id": "self-command-buffer-init-evidence-bundle",
+      "path": "evidence/self_command_buffer_init_bundle.json",
+      "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-INIT",
+      "expected_status": "stem-command-buffer-self-processed"
     }
   ]
 }

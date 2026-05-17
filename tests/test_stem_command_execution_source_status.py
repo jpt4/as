@@ -89,6 +89,21 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         )
         self.assertIn("unsupported-command preservation", bundle["summary"])
 
+    def test_self_command_buffer_init_evidence_bundle_is_recorded(self):
+        bundles = {
+            bundle["path"]: bundle
+            for bundle in self.status["implemented_evidence_bundles"]
+        }
+        bundle = bundles["evidence/self_command_buffer_init_bundle.json"]
+
+        self.assertEqual(bundle["adr"], "ADR-0074")
+        self.assertEqual(bundle["claim_id"], "UC-STEM-COMMAND-BUFFER-SELF-INIT")
+        self.assertEqual(
+            bundle["positive_example"],
+            "self command buffer processor left init",
+        )
+        self.assertIn("self-target command-buffer init", bundle["summary"])
+
     def test_legacy_command_and_target_divergences_are_recorded(self):
         divergences = {
             divergence["witness_id"]: divergence

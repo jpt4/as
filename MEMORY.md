@@ -353,3 +353,8 @@
   direct unsupported self-mailbox `write-buf-one` preservation boundary as the
   fifth evidence bundle and aligns the checked trace/SVG fixture with the
   named claim example.
+- ADR-0074 adds `docs/self-command-buffer-init-evidence-bundle.md`,
+  `evidence/self_command_buffer_init_bundle.json`, and
+  `tests/test_self_command_buffer_init_evidence_bundle.py`. It registers the
+  completed self-target `self/proc-l-init` command-buffer dispatch as the
+  sixth evidence bundle.

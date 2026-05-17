@@ -46,6 +46,13 @@
       "claim_id": "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
       "positive_example": "write buffer one unsupported preserved",
       "summary": "AS now has an integrated evidence bundle validating one direct self-mailbox unsupported-command preservation boundary across runtime, claim, proof, trace, render, and source-status boundaries."
+    },
+    {
+      "adr": "ADR-0074",
+      "path": "evidence/self_command_buffer_init_bundle.json",
+      "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-INIT",
+      "positive_example": "self command buffer processor left init",
+      "summary": "AS now has an integrated evidence bundle validating one completed self-target command-buffer init dispatch across runtime, claim, proof, trace, render, and source-status boundaries."
     }
   ],
   "legacy_divergences": [

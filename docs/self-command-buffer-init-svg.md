@@ -28,6 +28,10 @@ The SVG does not claim neighbor routing, self-target non-init execution,
 dynamic GELC reconfiguration, or physical circulator verification. It renders
 the one completed `self/proc-l-init` command-buffer trace from ADR-0039.
 
+ADR-0074 registers this SVG in
+`evidence/self_command_buffer_init_bundle.json`, so the render is validated as
+part of the same claim/proof/trace evidence path.
+
 ## Verification
 
 Run:

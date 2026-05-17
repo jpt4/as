@@ -1638,3 +1638,25 @@
   bundles, and `python -m unittest discover` passed 429 tests. `py_compile`
   passed for the touched tests, JSON parsing passed for the registry, new
   bundle, touched source status, and aligned trace.
+
+## 2026-05-17 - Self Command-Buffer Init Evidence Bundle
+
+- Added ADR-0074 to register the completed self-target command-buffer init
+  dispatch as the sixth transition evidence bundle.
+- Wrote `tests/test_self_command_buffer_init_evidence_bundle.py` before
+  implementation. The red run failed because
+  `evidence/self_command_buffer_init_bundle.json` was absent.
+- Added `evidence/self_command_buffer_init_bundle.json` for the positive
+  `self command buffer processor left init` example under
+  `UC-STEM-COMMAND-BUFFER-SELF-INIT`.
+- Registered the bundle in `evidence/manifest.json`, so the evidence registry
+  and CLI now validate six bundles.
+- Added `docs/self-command-buffer-init-evidence-bundle.md` and updated README,
+  roadmap, literature map, open problems, evidence registry docs, stem command
+  source status, project memory, and lessons.
+- Verified the focused bundle/registry/CLI/source-status stack passed 31
+  tests, the adjacent self command-buffer/evidence stack passed 71 tests, both
+  actual CLI text and JSON modes passed for six bundles, and
+  `python -m unittest discover` passed 436 tests. `py_compile` passed for the
+  touched tests, and JSON parsing passed for the registry, new bundle, touched
+  source status, and existing self command-buffer trace.

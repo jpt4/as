@@ -198,3 +198,6 @@
 - Negative-frontier evidence bundles are useful for the same reason as green
   execution bundles: they prove AS preserved a boundary instead of merely
   failing to implement behavior.
+- Evidence bundles should also cover decoded-command paths, not only direct
+  mailbox or channel tokens. That proves the decoder, runtime transition,
+  claim, proof, trace, and render stay aligned as a chain.

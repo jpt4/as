@@ -10,31 +10,31 @@ from autarkic_systems.evidence_bundle import (
 )
 
 
-BUNDLE = Path("evidence/self_mailbox_init_bundle.json")
+BUNDLE = Path("evidence/self_command_buffer_init_bundle.json")
 REGISTRY = Path("evidence/manifest.json")
-BUNDLE_ID = "self-mailbox-init-evidence-bundle"
-CLAIM_ID = "UC-STEM-SELF-MAILBOX-INIT-COMMAND"
-EXAMPLE = "processor left mailbox init"
-STATUS = "self-mailbox-processed"
+BUNDLE_ID = "self-command-buffer-init-evidence-bundle"
+CLAIM_ID = "UC-STEM-COMMAND-BUFFER-SELF-INIT"
+EXAMPLE = "self command buffer processor left init"
+STATUS = "stem-command-buffer-self-processed"
 
 
-class SelfMailboxInitEvidenceBundleTests(unittest.TestCase):
+class SelfCommandBufferInitEvidenceBundleTests(unittest.TestCase):
     def setUp(self):
         self.bundle = load_transition_evidence_bundle(BUNDLE)
 
-    def test_bundle_names_the_existing_self_mailbox_init_transition(self):
+    def test_bundle_names_the_existing_self_command_buffer_init_transition(self):
         self.assertEqual(self.bundle.schema_version, 1)
         self.assertEqual(self.bundle.bundle_id, BUNDLE_ID)
         self.assertEqual(self.bundle.claim_id, CLAIM_ID)
         self.assertEqual(
             self.bundle.predicate,
-            "self_mailbox_executes_init_command",
+            "stem_command_buffer_executes_self_init",
         )
         self.assertEqual(self.bundle.positive_example, EXAMPLE)
         self.assertEqual(self.bundle.transition_function, "step_stem_cell")
         self.assertEqual(self.bundle.expected_status, STATUS)
 
-    def test_bundle_records_self_mailbox_artifact_paths(self):
+    def test_bundle_records_self_command_buffer_artifact_paths(self):
         self.assertEqual(self.bundle.claim_manifest_path, Path("claims/transition_claims.json"))
         self.assertEqual(
             self.bundle.proof_certificate_path,
@@ -42,11 +42,11 @@ class SelfMailboxInitEvidenceBundleTests(unittest.TestCase):
         )
         self.assertEqual(
             self.bundle.schematic_trace_path,
-            Path("schematics/self_mailbox_init_trace.json"),
+            Path("schematics/self_command_buffer_init_trace.json"),
         )
         self.assertEqual(
             self.bundle.schematic_svg_path,
-            Path("schematics/self_mailbox_init_trace.svg"),
+            Path("schematics/self_command_buffer_init_trace.svg"),
         )
         self.assertEqual(
             self.bundle.hardware_witness_map_path,
@@ -80,14 +80,13 @@ class SelfMailboxInitEvidenceBundleTests(unittest.TestCase):
             },
         )
 
-    def test_registry_includes_self_mailbox_init_bundle(self):
+    def test_registry_includes_self_command_buffer_init_bundle(self):
         registry = load_evidence_bundle_registry(REGISTRY)
         entries = {entry.bundle_id: entry for entry in registry.bundles}
 
         self.assertEqual(len(entries), 6)
-        self.assertIn("recipient-init-command-message-transition-evidence-bundle", entries)
-        self.assertIn("recipient-non-init-command-rejection-evidence-bundle", entries)
-        self.assertIn("multi-command-recipient-rejection-evidence-bundle", entries)
+        self.assertIn("self-mailbox-init-evidence-bundle", entries)
+        self.assertIn("self-mailbox-unsupported-evidence-bundle", entries)
         self.assertIn(BUNDLE_ID, entries)
         self.assertEqual(entries[BUNDLE_ID].path, BUNDLE)
         self.assertEqual(entries[BUNDLE_ID].claim_id, CLAIM_ID)
@@ -96,10 +95,10 @@ class SelfMailboxInitEvidenceBundleTests(unittest.TestCase):
         results = validate_evidence_bundle_registry(registry)
         self.assertTrue(all(result.accepted for result in results), results)
 
-    def test_drifted_trace_path_is_rejected(self):
+    def test_drifted_claim_id_is_rejected(self):
         drifted = replace(
             self.bundle,
-            schematic_trace_path=Path("schematics/recipient_init_command_message_trace.json"),
+            claim_id="UC-STEM-SELF-MAILBOX-INIT-COMMAND",
         )
 
         results = validate_transition_evidence_bundle(drifted)
@@ -107,8 +106,8 @@ class SelfMailboxInitEvidenceBundleTests(unittest.TestCase):
         self.assertTrue(
             any(
                 not result.accepted
-                and result.subject == "schematic-trace"
-                and "transition mismatch" in result.detail
+                and result.subject == "claim-example"
+                and "predicate mismatch" in result.detail
                 for result in results
             ),
             results,
