@@ -39,6 +39,15 @@
       "summary": "AS now has a rendered SVG view checked exactly against the multi-command recipient rejection trace."
     }
   ],
+  "implemented_evidence_bundles": [
+    {
+      "adr": "ADR-0068",
+      "path": "evidence/recipient_non_init_command_rejection_bundle.json",
+      "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+      "positive_example": "fixed upstream standard-signal command rejected",
+      "summary": "AS now has an integrated evidence bundle validating one recipient non-init rejection boundary across claim, proof, trace, render, and source-status layers."
+    }
+  ],
   "implemented_source_statuses": [
     {
       "adr": "ADR-0057",

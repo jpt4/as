@@ -1325,3 +1325,20 @@ Deliverables:
 Status: accepted in `docs/adr/0067-evidence-registry-cli.md`. Implemented in
 `autarkic_systems/evidence_bundle.py`, with tests in
 `tests/test_evidence_bundle_cli.py`.
+
+## ADR-0068: Recipient Non-Init Rejection Evidence Bundle
+
+Goal: add the recipient non-init command-message rejection boundary as the
+second transition evidence bundle.
+
+Deliverables:
+
+- `evidence/recipient_non_init_command_rejection_bundle.json`;
+- registry entry in `evidence/manifest.json`;
+- tests proving bundle fields, artifact paths, cross-layer validation,
+  registry coverage, and drifted status rejection;
+- human-facing evidence-bundle note and source-status cross-link.
+
+Status: accepted in `docs/adr/0068-recipient-non-init-evidence-bundle.md`.
+Implemented in `evidence/recipient_non_init_command_rejection_bundle.json`,
+with tests in `tests/test_recipient_non_init_evidence_bundle.py`.

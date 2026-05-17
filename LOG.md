@@ -1503,3 +1503,26 @@
   tests, and `python -m unittest discover` passed 398 tests. `py_compile`
   passed for the touched module and tests, JSON parsing passed for the registry
   and registered bundle manifests, and `git diff --check` passed.
+
+## 2026-05-17 - Recipient Non-Init Rejection Evidence Bundle
+
+- Added ADR-0068 to register the recipient non-init command-message rejection
+  boundary as the second transition evidence bundle.
+- Wrote `tests/test_recipient_non_init_evidence_bundle.py` before
+  implementation. The red run failed because
+  `evidence/recipient_non_init_command_rejection_bundle.json` was absent.
+- Added `evidence/recipient_non_init_command_rejection_bundle.json` for the
+  positive `fixed upstream standard-signal command rejected` example under
+  `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`.
+- Registered the bundle in `evidence/manifest.json`, so the evidence registry
+  and CLI now validate two bundles: the recipient init transition and the
+  recipient non-init rejection boundary.
+- Added `docs/recipient-non-init-evidence-bundle.md` and updated README,
+  roadmap, literature map, open problems, evidence registry docs, recipient
+  non-init source status, project memory, and lessons.
+- Verified the focused bundle/registry/CLI/source-status tests passed 20
+  tests, the actual registry CLI printed an all-`OK` report for two bundles,
+  the adjacent rejection/evidence stack passed 73 tests, and
+  `python -m unittest discover` passed 404 tests. `py_compile` passed for the
+  touched tests, JSON parsing passed for the registry, new bundle, and touched
+  source-status manifest, and `git diff --check` passed.

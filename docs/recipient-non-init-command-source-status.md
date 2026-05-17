@@ -60,6 +60,12 @@ ADR-0060 adds the corresponding schematic-linked trace in
 ADR-0061 adds the corresponding rendered SVG view in
 `schematics/multi_command_recipient_rejection_trace.svg`.
 
+ADR-0068 records the single-token upstream `standard-signal` rejection as an
+integrated evidence bundle in
+`evidence/recipient_non_init_command_rejection_bundle.json`, tying the claim,
+proof certificate, schematic trace, SVG render, hardware witness map, and
+source-status boundaries together.
+
 The rejection evidence ladder is complete again. `standard-signal` and
 write-buffer command execution should be revisited only if later source
 evidence resolves their runtime surfaces.
@@ -72,6 +78,7 @@ Run:
 python -m unittest tests.test_recipient_non_init_command_source_status
 ```
 
-The tests check the blocking decision, implemented claim/trace/SVG/source-status
-surfaces, standard-signal divergence, write-buffer source divergences,
-multi-command policy boundary, and the updated source-status frontier.
+The tests check the blocking decision, implemented
+claim/trace/SVG/evidence-bundle/source-status surfaces, standard-signal
+divergence, write-buffer source divergences, multi-command policy boundary,
+and the updated source-status frontier.

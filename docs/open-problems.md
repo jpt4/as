@@ -91,6 +91,8 @@ ADR-0066 adds the evidence bundle registry so those integrated paths can be
 discovered and batch-validated as they multiply.
 ADR-0067 adds a module CLI so the registry can be validated directly from the
 command line.
+ADR-0068 adds a second registered evidence bundle for the recipient non-init
+`standard-signal` rejection boundary.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -227,6 +229,8 @@ transition so the claim/proof/trace/render/source path can be inspected as one
 artifact.
 ADR-0066 records the registry for those integrated evidence bundles.
 ADR-0067 exposes that registry validation as an operator-facing command.
+ADR-0068 registers the recipient non-init rejection bundle, so the registry
+covers both an executable init slice and a blocked-command rejection boundary.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.

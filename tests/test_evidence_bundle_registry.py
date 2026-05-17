@@ -13,6 +13,10 @@ BUNDLE = Path("evidence/recipient_init_command_message_bundle.json")
 BUNDLE_ID = "recipient-init-command-message-transition-evidence-bundle"
 CLAIM_ID = "UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED"
 STATUS = "recipient-init-command-message-processed"
+REJECTION_BUNDLE = Path("evidence/recipient_non_init_command_rejection_bundle.json")
+REJECTION_BUNDLE_ID = "recipient-non-init-command-rejection-evidence-bundle"
+REJECTION_CLAIM_ID = "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED"
+REJECTION_STATUS = "rejected-input"
 
 
 class EvidenceBundleRegistryTests(unittest.TestCase):
@@ -26,13 +30,22 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         self.assertIn("transition evidence bundles", self.registry.purpose)
 
     def test_registry_records_the_recipient_init_bundle(self):
-        self.assertEqual(len(self.registry.bundles), 1)
-        entry = self.registry.bundles[0]
+        entries = {entry.bundle_id: entry for entry in self.registry.bundles}
+        entry = entries[BUNDLE_ID]
 
         self.assertEqual(entry.bundle_id, BUNDLE_ID)
         self.assertEqual(entry.path, BUNDLE)
         self.assertEqual(entry.claim_id, CLAIM_ID)
         self.assertEqual(entry.expected_status, STATUS)
+
+    def test_registry_records_the_recipient_non_init_rejection_bundle(self):
+        entries = {entry.bundle_id: entry for entry in self.registry.bundles}
+        entry = entries[REJECTION_BUNDLE_ID]
+
+        self.assertEqual(len(self.registry.bundles), 2)
+        self.assertEqual(entry.path, REJECTION_BUNDLE)
+        self.assertEqual(entry.claim_id, REJECTION_CLAIM_ID)
+        self.assertEqual(entry.expected_status, REJECTION_STATUS)
 
     def test_registry_validates_all_registered_bundles(self):
         results = validate_evidence_bundle_registry(self.registry)

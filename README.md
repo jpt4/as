@@ -102,6 +102,9 @@ the project legible:
 - `docs/recipient-init-transition-evidence-bundle.md` records the first
   integrated evidence bundle tying one recipient init transition to its claim,
   proof certificate, schematic trace, SVG render, and source-status boundaries.
+- `docs/recipient-non-init-evidence-bundle.md` records the second integrated
+  evidence bundle, tying one recipient non-init rejection boundary to the same
+  cross-layer evidence surface.
 - `docs/evidence-bundle-registry.md` records the registry for discovering and
   batch-validating transition evidence bundles.
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
@@ -188,6 +191,9 @@ the project legible:
 - `evidence/recipient_init_command_message_bundle.json` makes one
   recipient-init transition evidence path inspectable across runtime, claim,
   proof, schematic, render, and source-status layers.
+- `evidence/recipient_non_init_command_rejection_bundle.json` makes one
+  recipient non-init rejection evidence path inspectable across the same
+  layers.
 - `evidence/manifest.json` indexes transition evidence bundles for
   batch-validation.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first

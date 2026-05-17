@@ -181,3 +181,6 @@
 - A registry that only runs in unit tests is still too hidden for operators.
   Give important validation surfaces a direct command with meaningful exit
   codes once the underlying checks are stable.
+- Evidence registries should include blocked-boundary examples, not only
+  successful execution examples. A rejection bundle proves the negative
+  frontier is just as inspectable as the green path.

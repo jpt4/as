@@ -324,3 +324,8 @@
   `autarkic_systems/evidence_bundle.py`: run
   `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
   to validate the evidence registry with `OK`/`FAIL` output and exit codes.
+- ADR-0068 adds `docs/recipient-non-init-evidence-bundle.md`,
+  `evidence/recipient_non_init_command_rejection_bundle.json`, and
+  `tests/test_recipient_non_init_evidence_bundle.py`. It registers the
+  recipient upstream `standard-signal` rejection boundary as the second
+  evidence bundle.

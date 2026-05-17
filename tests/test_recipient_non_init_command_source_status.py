@@ -61,6 +61,20 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
             svgs["ADR-0061"]["path"],
             "schematics/multi_command_recipient_rejection_trace.svg",
         )
+        bundle = self.status["implemented_evidence_bundles"][0]
+        self.assertEqual(bundle["adr"], "ADR-0068")
+        self.assertEqual(
+            bundle["path"],
+            "evidence/recipient_non_init_command_rejection_bundle.json",
+        )
+        self.assertEqual(
+            bundle["claim_id"],
+            "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+        )
+        self.assertEqual(
+            bundle["positive_example"],
+            "fixed upstream standard-signal command rejected",
+        )
         source_statuses = {
             item["adr"]: item for item in self.status["implemented_source_statuses"]
         }

@@ -3,10 +3,14 @@
 ADR-0066 adds `evidence/manifest.json`, the project registry for transition
 evidence bundles.
 
-The registry currently lists
-`evidence/recipient_init_command_message_bundle.json`, the ADR-0065 bundle for
-the positive fixed-upstream recipient init command-message transition. Future
-bundle-producing ADRs should add one entry per bundle.
+The registry currently lists:
+
+- `evidence/recipient_init_command_message_bundle.json`, the ADR-0065 bundle
+  for the positive fixed-upstream recipient init command-message transition;
+- `evidence/recipient_non_init_command_rejection_bundle.json`, the ADR-0068
+  bundle for the positive upstream `standard-signal` rejection boundary.
+
+Future bundle-producing ADRs should add one entry per bundle.
 
 ## Validation
 
@@ -44,6 +48,6 @@ python -m unittest tests.test_evidence_bundle_registry
 python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json
 ```
 
-The tests cover registry loading, the current ADR-0065 bundle entry, whole
-registry validation, duplicate bundle-ID rejection, and missing bundle-path
-rejection.
+The tests cover registry loading, the current ADR-0065 and ADR-0068 bundle
+entries, whole registry validation, duplicate bundle-ID rejection, and missing
+bundle-path rejection.

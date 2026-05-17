@@ -9,6 +9,12 @@
       "path": "evidence/recipient_init_command_message_bundle.json",
       "claim_id": "UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED",
       "expected_status": "recipient-init-command-message-processed"
+    },
+    {
+      "bundle_id": "recipient-non-init-command-rejection-evidence-bundle",
+      "path": "evidence/recipient_non_init_command_rejection_bundle.json",
+      "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+      "expected_status": "rejected-input"
     }
   ]
 }
