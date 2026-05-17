@@ -190,3 +190,5 @@
 - A registry should fail closed over its artifact directory. If a bundle file
   can sit beside the manifest without being listed, the registry is only a
   partial index.
+- Once a validation command matters to agents or CI, add JSON output before
+  anyone starts scraping human `OK` lines.

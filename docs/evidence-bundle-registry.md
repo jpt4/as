@@ -40,6 +40,16 @@ python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json
 The command prints one `OK` or `FAIL` line per validation subject and exits
 with code `0` only when every registry and bundle validation passes.
 
+ADR-0071 adds machine-readable output for the same command:
+
+```sh
+python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json --format json
+```
+
+The JSON payload records the registry ID, overall accepted status, bundle
+count, validation result count, and one structured record per validation
+result.
+
 ## Boundary
 
 The registry is an index and batch-verification surface. It does not create new
@@ -52,6 +62,7 @@ Run:
 ```sh
 python -m unittest tests.test_evidence_bundle_registry
 python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json
+python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json --format json
 ```
 
 The tests cover registry loading, the current ADR-0065, ADR-0068, and ADR-0069

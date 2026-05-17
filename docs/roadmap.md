@@ -1376,3 +1376,22 @@ Status: accepted in `docs/adr/0070-evidence-registry-completeness.md`.
 Implemented in `autarkic_systems/evidence_bundle.py`, with tests in
 `tests/test_evidence_bundle_registry.py` and
 `tests/test_evidence_bundle_cli.py`.
+
+## ADR-0071: Evidence CLI JSON Output
+
+Goal: make evidence registry validation consumable by automation without text
+scraping.
+
+Deliverables:
+
+- `--format text|json` option for
+  `python -m autarkic_systems.evidence_bundle`;
+- structured JSON report payload with registry ID, accepted status, bundle
+  count, result count, and validation result records;
+- tests covering successful JSON output, failing JSON output, and module
+  execution in JSON mode;
+- human-facing registry command documentation update.
+
+Status: accepted in `docs/adr/0071-evidence-cli-json-output.md`. Implemented
+in `autarkic_systems/evidence_bundle.py`, with tests in
+`tests/test_evidence_bundle_cli.py`.

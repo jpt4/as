@@ -1570,3 +1570,20 @@
   adjacent evidence-bundle stack passed 27 tests, and
   `python -m unittest discover` passed 411 tests. `py_compile` passed for the
   touched module and tests, and `git diff --check` passed.
+
+## 2026-05-17 - Evidence CLI JSON Output
+
+- Added ADR-0071 to expose evidence registry validation as structured JSON.
+- Extended `tests/test_evidence_bundle_cli.py` before implementation. The red
+  run failed because `registry_validation_report_payload` was absent.
+- Added `registry_validation_report_payload` and `--format text|json` to the
+  evidence registry CLI while preserving text as the default.
+- The JSON payload records registry ID, overall accepted status, bundle count,
+  result count, and per-subject validation results. Failure payloads keep the
+  same non-zero exit behavior as text output.
+- Updated README, roadmap, literature map, open problems, evidence registry
+  docs, project memory, and lessons.
+- Verified the focused CLI tests passed 8 tests, both actual CLI text and JSON
+  modes passed, the adjacent evidence stack passed 31 tests, and
+  `python -m unittest discover` passed 415 tests. `py_compile` passed for the
+  touched module and tests, and `git diff --check` passed.

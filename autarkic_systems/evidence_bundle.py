@@ -175,6 +175,28 @@ def format_registry_validation_report(
     return "\n".join(lines)
 
 
+def registry_validation_report_payload(
+    registry: EvidenceBundleRegistry,
+    results: list[EvidenceBundleValidation],
+) -> dict[str, Any]:
+    """Return a structured registry validation report payload."""
+
+    return {
+        "registry_id": registry.registry_id,
+        "accepted": all(result.accepted for result in results),
+        "bundle_count": len(registry.bundles),
+        "result_count": len(results),
+        "results": [
+            {
+                "subject": result.subject,
+                "accepted": result.accepted,
+                "detail": result.detail,
+            }
+            for result in results
+        ],
+    }
+
+
 def run_evidence_bundle_cli(argv: list[str] | None = None) -> int:
     """Run the evidence bundle registry validation command."""
 
@@ -187,11 +209,21 @@ def run_evidence_bundle_cli(argv: list[str] | None = None) -> int:
         default="evidence/manifest.json",
         help="Path to the evidence bundle registry JSON.",
     )
+    parser.add_argument(
+        "--format",
+        choices=("text", "json"),
+        default="text",
+        help="Output format for the validation report.",
+    )
     args = parser.parse_args(argv)
 
     registry = load_evidence_bundle_registry(args.registry)
     results = validate_evidence_bundle_registry(registry)
-    print(format_registry_validation_report(registry, results))
+    if args.format == "json":
+        payload = registry_validation_report_payload(registry, results)
+        print(json.dumps(payload, sort_keys=True))
+    else:
+        print(format_registry_validation_report(registry, results))
     return 0 if all(result.accepted for result in results) else 1
 
 

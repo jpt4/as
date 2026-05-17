@@ -338,3 +338,7 @@
   `autarkic_systems/evidence_bundle.py`. The evidence registry CLI now reports
   `registry-completeness` and rejects sibling `*_bundle.json` files that are
   not listed in `evidence/manifest.json`.
+- ADR-0071 adds `--format json` to
+  `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`.
+  The JSON report includes registry ID, accepted status, bundle count, result
+  count, and per-result subject/accepted/detail records.
