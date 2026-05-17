@@ -3,6 +3,8 @@
 ADR-0077 adds `autarkic_systems/transition_chains.py`, a small executable
 handoff from a stem neighbor-delivery transition into a recipient command
 consumption transition.
+ADR-0078 adds a named chain claim and proof-certificate surface for this
+handoff.
 
 The chain is intentionally narrower than a multi-cell simulator. It composes
 one sender step and one recipient step:

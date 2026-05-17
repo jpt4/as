@@ -112,6 +112,8 @@ ADR-0076 registers the completed neighbor-target command-buffer delivery path
 as the eighth evidence bundle.
 ADR-0077 adds the first executable two-step chain from neighbor delivery into
 recipient init-family command consumption.
+ADR-0078 promotes that handoff into a named chain claim and proof-certificate
+surface.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -268,6 +270,9 @@ as an integrated evidence bundle.
 ADR-0077 adds the first executable two-step chain from neighbor delivery into
 recipient init-family command consumption without adding a scheduler or non-init
 command execution.
+ADR-0078 promotes that two-step handoff into a named chain claim and
+proof-certificate surface while keeping it separate from the single-transition
+claim language.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.

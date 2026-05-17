@@ -211,3 +211,7 @@
 - A two-step chain is a useful middle layer before a simulator. It can prove
   sender and recipient transitions compose while still refusing topology,
   scheduling, overwrite, and non-init execution claims.
+- Chain claims should not be smuggled into a single-transition language. When
+  a claim depends on sender state, recipient preconditions, handoff state, and
+  a second transition, give it a separate manifest shape until the project has
+  a real chain object language.

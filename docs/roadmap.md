@@ -1503,3 +1503,24 @@ Deliverables:
 Status: accepted in `docs/adr/0077-neighbor-delivery-recipient-chain.md`.
 Implemented in `autarkic_systems/transition_chains.py`, with tests in
 `tests/test_neighbor_delivery_recipient_chain.py`.
+
+## ADR-0078: Neighbor Delivery Chain Claim
+
+Goal: promote the ADR-0077 two-step handoff into a named chain claim and proof
+surface without forcing it into the single-transition claim language.
+
+Deliverables:
+
+- `claims/transition_chain_claims.json`;
+- `claims/transition_chain_proof_certificates.json`;
+- `autarkic_systems/transition_chain_predicates.py`;
+- `autarkic_systems/chain_claims.py`;
+- tests proving manifest loading, example evaluation, proof-certificate
+  coverage, positive predicate acceptance, and non-init delivered-token
+  rejection;
+- human-facing claim note and project navigation updates.
+
+Status: accepted in `docs/adr/0078-neighbor-delivery-chain-claim.md`.
+Implemented in `claims/transition_chain_claims.json` and
+`autarkic_systems/chain_claims.py`, with tests in
+`tests/test_neighbor_delivery_chain_claim.py`.

@@ -374,3 +374,11 @@
   `neighbor-b/proc-l-init` delivery output into an empty recipient upstream
   tuple and consumes it through the existing recipient init-family command
   logic, while reporting explicit precondition and non-init boundaries.
+- ADR-0078 adds `docs/neighbor-delivery-chain-claim.md`,
+  `claims/transition_chain_claims.json`,
+  `claims/transition_chain_proof_certificates.json`,
+  `autarkic_systems/transition_chain_predicates.py`,
+  `autarkic_systems/chain_claims.py`, and
+  `tests/test_neighbor_delivery_chain_claim.py`. It creates a separate
+  manifest-example claim/proof surface for the ADR-0077 two-step handoff
+  rather than forcing chain claims into the single-transition claim language.

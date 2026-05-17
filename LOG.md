@@ -1730,3 +1730,27 @@
   neighbor-delivery/recipient command stack passed 32 tests, and
   `python -m unittest discover` passed 454 tests. `py_compile` passed for the
   new module and test, and `git diff --check` passed.
+
+## 2026-05-17 - Neighbor Delivery Chain Claim
+
+- Added ADR-0078 to promote the ADR-0077 two-step handoff into a named chain
+  claim and proof-certificate surface without forcing it into the
+  single-transition claim language.
+- Wrote `tests/test_neighbor_delivery_chain_claim.py` before implementation.
+  The red run failed because `autarkic_systems.chain_claims` was absent.
+- Added `claims/transition_chain_claims.json` for
+  `UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-CONSUMED`, with one positive
+  `neighbor-b/proc-l-init` consumption example and three boundary examples.
+- Added `claims/transition_chain_proof_certificates.json`,
+  `autarkic_systems/transition_chain_predicates.py`, and
+  `autarkic_systems/chain_claims.py` for manifest-example evaluation and
+  certificate verification over transition-chain examples.
+- Added `docs/neighbor-delivery-chain-claim.md` and updated README, roadmap,
+  literature map, open problems, the chain note, and the transition-claim
+  language note.
+- Verified the focused chain-claim test passed 5 tests, the adjacent
+  chain/object-language/proof stack passed 21 tests, and
+  `python -m unittest discover` passed 459 tests. JSON parsing passed for the
+  new claim/certificate manifests, `py_compile` passed for the new modules and
+  test, `git diff --check` passed, and the evidence registry JSON CLI still
+  reported 8 accepted bundles.

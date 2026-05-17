@@ -43,6 +43,11 @@ later proof or self-reference work builds on them.
 | `proof_objects` | Proof-certificate steps. The only current rule is `manifest-example`. |
 | `substrate_claims` | Paths to the transition-claim and proof-certificate manifests. |
 
+ADR-0078 deliberately keeps two-step transition-chain claims in
+`claims/transition_chain_claims.json` instead of forcing them into this
+single-transition language. Chain claims use their own checker until AS has
+enough multi-step artifacts to justify a full chain object language.
+
 ## Verification
 
 Fast validation is covered by:

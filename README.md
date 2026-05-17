@@ -126,6 +126,8 @@ the project legible:
 - `docs/neighbor-delivery-recipient-chain.md` records the first executable
   two-step handoff from neighbor command-buffer delivery into recipient
   init-family command consumption.
+- `docs/neighbor-delivery-chain-claim.md` records the named claim and
+  proof-certificate surface for that two-step handoff.
 - `docs/evidence-bundle-registry.md` records the registry for discovering and
   batch-validating transition evidence bundles.
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
@@ -179,6 +181,8 @@ the project legible:
 - `autarkic_systems/transition_chains.py` composes one neighbor delivery step
   with one recipient step, proving the delivered init-family token can be
   consumed without adding a general multi-cell simulator.
+- `autarkic_systems/chain_claims.py` validates the first transition-chain
+  claim manifest and manifest-example proof certificates.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -187,6 +191,10 @@ the project legible:
   rejection, and the self-target non-init completed-buffer append boundary.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
   those transition claims.
+- `claims/transition_chain_claims.json` names the first executable two-step
+  transition-chain claim.
+- `claims/transition_chain_proof_certificates.json` adds the matching
+  manifest-example proof certificate for that chain claim.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status
