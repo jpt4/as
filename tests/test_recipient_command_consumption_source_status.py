@@ -129,12 +129,16 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
             implemented_statuses["ADR-0058"]["path"],
             "sources/standard_signal_command_semantics_status.json",
         )
+        self.assertEqual(
+            implemented_statuses["ADR-0059"]["path"],
+            "sources/multi_command_recipient_input_policy_status.json",
+        )
 
     def test_stem_status_points_to_recipient_init_consumption_next(self):
         stem_status = json.loads(STEM_STATUS.read_text(encoding="utf-8"))
         allowed = stem_status["allowed_next_slices"]
 
-        self.assertTrue(any("multi-command" in item for item in allowed))
+        self.assertTrue(any("multiple command-message" in item for item in allowed))
         self.assertFalse(
             any(
                 item.startswith("Resolve write-buffer")

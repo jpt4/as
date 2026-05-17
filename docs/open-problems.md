@@ -81,6 +81,8 @@ ADR-0056 adds the rendered SVG view of that rejection trace.
 ADR-0057 records write-buffer command execution as still source-blocked.
 ADR-0058 records `standard-signal` command-token execution as still
 source-blocked while preserving ordinary binary-input standard-signal behavior.
+ADR-0059 selects reject-and-clear for multiple simultaneous recipient
+command-message inputs.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -206,3 +208,5 @@ ADR-0057 records the corresponding write-buffer semantics source-status
 decision.
 ADR-0058 records the corresponding `standard-signal` command-token semantics
 source-status decision.
+ADR-0059 records the corresponding multi-command recipient input policy
+decision.

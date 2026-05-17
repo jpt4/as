@@ -26,7 +26,7 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "select-multi-command-recipient-input-conflict-policy",
+            "add-multi-command-rejection-trace",
         )
         self.assertEqual(
             self.status["blocked_runtime_surfaces"],
@@ -87,7 +87,7 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
             },
         )
 
-    def test_existing_source_status_frontiers_point_to_multi_command_policy(self):
+    def test_existing_source_status_frontiers_point_to_multi_command_trace(self):
         recipient_non_init = json.loads(RECIPIENT_NON_INIT.read_text(encoding="utf-8"))
         recipient_status = json.loads(RECIPIENT_STATUS.read_text(encoding="utf-8"))
         stem_status = json.loads(STEM_STATUS.read_text(encoding="utf-8"))
@@ -102,11 +102,11 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "select-multi-command-recipient-input-conflict-policy",
+            "add-multi-command-rejection-trace",
         )
         self.assertTrue(
             any(
-                "multi-command" in item
+                "multiple command-message" in item
                 for item in recipient_status["allowed_next_slices"]
             )
         )

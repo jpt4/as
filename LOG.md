@@ -1297,3 +1297,30 @@
   for the touched source-status tests, JSON parsing passed for the
   standard-signal, write-buffer, recipient, and stem source-status manifests,
   and `git diff --check` passed.
+
+## 2026-05-17 - Multi-Command Recipient Input Policy
+
+- Added ADR-0059 to select a policy for multiple simultaneous recipient
+  command-message inputs.
+- Wrote `tests/test_multi_command_recipient_input_policy_status.py` before
+  implementation. The red run failed because
+  `sources/multi_command_recipient_input_policy_status.json` did not exist.
+- Added `sources/multi_command_recipient_input_policy_status.json`, selecting
+  reject-and-clear for two or more recipient command-message tokens and
+  confirming no priority or sequencing rule is inferred.
+- Verified existing runtime behavior for fixed direct conflicts, fixed
+  upstream conflicts, and stem direct conflicts without changing
+  `autarkic_systems/universal_cell.py`.
+- Added a fixed all-init command conflict example to
+  `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED` and added matching
+  proof-certificate coverage.
+- Updated recipient non-init, recipient consumption, write-buffer,
+  standard-signal, and stem source-status artifacts so the next safe slice is
+  a schematic-linked multi-command rejection trace.
+- Added `docs/multi-command-recipient-input-policy-status.md` and updated
+  README, roadmap, literature map, open problems, project memory, and lessons.
+- Verified the focused multi-command/source-status/claim suite passed 46 tests.
+  `python -m unittest discover` passed 353 tests, py_compile passed for the
+  touched source-status and claim tests, JSON parsing passed for the
+  multi-command, standard-signal, write-buffer, recipient, stem, claim, and
+  certificate manifests, and `git diff --check` passed.

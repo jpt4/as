@@ -270,6 +270,12 @@
   `tests/test_standard_signal_command_semantics_status.py`. It keeps
   `standard-signal` command-token execution blocked because formal
   command-table placement, ordinary binary-input standard-signal behavior, and
-  legacy special-message sketches do not define the same runtime surface. The
-  next safe source-status slice is multi-command recipient input conflict
-  policy.
+  legacy special-message sketches do not define the same runtime surface.
+  ADR-0059 later selects the multi-command recipient input policy.
+- ADR-0059 adds `docs/multi-command-recipient-input-policy-status.md`,
+  `sources/multi_command_recipient_input_policy_status.json`, and
+  `tests/test_multi_command_recipient_input_policy_status.py`. It selects
+  reject-and-clear for two or more simultaneous recipient command-message
+  inputs, adds an all-init conflict example to
+  `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`, and moves the next safe
+  slice to a multi-command rejection trace.

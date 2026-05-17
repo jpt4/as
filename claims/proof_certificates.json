@@ -211,6 +211,11 @@
         },
         {
           "rule": "manifest-example",
+          "example": "fixed all-init command conflict rejected",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
           "example": "recipient non-init rejection changed role",
           "expected": false
         }

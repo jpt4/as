@@ -149,3 +149,7 @@
   ordinary binary-input routing/buffering separate from command-message,
   self-mailbox, and self-target command-buffer execution until a source decides
   that bridge.
+- Multiple simultaneous command-message tokens should not silently inherit a
+  priority rule. When no source orders them, the honest policy is to reject and
+  clear the active command input, then make that boundary visible in claims and
+  traces.

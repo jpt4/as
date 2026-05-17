@@ -1138,3 +1138,24 @@ Status: accepted in
 `sources/standard_signal_command_semantics_status.json` and
 `docs/standard-signal-command-semantics-status.md`, with tests in
 `tests/test_standard_signal_command_semantics_status.py`.
+
+## ADR-0059: Multi-Command Recipient Input Policy
+
+Goal: select the policy for multiple simultaneous recipient command-message
+inputs before adding more rejection traces or widening command consumption.
+
+Deliverables:
+
+- `sources/multi_command_recipient_input_policy_status.json`;
+- explicit reject-and-clear policy for two or more command-message tokens;
+- tests proving fixed direct, fixed upstream, and stem direct runtime behavior
+  already matches the policy;
+- an all-init command conflict example in the recipient non-init rejection
+  claim manifest, with proof-certificate coverage;
+- human-facing policy note and source-status frontier updates.
+
+Status: accepted in
+`docs/adr/0059-multi-command-recipient-input-policy.md`. Implemented in
+`sources/multi_command_recipient_input_policy_status.json` and
+`docs/multi-command-recipient-input-policy-status.md`, with tests in
+`tests/test_multi_command_recipient_input_policy_status.py`.

@@ -38,8 +38,9 @@ surfaces:
 - self-target command-buffer dispatch.
 
 The current ordinary standard-signal behavior remains valid because it is
-binary-input behavior, not command-token execution. The next source-status
-frontier is the multi-command recipient input conflict policy.
+binary-input behavior, not command-token execution. ADR-0059 selects
+reject-and-clear for multi-command recipient input conflicts, so the next
+visible source-status slice is a multi-command rejection trace.
 
 ## Verification
 

@@ -80,7 +80,7 @@
     }
   ],
   "allowed_next_slices": [
-    "Select a multi-command recipient input conflict policy before accepting multiple simultaneous command-message tokens.",
+    "Add a schematic-linked trace for multiple command-message input rejection.",
     "Add more source-status tests if another PRC source resolves the target, command-order, or standard-signal command-token divergence."
   ]
 }

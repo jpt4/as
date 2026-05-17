@@ -22,7 +22,7 @@ do not yet give AS a single stable boundary for fixed cells, stem cells, input
 clearing, buffer clearing, and buffer-full behavior.
 
 Multiple simultaneous command-message inputs also remain blocked because AS has
-not selected a conflict policy.
+selected reject-and-clear as the conflict policy, not priority or sequencing.
 
 ## Safe Next Slice
 
@@ -49,9 +49,14 @@ source-status decision in
 `sources/standard_signal_command_semantics_status.json` and keeps
 `standard-signal` command-token execution blocked across the same surfaces.
 
-The next safe slice is selecting a multi-command recipient input conflict
-policy. `standard-signal` and write-buffer command execution should be
-revisited only if later source evidence resolves their runtime surfaces.
+ADR-0059 records the multi-command recipient input policy in
+`sources/multi_command_recipient_input_policy_status.json`: reject and clear
+active command input. It also adds an all-init conflict example to the
+recipient non-init rejection claim.
+
+The next safe slice is a schematic-linked trace for multi-command rejection.
+`standard-signal` and write-buffer command execution should be revisited only
+if later source evidence resolves their runtime surfaces.
 
 ## Verification
 

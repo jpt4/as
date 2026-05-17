@@ -25,7 +25,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "select-multi-command-recipient-input-conflict-policy",
+            "add-multi-command-rejection-trace",
         )
         claim = self.status["implemented_claims"][0]
         self.assertEqual(
@@ -63,6 +63,10 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(
             source_statuses["ADR-0058"]["path"],
             "sources/standard_signal_command_semantics_status.json",
+        )
+        self.assertEqual(
+            source_statuses["ADR-0059"]["path"],
+            "sources/multi_command_recipient_input_policy_status.json",
         )
 
         blocked = self.status["blocked_runtime_commands"]
@@ -114,11 +118,16 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
             "sources/write_buffer_command_semantics_status.json",
         )
 
-    def test_multi_command_policy_remains_blocked(self):
+    def test_multi_command_policy_is_selected_as_reject_and_clear(self):
         policy = self.status["multi_command_input_status"]
 
-        self.assertEqual(policy["decision"], "blocked")
+        self.assertEqual(policy["decision"], "selected-reject-and-clear")
+        self.assertEqual(
+            policy["depends_on"],
+            "sources/multi_command_recipient_input_policy_status.json",
+        )
         self.assertIn("single command-message", policy["as_boundary"])
+        self.assertIn("two or more", policy["as_boundary"])
         self.assertIn("multiple simultaneous", policy["summary"])
 
     def test_frontier_moves_from_rejection_evidence_to_source_resolution(self):
@@ -127,7 +136,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "multi-command" in item
+                "multiple command-message" in item
                 for item in recipient_status["allowed_next_slices"]
             )
         )
@@ -147,6 +156,18 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
             any(
                 item.startswith("Resolve standard-signal")
                 for item in recipient_status["allowed_next_slices"]
+            )
+        )
+        self.assertFalse(
+            any(
+                item.startswith("Select a multi-command")
+                for item in recipient_status["allowed_next_slices"]
+            )
+        )
+        self.assertFalse(
+            any(
+                item.startswith("Select a multi-command")
+                for item in stem_status["allowed_next_slices"]
             )
         )
         self.assertFalse(

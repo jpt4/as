@@ -76,6 +76,9 @@ the project legible:
 - `docs/standard-signal-command-semantics-status.md` records why
   `standard-signal` command-token execution remains source-blocked while
   ordinary standard-signal binary input stays implemented.
+- `docs/multi-command-recipient-input-policy-status.md` records the
+  reject-and-clear policy for multiple simultaneous recipient command-message
+  inputs.
 - `docs/recipient-init-command-message-consumption.md` records the first
   executable recipient-side init-family command-message input slice.
 - `docs/recipient-init-command-message-claim.md` records the named claim and
@@ -154,6 +157,8 @@ the project legible:
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
   machine-checkable.
+- `sources/multi_command_recipient_input_policy_status.json` makes the
+  multi-command recipient input policy decision machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first
   schematic-linked transition trace machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.svg` is the generated rendered

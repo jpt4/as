@@ -65,7 +65,8 @@ formal command-table anchor, ordinary binary-input standard-signal anchor, RAA
 command-offset divergence, and SEMSIM/FSMSIM special-message exclusion.
 
 Runtime behavior was intentionally unchanged. Recipient and stem source-status
-frontiers now point to multi-command recipient input conflict policy as the next
-safe slice, with `standard-signal` command-token execution revisitable only if a
-later source resolves the command-token, binary-input, recipient-surface, and
-self-target-surface boundaries.
+frontiers moved to multi-command recipient input conflict policy, with
+`standard-signal` command-token execution revisitable only if a later source
+resolves the command-token, binary-input, recipient-surface, and
+self-target-surface boundaries. ADR-0059 later selected that multi-command
+policy and moved the frontier to a rejection trace.

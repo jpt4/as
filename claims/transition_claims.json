@@ -702,6 +702,28 @@
           }
         },
         {
+          "name": "fixed all-init command conflict rejected",
+          "expected": true,
+          "before": {
+            "role": "wire",
+            "memory": "right",
+            "input": ["wire-r-init", "proc-l-init", "_"]
+          },
+          "result": {
+            "status": "rejected-input",
+            "cell": {
+              "role": "wire",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        },
+        {
           "name": "recipient non-init rejection changed role",
           "expected": false,
           "before": {

@@ -26,7 +26,7 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "select-multi-command-recipient-input-conflict-policy",
+            "add-multi-command-rejection-trace",
         )
         self.assertEqual(
             self.status["blocked_runtime_surfaces"],
@@ -115,11 +115,11 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "select-multi-command-recipient-input-conflict-policy",
+            "add-multi-command-rejection-trace",
         )
         self.assertTrue(
             any(
-                "standard-signal" in item
+                "multiple command-message" in item
                 for item in recipient_status["allowed_next_slices"]
             )
         )
