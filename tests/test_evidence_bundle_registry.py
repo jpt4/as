@@ -37,6 +37,10 @@ UNSUPPORTED_COMMAND_BUFFER_BUNDLE = Path("evidence/command_buffer_unsupported_bu
 UNSUPPORTED_COMMAND_BUFFER_BUNDLE_ID = "command-buffer-unsupported-evidence-bundle"
 UNSUPPORTED_COMMAND_BUFFER_CLAIM_ID = "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED"
 UNSUPPORTED_COMMAND_BUFFER_STATUS = "stem-buffer-appended"
+NEIGHBOR_COMMAND_BUFFER_BUNDLE = Path("evidence/neighbor_command_buffer_delivery_bundle.json")
+NEIGHBOR_COMMAND_BUFFER_BUNDLE_ID = "neighbor-command-buffer-delivery-evidence-bundle"
+NEIGHBOR_COMMAND_BUFFER_CLAIM_ID = "UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED"
+NEIGHBOR_COMMAND_BUFFER_STATUS = "stem-command-buffer-neighbor-delivered"
 
 
 class EvidenceBundleRegistryTests(unittest.TestCase):
@@ -70,7 +74,7 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         entries = {entry.bundle_id: entry for entry in self.registry.bundles}
         entry = entries[MULTI_COMMAND_BUNDLE_ID]
 
-        self.assertEqual(len(self.registry.bundles), 7)
+        self.assertEqual(len(self.registry.bundles), 8)
         self.assertEqual(entry.path, MULTI_COMMAND_BUNDLE)
         self.assertEqual(entry.claim_id, REJECTION_CLAIM_ID)
         self.assertEqual(entry.expected_status, REJECTION_STATUS)
@@ -106,6 +110,14 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         self.assertEqual(entry.path, UNSUPPORTED_COMMAND_BUFFER_BUNDLE)
         self.assertEqual(entry.claim_id, UNSUPPORTED_COMMAND_BUFFER_CLAIM_ID)
         self.assertEqual(entry.expected_status, UNSUPPORTED_COMMAND_BUFFER_STATUS)
+
+    def test_registry_records_the_neighbor_command_buffer_delivery_bundle(self):
+        entries = {entry.bundle_id: entry for entry in self.registry.bundles}
+        entry = entries[NEIGHBOR_COMMAND_BUFFER_BUNDLE_ID]
+
+        self.assertEqual(entry.path, NEIGHBOR_COMMAND_BUFFER_BUNDLE)
+        self.assertEqual(entry.claim_id, NEIGHBOR_COMMAND_BUFFER_CLAIM_ID)
+        self.assertEqual(entry.expected_status, NEIGHBOR_COMMAND_BUFFER_STATUS)
 
     def test_registry_validates_all_registered_bundles(self):
         results = validate_evidence_bundle_registry(self.registry)

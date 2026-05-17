@@ -10,6 +10,8 @@ exactly.
 
 The rendered artifact lives in
 `schematics/neighbor_command_buffer_delivery_trace.svg`.
+ADR-0076 registers this rendered view in the integrated evidence-bundle
+surface.
 
 ## Render Boundary
 

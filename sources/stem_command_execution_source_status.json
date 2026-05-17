@@ -60,6 +60,13 @@
       "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
       "positive_example": "self write buffer command remains appended",
       "summary": "AS now has an integrated evidence bundle validating one completed self-target non-init command-buffer append boundary across runtime, claim, proof, trace, render, and source-status boundaries."
+    },
+    {
+      "adr": "ADR-0076",
+      "path": "evidence/neighbor_command_buffer_delivery_bundle.json",
+      "claim_id": "UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED",
+      "positive_example": "neighbor b proc left command delivered",
+      "summary": "AS now has an integrated evidence bundle validating one completed neighbor-target command-buffer delivery across runtime, claim, proof, trace, render, and source-status boundaries."
     }
   ],
   "legacy_divergences": [

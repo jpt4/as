@@ -45,6 +45,12 @@
       "path": "evidence/command_buffer_unsupported_bundle.json",
       "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
       "expected_status": "stem-buffer-appended"
+    },
+    {
+      "bundle_id": "neighbor-command-buffer-delivery-evidence-bundle",
+      "path": "evidence/neighbor_command_buffer_delivery_bundle.json",
+      "claim_id": "UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED",
+      "expected_status": "stem-command-buffer-neighbor-delivered"
     }
   ]
 }

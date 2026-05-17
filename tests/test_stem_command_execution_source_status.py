@@ -122,6 +122,24 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         )
         self.assertIn("non-init command-buffer append boundary", bundle["summary"])
 
+    def test_neighbor_command_buffer_delivery_evidence_bundle_is_recorded(self):
+        bundles = {
+            bundle["path"]: bundle
+            for bundle in self.status["implemented_evidence_bundles"]
+        }
+        bundle = bundles["evidence/neighbor_command_buffer_delivery_bundle.json"]
+
+        self.assertEqual(bundle["adr"], "ADR-0076")
+        self.assertEqual(
+            bundle["claim_id"],
+            "UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED",
+        )
+        self.assertEqual(
+            bundle["positive_example"],
+            "neighbor b proc left command delivered",
+        )
+        self.assertIn("neighbor-target command-buffer delivery", bundle["summary"])
+
     def test_legacy_command_and_target_divergences_are_recorded(self):
         divergences = {
             divergence["witness_id"]: divergence

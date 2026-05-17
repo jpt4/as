@@ -363,3 +363,8 @@
   `tests/test_command_buffer_unsupported_evidence_bundle.py`. It registers the
   completed self-target `self/write-buf-one` command-buffer append boundary as
   the seventh evidence bundle.
+- ADR-0076 adds `docs/neighbor-command-buffer-delivery-evidence-bundle.md`,
+  `evidence/neighbor_command_buffer_delivery_bundle.json`, and
+  `tests/test_neighbor_command_buffer_delivery_evidence_bundle.py`. It
+  registers the completed neighbor-target `neighbor-b/proc-l-init`
+  command-buffer delivery path as the eighth evidence bundle.

@@ -204,3 +204,7 @@
 - When an evidence bundle covers a negative decoded-command path, keep the
   renderer docs honest about the exact active rail and completed buffer; small
   visible-detail drift undercuts the point of the bundle.
+- Delivery evidence should stay separate from consumption evidence. A
+  neighbor-target bundle proves that the decoded token reached the right output
+  channel, while recipient execution still belongs to its own source-status
+  and evidence path.

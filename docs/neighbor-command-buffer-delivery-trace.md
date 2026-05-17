@@ -5,6 +5,7 @@ Status: schematic-linked trace artifact, 2026-05-17.
 ADR-0046 adds `schematics/neighbor_command_buffer_delivery_trace.json`, a
 structured schematic-linked Universal Cell trace for the neighbor delivery
 behavior implemented in ADR-0044 and named as a claim in ADR-0045.
+ADR-0076 registers this trace in the integrated evidence-bundle surface.
 
 ## Trace Boundary
 

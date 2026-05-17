@@ -1684,3 +1684,27 @@
   `python -m unittest discover` passed 443 tests. `py_compile` passed for the
   touched tests, and JSON parsing passed for the registry, new bundle, touched
   source status, and existing unsupported command-buffer trace.
+
+## 2026-05-17 - Neighbor Command-Buffer Delivery Evidence Bundle
+
+- Added ADR-0076 to register the completed neighbor-target command-buffer
+  delivery path as the eighth transition evidence bundle.
+- Wrote `tests/test_neighbor_command_buffer_delivery_evidence_bundle.py`
+  before implementation. The red run failed because
+  `evidence/neighbor_command_buffer_delivery_bundle.json` was absent.
+- Added `evidence/neighbor_command_buffer_delivery_bundle.json` for the
+  positive `neighbor b proc left command delivered` example under
+  `UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED`.
+- Registered the bundle in `evidence/manifest.json`, so the evidence registry
+  and CLI now validate eight bundles.
+- Added `docs/neighbor-command-buffer-delivery-evidence-bundle.md` and updated
+  README, roadmap, literature map, open problems, evidence registry docs, stem
+  command source status, recipient source-status docs, project memory, and
+  lessons.
+- Verified the focused bundle test passed 5 tests, the
+  bundle/registry/CLI/source-status stack passed 35 tests, the adjacent
+  neighbor delivery/evidence stack passed 82 tests, both actual CLI text and
+  JSON modes passed for eight bundles, and `python -m unittest discover`
+  passed 450 tests. `py_compile` passed for the touched tests, `git diff
+  --check` passed, and JSON parsing passed for the registry, new bundle,
+  touched source status, and neighbor delivery trace.

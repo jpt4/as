@@ -1468,3 +1468,21 @@ Status: accepted in
 `docs/adr/0075-command-buffer-unsupported-evidence-bundle.md`. Implemented in
 `evidence/command_buffer_unsupported_bundle.json`, with tests in
 `tests/test_command_buffer_unsupported_evidence_bundle.py`.
+
+## ADR-0076: Neighbor Command-Buffer Delivery Evidence Bundle
+
+Goal: add the completed neighbor-target command-buffer delivery path as the
+eighth transition evidence bundle.
+
+Deliverables:
+
+- `evidence/neighbor_command_buffer_delivery_bundle.json`;
+- registry entry in `evidence/manifest.json`;
+- tests proving bundle fields, artifact paths, cross-layer validation,
+  registry coverage, and drifted status rejection;
+- human-facing evidence-bundle note and stem command source-status cross-link.
+
+Status: accepted in
+`docs/adr/0076-neighbor-command-buffer-delivery-evidence-bundle.md`.
+Implemented in `evidence/neighbor_command_buffer_delivery_bundle.json`, with
+tests in `tests/test_neighbor_command_buffer_delivery_evidence_bundle.py`.

@@ -10,31 +10,31 @@ from autarkic_systems.evidence_bundle import (
 )
 
 
-BUNDLE = Path("evidence/self_command_buffer_init_bundle.json")
+BUNDLE = Path("evidence/neighbor_command_buffer_delivery_bundle.json")
 REGISTRY = Path("evidence/manifest.json")
-BUNDLE_ID = "self-command-buffer-init-evidence-bundle"
-CLAIM_ID = "UC-STEM-COMMAND-BUFFER-SELF-INIT"
-EXAMPLE = "self command buffer processor left init"
-STATUS = "stem-command-buffer-self-processed"
+BUNDLE_ID = "neighbor-command-buffer-delivery-evidence-bundle"
+CLAIM_ID = "UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED"
+EXAMPLE = "neighbor b proc left command delivered"
+STATUS = "stem-command-buffer-neighbor-delivered"
 
 
-class SelfCommandBufferInitEvidenceBundleTests(unittest.TestCase):
+class NeighborCommandBufferDeliveryEvidenceBundleTests(unittest.TestCase):
     def setUp(self):
         self.bundle = load_transition_evidence_bundle(BUNDLE)
 
-    def test_bundle_names_the_existing_self_command_buffer_init_transition(self):
+    def test_bundle_names_the_existing_neighbor_delivery_path(self):
         self.assertEqual(self.bundle.schema_version, 1)
         self.assertEqual(self.bundle.bundle_id, BUNDLE_ID)
         self.assertEqual(self.bundle.claim_id, CLAIM_ID)
         self.assertEqual(
             self.bundle.predicate,
-            "stem_command_buffer_executes_self_init",
+            "stem_command_buffer_delivers_neighbor_command",
         )
         self.assertEqual(self.bundle.positive_example, EXAMPLE)
         self.assertEqual(self.bundle.transition_function, "step_stem_cell")
         self.assertEqual(self.bundle.expected_status, STATUS)
 
-    def test_bundle_records_self_command_buffer_artifact_paths(self):
+    def test_bundle_records_neighbor_delivery_artifact_paths(self):
         self.assertEqual(self.bundle.claim_manifest_path, Path("claims/transition_claims.json"))
         self.assertEqual(
             self.bundle.proof_certificate_path,
@@ -42,11 +42,11 @@ class SelfCommandBufferInitEvidenceBundleTests(unittest.TestCase):
         )
         self.assertEqual(
             self.bundle.schematic_trace_path,
-            Path("schematics/self_command_buffer_init_trace.json"),
+            Path("schematics/neighbor_command_buffer_delivery_trace.json"),
         )
         self.assertEqual(
             self.bundle.schematic_svg_path,
-            Path("schematics/self_command_buffer_init_trace.svg"),
+            Path("schematics/neighbor_command_buffer_delivery_trace.svg"),
         )
         self.assertEqual(
             self.bundle.hardware_witness_map_path,
@@ -56,6 +56,7 @@ class SelfCommandBufferInitEvidenceBundleTests(unittest.TestCase):
             self.bundle.source_status_paths,
             (
                 Path("sources/stem_command_execution_source_status.json"),
+                Path("sources/recipient_command_consumption_source_status.json"),
                 Path("sources/recipient_non_init_command_source_status.json"),
                 Path("sources/standard_signal_command_semantics_status.json"),
                 Path("sources/write_buffer_command_semantics_status.json"),
@@ -80,13 +81,12 @@ class SelfCommandBufferInitEvidenceBundleTests(unittest.TestCase):
             },
         )
 
-    def test_registry_includes_self_command_buffer_init_bundle(self):
+    def test_registry_includes_neighbor_delivery_bundle(self):
         registry = load_evidence_bundle_registry(REGISTRY)
         entries = {entry.bundle_id: entry for entry in registry.bundles}
 
         self.assertEqual(len(entries), 8)
-        self.assertIn("self-mailbox-init-evidence-bundle", entries)
-        self.assertIn("self-mailbox-unsupported-evidence-bundle", entries)
+        self.assertIn("command-buffer-unsupported-evidence-bundle", entries)
         self.assertIn(BUNDLE_ID, entries)
         self.assertEqual(entries[BUNDLE_ID].path, BUNDLE)
         self.assertEqual(entries[BUNDLE_ID].claim_id, CLAIM_ID)
@@ -95,10 +95,10 @@ class SelfCommandBufferInitEvidenceBundleTests(unittest.TestCase):
         results = validate_evidence_bundle_registry(registry)
         self.assertTrue(all(result.accepted for result in results), results)
 
-    def test_drifted_claim_id_is_rejected(self):
+    def test_drifted_neighbor_delivery_status_is_rejected(self):
         drifted = replace(
             self.bundle,
-            claim_id="UC-STEM-SELF-MAILBOX-INIT-COMMAND",
+            expected_status="stem-command-buffer-self-processed",
         )
 
         results = validate_transition_evidence_bundle(drifted)
@@ -106,8 +106,8 @@ class SelfCommandBufferInitEvidenceBundleTests(unittest.TestCase):
         self.assertTrue(
             any(
                 not result.accepted
-                and result.subject == "claim-example"
-                and "predicate mismatch" in result.detail
+                and result.subject in {"claim-example", "schematic-trace"}
+                and "status mismatch" in result.detail
                 for result in results
             ),
             results,
