@@ -37,3 +37,6 @@
 - Stem reconfiguration evidence must name what it does not cover. A tested
   automail trace is useful, but it is not full stem buffering or dynamic
   circuit reconfiguration.
+- A stem reconfiguration render must show the state change, not merely the
+  node geometry. Role after-transition and automail consumption are part of the
+  visual evidence contract.

@@ -8,7 +8,8 @@ trace covers one stem automail command from the existing AS Universal Cell
 probe.
 
 The structured artifact lives in
-`schematics/stem_automail_reconfiguration_trace.json`.
+`schematics/stem_automail_reconfiguration_trace.json`. ADR-0021 renders the
+same trace as `schematics/stem_automail_reconfiguration_trace.svg`.
 
 ## Trace Shape
 
@@ -42,7 +43,7 @@ trusting the JSON record.
 This trace covers only the explicit automail subset already present in
 `step_stem_cell`. It does not model full PRC stem input classification, command
 construction, buffer processing, target routing, or dynamic circuit
-reconfiguration.
+reconfiguration. ADR-0021 covers the separate stem SVG render.
 
 ## Verification
 

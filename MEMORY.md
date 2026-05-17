@@ -90,3 +90,8 @@
   `tests/test_stem_automail_reconfiguration_trace.py` add the third P7
   schematic trace. It covers the existing `step_stem_cell` automail subset for
   `pl`, reconfiguring stem to processor-left and consuming automail.
+- `schematics/stem_automail_reconfiguration_trace.svg`,
+  `docs/stem-automail-reconfiguration-svg.md`, and
+  `tests/test_stem_automail_svg.py` render the stem automail trace. The SVG
+  must expose role and automail before/after fields so reconfiguration is not
+  hidden behind a generic triangular node render.

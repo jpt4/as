@@ -16,6 +16,9 @@ from autarkic_systems.schematic_trace import SchematicPort, SingleNodeSchematicT
 
 SVG_ARTIFACT = Path("schematics/single_node_triangular_rlem_trace.svg")
 PROCESSOR_SVG_ARTIFACT = Path("schematics/processor_memory_toggle_trace.svg")
+STEM_AUTOMAIL_SVG_ARTIFACT = Path(
+    "schematics/stem_automail_reconfiguration_trace.svg"
+)
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 
 PORT_LAYOUT = {
@@ -121,11 +124,21 @@ def render_schematic_svg(trace: SingleNodeSchematicTrace) -> str:
             f"    <text class=\"small\" x=\"52\" y=\"148\">output: {_text(_cell_field(trace.trace.expected_after_cell, 'output'))}</text>",
             f"    <text class=\"small\" x=\"52\" y=\"172\">memory before: {_text(before['memory'])}</text>",
             f"    <text class=\"small\" x=\"52\" y=\"196\">memory after: {_text(after['memory'])}</text>",
-            '    <text class="small" x="52" y="232">routed signal flow</text>',
         ]
     )
+    next_y = 232
+    if _shows_reconfiguration(before, after):
+        lines.extend(
+            [
+                f"    <text class=\"small\" x=\"52\" y=\"220\">role after: {_text(after['role'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"244\">automail before: {_text(before['automail'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"268\">automail after: {_text(after['automail'])}</text>",
+            ]
+        )
+        next_y = 304
+    lines.append(f'    <text class="small" x="52" y="{next_y}">routed signal flow</text>')
     for index, flow in enumerate(trace.trace.routed_signal_flow):
-        y = 258 + index * 24
+        y = next_y + 26 + index * 24
         lines.append(f"    <text class=\"small\" x=\"72\" y=\"{y}\">{_text(flow)}</text>")
     lines.append("  </g>")
 
@@ -238,6 +251,15 @@ def _cell_field(cell: dict[str, object], field: str) -> str:
     if isinstance(value, list):
         return "[" + ", ".join(str(item) for item in value) + "]"
     return str(value)
+
+
+def _shows_reconfiguration(
+    before: dict[str, object],
+    after: dict[str, object],
+) -> bool:
+    """Return true when a trace changes role or consumes an automail marker."""
+
+    return before["role"] != after["role"] or before["automail"] != after["automail"]
 
 
 def _shorten(value: str, limit: int) -> str:

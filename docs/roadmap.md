@@ -356,3 +356,22 @@ Status: accepted in `docs/adr/0020-processor-memory-toggle-svg.md`.
 Implemented in `schematics/processor_memory_toggle_trace.svg` and
 `autarkic_systems/schematic_svg.py`, with tests in
 `tests/test_processor_memory_toggle_svg.py`.
+
+## ADR-0021: Stem Automail SVG
+
+Goal: render the ADR-0019 stem automail reconfiguration trace as a checked SVG
+while keeping the JSON artifact authoritative.
+
+Deliverables:
+
+- stem SVG artifact generated from the JSON trace;
+- generic schematic SVG support for reconfiguration summary fields;
+- human-facing note for the stem render boundary;
+- tests proving source metadata, ports, layers, stem/proc role change,
+  memory before/after, automail before/after, automail flow, exact renderer
+  match, and drift rejection.
+
+Status: accepted in `docs/adr/0021-stem-automail-svg.md`. Implemented in
+`schematics/stem_automail_reconfiguration_trace.svg` and
+`autarkic_systems/schematic_svg.py`, with tests in
+`tests/test_stem_automail_svg.py`.

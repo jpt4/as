@@ -403,3 +403,27 @@
   discover` passed 91 tests, py_compile passed for the touched module and new
   test, XML parsing passed for both checked-in SVGs, and `git diff --check`
   passed.
+
+## 2026-05-17 - Stem Automail SVG
+
+- Added ADR-0021 for rendering the ADR-0019 stem automail reconfiguration trace
+  as a generated SVG while keeping the JSON trace authoritative.
+- Wrote `tests/test_stem_automail_svg.py` before implementation. The red run
+  failed because `STEM_AUTOMAIL_SVG_ARTIFACT` was not yet exported from
+  `autarkic_systems.schematic_svg`.
+- Extended `autarkic_systems/schematic_svg.py` with the stem SVG artifact path
+  and conditional reconfiguration summary fields for traces whose role or
+  automail changes.
+- Added `schematics/stem_automail_reconfiguration_trace.svg`, showing the stem
+  role before transition, processor role after transition, memory before/after,
+  automail consumption, trace metadata, and interpretive layer IDs.
+- Added `docs/stem-automail-reconfiguration-svg.md` as the human-facing render
+  boundary note.
+- Updated README, roadmap, literature map, open problems, stem trace note,
+  project memory, and lessons so P7 now has generated SVG renders for wire,
+  processor, and stem automail traces.
+- Verified `python -m unittest tests.test_stem_automail_svg
+  tests.test_processor_memory_toggle_svg tests.test_single_node_schematic_svg`
+  passed 21 tests, `python -m unittest discover` passed 98 tests, py_compile
+  passed for the touched module and new test, XML parsing passed for all three
+  checked-in SVGs, and `git diff --check` passed.
