@@ -37,6 +37,9 @@ and ADR-0054 promotes that rejection boundary into the named claim/proof
 surface. ADR-0055 adds a schematic-linked trace for one fixed-recipient
 upstream `standard-signal` rejection, and ADR-0056 adds the rendered SVG view.
 ADR-0057 records write-buffer command semantics as still source-blocked.
+ADR-0058 records `standard-signal` command-token semantics as still
+source-blocked while preserving ordinary binary-input standard-signal
+behavior.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
 does not execute non-init command-message inputs on recipient cells.
@@ -67,6 +70,9 @@ Legacy divergences:
 - `practice/legacy/semsim.scm` lines 86-90 and
   `practice/legacy/fsmsim.scm` lines 10-14 define seven special messages and
   omit `standard-signal` from that list.
+- ADR-0058 records that this divergence is not only a command-order question:
+  AS must keep ordinary binary-input standard-signal behavior separate from
+  command-token execution until a source resolves the bridge.
 
 ## AS Interpretation
 
@@ -75,9 +81,11 @@ model's explicit command table. Execution is a different claim. To execute full
 command behavior honestly, AS still needs to choose:
 
 - how `standard-signal`, `write-buf-zero`, and `write-buf-one` behave when
-  selected as self-mailbox or self-target command-buffer commands.
+  selected as self-mailbox or self-target command-buffer commands;
 - how write-buffer and standard-signal command-message inputs behave on
   recipient cells after the implemented init-family recipient slice.
+- how multiple simultaneous recipient command-message inputs are prioritized,
+  sequenced, or rejected.
 
 ## Verification
 

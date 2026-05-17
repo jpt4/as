@@ -265,3 +265,11 @@
   `write-buf-zero` and `write-buf-one` execution blocked because formal, RAA,
   SEMSIM, and FSMSIM witnesses do not agree on append, clearing, and
   buffer-full boundaries.
+- ADR-0058 adds `docs/standard-signal-command-semantics-status.md`,
+  `sources/standard_signal_command_semantics_status.json`, and
+  `tests/test_standard_signal_command_semantics_status.py`. It keeps
+  `standard-signal` command-token execution blocked because formal
+  command-table placement, ordinary binary-input standard-signal behavior, and
+  legacy special-message sketches do not define the same runtime surface. The
+  next safe source-status slice is multi-command recipient input conflict
+  policy.

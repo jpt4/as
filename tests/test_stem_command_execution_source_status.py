@@ -94,10 +94,17 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         allowed = self.status["allowed_next_slices"]
 
         self.assertTrue(allowed)
+        self.assertTrue(any("multi-command" in item for item in allowed))
         self.assertTrue(any("standard-signal" in item for item in allowed))
         self.assertFalse(
             any(
                 "write-buffer semantics before executing" in item
+                for item in allowed
+            )
+        )
+        self.assertFalse(
+            any(
+                "standard-signal semantics before executing" in item
                 for item in allowed
             )
         )

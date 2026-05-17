@@ -125,15 +125,31 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
             implemented_statuses["ADR-0057"]["path"],
             "sources/write_buffer_command_semantics_status.json",
         )
+        self.assertEqual(
+            implemented_statuses["ADR-0058"]["path"],
+            "sources/standard_signal_command_semantics_status.json",
+        )
 
     def test_stem_status_points_to_recipient_init_consumption_next(self):
         stem_status = json.loads(STEM_STATUS.read_text(encoding="utf-8"))
         allowed = stem_status["allowed_next_slices"]
 
-        self.assertTrue(any("standard-signal" in item for item in allowed))
+        self.assertTrue(any("multi-command" in item for item in allowed))
         self.assertFalse(
             any(
                 item.startswith("Resolve write-buffer")
+                for item in allowed
+            )
+        )
+        self.assertFalse(
+            any(
+                item.startswith("Resolve standard-signal")
+                for item in allowed
+            )
+        )
+        self.assertFalse(
+            any(
+                "standard-signal semantics before executing" in item
                 for item in allowed
             )
         )

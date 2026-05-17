@@ -33,8 +33,9 @@ runtime slice in `docs/recipient-init-command-message-consumption.md`.
 
 ## Remaining Blockers
 
-`standard-signal` remains blocked because the formal command table includes it
-as command offset 0, while the legacy special-message sets exclude it.
+`standard-signal` remains blocked by ADR-0058 because the formal command table
+includes it as command offset 0, while ordinary standard-signal behavior is
+binary-input behavior and the legacy special-message sets exclude it.
 
 `write-buf-zero` and `write-buf-one` remain blocked because AS has not yet
 selected a complete write-buffer boundary for fixed cells, stem cells, or
@@ -85,6 +86,11 @@ ADR-0057 records the write-buffer command semantics source-status decision in
 `sources/write_buffer_command_semantics_status.json` and keeps write-buffer
 execution blocked.
 
+ADR-0058 records the `standard-signal` command-token semantics source-status
+decision in `sources/standard_signal_command_semantics_status.json` and keeps
+command-token execution blocked while preserving ordinary binary-input
+standard-signal behavior.
+
 ## Verification
 
 Run:
@@ -97,5 +103,5 @@ The tests check the source-status decision, the formal input-special-message
 anchor, the legacy special-message sets, the implemented ADR-0049 slice,
 the ADR-0050 claim, the ADR-0051 trace, the ADR-0052 SVG, unresolved blockers,
 the ADR-0053 non-init source status, the ADR-0055/ADR-0056 rejection evidence
-frontier, the ADR-0057 write-buffer status, and the updated stem command
-execution next-slice list.
+frontier, the ADR-0057 write-buffer status, the ADR-0058 standard-signal
+status, and the updated stem command execution next-slice list.

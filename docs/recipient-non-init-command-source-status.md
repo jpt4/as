@@ -13,9 +13,9 @@ The structured status lives in
 
 Do not implement recipient-side non-init command-message execution yet.
 
-`standard-signal` remains blocked because the formal command table includes it
-as a command, while the legacy special-message sets exclude it and classify
-standard signal input separately.
+`standard-signal` remains blocked by ADR-0058 because the formal command table
+includes it as a command, while ordinary standard-signal behavior is
+binary-input behavior and the legacy special-message sets exclude it.
 
 `write-buf-zero` and `write-buf-one` remain blocked because the legacy sketches
 do not yet give AS a single stable boundary for fixed cells, stem cells, input
@@ -44,8 +44,14 @@ write-buffer command semantics source-status decision in
 execution blocked across recipient, self-mailbox, and self-target
 command-buffer surfaces.
 
-The next safe slice is source resolution for `standard-signal` command-message
-divergence, with multi-command conflict policy still blocked.
+ADR-0058 records the matching `standard-signal` command-token semantics
+source-status decision in
+`sources/standard_signal_command_semantics_status.json` and keeps
+`standard-signal` command-token execution blocked across the same surfaces.
+
+The next safe slice is selecting a multi-command recipient input conflict
+policy. `standard-signal` and write-buffer command execution should be
+revisited only if later source evidence resolves their runtime surfaces.
 
 ## Verification
 

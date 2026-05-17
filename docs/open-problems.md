@@ -79,6 +79,8 @@ ADR-0055 adds a schematic-linked trace for one fixed recipient upstream
 `standard-signal` rejection.
 ADR-0056 adds the rendered SVG view of that rejection trace.
 ADR-0057 records write-buffer command execution as still source-blocked.
+ADR-0058 records `standard-signal` command-token execution as still
+source-blocked while preserving ordinary binary-input standard-signal behavior.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -202,3 +204,5 @@ ADR-0055 adds the corresponding schematic-linked rejection trace.
 ADR-0056 adds the corresponding rendered SVG view.
 ADR-0057 records the corresponding write-buffer semantics source-status
 decision.
+ADR-0058 records the corresponding `standard-signal` command-token semantics
+source-status decision.

@@ -4,7 +4,7 @@
   "decision": "do-not-implement-recipient-non-init-command-messages-yet",
   "runtime_change": "none-source-status-only",
   "depends_on": "sources/recipient_command_consumption_source_status.json",
-  "safe_next_slice": "resolve-standard-signal-command-message-divergence",
+  "safe_next_slice": "select-multi-command-recipient-input-conflict-policy",
   "implemented_claims": [
     {
       "adr": "ADR-0054",
@@ -33,6 +33,11 @@
       "adr": "ADR-0057",
       "path": "sources/write_buffer_command_semantics_status.json",
       "summary": "AS now has a source-status decision keeping write-buffer command execution blocked across recipient, self-mailbox, and self-target command-buffer surfaces."
+    },
+    {
+      "adr": "ADR-0058",
+      "path": "sources/standard_signal_command_semantics_status.json",
+      "summary": "AS now has a source-status decision keeping standard-signal command-token execution blocked across recipient, self-mailbox, and self-target command-buffer surfaces."
     }
   ],
   "blocked_runtime_commands": [
@@ -41,7 +46,8 @@
     "write-buf-one"
   ],
   "standard_signal_status": {
-    "decision": "blocked",
+    "decision": "blocked-by-source-divergence",
+    "depends_on": "sources/standard_signal_command_semantics_status.json",
     "formal_command_table": {
       "witness_id": "PRC-FORMAL-COMMAND-TABLE-STANDARD-SIGNAL",
       "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
@@ -70,7 +76,7 @@
       ],
       "summary": "The legacy special-message sets exclude standard-signal and treat standard input as a separate classification."
     },
-    "as_boundary": "Continue rejecting standard-signal command-message input until AS decides whether it belongs to command-message execution or standard-signal routing."
+    "as_boundary": "Continue rejecting standard-signal command-message input until AS decides whether standard-signal command tokens replay ordinary binary-input routing, remain unsupported, or have a different recipient/self-target surface."
   },
   "write_buffer_status": {
     "decision": "blocked-by-source-divergence",
@@ -103,8 +109,8 @@
     "as_boundary": "ADR-0049 consumes exactly one single command-message input token and leaves multiple simultaneous command-message tokens at the rejected-input boundary."
   },
   "allowed_next_slices": [
-    "Resolve standard-signal command-message divergence before routing or executing standard-signal command tokens.",
     "Select a multi-command recipient input conflict policy before accepting multiple simultaneous command-message tokens.",
+    "Revisit standard-signal command execution only if new source evidence resolves command-token, binary-input, recipient-surface, and self-target-surface boundaries.",
     "Revisit write-buffer command execution only if new source evidence resolves append, clearing, and buffer-full boundaries."
   ]
 }

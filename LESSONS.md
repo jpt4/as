@@ -144,3 +144,8 @@
 - A command name appearing in every source is not enough to implement it. For
   write-buffer commands, append semantics, clearing behavior, and buffer-full
   boundaries must agree before runtime execution is honest.
+- A command-table entry can name behavior that already exists in another input
+  class without defining command-token execution. For `standard-signal`, keep
+  ordinary binary-input routing/buffering separate from command-message,
+  self-mailbox, and self-target command-buffer execution until a source decides
+  that bridge.

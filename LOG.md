@@ -1268,3 +1268,32 @@
   `python -m unittest discover` passed 344 tests, py_compile passed for the
   touched tests, JSON parsing passed for the write-buffer and source-status
   manifests, and `git diff --check` passed.
+
+## 2026-05-17 - Standard-Signal Command Semantics Status
+
+- Added ADR-0058 to decide whether `standard-signal` command-token execution
+  is source-backed enough to implement.
+- Wrote `tests/test_standard_signal_command_semantics_status.py` before
+  implementation. The red run failed because
+  `sources/standard_signal_command_semantics_status.json` did not exist.
+- Added `sources/standard_signal_command_semantics_status.json`, keeping
+  `standard-signal` command-token execution blocked across recipient
+  command-message, self-mailbox, and self-target command-buffer surfaces.
+- Recorded the formal-model split: ordinary standard-signal behavior is
+  binary-input high-rail/routing behavior, while the command table also names
+  `standard-signal` at command offset 0 without defining command-token
+  execution semantics.
+- Recorded the legacy divergence: RAA excludes `standard-signal` from
+  `special-messages` but maps the final command-buffer case to it, while
+  SEMSIM and FSMSIM exclude it from special messages and classify standard
+  input separately.
+- Updated recipient non-init, recipient consumption, and stem source-status
+  artifacts so the next safe slice moves to multi-command recipient input
+  conflict policy.
+- Added `docs/standard-signal-command-semantics-status.md` and updated README,
+  roadmap, literature map, open problems, project memory, and lessons.
+- Verified the focused standard-signal/write-buffer/source-status suite passed
+  24 tests. `python -m unittest discover` passed 349 tests, py_compile passed
+  for the touched source-status tests, JSON parsing passed for the
+  standard-signal, write-buffer, recipient, and stem source-status manifests,
+  and `git diff --check` passed.

@@ -25,7 +25,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "resolve-standard-signal-command-message-divergence",
+            "select-multi-command-recipient-input-conflict-policy",
         )
         claim = self.status["implemented_claims"][0]
         self.assertEqual(
@@ -52,11 +52,17 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
             svg["path"],
             "schematics/recipient_non_init_command_rejection_trace.svg",
         )
-        source_status = self.status["implemented_source_statuses"][0]
-        self.assertEqual(source_status["adr"], "ADR-0057")
+        source_statuses = {
+            item["adr"]: item for item in self.status["implemented_source_statuses"]
+        }
+        source_status = source_statuses["ADR-0057"]
         self.assertEqual(
             source_status["path"],
             "sources/write_buffer_command_semantics_status.json",
+        )
+        self.assertEqual(
+            source_statuses["ADR-0058"]["path"],
+            "sources/standard_signal_command_semantics_status.json",
         )
 
         blocked = self.status["blocked_runtime_commands"]
@@ -81,7 +87,11 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
             "standard-signal",
             standard["legacy_special_message_exclusion"]["special_messages"],
         )
-        self.assertEqual(standard["decision"], "blocked")
+        self.assertEqual(standard["decision"], "blocked-by-source-divergence")
+        self.assertEqual(
+            standard["depends_on"],
+            "sources/standard_signal_command_semantics_status.json",
+        )
 
     def test_write_buffer_divergences_are_recorded(self):
         divergences = {
@@ -117,7 +127,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "write-buffer" in item
+                "multi-command" in item
                 for item in recipient_status["allowed_next_slices"]
             )
         )
@@ -129,7 +139,19 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
-                "standard-signal semantics" in item
+                "write-buffer" in item
+                for item in recipient_status["allowed_next_slices"]
+            )
+        )
+        self.assertFalse(
+            any(
+                item.startswith("Resolve standard-signal")
+                for item in recipient_status["allowed_next_slices"]
+            )
+        )
+        self.assertFalse(
+            any(
+                "standard-signal semantics before executing" in item
                 for item in stem_status["allowed_next_slices"]
             )
         )

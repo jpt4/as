@@ -1115,3 +1115,26 @@ Status: accepted in
 `sources/write_buffer_command_semantics_status.json` and
 `docs/write-buffer-command-semantics-status.md`, with tests in
 `tests/test_write_buffer_command_semantics_status.py`.
+
+## ADR-0058: Standard-Signal Command Semantics Status
+
+Goal: decide whether `standard-signal` command-token execution is source-backed
+enough to implement after the write-buffer source-status decision.
+
+Deliverables:
+
+- `sources/standard_signal_command_semantics_status.json`;
+- formal-model anchors separating ordinary binary-input standard-signal
+  behavior from command-table placement;
+- RAA, SEMSIM, and FSMSIM standard-signal witness records;
+- explicit blocked runtime surfaces for recipient command-message,
+  self-mailbox, and self-target command-buffer commands;
+- tests proving the source-status decision, witness divergence, required
+  resolution questions, and updated source-status frontiers;
+- human-facing source-status note.
+
+Status: accepted in
+`docs/adr/0058-standard-signal-command-semantics-status.md`. Implemented in
+`sources/standard_signal_command_semantics_status.json` and
+`docs/standard-signal-command-semantics-status.md`, with tests in
+`tests/test_standard_signal_command_semantics_status.py`.

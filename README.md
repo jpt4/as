@@ -73,6 +73,9 @@ the project legible:
   of that recipient non-init command-message rejection trace.
 - `docs/write-buffer-command-semantics-status.md` records why write-buffer
   command execution remains source-blocked.
+- `docs/standard-signal-command-semantics-status.md` records why
+  `standard-signal` command-token execution remains source-blocked while
+  ordinary standard-signal binary input stays implemented.
 - `docs/recipient-init-command-message-consumption.md` records the first
   executable recipient-side init-family command-message input slice.
 - `docs/recipient-init-command-message-claim.md` records the named claim and
@@ -148,6 +151,9 @@ the project legible:
   non-init command-message blocking decision machine-checkable.
 - `sources/write_buffer_command_semantics_status.json` makes the write-buffer
   command semantics source-status decision machine-checkable.
+- `sources/standard_signal_command_semantics_status.json` makes the
+  `standard-signal` command-token semantics source-status decision
+  machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first
   schematic-linked transition trace machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.svg` is the generated rendered

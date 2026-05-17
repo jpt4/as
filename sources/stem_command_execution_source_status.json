@@ -72,7 +72,7 @@
     },
     {
       "blocker_id": "standard-signal-command-semantics",
-      "summary": "ADR-0026 records standard-signal as command offset 0 from the formal command table, while legacy special-message lists omit it and at least one legacy sketch puts standard-signal at the final command case."
+      "summary": "ADR-0058 records standard-signal command-token execution as blocked: ADR-0026 names formal offset 0, ordinary standard-signal processing is binary-input behavior, legacy special-message lists omit it, and RAA puts standard-signal at the final command case."
     },
     {
       "blocker_id": "write-buffer-command-semantics",
@@ -80,7 +80,7 @@
     }
   ],
   "allowed_next_slices": [
-    "Resolve or further document self-target standard-signal semantics before executing them.",
-    "Add more source-status tests if another PRC source resolves the target or command-order divergence."
+    "Select a multi-command recipient input conflict policy before accepting multiple simultaneous command-message tokens.",
+    "Add more source-status tests if another PRC source resolves the target, command-order, or standard-signal command-token divergence."
   ]
 }
