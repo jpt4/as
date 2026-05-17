@@ -39,8 +39,10 @@ The boundary is:
 - non-init command-token execution remains blocked under ADR-0057 and
   ADR-0058.
 
-ADR-0060 adds that schematic-linked trace. The next visible slice is a
-rendered SVG for multi-command rejection.
+ADR-0060 adds that schematic-linked trace, and ADR-0061 adds the generated
+SVG render. The multi-command evidence ladder is now complete; the next
+command-execution work should revisit `standard-signal` or write-buffer only
+if new source evidence resolves their runtime surfaces.
 
 ## Verification
 

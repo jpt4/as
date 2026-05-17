@@ -1351,3 +1351,27 @@
   touched schematic trace module and tests, JSON parsing passed for the
   multi-command trace and source-status manifests, and `git diff --check`
   passed.
+
+## 2026-05-17 - Multi-Command Recipient Rejection SVG
+
+- Added ADR-0061 for a generated SVG render of the ADR-0060 multi-command
+  recipient rejection trace.
+- Wrote `tests/test_multi_command_recipient_rejection_svg.py` before
+  implementation. The red run failed because
+  `MULTI_COMMAND_RECIPIENT_REJECTION_SVG_ARTIFACT` was absent from
+  `autarkic_systems.schematic_svg`.
+- Added `MULTI_COMMAND_RECIPIENT_REJECTION_SVG_ARTIFACT` and routed the
+  multi-command trace through the existing recipient non-init rejection SVG
+  summary branch.
+- Generated `schematics/multi_command_recipient_rejection_trace.svg` from
+  `render_schematic_svg()`.
+- Updated source-status frontiers so the current multi-command rejection
+  evidence ladder is complete and the next command-execution work returns to
+  source resolution for `standard-signal` or write-buffer semantics.
+- Added `docs/multi-command-recipient-rejection-svg.md` and updated README,
+  roadmap, literature map, open problems, project memory, and lessons.
+- Verified the focused multi-command SVG test passed 7 tests, the adjacent
+  multi-command/source-status suite passed 44 tests, and `python -m unittest
+  discover` passed 369 tests. `py_compile` passed for the touched renderer and
+  tests, JSON parsing passed for the touched source-status manifests and trace,
+  and `git diff --check` passed.

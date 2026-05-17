@@ -99,6 +99,9 @@ reject-and-clear instead of priority or sequencing.
 ADR-0060 records that selected policy as a schematic-linked trace in
 `schematics/multi_command_recipient_rejection_trace.json`.
 
+ADR-0061 records the rendered SVG view of that selected policy in
+`schematics/multi_command_recipient_rejection_trace.svg`.
+
 ## Verification
 
 Run:
@@ -112,5 +115,5 @@ anchor, the legacy special-message sets, the implemented ADR-0049 slice,
 the ADR-0050 claim, the ADR-0051 trace, the ADR-0052 SVG, unresolved blockers,
 the ADR-0053 non-init source status, the ADR-0055/ADR-0056 rejection evidence
 frontier, the ADR-0057 write-buffer status, the ADR-0058 standard-signal
-status, the ADR-0059 multi-command policy, the ADR-0060 trace, and the updated
-stem command execution next-slice list.
+status, the ADR-0059 multi-command policy, the ADR-0060 trace, the ADR-0061
+SVG, and the updated stem command execution next-slice list.

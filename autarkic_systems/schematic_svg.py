@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 
 from autarkic_systems.schematic_trace import (
     COMMAND_BUFFER_UNSUPPORTED_TRACE_ARTIFACT_ID,
+    MULTI_COMMAND_RECIPIENT_REJECTION_TRACE_ARTIFACT_ID,
     NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID,
     RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID,
     RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID,
@@ -45,6 +46,9 @@ RECIPIENT_INIT_COMMAND_MESSAGE_SVG_ARTIFACT = Path(
 )
 RECIPIENT_NON_INIT_COMMAND_REJECTION_SVG_ARTIFACT = Path(
     "schematics/recipient_non_init_command_rejection_trace.svg"
+)
+MULTI_COMMAND_RECIPIENT_REJECTION_SVG_ARTIFACT = Path(
+    "schematics/multi_command_recipient_rejection_trace.svg"
 )
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 
@@ -449,7 +453,10 @@ def _shows_recipient_non_init_command_rejection(
 ) -> bool:
     """Return true for traces that reject a recipient non-init command message."""
 
-    return trace.artifact_id == RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID
+    return trace.artifact_id in {
+        RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID,
+        MULTI_COMMAND_RECIPIENT_REJECTION_TRACE_ARTIFACT_ID,
+    }
 
 
 def _shows_buffer_accumulation(

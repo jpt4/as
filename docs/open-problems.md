@@ -212,3 +212,4 @@ source-status decision.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.
+ADR-0061 records the corresponding multi-command recipient rejection SVG.

@@ -143,6 +143,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | Standard-signal command-token execution requires a source-status decision before runtime behavior changes. | `sources/standard_signal_command_semantics_status.json`, restored PRC formal model, and legacy RAA/SEMSIM/FSMSIM witnesses. | Implemented in ADR-0058; command-token execution remains blocked while ordinary binary-input standard-signal behavior stays implemented. |
 | Multiple simultaneous recipient command-message inputs need an explicit policy before traces depend on them. | `sources/multi_command_recipient_input_policy_status.json`, current AS runtime behavior, and `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`. | Implemented in ADR-0059; two or more command-message tokens are rejected and cleared, not prioritized or sequenced. |
 | Schematic-linked evidence can cover multi-command recipient rejection without adding priority or sequencing. | `schematics/multi_command_recipient_rejection_trace.json`, `autarkic_systems/schematic_trace.py`, and `tests/test_multi_command_recipient_rejection_trace.py`. | Implemented in ADR-0060 with replay, predicate coverage, witness-map validation, and drift rejection. |
+| A multi-command recipient rejection render must expose the simultaneous conflict. | `autarkic_systems/schematic_svg.py`, `schematics/multi_command_recipient_rejection_trace.svg`, and `tests/test_multi_command_recipient_rejection_svg.py`. | Implemented in ADR-0061 with exact renderer-output matching and drift rejection. |
 | Schematic-linked evidence can cover completed self-target init command buffers without widening command execution. | `schematics/self_command_buffer_init_trace.json`, `autarkic_systems/schematic_trace.py`, and `tests/test_self_command_buffer_init_trace.py`. | Implemented in ADR-0039 with replay and drift rejection. |
 | Schematic-linked evidence can cover unsupported completed command buffers without routing them. | `schematics/command_buffer_unsupported_trace.json`, `autarkic_systems/schematic_trace.py`, and `tests/test_command_buffer_unsupported_trace.py`. | Implemented in ADR-0042 with replay and drift rejection. |
 | A self command-buffer init render must expose decoded buffer state rather than only role reconfiguration. | `autarkic_systems/schematic_svg.py`, `schematics/self_command_buffer_init_trace.svg`, and `tests/test_self_command_buffer_init_svg.py`. | Implemented in ADR-0040 with exact renderer-output matching and drift rejection. |
@@ -202,7 +203,9 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   while preserving ordinary binary-input standard-signal behavior. ADR-0059
   selects reject-and-clear for multiple recipient command-message inputs and
   moves the next visible slice to a multi-command rejection trace. ADR-0060
-  adds that trace and moves the next visible slice to an SVG render.
+  adds that trace, and ADR-0061 adds the generated SVG render. The current
+  rejection evidence ladder is complete again; standard-signal and write-buffer
+  command execution remain source-blocked.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

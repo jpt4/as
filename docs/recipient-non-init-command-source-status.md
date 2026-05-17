@@ -57,9 +57,12 @@ recipient non-init rejection claim.
 ADR-0060 adds the corresponding schematic-linked trace in
 `schematics/multi_command_recipient_rejection_trace.json`.
 
-The next safe slice is a rendered SVG view for that multi-command rejection
-trace. `standard-signal` and write-buffer command execution should be revisited
-only if later source evidence resolves their runtime surfaces.
+ADR-0061 adds the corresponding rendered SVG view in
+`schematics/multi_command_recipient_rejection_trace.svg`.
+
+The rejection evidence ladder is complete again. `standard-signal` and
+write-buffer command execution should be revisited only if later source
+evidence resolves their runtime surfaces.
 
 ## Verification
 

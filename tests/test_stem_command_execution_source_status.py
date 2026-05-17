@@ -94,8 +94,9 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         allowed = self.status["allowed_next_slices"]
 
         self.assertTrue(allowed)
-        self.assertTrue(any("multiple command-message" in item for item in allowed))
         self.assertTrue(any("standard-signal" in item for item in allowed))
+        self.assertTrue(any("write-buffer" in item for item in allowed))
+        self.assertFalse(any("multiple command-message" in item for item in allowed))
         self.assertFalse(
             any(
                 "write-buffer semantics before executing" in item
@@ -109,7 +110,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
             )
         )
         self.assertFalse(any("schematic-linked trace" in item for item in allowed))
-        self.assertTrue(any("rendered SVG" in item for item in allowed))
+        self.assertFalse(any("rendered SVG" in item for item in allowed))
         self.assertTrue(
             all("full stem command execution" not in item for item in allowed)
         )

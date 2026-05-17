@@ -25,7 +25,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "add-multi-command-rejection-svg",
+            "revisit-standard-signal-or-write-buffer-command-semantics",
         )
         claim = self.status["implemented_claims"][0]
         self.assertEqual(
@@ -51,11 +51,15 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
             traces["ADR-0060"]["path"],
             "schematics/multi_command_recipient_rejection_trace.json",
         )
-        svg = self.status["implemented_svgs"][0]
-        self.assertEqual(svg["adr"], "ADR-0056")
+        svgs = {item["adr"]: item for item in self.status["implemented_svgs"]}
+        svg = svgs["ADR-0056"]
         self.assertEqual(
             svg["path"],
             "schematics/recipient_non_init_command_rejection_trace.svg",
+        )
+        self.assertEqual(
+            svgs["ADR-0061"]["path"],
+            "schematics/multi_command_recipient_rejection_trace.svg",
         )
         source_statuses = {
             item["adr"]: item for item in self.status["implemented_source_statuses"]
@@ -139,7 +143,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         recipient_status = json.loads(RECIPIENT_STATUS.read_text(encoding="utf-8"))
         stem_status = json.loads(STEM_STATUS.read_text(encoding="utf-8"))
 
-        self.assertTrue(
+        self.assertFalse(
             any(
                 "multiple command-message" in item
                 for item in recipient_status["allowed_next_slices"]
@@ -193,7 +197,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
                 for item in recipient_status["allowed_next_slices"]
             )
         )
-        self.assertTrue(
+        self.assertFalse(
             any(
                 "rendered SVG" in item
                 for item in recipient_status["allowed_next_slices"]

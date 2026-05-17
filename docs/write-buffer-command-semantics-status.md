@@ -33,7 +33,10 @@ AS keeps write-buffer command execution blocked across these runtime surfaces:
 
 The current rejection and preservation claims remain the correct executable
 boundary until a later ADR selects source-backed semantics for append,
-buffer-full behavior, input/mail clearing, and high-rail interaction.
+buffer-full behavior, input/mail clearing, and high-rail interaction. ADR-0061
+completes the current multi-command rejection render frontier, so future
+write-buffer work should start from source resolution rather than another
+rejection artifact.
 
 ## Verification
 

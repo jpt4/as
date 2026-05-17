@@ -6,7 +6,7 @@
   "accepted_command_message_count": 1,
   "conflict_command_message_count_minimum": 2,
   "policy": "reject-and-clear-active-command-input",
-  "safe_next_slice": "add-multi-command-rejection-svg",
+  "safe_next_slice": "revisit-standard-signal-or-write-buffer-command-semantics",
   "covered_runtime_surfaces": [
     "fixed-direct-input",
     "fixed-upstream-input",
@@ -65,6 +65,13 @@
       "artifact_id": "multi-command-recipient-rejection-schematic-and-uc-transition-trace",
       "path": "schematics/multi_command_recipient_rejection_trace.json",
       "summary": "AS now has a schematic-linked trace for a fixed recipient rejecting two simultaneous init-family command-message tokens."
+    }
+  ],
+  "implemented_svgs": [
+    {
+      "adr": "ADR-0061",
+      "path": "schematics/multi_command_recipient_rejection_trace.svg",
+      "summary": "AS now has a rendered SVG view checked exactly against the multi-command recipient rejection trace."
     }
   ],
   "as_boundary": "AS accepts exactly one init-family recipient command-message input. Two or more command-message tokens in the same recipient activation are rejected and cleared; no priority or sequencing rule is inferred."

@@ -40,8 +40,9 @@ surfaces:
 The current ordinary standard-signal behavior remains valid because it is
 binary-input behavior, not command-token execution. ADR-0059 selects
 reject-and-clear for multi-command recipient input conflicts, and ADR-0060
-adds the corresponding trace. The next visible source-status slice is a
-multi-command rejection SVG.
+adds the corresponding trace. ADR-0061 adds the rendered SVG view for that
+trace, so the next useful command-execution work is source resolution rather
+than more rejection rendering.
 
 ## Verification
 

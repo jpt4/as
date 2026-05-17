@@ -145,11 +145,10 @@
     },
     {
       "blocker_id": "multi-command-input-conflict-policy",
-      "summary": "ADR-0059 selects reject-and-clear for multiple simultaneous command-message inputs; ADR-0060 adds the schematic-linked rejection trace, and the next evidence step is a rendered SVG."
+      "summary": "ADR-0059 selects reject-and-clear for multiple simultaneous command-message inputs; ADR-0060 adds the schematic-linked rejection trace, and ADR-0061 adds the rendered SVG view."
     }
   ],
   "allowed_next_slices": [
-    "Add a rendered SVG view for the multiple command-message input rejection trace.",
     "Revisit standard-signal command execution only if new source evidence resolves command-token, binary-input, recipient-surface, and self-target-surface boundaries.",
     "Revisit write-buffer command execution only if new source evidence resolves append, clearing, and buffer-full boundaries."
   ]

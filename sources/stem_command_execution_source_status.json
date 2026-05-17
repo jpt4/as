@@ -80,7 +80,6 @@
     }
   ],
   "allowed_next_slices": [
-    "Add a rendered SVG view for the multiple command-message input rejection trace.",
-    "Add more source-status tests if another PRC source resolves the target, command-order, or standard-signal command-token divergence."
+    "Add more source-status tests if another PRC source resolves the target, command-order, standard-signal command-token, or write-buffer divergence."
   ]
 }

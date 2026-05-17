@@ -1181,3 +1181,25 @@ Status: accepted in
 `autarkic_systems/schematic_trace.py`, and
 `docs/multi-command-recipient-rejection-trace.md`, with tests in
 `tests/test_multi_command_recipient_rejection_trace.py`.
+
+## ADR-0061: Multi-Command Recipient Rejection SVG
+
+Goal: add a rendered SVG view of the ADR-0060 multi-command recipient
+rejection trace.
+
+Deliverables:
+
+- `schematics/multi_command_recipient_rejection_trace.svg`;
+- exported `MULTI_COMMAND_RECIPIENT_REJECTION_SVG_ARTIFACT`;
+- renderer routing through the recipient non-init rejection summary branch;
+- tests proving parseability, trace metadata, port/layer annotations, visible
+  multi-command rejection details, exact renderer-output matching, and drift
+  rejection;
+- human-facing SVG note and source-status frontier updates.
+
+Status: accepted in
+`docs/adr/0061-multi-command-recipient-rejection-svg.md`. Implemented in
+`autarkic_systems/schematic_svg.py`,
+`schematics/multi_command_recipient_rejection_trace.svg`, and
+`docs/multi-command-recipient-rejection-svg.md`, with tests in
+`tests/test_multi_command_recipient_rejection_svg.py`.

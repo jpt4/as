@@ -39,7 +39,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             self.status["safe_next_slice"],
-            "add-multi-command-rejection-svg",
+            "revisit-standard-signal-or-write-buffer-command-semantics",
         )
         self.assertEqual(
             self.status["covered_runtime_surfaces"],
@@ -97,7 +97,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         self.assertIn("fixed all-init command conflict rejected", example_names)
         self.assertIn("stem multi command conflict rejected", example_names)
 
-    def test_source_status_frontiers_move_to_multi_command_svg(self):
+    def test_source_status_frontiers_move_beyond_multi_command_svg(self):
         recipient_non_init = json.loads(RECIPIENT_NON_INIT.read_text(encoding="utf-8"))
         recipient_status = json.loads(RECIPIENT_STATUS.read_text(encoding="utf-8"))
         stem_status = json.loads(STEM_STATUS.read_text(encoding="utf-8"))
@@ -118,21 +118,27 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "add-multi-command-rejection-svg",
+            "revisit-standard-signal-or-write-buffer-command-semantics",
         )
         self.assertEqual(
             write_buffer_status["safe_next_slice"],
-            "add-multi-command-rejection-svg",
+            "revisit-standard-signal-or-write-buffer-command-semantics",
         )
         self.assertEqual(
             standard_signal_status["safe_next_slice"],
-            "add-multi-command-rejection-svg",
+            "revisit-standard-signal-or-write-buffer-command-semantics",
         )
         trace = self.status["implemented_traces"][0]
         self.assertEqual(trace["adr"], "ADR-0060")
         self.assertEqual(
             trace["path"],
             "schematics/multi_command_recipient_rejection_trace.json",
+        )
+        svg = self.status["implemented_svgs"][0]
+        self.assertEqual(svg["adr"], "ADR-0061")
+        self.assertEqual(
+            svg["path"],
+            "schematics/multi_command_recipient_rejection_trace.svg",
         )
         self.assertFalse(
             any(
@@ -142,7 +148,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertFalse(
             any(
-                item.startswith("Select a multi-command")
+                "rendered SVG" in item
                 for item in stem_status["allowed_next_slices"]
             )
         )

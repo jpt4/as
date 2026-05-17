@@ -157,3 +157,7 @@
   Multi-command rejection is a recipient non-init rejection boundary with a
   different input shape, so routing the new artifact through the existing
   alignment check avoids inventing duplicate validation logic.
+- A render branch can also be reused when the visible contract is the same.
+  Multi-command rejection needs the same rejection summary as the single-token
+  non-init case, with the simultaneous conflict kept visible in the input
+  field and flow text.

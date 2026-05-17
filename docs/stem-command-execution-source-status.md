@@ -41,7 +41,7 @@ ADR-0058 records `standard-signal` command-token semantics as still
 source-blocked while preserving ordinary binary-input standard-signal
 behavior. ADR-0059 selects reject-and-clear for multiple simultaneous
 recipient command-message inputs, and ADR-0060 adds the matching
-schematic-linked trace.
+schematic-linked trace. ADR-0061 adds the matching rendered SVG view.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
 does not execute non-init command-message inputs on recipient cells.

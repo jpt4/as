@@ -283,5 +283,11 @@
   `schematics/multi_command_recipient_rejection_trace.json`, and
   `tests/test_multi_command_recipient_rejection_trace.py`. It reuses the
   recipient non-init rejection trace validator for a fixed direct
-  `wire-r-init` plus `proc-l-init` conflict and moves the next safe slice to a
-  multi-command rejection SVG.
+  `wire-r-init` plus `proc-l-init` conflict and sets up the multi-command
+  rejection SVG slice completed by ADR-0061.
+- ADR-0061 adds `docs/multi-command-recipient-rejection-svg.md`,
+  `schematics/multi_command_recipient_rejection_trace.svg`, and
+  `tests/test_multi_command_recipient_rejection_svg.py`. The renderer reuses
+  the recipient non-init rejection summary branch for the direct
+  `wire-r-init` plus `proc-l-init` conflict, and the frontier returns to
+  source resolution for `standard-signal` or write-buffer command semantics.
