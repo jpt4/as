@@ -63,6 +63,8 @@ the project legible:
   execution is still blocked after the decoder map.
 - `docs/recipient-command-consumption-source-status.md` records the
   source-backed boundary for recipient-side command-message inputs.
+- `docs/recipient-init-command-message-consumption.md` records the first
+  executable recipient-side init-family command-message input slice.
 - `docs/self-mailbox-init-claim.md` records the named claim and
   proof-certificate surface for the self-mailbox init-command subset.
 - `docs/self-mailbox-unsupported-claim.md` records the named preservation
@@ -97,14 +99,15 @@ the project legible:
   self command-buffer trace.
 - `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
   state for future self-target command execution.
-- Universal Cell channel tuples can represent command-message tokens, but
-  recipient-side command-message execution is still intentionally absent.
+- Universal Cell channel tuples can represent command-message tokens, and
+  recipient-side init-family command-message inputs are now executable.
 - `step_stem_cell` processes the self-mailbox init-family commands while
   leaving full command-buffer execution open.
 - `step_stem_cell` also dispatches a just-completed self-target init-family
   command buffer and delivers just-completed neighbor-target command buffers to
-  output channels, while leaving neighbor consumption and self non-init command
-  semantics open.
+  output channels. Recipient cells now consume init-family command-message
+  inputs, while non-init recipient commands and self non-init command semantics
+  remain open.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer

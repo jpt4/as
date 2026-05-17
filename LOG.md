@@ -1048,3 +1048,28 @@
   `python -m unittest discover` passed 279 tests, py_compile passed for the
   touched tests, JSON parsing passed for the recipient and stem source-status
   manifests, and `git diff --check` passed.
+
+## 2026-05-17 - Recipient Init Command-Message Consumption
+
+- Added ADR-0049 for the first executable recipient-side command-message
+  slice: single init-family input-channel command messages only.
+- Wrote `tests/test_recipient_init_command_messages.py` before implementation
+  and updated adjacent command-token, neighbor-delivery, and source-status
+  tests. The red run over the focused suite failed with ten failures and one
+  error because init-family command-message inputs still returned
+  `rejected-input`, the transition language lacked
+  `recipient-init-command-message-processed`, and the source-status artifacts
+  still described the slice as future work.
+- Updated `step_fixed_cell` and `step_stem_cell` to consume one
+  `stem-init`, `wire-r-init`, `wire-l-init`, `proc-r-init`, or `proc-l-init`
+  command-message input. The implementation reuses the self-mailbox
+  role/memory target map, clears command state, handles pulled upstream command
+  messages on fixed cells, and preserves rejection for `standard-signal`,
+  write-buffer, and multi-command inputs.
+- Added `docs/recipient-init-command-message-consumption.md` and updated the
+  recipient and stem source-status artifacts, transition language, README,
+  roadmap, literature map, open problems, project memory, and lessons.
+- Verified the focused recipient/adjacent suite passed 28 tests.
+  `python -m unittest discover` passed 286 tests, py_compile passed for the
+  touched Python module and tests, JSON parsing passed for the transition
+  language and source-status manifests, and `git diff --check` passed.

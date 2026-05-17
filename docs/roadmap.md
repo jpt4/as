@@ -911,3 +911,26 @@ Status: accepted in
 `sources/recipient_command_consumption_source_status.json` and
 `docs/recipient-command-consumption-source-status.md`, with tests in
 `tests/test_recipient_command_consumption_source_status.py`.
+
+## ADR-0049: Recipient Init Command-Message Consumption
+
+Goal: consume delivered init-family command-message tokens on recipient cells
+without executing unresolved non-init command messages.
+
+Deliverables:
+
+- recipient input-channel handling for `stem-init`, `wire-r-init`,
+  `wire-l-init`, `proc-r-init`, and `proc-l-init`;
+- `recipient-init-command-message-processed` transition status;
+- fixed-cell direct input and pulled-upstream command-message coverage;
+- stem-cell command-state clearing coverage;
+- preserved rejection for `standard-signal`, write-buffer, and multi-command
+  inputs;
+- transition-language status update and source-status next-slice update.
+
+Status: accepted in
+`docs/adr/0049-recipient-init-command-message-consumption.md`. Implemented in
+`autarkic_systems/universal_cell.py`,
+`language/transition_claim_language.json`, and
+`docs/recipient-init-command-message-consumption.md`, with tests in
+`tests/test_recipient_init_command_messages.py`.

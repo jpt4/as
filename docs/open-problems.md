@@ -66,7 +66,8 @@ view of that trace. ADR-0041 adds the named claim for completed command buffers
 that still stop at the append boundary; ADR-0044 narrows that boundary to
 self-target non-init commands by delivering neighbor-target command buffers to
 output channels. ADR-0042/ADR-0043 now use a self-target `write-buf-one`
-trace/render for the remaining unsupported append boundary. Recipient-side
+trace/render for the remaining unsupported append boundary. ADR-0049 consumes
+recipient-side init-family command-message inputs. Recipient-side non-init
 command-message consumption and self-target non-init execution remain open.
 
 ## P3: Choose The First Proof Apparatus
@@ -179,3 +180,5 @@ ADR-0047 adds the rendered SVG view of that trace.
 ADR-0048 records the source-status decision for recipient-side command-message
 inputs and allows the next executable slice to consume init-family command
 messages only.
+ADR-0049 implements that recipient init-family command-message consumption
+slice while leaving non-init command messages blocked.

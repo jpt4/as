@@ -30,8 +30,8 @@ class CommandChannelTokenRepresentationTests(unittest.TestCase):
         self.assertEqual(result.status, "blocked-output")
         self.assertEqual(result.cell, cell)
 
-    def test_command_message_input_is_represented_but_not_executed(self):
-        cell = Cell(role="stem", memory="right", input=("wire-l-init", "_", "_"))
+    def test_write_buffer_command_message_input_is_represented_but_not_executed(self):
+        cell = Cell(role="stem", memory="right", input=("write-buf-one", "_", "_"))
 
         result = step_stem_cell(cell)
 
@@ -40,14 +40,19 @@ class CommandChannelTokenRepresentationTests(unittest.TestCase):
         self.assertEqual(result.cell.role, "stem")
         self.assertEqual(result.cell.memory, "right")
 
-    def test_fixed_cell_still_uses_si_for_current_stem_init_execution(self):
+    def test_fixed_cell_distinguishes_command_token_from_si_shorthand_status(self):
         command_token = Cell(role="wire", memory="left", input=("stem-init", "_", "_"))
         shorthand = Cell(role="wire", memory="left", input=("si", "_", "_"))
 
         command_result = step_fixed_cell(command_token)
         shorthand_result = step_fixed_cell(shorthand)
 
-        self.assertEqual(command_result.status, "rejected-input")
+        self.assertEqual(
+            command_result.status,
+            "recipient-init-command-message-processed",
+        )
+        self.assertEqual(command_result.cell.role, "stem")
+        self.assertEqual(command_result.cell.memory, "right")
         self.assertEqual(shorthand_result.status, "stem-init")
 
     def test_object_language_signal_terms_include_command_messages(self):

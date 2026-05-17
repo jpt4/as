@@ -26,12 +26,13 @@ ADR-0045 promotes that delivery behavior into the named transition-claim
 surface. ADR-0046 adds a schematic-linked trace for one
 `neighbor-b/proc-l-init` delivery. ADR-0047 adds the corresponding rendered SVG
 view. ADR-0048 records a recipient command-consumption source-status decision:
-AS may next execute recipient-side init-family command-message inputs, while
-`standard-signal` and write-buffer command messages remain blocked.
-ADR-0042/ADR-0043 now cover the self-target `write-buf-one` append boundary.
+AS may execute recipient-side init-family command-message inputs, while
+`standard-signal` and write-buffer command messages remain blocked. ADR-0049
+implements that recipient init-family slice. ADR-0042/ADR-0043 now cover the
+self-target `write-buf-one` append boundary.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
-does not execute command-message inputs on recipient cells.
+does not execute non-init command-message inputs on recipient cells.
 
 ## Evidence
 
@@ -69,7 +70,7 @@ command behavior honestly, AS still needs to choose:
 - how `standard-signal`, `write-buf-zero`, and `write-buf-one` behave when
   selected as self-mailbox or self-target command-buffer commands.
 - how write-buffer and standard-signal command-message inputs behave on
-  recipient cells after the init-family recipient slice.
+  recipient cells after the implemented init-family recipient slice.
 
 ## Verification
 

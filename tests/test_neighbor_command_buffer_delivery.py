@@ -104,12 +104,15 @@ class NeighborCommandBufferDeliveryTests(unittest.TestCase):
         self.assertEqual(result.cell.control, (0, 1, 0))
         self.assertEqual(result.cell.buffer, (0, 0, 1, 1, 1))
 
-    def test_command_message_input_is_still_not_neighbor_side_execution(self):
+    def test_delivered_init_command_message_can_be_consumed_by_recipient(self):
         cell = Cell(role="stem", memory="right", input=("stem-init", "_", "_"))
 
         result = step_stem_cell(cell)
 
-        self.assertEqual(result.status, "rejected-input")
+        self.assertEqual(
+            result.status,
+            "recipient-init-command-message-processed",
+        )
         self.assertEqual(result.cell.role, "stem")
         self.assertEqual(result.cell.memory, "right")
         self.assertEqual(result.cell.input, EMPTY)

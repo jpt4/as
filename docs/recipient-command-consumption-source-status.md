@@ -11,8 +11,8 @@ The structured status lives in
 
 ## Decision
 
-Implement recipient-side init-family command-message consumption next, but do
-not implement full command-message consumption yet.
+ADR-0048 decided to implement recipient-side init-family command-message
+consumption next, but not full command-message consumption.
 
 The formal model routes input-channel special messages for wire, proc, and
 stem cells through `process-special-message`. The restored PRC legacy sources
@@ -27,8 +27,9 @@ agree on a seven-message special-message set:
 - `write-buf-one`.
 
 AS already implements init-family behavior in the self-mailbox path and in
-self-target init command-buffer dispatch. The next executable slice may reuse
-that stable init-family subset for recipient-side command-message inputs.
+self-target init command-buffer dispatch. ADR-0049 reuses that stable
+init-family subset for recipient-side command-message inputs and records the
+runtime slice in `docs/recipient-init-command-message-consumption.md`.
 
 ## Remaining Blockers
 
@@ -42,6 +43,20 @@ buffer-full behavior.
 Full recipient-side command-message consumption also needs a conflict policy
 for multiple simultaneous command-message inputs.
 
+## Implemented Slice
+
+ADR-0049 implements single input-channel consumption for:
+
+- `stem-init`;
+- `wire-r-init`;
+- `wire-l-init`;
+- `proc-r-init`;
+- `proc-l-init`.
+
+The transition status is `recipient-init-command-message-processed`. The
+source-status artifact records this in its `implemented_slices` field while
+keeping non-init command-message inputs blocked.
+
 ## Verification
 
 Run:
@@ -51,5 +66,5 @@ python -m unittest tests.test_recipient_command_consumption_source_status
 ```
 
 The tests check the source-status decision, the formal input-special-message
-anchor, the legacy special-message sets, unresolved blockers, and the updated
-stem command execution next-slice list.
+anchor, the legacy special-message sets, the implemented ADR-0049 slice,
+unresolved blockers, and the updated stem command execution next-slice list.

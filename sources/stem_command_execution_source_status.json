@@ -30,7 +30,7 @@
     "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
     "locus": "lines 660-681, process-buffer and stem-process-special-message",
     "summary": "The formal model sketches 32 target/message cases, clears the buffer, places self-target messages in a self mailbox, places neighbor-target messages on output channels, and then processes self special messages.",
-    "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox preservation, self-target init command-buffer dispatch, neighbor-target command-buffer delivery onto output channels, and the unsupported self-target non-init append boundary. It still does not execute command-message inputs on recipient cells or execute self-target standard-signal/write-buffer commands."
+    "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox preservation, self-target init command-buffer dispatch, neighbor-target command-buffer delivery onto output channels, recipient-side init-family command-message input consumption, and the unsupported self-target non-init append boundary. It still does not execute non-init command-message inputs on recipient cells or execute self-target standard-signal/write-buffer commands."
   },
   "legacy_divergences": [
     {
@@ -67,8 +67,8 @@
   ],
   "blockers": [
     {
-      "blocker_id": "neighbor-command-consumption-semantics",
-      "summary": "AS can deliver decoded neighbor-target command buffers onto output channels, but recipient cells still reject command-message inputs rather than executing them."
+      "blocker_id": "recipient-non-init-command-message-semantics",
+      "summary": "AS can consume delivered init-family command-message inputs, but recipient cells still reject non-init command messages until standard-signal and write-buffer semantics are decided."
     },
     {
       "blocker_id": "standard-signal-command-semantics",
@@ -80,7 +80,7 @@
     }
   ],
   "allowed_next_slices": [
-    "Implement recipient-side init-family command-message consumption for delivered neighbor commands.",
+    "Promote recipient-side init-family command-message consumption into a named claim and proof certificate.",
     "Resolve or further document self-target standard-signal and write-buffer semantics before executing them.",
     "Add more source-status tests if another PRC source resolves the target or command-order divergence."
   ]

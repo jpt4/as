@@ -3,6 +3,20 @@
   "reviewed_at": "2026-05-17",
   "decision": "implement-recipient-init-family-command-message-consumption-next",
   "runtime_change": "none-source-status-only",
+  "implemented_slices": [
+    {
+      "adr": "ADR-0049",
+      "status": "recipient-init-command-message-processed",
+      "commands": [
+        "stem-init",
+        "wire-r-init",
+        "wire-l-init",
+        "proc-r-init",
+        "proc-l-init"
+      ],
+      "summary": "AS now consumes single input-channel init-family command messages on fixed and stem recipient cells while leaving non-init command-message inputs blocked."
+    }
+  ],
   "formal_model_input_special_message_anchor": {
     "witness_id": "PRC-FORMAL-INPUT-SPECIAL-MESSAGE",
     "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",

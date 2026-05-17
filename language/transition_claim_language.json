@@ -43,6 +43,7 @@
         "stem-control-selected",
         "stem-command-buffer-neighbor-delivered",
         "stem-command-buffer-self-processed",
+        "recipient-init-command-message-processed",
         "stem-init",
         "self-mailbox-processed",
         "self-mailbox-unsupported"

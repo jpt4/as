@@ -115,3 +115,7 @@
 - After delivery evidence is complete, decide recipient consumption from source
   status before changing runtime behavior. A delivered token is only half of
   the semantics.
+- Recipient command-message consumption should land as init-family behavior
+  first. Keeping `standard-signal`, write-buffer, and multi-command inputs at
+  the rejection boundary avoids laundering unresolved command semantics through
+  an otherwise source-backed slice.

@@ -26,15 +26,16 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         )
 
         blocker_ids = {blocker["blocker_id"] for blocker in self.status["blockers"]}
-        self.assertIn("neighbor-command-consumption-semantics", blocker_ids)
+        self.assertIn("recipient-non-init-command-message-semantics", blocker_ids)
         self.assertIn("standard-signal-command-semantics", blocker_ids)
         self.assertIn("write-buffer-command-semantics", blocker_ids)
 
         execution_gap = self.status["formal_model_execution_anchor"]["as_gap"]
         self.assertIn("self-target init command-buffer dispatch", execution_gap)
         self.assertIn("neighbor-target command-buffer delivery", execution_gap)
+        self.assertIn("recipient-side init-family command-message input consumption", execution_gap)
         self.assertIn("unsupported self-target non-init append boundary", execution_gap)
-        self.assertIn("does not execute command-message inputs", execution_gap)
+        self.assertIn("does not execute non-init command-message inputs", execution_gap)
 
     def test_formal_model_command_table_matches_adr_0026_map(self):
         formal = self.status["formal_model_command_table"]
@@ -96,6 +97,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertTrue(
             any(
                 "recipient-side init-family command-message consumption" in item
+                and "named claim" in item
                 for item in allowed
             )
         )

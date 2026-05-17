@@ -29,6 +29,23 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
         self.assertFalse(self.status["allowed_next_slice"]["standard_signal"])
         self.assertFalse(self.status["allowed_next_slice"]["write_buffer"])
 
+        implemented = self.status["implemented_slices"][0]
+        self.assertEqual(implemented["adr"], "ADR-0049")
+        self.assertEqual(
+            implemented["status"],
+            "recipient-init-command-message-processed",
+        )
+        self.assertEqual(
+            implemented["commands"],
+            [
+                "stem-init",
+                "wire-r-init",
+                "wire-l-init",
+                "proc-r-init",
+                "proc-l-init",
+            ],
+        )
+
     def test_formal_model_records_input_special_message_processing(self):
         formal = self.status["formal_model_input_special_message_anchor"]
 
@@ -80,14 +97,15 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "recipient-side init-family command-message consumption" in item
+                "recipient-side init-family command-message consumption"
+                in item
+                and "named claim" in item
                 for item in allowed
             )
         )
         self.assertFalse(
             any(
-                "source-status decision" in item
-                and "recipient-side command-message consumption" in item
+                item.startswith("Implement recipient-side init-family")
                 for item in allowed
             )
         )

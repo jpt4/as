@@ -218,3 +218,8 @@
   PRC source cache at commit `7e82c73fac8f108faac801a5c65e2c2b92653ba5` as
   ADR evidence and permits only recipient-side init-family command-message
   consumption as the next executable slice.
+- ADR-0049 adds `docs/recipient-init-command-message-consumption.md` and
+  `tests/test_recipient_init_command_messages.py`. `step_fixed_cell` and
+  `step_stem_cell` now consume single input-channel init-family command-message
+  tokens with status `recipient-init-command-message-processed`, while
+  `standard-signal`, write-buffer, and multi-command inputs remain rejected.

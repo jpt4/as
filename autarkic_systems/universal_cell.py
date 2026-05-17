@@ -55,6 +55,7 @@ Status = Literal[
     "stem-control-selected",
     "stem-command-buffer-neighbor-delivered",
     "stem-command-buffer-self-processed",
+    "recipient-init-command-message-processed",
     "self-mailbox-processed",
     "self-mailbox-unsupported",
 ]
@@ -168,6 +169,10 @@ def step_fixed_cell(cell: Cell) -> StepResult:
         if _empty(active.input):
             return StepResult("idle", active)
 
+    recipient_command_result = _process_recipient_init_command_message(active)
+    if recipient_command_result is not None:
+        return recipient_command_result
+
     if _is_stem_init(active.input):
         return StepResult("stem-init", _to_stem(active))
 
@@ -204,6 +209,10 @@ def step_stem_cell(cell: Cell) -> StepResult:
 
         if _empty(cell.input):
             return StepResult("idle", cell)
+
+        recipient_command_result = _process_recipient_init_command_message(cell)
+        if recipient_command_result is not None:
+            return recipient_command_result
 
         if not _is_one_hot_standard_signal(cell.input):
             return StepResult("rejected-input", _replace(cell, input=EMPTY))
@@ -256,6 +265,34 @@ def _process_self_mailbox(cell: Cell) -> StepResult:
     role, memory = target
     return StepResult(
         "self-mailbox-processed",
+        _replace(
+            cell,
+            role=role,
+            memory=memory,
+            input=EMPTY,
+            output=EMPTY,
+            automail="_",
+            self_mailbox="_",
+            control=(),
+            buffer=(),
+        ),
+    )
+
+
+def _process_recipient_init_command_message(cell: Cell) -> StepResult | None:
+    """Consume a single input-channel init-family command message if present."""
+
+    command = _single_command_message_input(cell.input)
+    if command is None:
+        return None
+
+    target = SELF_MAILBOX_INIT_TARGETS.get(command)
+    if target is None:
+        return None
+
+    role, memory = target
+    return StepResult(
+        "recipient-init-command-message-processed",
         _replace(
             cell,
             role=role,
@@ -386,6 +423,21 @@ def _is_stem_init(signal: tuple[Signal, Signal, Signal]) -> bool:
     """Stem-init is a single special token embedded in otherwise empty input."""
 
     return signal.count("si") == 1 and signal.count("_") == 2
+
+
+def _single_command_message_input(
+    signal: tuple[Signal, Signal, Signal],
+) -> CommandMessage | None:
+    """Return one command-message token from an otherwise empty input tuple."""
+
+    commands = [
+        channel
+        for channel in signal
+        if channel != "_" and channel in VALID_SELF_MAILBOX
+    ]
+    if len(commands) != 1 or signal.count("_") != 2:
+        return None
+    return commands[0]  # type: ignore[return-value]
 
 
 def _is_one_hot_standard_signal(signal: tuple[Signal, Signal, Signal]) -> bool:
