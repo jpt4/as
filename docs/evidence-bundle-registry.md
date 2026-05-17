@@ -24,6 +24,10 @@ The registry currently lists:
 
 Future bundle-producing ADRs should add one entry per bundle.
 
+Transition-chain evidence bundles are intentionally separate. ADR-0081 stores
+the first composed-chain bundle under `evidence/chains/` so the top-level
+closed registry remains a single-transition evidence index.
+
 ## Validation
 
 `autarkic_systems/evidence_bundle.py` provides

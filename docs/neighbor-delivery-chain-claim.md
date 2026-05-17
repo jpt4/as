@@ -48,3 +48,7 @@ rejection.
 
 ADR-0080 adds the module command so the chain claim surface can be validated
 outside the unit-test runner.
+
+ADR-0081 adds a separate chain evidence bundle that ties this claim/proof
+surface to the chain object language, the underlying neighbor-delivery and
+recipient-init transition bundles, and the source-status boundary records.

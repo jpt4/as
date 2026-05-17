@@ -42,3 +42,10 @@ vocabularies.
 
 ADR-0080 exposes the same chain language, example, certificate, and surface
 validation through the `python -m autarkic_systems.chain_claims` command.
+
+ADR-0081 validates this language as part of the first composed-chain evidence
+bundle:
+
+```sh
+python -m autarkic_systems.chain_evidence_bundle
+```

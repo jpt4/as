@@ -1560,3 +1560,22 @@ Deliverables:
 Status: accepted in `docs/adr/0080-transition-chain-claim-cli.md`.
 Implemented in `autarkic_systems/chain_claims.py`, with tests in
 `tests/test_transition_chain_claim_cli.py`.
+
+## ADR-0081: Neighbor Delivery Chain Evidence Bundle
+
+Goal: make the ADR-0077 through ADR-0080 neighbor delivery recipient chain
+inspectable as one composed-chain evidence artifact.
+
+Deliverables:
+
+- `evidence/chains/neighbor_delivery_chain_bundle.json`;
+- `autarkic_systems/chain_evidence_bundle.py`;
+- `tests/test_neighbor_delivery_chain_evidence_bundle.py`;
+- text and JSON validation through
+  `python -m autarkic_systems.chain_evidence_bundle`;
+- human-facing chain evidence-bundle note and project navigation updates.
+
+Status: accepted in
+`docs/adr/0081-neighbor-delivery-chain-evidence-bundle.md`. Implemented in
+`evidence/chains/neighbor_delivery_chain_bundle.json`, with tests in
+`tests/test_neighbor_delivery_chain_evidence_bundle.py`.

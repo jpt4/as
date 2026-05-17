@@ -395,3 +395,9 @@
   `python -m autarkic_systems.chain_claims`. The CLI validates the chain
   language manifest, executable examples, proof certificates, and claim surface
   in text or JSON form.
+- ADR-0081 adds `docs/neighbor-delivery-chain-evidence-bundle.md`,
+  `evidence/chains/neighbor_delivery_chain_bundle.json`,
+  `autarkic_systems/chain_evidence_bundle.py`, and
+  `tests/test_neighbor_delivery_chain_evidence_bundle.py`. Chain evidence
+  bundles live under `evidence/chains/` so `evidence/manifest.json` remains the
+  closed single-transition evidence registry.

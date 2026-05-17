@@ -1799,3 +1799,28 @@
   passed, and `python -m unittest discover` passed 471 tests. `py_compile`
   passed for the touched module and test, `git diff --check` passed, and the
   evidence registry JSON CLI still reported 8 accepted bundles.
+
+## 2026-05-17 - Neighbor Delivery Chain Evidence Bundle
+
+- Added ADR-0081 to make the ADR-0077 through ADR-0080 two-step neighbor
+  delivery recipient-consumption chain inspectable as one composed-chain
+  evidence artifact.
+- Wrote `tests/test_neighbor_delivery_chain_evidence_bundle.py` before
+  implementation. The red run failed because
+  `autarkic_systems.chain_evidence_bundle` was absent.
+- Added `evidence/chains/neighbor_delivery_chain_bundle.json` so the chain
+  bundle stays separate from the top-level single-transition evidence registry.
+- Added `autarkic_systems/chain_evidence_bundle.py` to validate schema,
+  executable chain example status, chain predicate acceptance, proof
+  certificate coverage, chain language validity, the two underlying transition
+  evidence bundles, source-status JSON, boundary terms, and text/JSON CLI
+  output.
+- Added `docs/neighbor-delivery-chain-evidence-bundle.md` and updated README,
+  roadmap, literature map, open problems, chain-claim/language notes,
+  evidence-registry note, memory, and lessons.
+- Verified the focused chain evidence bundle test passed 8 tests, the adjacent
+  chain/evidence stack passed 60 tests, actual chain evidence CLI text and
+  JSON modes passed, the existing transition evidence registry JSON CLI still
+  reported 8 accepted bundles, `jq` parsed the new bundle, `py_compile`
+  passed for the new module and focused test, `git diff --check` passed, and
+  `python -m unittest discover` passed 479 tests.

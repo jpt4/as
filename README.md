@@ -132,6 +132,9 @@ the project legible:
   proof-certificate surface for that two-step handoff.
 - `docs/transition-chain-claim-language.md` records the syntax classes and
   validator boundary for transition-chain claims.
+- `docs/neighbor-delivery-chain-evidence-bundle.md` records the first
+  transition-chain evidence bundle, tying the two-step handoff to its claim,
+  proof, language, underlying transition bundles, and source-status boundaries.
 - `docs/evidence-bundle-registry.md` records the registry for discovering and
   batch-validating transition evidence bundles.
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
@@ -190,6 +193,10 @@ the project legible:
   `python -m autarkic_systems.chain_claims` for direct chain-claim validation.
 - `autarkic_systems/chain_object_language.py` validates the first
   transition-chain claim language and checked chain claim surface.
+- `autarkic_systems/chain_evidence_bundle.py` validates the first
+  transition-chain evidence bundle and exposes
+  `python -m autarkic_systems.chain_evidence_bundle` for direct text/JSON
+  validation.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -206,6 +213,9 @@ the project legible:
   syntax classes for transition-chain claims.
 - `python -m autarkic_systems.chain_claims --format json` emits the
   transition-chain claim validation report as machine-readable JSON.
+- `python -m autarkic_systems.chain_evidence_bundle --format json` emits the
+  neighbor-delivery chain evidence-bundle validation report as
+  machine-readable JSON.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status
@@ -255,6 +265,9 @@ the project legible:
 - `evidence/neighbor_command_buffer_delivery_bundle.json` makes one completed
   neighbor-target command-buffer delivery evidence path inspectable across the
   same layers.
+- `evidence/chains/neighbor_delivery_chain_bundle.json` makes the two-step
+  neighbor-delivery recipient-consumption chain inspectable across its claim,
+  proof, language, underlying transition bundles, and source-status layers.
 - `evidence/manifest.json` indexes transition evidence bundles for
   batch-validation.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first

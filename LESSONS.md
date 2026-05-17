@@ -221,3 +221,6 @@
 - Once a claim surface has its own manifest, language, and proof check, give it
   a direct validation command. Operators and agents should not have to know the
   unit-test module name to verify a project contract.
+- Composed-chain evidence should not be silently added to a single-transition
+  registry. Keep the chain artifact separate, then validate the claim, proof,
+  language, lower-level bundles, and source blockers together.
