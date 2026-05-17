@@ -146,3 +146,8 @@
   treats self-mailbox consumption as its own summary case before generic
   role-change reconfiguration so mailbox before/after and control/buffer
   clearing stay visible.
+- ADR-0034 promotes unsupported self-mailbox commands into
+  `UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED` and
+  `self_mailbox_preserves_unsupported_command`. This is a preservation
+  boundary for `standard-signal`, `write-buf-zero`, and `write-buf-one`, not an
+  execution semantics claim.

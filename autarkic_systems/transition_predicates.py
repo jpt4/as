@@ -31,6 +31,11 @@ SELF_MAILBOX_INIT_TARGETS = {
     "proc-r-init": ("proc", "right"),
     "proc-l-init": ("proc", "left"),
 }
+SELF_MAILBOX_UNSUPPORTED_COMMANDS = {
+    "standard-signal",
+    "write-buf-zero",
+    "write-buf-one",
+}
 
 
 @dataclass(frozen=True)
@@ -236,6 +241,33 @@ def self_mailbox_executes_init_command(
     if result.cell.control or result.cell.buffer:
         return PredicateResult(name, False, "control or buffer was not cleared")
     return PredicateResult(name, True, "self mailbox init command executed")
+
+
+def self_mailbox_preserves_unsupported_command(
+    before: Cell,
+    result: StepResult,
+) -> PredicateResult:
+    """Check that unresolved self-mailbox commands remain unexecuted."""
+
+    name = "self_mailbox_preserves_unsupported_command"
+    if (
+        before.role != "stem"
+        or before.automail != "_"
+        or before.input != EMPTY
+        or before.output != EMPTY
+        or before.self_mailbox not in SELF_MAILBOX_UNSUPPORTED_COMMANDS
+    ):
+        return PredicateResult(name, True, "precondition not active")
+
+    if result.status != "self-mailbox-unsupported":
+        return PredicateResult(
+            name,
+            False,
+            f"expected self-mailbox-unsupported, got {result.status}",
+        )
+    if result.cell != before:
+        return PredicateResult(name, False, "unsupported command changed cell state")
+    return PredicateResult(name, True, "unsupported self mailbox command preserved")
 
 
 def _is_one_hot_standard_signal(signal: tuple[object, object, object]) -> bool:

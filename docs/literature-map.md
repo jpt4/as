@@ -40,6 +40,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS command channel-token representation | `autarkic_systems/universal_cell.py` and `language/transition_claim_language.json` | Channel tuples can now carry ADR-0026 command-message tokens. | Covers representation only; delivery and execution remain open. |
 | AS self mailbox init commands | `autarkic_systems/universal_cell.py` and `tests/test_self_mailbox_init_commands.py` | First self-mailbox execution slice for init-family commands. | Executes source-stable init commands while keeping write-buffer, standard-signal, and neighbor delivery open. |
 | AS self mailbox init claim | `docs/self-mailbox-init-claim.md`, `claims/transition_claims.json`, and `claims/proof_certificates.json` | Named claim and proof-certificate surface for self-mailbox init-command execution. | Keeps the ADR-0030 execution subset available to later proof/object-language work without widening command execution. |
+| AS self mailbox unsupported claim | `docs/self-mailbox-unsupported-claim.md`, `claims/transition_claims.json`, and `claims/proof_certificates.json` | Named preservation claim for self-mailbox commands that remain unresolved. | Makes `standard-signal`, `write-buf-zero`, and `write-buf-one` preserve-and-report behavior checkable without defining their future semantics. |
 | AS self mailbox init trace | `docs/self-mailbox-init-trace.md` and `schematics/self_mailbox_init_trace.json` | Schematic-linked trace for one `proc-l-init` self-mailbox command. | Extends P7 evidence to the ADR-0030/ADR-0031 execution subset without adding wider command execution. |
 | AS self mailbox init SVG | `docs/self-mailbox-init-svg.md` and `schematics/self_mailbox_init_trace.svg` | Visible render of the self-mailbox init trace. | Checked against generic renderer output and exposes mailbox before/after plus control/buffer clearing. |
 
@@ -94,6 +95,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | Neighbor-target stem command work needs command-message channel tokens before delivery. | PRC formal model process-buffer sketch, `autarkic_systems/universal_cell.py`, and `language/transition_claim_language.json`. | Implemented in ADR-0029 as representation only, with blocked-output preservation and no command execution. |
 | Self-mailbox init commands are a safe first execution subset. | PRC formal model process-special-message sketch and legacy fsmsim/semsim init functions. | Implemented in ADR-0030, excluding write-buffer and standard-signal commands. |
 | Self-mailbox init execution belongs in the named claim surface before wider command-buffer execution depends on it. | `claims/transition_claims.json`, `claims/proof_certificates.json`, and `autarkic_systems/transition_predicates.py`. | Implemented in ADR-0031 with positive/negative manifest examples and certificate coverage. |
+| Unsupported self-mailbox commands should be preserved as an explicit boundary claim until their semantics are resolved. | `claims/transition_claims.json`, `claims/proof_certificates.json`, and `autarkic_systems/transition_predicates.py`. | Implemented in ADR-0034 with positive/negative manifest examples and certificate coverage. |
 | Schematic-linked evidence should cover the self-mailbox init subset before larger command-routing traces. | `schematics/self_mailbox_init_trace.json`, `autarkic_systems/schematic_trace.py`, and `tests/test_self_mailbox_init_trace.py`. | Implemented in ADR-0032 with replay and drift rejection. |
 | A self-mailbox init render must expose mailbox consumption rather than only role reconfiguration. | `autarkic_systems/schematic_svg.py`, `schematics/self_mailbox_init_trace.svg`, and `tests/test_self_mailbox_init_svg.py`. | Implemented in ADR-0033 with exact renderer-output matching and drift rejection. |
 
@@ -113,7 +115,8 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   execution but not full command-buffer execution. ADR-0031 adds a claim and
   proof-certificate surface for that bounded execution subset. ADR-0032 adds a
   schematic-linked trace for one `proc-l-init` self-mailbox command. ADR-0033
-  adds a generated SVG render for that trace.
+  adds a generated SVG render for that trace. ADR-0034 adds an explicit
+  claim/proof boundary for the remaining unsupported self-mailbox commands.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

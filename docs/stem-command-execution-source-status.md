@@ -16,7 +16,9 @@ The PRC formal model gives the canonical target and command table now used by
 AS, but the execution path requires state that AS only partially models:
 ADR-0028 adds self mailbox representation, ADR-0029 adds command-message
 channel-token representation, and ADR-0030 processes the init-family
-self-mailbox commands. Legacy simulator sketches still diverge from the formal
+self-mailbox commands. ADR-0034 records the remaining self-mailbox
+`standard-signal` and write-buffer commands as an explicit preserve-and-report
+unsupported boundary. Legacy simulator sketches still diverge from the formal
 table in ways that should be resolved before AS treats them as executable
 authority, and AS still does not route or execute full command buffers.
 

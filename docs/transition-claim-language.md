@@ -15,7 +15,9 @@ tuples can represent command-message tokens for future neighbor delivery.
 ADR-0030 extends `statuses` for the first self-mailbox init-command execution
 slice. ADR-0031 extends `formulae.predicate_symbols` with
 `self_mailbox_executes_init_command` so that execution subset can be checked as
-a named transition claim.
+a named transition claim. ADR-0034 adds
+`self_mailbox_preserves_unsupported_command` for the unresolved self-mailbox
+command boundary.
 
 The point is to stop relying on implicit Python/JSON shape as the only syntax
 boundary. Current claims can now be checked against named syntax classes before

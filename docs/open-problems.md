@@ -21,7 +21,8 @@ proof clauses remain open.
 
 Status update: ADR-0031 promotes the self-mailbox init-command execution subset
 into a named transition claim with manifest examples and proof-certificate
-coverage.
+coverage. ADR-0034 promotes the unresolved self-mailbox command boundary into a
+preservation claim.
 
 ## P2: Expand From Fixed Roles To Stem/Reconfiguration
 
@@ -51,7 +52,8 @@ execution slice while leaving write-buffer, `standard-signal`, and neighbor
 delivery semantics open. ADR-0031 adds the corresponding named claim and
 proof-certificate surface for that init-command execution slice. ADR-0032 adds
 a schematic-linked trace for one `proc-l-init` self-mailbox command. ADR-0033
-adds the corresponding rendered SVG view.
+adds the corresponding rendered SVG view. ADR-0034 adds a named claim proving
+that unsupported self-mailbox commands remain preserved rather than executed.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -141,3 +143,5 @@ covers representation of command-message channel tokens. ADR-0030 executes
 self-mailbox init-family commands only, with ADR-0031 adding the matching claim
 and proof-certificate surface. ADR-0032 adds a schematic-linked trace for the
 same bounded behavior, and ADR-0033 adds the rendered SVG view.
+ADR-0034 records the remaining self-mailbox `standard-signal` and write-buffer
+commands as a checkable unsupported boundary.

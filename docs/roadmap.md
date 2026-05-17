@@ -603,3 +603,24 @@ Status: accepted in `docs/adr/0033-self-mailbox-init-svg.md`. Implemented in
 `autarkic_systems/schematic_svg.py` and
 `schematics/self_mailbox_init_trace.svg`, with tests in
 `tests/test_self_mailbox_init_svg.py`.
+
+## ADR-0034: Self Mailbox Unsupported Claim
+
+Goal: promote the unsupported self-mailbox command boundary into the named
+transition-claim and proof-certificate surface.
+
+Deliverables:
+
+- `self_mailbox_preserves_unsupported_command` predicate;
+- `UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED` manifest claim with positive
+  and negative executable examples;
+- proof-certificate coverage for the new claim;
+- transition-language predicate vocabulary update;
+- tests proving predicate behavior, manifest evaluation, certificate coverage,
+  and object-language validation.
+
+Status: accepted in `docs/adr/0034-self-mailbox-unsupported-claim.md`.
+Implemented in `autarkic_systems/transition_predicates.py`,
+`claims/transition_claims.json`, `claims/proof_certificates.json`, and
+`language/transition_claim_language.json`, with tests in
+`tests/test_self_mailbox_unsupported_claim.py`.

@@ -691,3 +691,25 @@
   tests, the adjacent schematic SVG suite passed 35 tests,
   `python -m unittest discover` passed 177 tests, py_compile passed for the
   touched module and test, and `git diff --check` passed.
+
+## 2026-05-17 - Self Mailbox Unsupported Claim
+
+- Added ADR-0034 to promote the unsupported self-mailbox command boundary into
+  the named claim and proof-certificate surface.
+- Wrote `tests/test_self_mailbox_unsupported_claim.py` before implementation.
+  The red run failed because `self_mailbox_preserves_unsupported_command` did
+  not exist in `autarkic_systems.transition_predicates`.
+- Added `self_mailbox_preserves_unsupported_command`,
+  `UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED`, proof-certificate coverage, and
+  the transition-language predicate symbol.
+- Added `docs/self-mailbox-unsupported-claim.md` as the human-facing boundary
+  note.
+- Updated README, roadmap, literature map, open problems, transition-claim
+  language note, stem command execution source-status note, project memory, and
+  lessons.
+- Verified `python -m unittest tests.test_self_mailbox_unsupported_claim`
+  passed 5 tests, the adjacent self-mailbox/transition predicate/claim
+  manifest/proof certificate/object-language suite passed 43 tests,
+  `python -m unittest discover` passed 182 tests, py_compile passed for the
+  touched module and test, JSON parsing passed for the claim/proof/language
+  manifests, and `git diff --check` passed.

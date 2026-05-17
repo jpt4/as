@@ -63,6 +63,8 @@ the project legible:
   execution is still blocked after the decoder map.
 - `docs/self-mailbox-init-claim.md` records the named claim and
   proof-certificate surface for the self-mailbox init-command subset.
+- `docs/self-mailbox-unsupported-claim.md` records the named preservation
+  claim for unresolved self-mailbox commands.
 - `docs/self-mailbox-init-trace.md` records the schematic-linked trace for one
   self-mailbox init command.
 - `docs/self-mailbox-init-svg.md` records the rendered view of that
@@ -75,7 +77,7 @@ the project legible:
   leaving full command-buffer execution open.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
-  subset.
+  subset and unsupported-command preservation boundary.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
   those transition claims.
 - `sources/willard_definition_map.json` makes the Willard anchor map

@@ -65,7 +65,8 @@
         "stem_init_resets_to_stem",
         "automail_reconfigures_stem",
         "stem_buffer_accumulates",
-        "self_mailbox_executes_init_command"
+        "self_mailbox_executes_init_command",
+        "self_mailbox_preserves_unsupported_command"
       ],
       "form": "predicate(before_cell, step_result)"
     },

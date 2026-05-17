@@ -361,6 +361,51 @@
           }
         }
       ]
+    },
+    {
+      "id": "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
+      "predicate": "self_mailbox_preserves_unsupported_command",
+      "description": "A stem cell with an unsupported self-mailbox command reports the unsupported boundary and preserves the cell unchanged.",
+      "examples": [
+        {
+          "name": "write buffer one unsupported preserved",
+          "expected": true,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "self_mailbox": "write-buf-one",
+            "control": [1, 0, 1],
+            "buffer": [0, 1]
+          },
+          "result": {
+            "status": "self-mailbox-unsupported",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "self_mailbox": "write-buf-one",
+              "control": [1, 0, 1],
+              "buffer": [0, 1]
+            }
+          }
+        },
+        {
+          "name": "unsupported command cleared",
+          "expected": false,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "self_mailbox": "standard-signal"
+          },
+          "result": {
+            "status": "self-mailbox-unsupported",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "self_mailbox": "_"
+            }
+          }
+        }
+      ]
     }
   ]
 }

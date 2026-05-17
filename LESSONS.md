@@ -76,3 +76,6 @@
 - Render summaries should follow the semantic cause of a state change. A
   self-mailbox init can change role like automail does, but its visible proof
   surface is mailbox consumption and cleared command state.
+- Boundary behavior deserves claims too. When AS deliberately refuses to
+  execute an unresolved command, a preservation claim is better than leaving
+  that refusal as an informal test side effect.

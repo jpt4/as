@@ -115,6 +115,21 @@
           "expected": false
         }
       ]
+    },
+    {
+      "claim_id": "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "write buffer one unsupported preserved",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "unsupported command cleared",
+          "expected": false
+        }
+      ]
     }
   ]
 }
