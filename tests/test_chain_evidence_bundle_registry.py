@@ -168,6 +168,17 @@ class ChainEvidenceBundleRegistryTests(unittest.TestCase):
         )
         self.assertEqual(payload["bundle_count"], 1)
         self.assertEqual(payload["result_count"], len(results))
+        self.assertEqual(
+            payload["bundles"],
+            [
+                {
+                    "bundle_id": BUNDLE_ID,
+                    "path": str(BUNDLE),
+                    "chain_claim_id": CLAIM_ID,
+                    "expected_status": STATUS,
+                }
+            ],
+        )
 
     def test_cli_validates_checked_in_registry(self):
         stdout = io.StringIO()
@@ -203,6 +214,8 @@ class ChainEvidenceBundleRegistryTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["bundle_count"], 1)
+        self.assertEqual(payload["bundles"][0]["bundle_id"], BUNDLE_ID)
+        self.assertEqual(payload["bundles"][0]["path"], str(BUNDLE))
 
 
 if __name__ == "__main__":

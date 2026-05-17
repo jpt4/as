@@ -240,6 +240,15 @@ def chain_registry_validation_report_payload(
         "registry_id": registry.registry_id,
         "accepted": all(result.accepted for result in results),
         "bundle_count": len(registry.bundles),
+        "bundles": [
+            {
+                "bundle_id": entry.bundle_id,
+                "path": str(entry.path),
+                "chain_claim_id": entry.chain_claim_id,
+                "expected_status": entry.expected_status,
+            }
+            for entry in registry.bundles
+        ],
         "result_count": len(results),
         "results": [
             {

@@ -1932,3 +1932,22 @@
   `py_compile` passed for the touched module and focused test,
   `git diff --check` passed, and `python -m unittest discover` passed 504
   tests.
+
+## 2026-05-17 - Chain Registry JSON Entries
+
+- Added ADR-0086 to make chain evidence registry JSON output list the concrete
+  bundles validated in a run.
+- Updated `tests/test_chain_evidence_bundle_registry.py` before implementation.
+  The red run failed because `chain_registry_validation_report_payload` did
+  not include a `bundles` key.
+- Extended `chain_registry_validation_report_payload` so registry JSON includes
+  each registered bundle ID, path, chain claim ID, and expected status.
+- Updated `docs/chain-evidence-bundle-registry.md`, roadmap, memory, and
+  lessons with the JSON payload contract.
+- Verified the focused chain registry test passed 10 tests, adjacent chain
+  CLI/registry/bundle tests passed 20 tests, chain registry JSON reported
+  `accepted: true`, `bundle_count: 1`, and the expected `bundles` entry, the
+  single-bundle chain evidence JSON CLI still reported `accepted: true` and
+  `result_count: 9`, `py_compile` passed for the touched module and focused
+  test, `git diff --check` passed, and `python -m unittest discover` passed
+  504 tests.

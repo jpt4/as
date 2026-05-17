@@ -235,3 +235,6 @@
   registry instead of relaxing the single-transition registry boundary.
 - A CLI that can validate one artifact or a registry should reject ambiguous
   target flags instead of silently choosing one.
+- Registry JSON should identify what it validated, not only how many entries
+  passed. Include bundle IDs and paths so automation does not have to re-read
+  the manifest.

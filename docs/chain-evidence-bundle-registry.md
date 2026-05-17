@@ -35,6 +35,9 @@ The command prints one `OK` or `FAIL` line per validation subject in text mode,
 emits structured JSON in JSON mode, and exits with code `0` only when every
 registry and chain bundle validation passes.
 
+ADR-0086 makes the JSON payload self-describing by including a `bundles` array
+with each registered bundle ID, path, chain claim ID, and expected status.
+
 ADR-0085 makes the target selection explicit: `--bundle` and `--registry` are
 mutually exclusive. Supplying both fails during argument parsing with exit code
 `2`.

@@ -1644,3 +1644,18 @@ Deliverables:
 Status: accepted in `docs/adr/0085-chain-evidence-cli-target-selection.md`.
 Implemented in `autarkic_systems/chain_evidence_bundle.py`, with tests in
 `tests/test_chain_evidence_cli_target_selection.py`.
+
+## ADR-0086: Chain Registry JSON Entries
+
+Goal: make chain evidence registry JSON output list the concrete bundle entries
+validated in a run.
+
+Deliverables:
+
+- `bundles` array in `chain_registry_validation_report_payload`;
+- focused tests in `tests/test_chain_evidence_bundle_registry.py`;
+- documentation update for the chain evidence registry JSON contract.
+
+Status: accepted in `docs/adr/0086-chain-registry-json-entries.md`.
+Implemented in `autarkic_systems/chain_evidence_bundle.py`, with tests in
+`tests/test_chain_evidence_bundle_registry.py`.

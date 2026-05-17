@@ -420,3 +420,5 @@
 - ADR-0085 makes `--bundle` and `--registry` mutually exclusive for
   `python -m autarkic_systems.chain_evidence_bundle`; supplying both exits
   through argparse with code `2`.
+- ADR-0086 adds a `bundles` array to chain evidence registry JSON output,
+  listing each registered bundle ID, path, chain claim ID, and expected status.
