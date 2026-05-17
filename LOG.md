@@ -2073,3 +2073,23 @@
   accepted with `result_count: 9` and `failed_subjects: []`. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed, with the full
   suite running 522 tests.
+
+## 2026-05-17 - Neighbor Delivery Rejection Chain SVG
+
+- Added ADR-0093 to render the delivered non-init recipient rejection chain
+  trace as a checked SVG artifact.
+- Updated `tests/test_neighbor_delivery_chain_svg.py` before implementation.
+  The red run failed because
+  `NEIGHBOR_DELIVERY_REJECTION_CHAIN_SVG_ARTIFACT` did not exist.
+- Updated `autarkic_systems.chain_svg` so the handoff label derives its channel
+  index from the delivered tuple instead of hard-coding channel 1.
+- Added `schematics/chains/neighbor_delivery_rejection_chain_trace.svg`,
+  showing `recipient-not-consumed`, `sender output[2] -> recipient upstream[2]`,
+  delivered tuple `[_, _, write-buf-one]`, and recipient `rejected-input`.
+- Updated README, the chain SVG note, the chain trace note, open problems,
+  roadmap, memory, and lessons with the rejection SVG layer.
+- Verified the focused SVG test passed 9 tests; adjacent SVG, trace, and
+  evidence tests passed 30 tests; adjacent registry and demo tests passed 19
+  tests. Chain evidence JSON remained accepted with `result_count: 9` and
+  `failed_subjects: []`. `py_compile`, `git diff --check`, and
+  `python -m unittest discover` passed, with the full suite running 525 tests.

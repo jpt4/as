@@ -43,6 +43,8 @@ python -m autarkic_systems.chain_evidence_bundle
 
 ADR-0083 adds the renderer-locked SVG view of the consumed trace at
 `schematics/chains/neighbor_delivery_recipient_chain_trace.svg`.
+ADR-0093 adds the renderer-locked SVG view of the rejection trace at
+`schematics/chains/neighbor_delivery_rejection_chain_trace.svg`.
 
 ## Boundary
 

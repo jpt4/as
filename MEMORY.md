@@ -440,3 +440,7 @@
   `schematics/chains/neighbor_delivery_rejection_chain_trace.json` and lets
   chain traces validate expected rejection statuses when replayed status and
   cells match.
+- ADR-0093 adds
+  `schematics/chains/neighbor_delivery_rejection_chain_trace.svg` and updates
+  chain SVG rendering/validation to derive the visible handoff channel from
+  the delivered tuple.

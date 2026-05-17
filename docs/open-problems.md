@@ -138,6 +138,8 @@ transition-chain claim, proving the composed handoff can preserve a blocked
 recipient command path as well as consume the init path.
 ADR-0092 records that rejection boundary as a composed-chain trace before any
 rendered SVG or evidence-bundle promotion.
+ADR-0093 adds the renderer-locked SVG for that rejection trace and makes the
+chain SVG renderer derive the handoff channel from the delivered tuple.
 
 ## P3: Choose The First Proof Apparatus
 

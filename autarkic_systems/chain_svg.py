@@ -12,6 +12,9 @@ from autarkic_systems.chain_trace import TransitionChainTrace
 NEIGHBOR_DELIVERY_CHAIN_SVG_ARTIFACT = Path(
     "schematics/chains/neighbor_delivery_recipient_chain_trace.svg"
 )
+NEIGHBOR_DELIVERY_REJECTION_CHAIN_SVG_ARTIFACT = Path(
+    "schematics/chains/neighbor_delivery_rejection_chain_trace.svg"
+)
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 
 
@@ -32,6 +35,10 @@ def render_transition_chain_svg(trace: TransitionChainTrace) -> str:
     recipient_before = trace.recipient_step.before_cell
     recipient_after = trace.recipient_step.expected_after_cell
     delivered = "[" + ", ".join(str(item) for item in trace.handoff.delivered_tuple) + "]"
+    handoff_index = _delivered_signal_index(trace.handoff.delivered_tuple)
+    handoff_flow = (
+        f"sender output[{handoff_index}] -> recipient upstream[{handoff_index}]"
+    )
 
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
@@ -99,7 +106,7 @@ def render_transition_chain_svg(trace: TransitionChainTrace) -> str:
         '    <text class="handoff-label" x="600" y="246" text-anchor="middle">'
         f'{_text(trace.handoff.source_field)} -> {_text(trace.handoff.target_field)}</text>',
         '    <text class="small" x="600" y="274" text-anchor="middle">'
-        'sender output[1] -> recipient upstream[1]</text>',
+        f'{handoff_flow}</text>',
         f'    <text class="small" x="600" y="302" text-anchor="middle">delivered tuple: {_text(delivered)}</text>',
         "  </g>",
         '  <g class="flow-summary sender-flow">',
@@ -213,8 +220,9 @@ def _validate_handoff_flow(
     if root is None:
         return _rejected("handoff-flow", "SVG did not parse")
     visible_text = "\n".join(root.itertext())
+    handoff_index = _delivered_signal_index(trace.handoff.delivered_tuple)
     required = [
-        "sender output[1] -> recipient upstream[1]",
+        f"sender output[{handoff_index}] -> recipient upstream[{handoff_index}]",
         *trace.sender_step.routed_signal_flow,
         *trace.recipient_step.routed_signal_flow,
     ]
@@ -233,6 +241,13 @@ def _cell_field(cell: dict[str, object], field: str) -> str:
 
 def _tuple_text(value: tuple[object, ...]) -> str:
     return "[" + ", ".join(str(item) for item in value) + "]"
+
+
+def _delivered_signal_index(value: tuple[object, ...]) -> int:
+    for index, item in enumerate(value):
+        if item != "_":
+            return index
+    return 0
 
 
 def _text(value: object) -> str:

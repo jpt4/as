@@ -4,6 +4,7 @@ from pathlib import Path
 
 from autarkic_systems.chain_svg import (
     NEIGHBOR_DELIVERY_CHAIN_SVG_ARTIFACT,
+    NEIGHBOR_DELIVERY_REJECTION_CHAIN_SVG_ARTIFACT,
     SVG_NAMESPACE,
     render_transition_chain_svg,
     validate_transition_chain_svg,
@@ -12,6 +13,9 @@ from autarkic_systems.chain_trace import load_transition_chain_trace
 
 
 TRACE_ARTIFACT = Path("schematics/chains/neighbor_delivery_recipient_chain_trace.json")
+REJECTION_TRACE_ARTIFACT = Path(
+    "schematics/chains/neighbor_delivery_rejection_chain_trace.json"
+)
 
 
 class NeighborDeliveryChainSvgTests(unittest.TestCase):
@@ -40,6 +44,25 @@ class NeighborDeliveryChainSvgTests(unittest.TestCase):
         self.assertIn("recipient after role: proc", self.svg_text)
         self.assertIn("recipient after memory: left", self.svg_text)
 
+    def test_rejection_svg_records_channel_two_handoff_and_rejection(self):
+        rejection_trace = load_transition_chain_trace(REJECTION_TRACE_ARTIFACT)
+
+        rejection_svg = render_transition_chain_svg(rejection_trace)
+
+        self.assertIn("sender: sender-neighbor-non-init-delivery", rejection_svg)
+        self.assertIn("recipient: recipient-non-init-rejection", rejection_svg)
+        self.assertIn("status: recipient-not-consumed", rejection_svg)
+        self.assertIn("sender output[2] -> recipient upstream[2]", rejection_svg)
+        self.assertIn("delivered tuple: [_, _, write-buf-one]", rejection_svg)
+        self.assertIn("sender after output: [_, _, write-buf-one]", rejection_svg)
+        self.assertIn(
+            "recipient before upstream: [_, _, write-buf-one]",
+            rejection_svg,
+        )
+        self.assertIn("step status: rejected-input", rejection_svg)
+        self.assertIn("recipient after role: wire", rejection_svg)
+        self.assertIn("recipient after memory: right", rejection_svg)
+
     def test_svg_records_both_step_signal_flows(self):
         root = ET.fromstring(self.svg_text)
         visible_text = "\n".join(root.itertext())
@@ -57,6 +80,15 @@ class NeighborDeliveryChainSvgTests(unittest.TestCase):
         )
 
         self.assertEqual(committed, self.svg_text)
+
+    def test_committed_rejection_chain_svg_matches_renderer_output(self):
+        rejection_trace = load_transition_chain_trace(REJECTION_TRACE_ARTIFACT)
+
+        committed = NEIGHBOR_DELIVERY_REJECTION_CHAIN_SVG_ARTIFACT.read_text(
+            encoding="utf-8",
+        )
+
+        self.assertEqual(committed, render_transition_chain_svg(rejection_trace))
 
     def test_chain_svg_validator_accepts_committed_svg(self):
         results = validate_transition_chain_svg(
@@ -78,6 +110,19 @@ class NeighborDeliveryChainSvgTests(unittest.TestCase):
                 "handoff-flow",
             },
         )
+
+    def test_chain_svg_validator_accepts_committed_rejection_svg(self):
+        rejection_trace = load_transition_chain_trace(REJECTION_TRACE_ARTIFACT)
+
+        results = validate_transition_chain_svg(
+            rejection_trace,
+            svg_text=NEIGHBOR_DELIVERY_REJECTION_CHAIN_SVG_ARTIFACT.read_text(
+                encoding="utf-8",
+            ),
+        )
+
+        self.assertTrue(results)
+        self.assertTrue(all(result.accepted for result in results), results)
 
     def test_chain_svg_validator_rejects_drifted_handoff_text(self):
         drifted = self.svg_text.replace(

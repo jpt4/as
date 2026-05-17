@@ -130,8 +130,8 @@ the project legible:
   init-family command consumption.
 - `docs/neighbor-delivery-chain-trace.md` records the composed-chain traces
   for the consumed init handoff and rejected non-init handoff.
-- `docs/neighbor-delivery-chain-svg.md` records the rendered SVG view of that
-  composed-chain trace.
+- `docs/neighbor-delivery-chain-svg.md` records the rendered SVG views of the
+  consumed and rejected composed-chain traces.
 - `docs/neighbor-delivery-chain-claim.md` records the named consumed and
   rejected claim/proof-certificate surface for that two-step handoff.
 - `docs/transition-chain-claim-language.md` records the syntax classes and
@@ -198,8 +198,8 @@ the project legible:
   consumed without adding a general multi-cell simulator.
 - `autarkic_systems/chain_trace.py` validates the recorded transition-chain
   traces for consumed and rejected neighbor-delivery handoffs.
-- `autarkic_systems/chain_svg.py` renders and validates the first
-  transition-chain SVG view for that two-step handoff.
+- `autarkic_systems/chain_svg.py` renders and validates transition-chain SVG
+  views for consumed and rejected neighbor-delivery handoffs.
 - `autarkic_systems/chain_claims.py` validates the transition-chain
   claim manifest and manifest-example proof certificates, and exposes
   `python -m autarkic_systems.chain_claims` for direct chain-claim validation.

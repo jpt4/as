@@ -1761,3 +1761,21 @@ Status: accepted in
 `docs/adr/0092-neighbor-delivery-rejection-chain-trace.md`. Implemented in
 `autarkic_systems/chain_trace.py`, with tests in
 `tests/test_neighbor_delivery_chain_trace.py`.
+
+## ADR-0093: Neighbor Delivery Rejection Chain SVG
+
+Goal: render the delivered non-init recipient rejection chain trace as a
+checked SVG artifact.
+
+Deliverables:
+
+- `schematics/chains/neighbor_delivery_rejection_chain_trace.svg`;
+- renderer support for deriving the visible handoff channel from the delivered
+  tuple;
+- focused SVG tests covering the rejection render and committed artifact;
+- chain SVG documentation and project navigation updates.
+
+Status: accepted in
+`docs/adr/0093-neighbor-delivery-rejection-chain-svg.md`. Implemented in
+`autarkic_systems/chain_svg.py`, with tests in
+`tests/test_neighbor_delivery_chain_svg.py`.

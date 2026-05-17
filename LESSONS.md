@@ -254,3 +254,5 @@
 - Trace validity should mean recorded replay matches the declared status and
   cells, not that the chain predicate accepted. Negative boundary traces are
   valid artifacts when the expected rejection is exact.
+- Renderers should derive visible routing labels from trace data instead of
+  hard-coding a happy-path channel; the rejection chain uses channel 2.
