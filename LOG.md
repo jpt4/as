@@ -1397,3 +1397,26 @@
   `python -m unittest discover` passed 374 tests. `py_compile` passed for the
   new test, JSON parsing passed for the touched source-status manifests, and
   `git diff --check` passed.
+
+## 2026-05-17 - ASMSIM Process-Buffer Status
+
+- Added ADR-0063 after reviewing `practice/asmsim.scm` as the next local PRC
+  source that might resolve blocked `standard-signal` or write-buffer
+  command-token semantics.
+- Wrote `tests/test_asmsim_process_buffer_status.py` before implementation.
+  The red run failed because `sources/asmsim_process_buffer_status.json` was
+  absent.
+- Added `sources/asmsim_process_buffer_status.json`, recording
+  `practice/asmsim.scm` as blocker-strengthening process-buffer evidence:
+  the source says the process-buffer branch needs documentation, warns to
+  confirm message-list codes, uses code-shape predicates, and contains a
+  literal `msg-list` placeholder.
+- Cross-linked the evidence from the standard-signal, write-buffer, and stem
+  command source-status artifacts.
+- Added `docs/asmsim-process-buffer-status.md` and updated README, roadmap,
+  literature map, open problems, project memory, and lessons.
+- Verified the focused ASMSIM process-buffer source-status test passed 5
+  tests, the adjacent command source-status suite passed 34 tests, and
+  `python -m unittest discover` passed 379 tests. `py_compile` passed for the
+  new test, JSON parsing passed for the touched source-status manifests, and
+  `git diff --check` passed.

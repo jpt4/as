@@ -165,3 +165,7 @@
   changes command names or uses numeric command values where other sources use
   named tokens, record that as source divergence before changing runtime
   behavior.
+- Explicit uncertainty comments in a source artifact are evidence. When a
+  simulator says its process-buffer needs documentation or code confirmation,
+  preserve that warning in machine-checkable status before building behavior on
+  top of it.

@@ -80,6 +80,24 @@
         "proc-l-init"
       ],
       "divergence": "This witness omits standard-signal and named write-buffer commands from special-messages, then appends numeric standard-signals to the process-buffer command list and appends self-mailbox 0/1 values to the buffer."
+    },
+    {
+      "witness_id": "PRACTICE-ASMSIM-PROCESS-BUFFER-CODES",
+      "local_witness": "/home/sean/Projects/_upstream/prc/practice/asmsim.scm",
+      "loci": [
+        "asmsim.scm lines 170-188",
+        "asmsim.scm lines 256-290"
+      ],
+      "branch_predicates": [
+        "id+msg?",
+        "id+10b5?",
+        "id+11b5?",
+        "tar+0b4?",
+        "tar+sic?",
+        "id+nop?",
+        "tar+nop?"
+      ],
+      "divergence": "This source organizes process-buffer behavior around code-shape predicates, a msg-list placeholder, tar+sic?, and explicit comments that the message-list codes need documentation and confirmation."
     }
   ],
   "blockers": [

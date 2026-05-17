@@ -1225,3 +1225,26 @@ Status: accepted in
 `sources/guile_asmsim_command_semantics_status.json` and
 `docs/guile-asmsim-command-semantics-status.md`, with tests in
 `tests/test_guile_asmsim_command_semantics_status.py`.
+
+## ADR-0063: ASMSIM Process-Buffer Status
+
+Goal: decide whether `practice/asmsim.scm` resolves the blocked
+`standard-signal` or write-buffer command-token semantics.
+
+Deliverables:
+
+- `sources/asmsim_process_buffer_status.json`;
+- source-status record for the `qs18` process-buffer branch set;
+- source-status record for the "need documentation here" and
+  "XXX CONFIRM MSGLIST CODES" source warnings;
+- source-status record for process-buffer code-shape predicates and the
+  `msg-list` placeholder;
+- cross-links from standard-signal, write-buffer, and stem command
+  source-status artifacts;
+- tests proving the source-only blocking decision and local witness facts;
+- human-facing source-status note.
+
+Status: accepted in `docs/adr/0063-asmsim-process-buffer-status.md`.
+Implemented in `sources/asmsim_process_buffer_status.json` and
+`docs/asmsim-process-buffer-status.md`, with tests in
+`tests/test_asmsim_process_buffer_status.py`.

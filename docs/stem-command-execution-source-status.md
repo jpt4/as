@@ -43,7 +43,9 @@ behavior. ADR-0059 selects reject-and-clear for multiple simultaneous
 recipient command-message inputs, and ADR-0060 adds the matching
 schematic-linked trace. ADR-0061 adds the matching rendered SVG view.
 ADR-0062 records `guile-asmsim.scm` as another divergent command-semantics
-witness rather than an execution-ready source.
+witness rather than an execution-ready source. ADR-0063 records the newer
+`practice/asmsim.scm` process-buffer branch as still needing documentation and
+confirmed message-list codes.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
 does not execute non-init command-message inputs on recipient cells.

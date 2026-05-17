@@ -45,7 +45,9 @@ trace, so the next useful command-execution work is source resolution rather
 than more rejection rendering. ADR-0062 reviews `guile-asmsim.scm`, which keeps
 standard signals as ordinary binary input while appending numeric standard
 signals to a process-buffer command list; this strengthens the blocker rather
-than resolving command-token semantics.
+than resolving command-token semantics. ADR-0063 reviews `practice/asmsim.scm`,
+which uses `tar+sic?` and code-shape predicates rather than a named
+`standard-signal` command token.
 
 ## Verification
 

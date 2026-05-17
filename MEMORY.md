@@ -298,3 +298,10 @@
   special messages, binary/numeric write-buffer behavior, and a divergent
   command-list expression rather than executable standard-signal/write-buffer
   command-token semantics.
+- ADR-0063 adds `docs/asmsim-process-buffer-status.md`,
+  `sources/asmsim_process_buffer_status.json`, and
+  `tests/test_asmsim_process_buffer_status.py`. It records
+  `practice/asmsim.scm` as blocker-strengthening process-buffer evidence:
+  explicit documentation/code-confirmation warnings, code-shape predicates,
+  and a `msg-list` placeholder rather than resolved named command-token
+  semantics.

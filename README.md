@@ -79,6 +79,9 @@ the project legible:
 - `docs/guile-asmsim-command-semantics-status.md` records why the
   `guile-asmsim.scm` command witness strengthens the standard-signal and
   write-buffer blocker rather than resolving it.
+- `docs/asmsim-process-buffer-status.md` records why the newer
+  `practice/asmsim.scm` process-buffer witness is still source-blocked by
+  incomplete message-code documentation.
 - `docs/multi-command-recipient-input-policy-status.md` records the
   reject-and-clear policy for multiple simultaneous recipient command-message
   inputs.
@@ -167,6 +170,8 @@ the project legible:
 - `sources/guile_asmsim_command_semantics_status.json` makes the
   `guile-asmsim.scm` command-semantics source-status decision
   machine-checkable.
+- `sources/asmsim_process_buffer_status.json` makes the newer ASMSIM
+  process-buffer source-status decision machine-checkable.
 - `sources/multi_command_recipient_input_policy_status.json` makes the
   multi-command recipient input policy decision machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first

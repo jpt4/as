@@ -38,7 +38,9 @@ completes the current multi-command rejection render frontier, so future
 write-buffer work should start from source resolution rather than another
 rejection artifact. ADR-0062 reviews `guile-asmsim.scm`, which has binary
 `write-buf` and self-mailbox numeric append behavior but omits named
-`write-buf-zero` and `write-buf-one` command tokens.
+`write-buf-zero` and `write-buf-one` command tokens. ADR-0063 reviews
+`practice/asmsim.scm`, whose process-buffer code uses code-shape predicates
+and warning comments rather than named write-buffer command semantics.
 
 ## Verification
 
