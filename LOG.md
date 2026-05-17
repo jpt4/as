@@ -1776,3 +1776,26 @@
   chain language manifest, `py_compile` passed for the new module and test,
   `git diff --check` passed, and the evidence registry JSON CLI still reported
   8 accepted bundles.
+
+## 2026-05-17 - Transition Chain Claim CLI
+
+- Added ADR-0080 to expose transition-chain claim validation as an
+  operator-facing command.
+- Wrote `tests/test_transition_chain_claim_cli.py` before implementation. The
+  red run failed because chain-claim CLI/report functions were absent from
+  `autarkic_systems.chain_claims`.
+- Added report dataclasses, `validate_transition_chain_claim_project`,
+  text/JSON report formatting, and `run_chain_claim_cli` to
+  `autarkic_systems/chain_claims.py`.
+- The new command validates the chain language manifest, chain examples, chain
+  proof certificates, and chain claim surface:
+  `python -m autarkic_systems.chain_claims`.
+- Added JSON output through `python -m autarkic_systems.chain_claims --format
+  json`.
+- Updated README, roadmap, literature map, open problems, the chain-claim
+  note, and the chain-language note.
+- Verified the focused chain CLI test passed 7 tests, the adjacent chain
+  CLI/language/claim stack passed 17 tests, both actual CLI text and JSON modes
+  passed, and `python -m unittest discover` passed 471 tests. `py_compile`
+  passed for the touched module and test, `git diff --check` passed, and the
+  evidence registry JSON CLI still reported 8 accepted bundles.

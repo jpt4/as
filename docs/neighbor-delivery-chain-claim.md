@@ -39,8 +39,12 @@ Run:
 
 ```sh
 python -m unittest tests.test_neighbor_delivery_chain_claim
+python -m autarkic_systems.chain_claims
 ```
 
 The tests cover manifest loading, example evaluation, proof-certificate
 coverage, positive predicate acceptance, and non-init delivered-token
 rejection.
+
+ADR-0080 adds the module command so the chain claim surface can be validated
+outside the unit-test runner.

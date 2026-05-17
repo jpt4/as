@@ -31,9 +31,14 @@ Run:
 
 ```sh
 python -m unittest tests.test_chain_object_language
+python -m autarkic_systems.chain_claims
+python -m autarkic_systems.chain_claims --format json
 ```
 
 The validator checks required syntax classes, term vocabularies, implemented
 chain predicates, current chain claims, proof-object rules, and rejection of
 unknown predicates, unknown proof rules, and incomplete chain-status
 vocabularies.
+
+ADR-0080 exposes the same chain language, example, certificate, and surface
+validation through the `python -m autarkic_systems.chain_claims` command.

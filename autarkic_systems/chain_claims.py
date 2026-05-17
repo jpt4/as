@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 from dataclasses import dataclass, replace
 from pathlib import Path
@@ -56,6 +57,28 @@ class ChainExampleEvaluation:
     detail: str
 
 
+@dataclass(frozen=True)
+class ChainClaimProjectValidation:
+    """One validation result for the transition-chain claim project surface."""
+
+    subject: str
+    accepted: bool
+    detail: str
+
+
+@dataclass(frozen=True)
+class ChainClaimProjectReport:
+    """Operator-facing validation report for transition-chain claims."""
+
+    language_id: str
+    claims_path: Path
+    certificates_path: Path
+    language_path: Path
+    claim_count: int
+    certificate_count: int
+    results: tuple[ChainClaimProjectValidation, ...]
+
+
 def load_transition_chain_claims(path: Path | str) -> list[ChainClaim]:
     """Load transition-chain claims from a JSON manifest."""
 
@@ -65,6 +88,122 @@ def load_transition_chain_claims(path: Path | str) -> list[ChainClaim]:
     if not isinstance(claims, list):
         raise ValueError("chain claim manifest must contain a claims list")
     return [_parse_claim(item) for item in claims]
+
+
+def validate_transition_chain_claim_project(
+    claims_path: Path | str = "claims/transition_chain_claims.json",
+    certificates_path: Path | str = "claims/transition_chain_proof_certificates.json",
+    language_path: Path | str = "language/transition_chain_claim_language.json",
+) -> ChainClaimProjectReport:
+    """Validate chain claims, certificates, and language as one surface."""
+
+    from autarkic_systems.chain_object_language import (
+        load_transition_chain_claim_language,
+        validate_chain_claim_surface,
+        validate_chain_language_manifest,
+    )
+
+    claim_manifest = Path(claims_path)
+    certificate_manifest = Path(certificates_path)
+    language_manifest = Path(language_path)
+    language = load_transition_chain_claim_language(language_manifest)
+    claims = load_transition_chain_claims(claim_manifest)
+    certificates = _load_chain_certificates(certificate_manifest)
+
+    language_results = validate_chain_language_manifest(language)
+    evaluations = evaluate_chain_claim_examples(claims)
+    certificate_results = verify_chain_claim_certificates(claims, certificates)
+    surface_results = validate_chain_claim_surface(language, claims, certificates)
+
+    results = (
+        _summarize_language_results(language_results),
+        _summarize_example_results(evaluations),
+        _summarize_certificate_results(certificate_results),
+        _summarize_surface_results(surface_results, len(claims)),
+    )
+    return ChainClaimProjectReport(
+        language_id=language.language_id,
+        claims_path=claim_manifest,
+        certificates_path=certificate_manifest,
+        language_path=language_manifest,
+        claim_count=len(claims),
+        certificate_count=len(certificates),
+        results=results,
+    )
+
+
+def format_chain_claim_validation_report(report: ChainClaimProjectReport) -> str:
+    """Format a concise operator report for chain-claim validation."""
+
+    lines = [f"Transition chain claims: {report.language_id}"]
+    for result in report.results:
+        prefix = "OK" if result.accepted else "FAIL"
+        lines.append(f"{prefix} {result.subject}: {result.detail}")
+    return "\n".join(lines)
+
+
+def chain_claim_validation_report_payload(
+    report: ChainClaimProjectReport,
+) -> dict[str, Any]:
+    """Return a structured chain-claim validation report payload."""
+
+    return {
+        "language_id": report.language_id,
+        "accepted": all(result.accepted for result in report.results),
+        "claim_count": report.claim_count,
+        "certificate_count": report.certificate_count,
+        "result_count": len(report.results),
+        "results": [
+            {
+                "subject": result.subject,
+                "accepted": result.accepted,
+                "detail": result.detail,
+            }
+            for result in report.results
+        ],
+    }
+
+
+def run_chain_claim_cli(argv: list[str] | None = None) -> int:
+    """Run the transition-chain claim validation command."""
+
+    parser = argparse.ArgumentParser(
+        prog="python -m autarkic_systems.chain_claims",
+        description="Validate the AS transition-chain claim surface.",
+    )
+    parser.add_argument(
+        "--claims",
+        default="claims/transition_chain_claims.json",
+        help="Path to the transition-chain claim manifest.",
+    )
+    parser.add_argument(
+        "--certificates",
+        default="claims/transition_chain_proof_certificates.json",
+        help="Path to the transition-chain proof certificate manifest.",
+    )
+    parser.add_argument(
+        "--language",
+        default="language/transition_chain_claim_language.json",
+        help="Path to the transition-chain claim language manifest.",
+    )
+    parser.add_argument(
+        "--format",
+        choices=("text", "json"),
+        default="text",
+        help="Output format for the validation report.",
+    )
+    args = parser.parse_args(argv)
+
+    report = validate_transition_chain_claim_project(
+        claims_path=args.claims,
+        certificates_path=args.certificates,
+        language_path=args.language,
+    )
+    if args.format == "json":
+        print(json.dumps(chain_claim_validation_report_payload(report), sort_keys=True))
+    else:
+        print(format_chain_claim_validation_report(report))
+    return 0 if all(result.accepted for result in report.results) else 1
 
 
 def evaluate_chain_claim_examples(
@@ -95,6 +234,12 @@ def evaluate_chain_claim_examples(
                 )
             )
     return evaluations
+
+
+def _load_chain_certificates(path: Path | str) -> list[ClaimCertificate]:
+    from autarkic_systems.proof_certificates import load_proof_certificates
+
+    return load_proof_certificates(path)
 
 
 def verify_chain_claim_certificates(
@@ -247,6 +392,76 @@ def _rejected(claim_id: str, detail: str) -> CertificateVerification:
     return CertificateVerification(claim_id=claim_id, accepted=False, detail=detail)
 
 
+def _project_accepted(
+    subject: str,
+    detail: str,
+) -> ChainClaimProjectValidation:
+    return ChainClaimProjectValidation(subject=subject, accepted=True, detail=detail)
+
+
+def _project_rejected(
+    subject: str,
+    detail: str,
+) -> ChainClaimProjectValidation:
+    return ChainClaimProjectValidation(subject=subject, accepted=False, detail=detail)
+
+
+def _summarize_language_results(results: list[Any]) -> ChainClaimProjectValidation:
+    failures = [result.detail for result in results if not result.accepted]
+    if failures:
+        return _project_rejected(
+            "chain-language-manifest",
+            "; ".join(failures),
+        )
+    return _project_accepted(
+        "chain-language-manifest",
+        f"validated {len(results)} language clauses",
+    )
+
+
+def _summarize_example_results(
+    evaluations: list[ChainExampleEvaluation],
+) -> ChainClaimProjectValidation:
+    failures = [
+        f"{evaluation.claim_id}/{evaluation.example_name}: {evaluation.detail}"
+        for evaluation in evaluations
+        if not evaluation.matched
+    ]
+    if failures:
+        return _project_rejected("chain-examples", " | ".join(failures))
+    return _project_accepted(
+        "chain-examples",
+        f"evaluated {len(evaluations)} examples",
+    )
+
+
+def _summarize_certificate_results(
+    results: list[CertificateVerification],
+) -> ChainClaimProjectValidation:
+    failures = [
+        f"{result.claim_id}: {result.detail}" for result in results if not result.accepted
+    ]
+    if failures:
+        return _project_rejected("chain-certificates", " | ".join(failures))
+    return _project_accepted(
+        "chain-certificates",
+        f"verified {len(results)} certificates",
+    )
+
+
+def _summarize_surface_results(
+    results: list[Any],
+    claim_count: int,
+) -> ChainClaimProjectValidation:
+    failures = [f"{result.subject}: {result.detail}" for result in results if not result.accepted]
+    if failures:
+        return _project_rejected("chain-surface", " | ".join(failures))
+    return _project_accepted(
+        "chain-surface",
+        f"validated {claim_count} chain claims",
+    )
+
+
 def _required_text(item: dict[str, Any], key: str) -> str:
     value = item.get(key)
     if not isinstance(value, str) or not value:
@@ -259,3 +474,7 @@ def _required_bool(item: dict[str, Any], key: str) -> bool:
     if not isinstance(value, bool):
         raise ValueError(f"required boolean field missing: {key}")
     return value
+
+
+if __name__ == "__main__":  # pragma: no cover - exercised by subprocess tests.
+    raise SystemExit(run_chain_claim_cli())

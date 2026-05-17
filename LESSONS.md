@@ -218,3 +218,6 @@
 - Chain language validation should execute the examples, not only inspect
   static JSON. Otherwise a status vocabulary can look complete while missing a
   real precondition or boundary status produced by the chain helper.
+- Once a claim surface has its own manifest, language, and proof check, give it
+  a direct validation command. Operators and agents should not have to know the
+  unit-test module name to verify a project contract.

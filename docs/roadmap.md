@@ -1544,3 +1544,19 @@ Status: accepted in `docs/adr/0079-transition-chain-claim-language.md`.
 Implemented in `language/transition_chain_claim_language.json` and
 `autarkic_systems/chain_object_language.py`, with tests in
 `tests/test_chain_object_language.py`.
+
+## ADR-0080: Transition Chain Claim CLI
+
+Goal: expose transition-chain claim validation as an operator-facing command.
+
+Deliverables:
+
+- text and JSON validation output in `autarkic_systems/chain_claims.py`;
+- `python -m autarkic_systems.chain_claims` module execution;
+- tests proving successful text/JSON output, incomplete-certificate failure,
+  and subprocess module execution;
+- human-facing command documentation update.
+
+Status: accepted in `docs/adr/0080-transition-chain-claim-cli.md`.
+Implemented in `autarkic_systems/chain_claims.py`, with tests in
+`tests/test_transition_chain_claim_cli.py`.

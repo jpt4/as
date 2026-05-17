@@ -186,7 +186,8 @@ the project legible:
   with one recipient step, proving the delivered init-family token can be
   consumed without adding a general multi-cell simulator.
 - `autarkic_systems/chain_claims.py` validates the first transition-chain
-  claim manifest and manifest-example proof certificates.
+  claim manifest and manifest-example proof certificates, and exposes
+  `python -m autarkic_systems.chain_claims` for direct chain-claim validation.
 - `autarkic_systems/chain_object_language.py` validates the first
   transition-chain claim language and checked chain claim surface.
 - `claims/transition_claims.json` names the current executable transition
@@ -203,6 +204,8 @@ the project legible:
   manifest-example proof certificate for that chain claim.
 - `language/transition_chain_claim_language.json` names the first explicit
   syntax classes for transition-chain claims.
+- `python -m autarkic_systems.chain_claims --format json` emits the
+  transition-chain claim validation report as machine-readable JSON.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

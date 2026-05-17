@@ -389,3 +389,9 @@
   transition-chain claim language, including chain statuses, implemented chain
   predicates, `UC-CHAIN-` sentence prefixes, proof rules, and the current chain
   claim/certificate surface.
+- ADR-0080 adds `docs/adr/0080-transition-chain-claim-cli.md` and
+  `tests/test_transition_chain_claim_cli.py`, and extends
+  `autarkic_systems/chain_claims.py` with
+  `python -m autarkic_systems.chain_claims`. The CLI validates the chain
+  language manifest, executable examples, proof certificates, and claim surface
+  in text or JSON form.

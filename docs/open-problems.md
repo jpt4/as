@@ -115,6 +115,7 @@ recipient init-family command consumption.
 ADR-0078 promotes that handoff into a named chain claim and proof-certificate
 surface.
 ADR-0079 makes the chain-claim object language explicit for that surface.
+ADR-0080 exposes chain-claim validation as a direct text/JSON CLI.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -276,6 +277,8 @@ proof-certificate surface while keeping it separate from the single-transition
 claim language.
 ADR-0079 makes the chain-claim object language explicit without widening it to
 a general temporal, scheduling, or graph language.
+ADR-0080 exposes chain-claim validation as a direct text/JSON CLI for agents
+and automation.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.
