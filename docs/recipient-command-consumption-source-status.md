@@ -74,6 +74,10 @@ rejection-boundary claim as the next safe slice.
 ADR-0054 promotes that rejection boundary into the named claim
 `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`.
 
+ADR-0055 records one fixed-recipient upstream `standard-signal` rejection as a
+schematic-linked trace in
+`schematics/recipient_non_init_command_rejection_trace.json`.
+
 ## Verification
 
 Run:
@@ -85,5 +89,5 @@ python -m unittest tests.test_recipient_command_consumption_source_status
 The tests check the source-status decision, the formal input-special-message
 anchor, the legacy special-message sets, the implemented ADR-0049 slice,
 the ADR-0050 claim, the ADR-0051 trace, the ADR-0052 SVG, unresolved blockers,
-the ADR-0053 non-init source status, and the updated stem command execution
-next-slice list.
+the ADR-0053 non-init source status, the ADR-0055 rejection trace frontier, and
+the updated stem command execution next-slice list.

@@ -135,3 +135,6 @@
 - Rejection claims should include the input source. Fixed direct input and
   fixed upstream input both reject non-init command messages, but upstream
   rejection must also prove the pulled command source was cleared.
+- Rejection traces should show the rejected token as active state, not mere
+  absence of execution. For pulled-upstream recipient commands, the trace must
+  record source clearing and role/memory preservation together.

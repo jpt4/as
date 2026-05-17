@@ -248,3 +248,9 @@
   `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED` is checked by
   `recipient_non_init_command_message_rejected` and covers fixed direct,
   fixed upstream, and stem multi-command rejection boundaries.
+- ADR-0055 adds `docs/recipient-non-init-command-rejection-trace.md`,
+  `schematics/recipient_non_init_command_rejection_trace.json`, and
+  `tests/test_recipient_non_init_command_rejection_trace.py`. The trace replays
+  a fixed processor-left recipient rejecting an upstream `standard-signal`
+  command-message token while preserving role/memory and clearing upstream
+  command state.

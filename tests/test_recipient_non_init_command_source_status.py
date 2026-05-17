@@ -25,7 +25,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "add-recipient-non-init-command-message-rejection-trace",
+            "add-recipient-non-init-command-message-rejection-svg",
         )
         claim = self.status["implemented_claims"][0]
         self.assertEqual(
@@ -35,6 +35,16 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(
             claim["predicate"],
             "recipient_non_init_command_message_rejected",
+        )
+        trace = self.status["implemented_traces"][0]
+        self.assertEqual(trace["adr"], "ADR-0055")
+        self.assertEqual(
+            trace["artifact_id"],
+            "recipient-non-init-command-rejection-schematic-and-uc-transition-trace",
+        )
+        self.assertEqual(
+            trace["path"],
+            "schematics/recipient_non_init_command_rejection_trace.json",
         )
 
         blocked = self.status["blocked_runtime_commands"]
@@ -89,12 +99,14 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertTrue(
             any(
                 "non-init command-message rejection trace" in item
+                and "SVG" in item
                 for item in recipient_status["allowed_next_slices"]
             )
         )
         self.assertTrue(
             any(
                 "non-init command-message rejection trace" in item
+                and "SVG" in item
                 for item in stem_status["allowed_next_slices"]
             )
         )

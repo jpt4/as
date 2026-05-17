@@ -1046,3 +1046,27 @@ Status: accepted in
 `language/transition_claim_language.json`, and
 `docs/recipient-non-init-command-rejection-claim.md`, with tests in
 `tests/test_recipient_non_init_command_rejection_claim.py`.
+
+## ADR-0055: Recipient Non-Init Command Rejection Trace
+
+Goal: add a schematic-linked trace for one recipient non-init command-message
+rejection over the ADR-0054 named claim.
+
+Deliverables:
+
+- `schematics/recipient_non_init_command_rejection_trace.json`;
+- `recipient-non-init-command-rejection-schematic-and-uc-transition-trace`
+  artifact identity;
+- schematic-trace validator support for recipient non-init command-message
+  rejection alignment;
+- tests proving artifact identity, schema vocabulary, upstream rejection flow,
+  execution replay, ADR-0054 predicate coverage, PRC witness validation, and
+  drift rejection;
+- human-facing trace note and source-status next-slice update.
+
+Status: accepted in
+`docs/adr/0055-recipient-non-init-command-rejection-trace.md`. Implemented in
+`autarkic_systems/schematic_trace.py`,
+`schematics/recipient_non_init_command_rejection_trace.json`, and
+`docs/recipient-non-init-command-rejection-trace.md`, with tests in
+`tests/test_recipient_non_init_command_rejection_trace.py`.

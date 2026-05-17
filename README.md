@@ -67,6 +67,8 @@ the project legible:
   recipient command-message inputs remain blocked.
 - `docs/recipient-non-init-command-rejection-claim.md` records the named claim
   and proof-certificate surface for that rejection boundary.
+- `docs/recipient-non-init-command-rejection-trace.md` records the
+  schematic-linked trace for one recipient non-init command-message rejection.
 - `docs/recipient-init-command-message-consumption.md` records the first
   executable recipient-side init-family command-message input slice.
 - `docs/recipient-init-command-message-claim.md` records the named claim and
@@ -180,6 +182,8 @@ the project legible:
   init command-message trace machine-checkable.
 - `schematics/recipient_init_command_message_trace.svg` is the generated
   rendered view checked against the recipient JSON trace.
+- `schematics/recipient_non_init_command_rejection_trace.json` makes the
+  recipient non-init command-message rejection trace machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

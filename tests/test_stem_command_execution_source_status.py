@@ -97,6 +97,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertTrue(
             any(
                 "non-init command-message rejection trace" in item
+                and "SVG" in item
                 for item in allowed
             )
         )

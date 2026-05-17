@@ -126,6 +126,7 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
             any(
                 "non-init command-message rejection trace"
                 in item
+                and "SVG" in item
                 for item in allowed
             )
         )

@@ -27,13 +27,15 @@ not selected a conflict policy.
 ## Safe Next Slice
 
 The current runtime already rejects `standard-signal`, write-buffer, and
-multi-command recipient inputs. The next safe slice is to promote that
-rejection boundary into a named transition claim and proof-certificate entry,
-without executing the blocked commands.
+multi-command recipient inputs. ADR-0053 identified claim promotion as the
+safe next slice because the rejection boundary needed to become explicit
+before trace/render work could depend on it.
 
 ADR-0054 completes that promotion as
-`UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`. The next safe evidence slice
-is a schematic-linked rejection trace.
+`UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`. ADR-0055 adds the
+schematic-linked rejection trace in
+`schematics/recipient_non_init_command_rejection_trace.json`. The next safe
+evidence slice is a rendered SVG for that trace.
 
 ## Verification
 
@@ -43,6 +45,6 @@ Run:
 python -m unittest tests.test_recipient_non_init_command_source_status
 ```
 
-The tests check the blocking decision, standard-signal divergence,
-write-buffer source divergences, multi-command policy boundary, and the updated
-source-status frontier.
+The tests check the blocking decision, implemented claim and trace surfaces,
+standard-signal divergence, write-buffer source divergences, multi-command
+policy boundary, and the updated source-status frontier.

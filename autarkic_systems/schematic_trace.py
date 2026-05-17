@@ -54,6 +54,9 @@ NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID = (
 RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID = (
     "recipient-init-command-message-schematic-and-uc-transition-trace"
 )
+RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID = (
+    "recipient-non-init-command-rejection-schematic-and-uc-transition-trace"
+)
 VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     SINGLE_NODE_TRACE_ARTIFACT_ID,
     PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID,
@@ -65,6 +68,7 @@ VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     COMMAND_BUFFER_UNSUPPORTED_TRACE_ARTIFACT_ID,
     NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID,
     RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID,
+    RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID,
 )
 
 REQUIRED_INTERPRETIVE_LAYERS = (
@@ -426,6 +430,17 @@ def _validate_schematic_trace_alignment(
     ):
         results.extend(
             _validate_recipient_init_command_message_trace_alignment(schematic_trace)
+        )
+        return results
+
+    if (
+        schematic_trace.artifact_id
+        == RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID
+    ):
+        results.extend(
+            _validate_recipient_non_init_command_rejection_trace_alignment(
+                schematic_trace
+            )
         )
         return results
 
@@ -1226,6 +1241,103 @@ def _validate_recipient_init_command_message_trace_alignment(
     return results
 
 
+def _validate_recipient_non_init_command_rejection_trace_alignment(
+    schematic_trace: SingleNodeSchematicTrace,
+) -> list[SchematicTraceValidation]:
+    results: list[SchematicTraceValidation] = []
+
+    if schematic_trace.schematic.geometry != "triangular-rlem-node":
+        results.append(_rejected("geometry", "schematic geometry is not triangular"))
+    else:
+        results.append(_accepted("geometry", "schematic geometry is triangular"))
+
+    before = schematic_trace.trace.before_cell
+    after = schematic_trace.trace.expected_after_cell
+    source = _recipient_non_init_command_source(before)
+    if source is None:
+        results.append(
+            _rejected(
+                "recipient-non-init-command-message-rejection",
+                "trace does not contain a recipient non-init command-message rejection",
+            )
+        )
+        return results
+
+    command, source_kind, source_index = source
+    if schematic_trace.schematic.memory_direction != before.get("memory"):
+        results.append(
+            _rejected(
+                "memory_direction",
+                "schematic memory does not match preserved recipient memory",
+            )
+        )
+    else:
+        results.append(
+            _accepted("memory_direction", "schematic memory matches recipient")
+        )
+
+    expected_flow = (
+        (
+            f"{source_kind}[{command}] -> input[{source_index}]"
+            if source_kind == "upstream"
+            else f"input[{source_index}] carries command[{command}]"
+        ),
+        f"command[{command}] rejected as recipient non-init command-message",
+        "role/memory preserved",
+        (
+            "upstream cleared; input/output cleared"
+            if source_kind == "upstream"
+            else "input/output cleared"
+        ),
+        "command side state preserved",
+    )
+    if schematic_trace.trace.routed_signal_flow != expected_flow:
+        results.append(
+            _rejected(
+                "routed_signal_flow",
+                "recipient non-init command-message rejection flow mismatch",
+            )
+        )
+    else:
+        results.append(
+            _accepted(
+                "routed_signal_flow",
+                "recipient non-init command-message rejection flow explicit",
+            )
+        )
+
+    expected_upstream = (
+        ["_", "_", "_"] if source_kind == "upstream" else before.get("upstream")
+    )
+    if (
+        schematic_trace.trace.expected_status != "rejected-input"
+        or after.get("role") != before.get("role")
+        or after.get("memory") != before.get("memory")
+        or after.get("upstream") != expected_upstream
+        or after.get("input") != ["_", "_", "_"]
+        or after.get("output") != ["_", "_", "_"]
+        or after.get("automail") != before.get("automail")
+        or after.get("self_mailbox") != before.get("self_mailbox")
+        or after.get("control") != before.get("control")
+        or after.get("buffer") != before.get("buffer")
+    ):
+        results.append(
+            _rejected(
+                "recipient-non-init-command-message-rejection",
+                "recipient non-init command-message rejection state mismatch",
+            )
+        )
+    else:
+        results.append(
+            _accepted(
+                "recipient-non-init-command-message-rejection",
+                "recipient non-init command-message rejection clearing matches",
+            )
+        )
+
+    return results
+
+
 def _validate_trace_contract(
     trace: RecordedTransitionTrace,
 ) -> list[SchematicTraceValidation]:
@@ -1456,6 +1568,33 @@ def _recipient_init_command_source(
     return None
 
 
+def _recipient_non_init_command_source(
+    before: dict[str, Any],
+) -> tuple[str, str, int] | None:
+    if before.get("output") != ["_", "_", "_"]:
+        return None
+
+    role = before.get("role")
+    direct = _single_non_init_or_conflict_command_message(before.get("input"))
+    if role in {"wire", "proc"}:
+        if direct is not None:
+            command, index = direct
+            return command, "input", index
+        if before.get("input") == ["_", "_", "_"]:
+            upstream = _single_non_init_or_conflict_command_message(
+                before.get("upstream")
+            )
+            if upstream is not None:
+                command, index = upstream
+                return command, "upstream", index
+        return None
+
+    if role == "stem" and before.get("automail") == "_" and direct is not None:
+        command, index = direct
+        return command, "input", index
+    return None
+
+
 def _single_init_command_message(value: object) -> tuple[str, int] | None:
     init_commands = {
         "stem-init",
@@ -1474,6 +1613,44 @@ def _single_init_command_message(value: object) -> tuple[str, int] | None:
     if len(commands) != 1:
         return None
     return commands[0]
+
+
+def _single_non_init_or_conflict_command_message(
+    value: object,
+) -> tuple[str, int] | None:
+    init_commands = {
+        "stem-init",
+        "wire-r-init",
+        "wire-l-init",
+        "proc-r-init",
+        "proc-l-init",
+    }
+    non_init_commands = {
+        "standard-signal",
+        "write-buf-zero",
+        "write-buf-one",
+    }
+    if not isinstance(value, list) or len(value) != 3:
+        return None
+
+    commands = [
+        (item, index)
+        for index, item in enumerate(value)
+        if isinstance(item, str)
+        and item != "_"
+        and (item in init_commands or item in non_init_commands)
+    ]
+    if not commands:
+        return None
+    if len(commands) >= 2:
+        command_text = "+".join(command for command, _index in commands)
+        return command_text, commands[0][1]
+    command, index = commands[0]
+    if command not in non_init_commands:
+        return None
+    if value.count("_") != 2:
+        return None
+    return command, index
 
 
 def _one_hot_signal(value: object) -> bool:

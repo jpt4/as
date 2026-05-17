@@ -4,13 +4,21 @@
   "decision": "do-not-implement-recipient-non-init-command-messages-yet",
   "runtime_change": "none-source-status-only",
   "depends_on": "sources/recipient_command_consumption_source_status.json",
-  "safe_next_slice": "add-recipient-non-init-command-message-rejection-trace",
+  "safe_next_slice": "add-recipient-non-init-command-message-rejection-svg",
   "implemented_claims": [
     {
       "adr": "ADR-0054",
       "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
       "predicate": "recipient_non_init_command_message_rejected",
       "summary": "AS now has a named transition claim and proof-certificate entry for the recipient non-init command-message rejection boundary."
+    }
+  ],
+  "implemented_traces": [
+    {
+      "adr": "ADR-0055",
+      "artifact_id": "recipient-non-init-command-rejection-schematic-and-uc-transition-trace",
+      "path": "schematics/recipient_non_init_command_rejection_trace.json",
+      "summary": "AS now has a schematic-linked trace that replays fixed-cell upstream standard-signal command-message rejection."
     }
   ],
   "blocked_runtime_commands": [
@@ -80,7 +88,7 @@
     "as_boundary": "ADR-0049 consumes exactly one single command-message input token and leaves multiple simultaneous command-message tokens at the rejected-input boundary."
   },
   "allowed_next_slices": [
-    "Add a schematic-linked non-init command-message rejection trace.",
+    "Add a rendered SVG for the non-init command-message rejection trace.",
     "Resolve write-buffer command-message execution semantics before appending to recipient buffers.",
     "Resolve standard-signal command-message divergence before routing or executing standard-signal command tokens."
   ]

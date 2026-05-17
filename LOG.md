@@ -1194,3 +1194,26 @@
   for the touched predicate module and tests, JSON parsing passed for claim,
   certificate, language, and source-status manifests, and `git diff --check`
   passed.
+
+## 2026-05-17 - Recipient Non-Init Command Rejection Trace
+
+- Added ADR-0055 to make one recipient non-init command-message rejection
+  visible as a schematic-linked executable trace.
+- Wrote `tests/test_recipient_non_init_command_rejection_trace.py` before
+  implementation. The red run failed because
+  `RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID` was absent from
+  `autarkic_systems.schematic_trace`.
+- Added the artifact identity, validation alignment, and
+  `schematics/recipient_non_init_command_rejection_trace.json` for a fixed
+  processor-left recipient rejecting upstream `standard-signal` on channel 1.
+- The trace preserves role and memory, clears upstream/input/output command
+  state, satisfies `recipient_non_init_command_message_rejected`, and does not
+  execute the blocked command.
+- Updated recipient non-init, recipient consumption, and stem source-status
+  artifacts so the next safe slice is a rendered SVG for the rejection trace.
+- Added `docs/recipient-non-init-command-rejection-trace.md` and updated
+  README, roadmap, literature map, open problems, project memory, and lessons.
+- Verified the focused rejection-trace/source-status suite passed 41 tests.
+  `python -m unittest discover` passed 332 tests, py_compile passed for the
+  touched schematic module and tests, JSON parsing passed for the rejection
+  trace and source-status manifests, and `git diff --check` passed.
