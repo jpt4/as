@@ -208,3 +208,6 @@
   neighbor-target bundle proves that the decoded token reached the right output
   channel, while recipient execution still belongs to its own source-status
   and evidence path.
+- A two-step chain is a useful middle layer before a simulator. It can prove
+  sender and recipient transitions compose while still refusing topology,
+  scheduling, overwrite, and non-init execution claims.

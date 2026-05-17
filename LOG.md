@@ -1708,3 +1708,25 @@
   passed 450 tests. `py_compile` passed for the touched tests, `git diff
   --check` passed, and JSON parsing passed for the registry, new bundle,
   touched source status, and neighbor delivery trace.
+
+## 2026-05-17 - Neighbor Delivery Recipient Chain
+
+- Added ADR-0077 for the first executable two-step command handoff from a
+  neighbor-delivery sender transition into recipient init-family command
+  consumption.
+- Wrote `tests/test_neighbor_delivery_recipient_chain.py` before
+  implementation. The red run failed because
+  `autarkic_systems.transition_chains` was absent.
+- Added `autarkic_systems/transition_chains.py` with
+  `execute_neighbor_delivery_recipient_chain`, which runs one stem sender step,
+  installs the delivered output tuple as recipient upstream state only when
+  the recipient is empty, and then runs the recipient step.
+- Covered accepted `neighbor-b/proc-l-init` consumption plus
+  sender-not-delivered, recipient-not-ready, and recipient-not-consumed
+  boundaries.
+- Added `docs/neighbor-delivery-recipient-chain.md` and updated README,
+  roadmap, literature map, open problems, and source-status docs.
+- Verified the focused chain test passed 4 tests, the adjacent
+  neighbor-delivery/recipient command stack passed 32 tests, and
+  `python -m unittest discover` passed 454 tests. `py_compile` passed for the
+  new module and test, and `git diff --check` passed.

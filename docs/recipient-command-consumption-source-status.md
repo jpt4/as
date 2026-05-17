@@ -6,7 +6,9 @@ ADR-0048 records the source boundary for recipient-side command-message inputs
 after ADR-0044 through ADR-0047 made neighbor-target command-buffer delivery
 executable, claimed, traced, and rendered. ADR-0076 later registers that
 delivery path as an integrated evidence bundle while keeping recipient
-consumption as a separate source-status decision.
+consumption as a separate source-status decision. ADR-0077 then adds a
+two-step helper that composes that delivery tuple into recipient upstream state
+for the init-family case only.
 
 The structured status lives in
 `sources/recipient_command_consumption_source_status.json`.

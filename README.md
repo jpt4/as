@@ -123,6 +123,9 @@ the project legible:
 - `docs/neighbor-command-buffer-delivery-evidence-bundle.md` records the
   eighth integrated evidence bundle, tying one completed neighbor-target
   command-buffer delivery to that evidence surface.
+- `docs/neighbor-delivery-recipient-chain.md` records the first executable
+  two-step handoff from neighbor command-buffer delivery into recipient
+  init-family command consumption.
 - `docs/evidence-bundle-registry.md` records the registry for discovering and
   batch-validating transition evidence bundles.
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
@@ -173,6 +176,9 @@ the project legible:
   output channels. Recipient cells now consume init-family command-message
   inputs, while non-init recipient commands and self non-init command semantics
   remain open.
+- `autarkic_systems/transition_chains.py` composes one neighbor delivery step
+  with one recipient step, proving the delivered init-family token can be
+  consumed without adding a general multi-cell simulator.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer

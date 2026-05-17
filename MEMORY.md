@@ -368,3 +368,9 @@
   `tests/test_neighbor_command_buffer_delivery_evidence_bundle.py`. It
   registers the completed neighbor-target `neighbor-b/proc-l-init`
   command-buffer delivery path as the eighth evidence bundle.
+- ADR-0077 adds `docs/neighbor-delivery-recipient-chain.md`,
+  `autarkic_systems/transition_chains.py`, and
+  `tests/test_neighbor_delivery_recipient_chain.py`. It composes the
+  `neighbor-b/proc-l-init` delivery output into an empty recipient upstream
+  tuple and consumes it through the existing recipient init-family command
+  logic, while reporting explicit precondition and non-init boundaries.

@@ -1486,3 +1486,20 @@ Status: accepted in
 `docs/adr/0076-neighbor-command-buffer-delivery-evidence-bundle.md`.
 Implemented in `evidence/neighbor_command_buffer_delivery_bundle.json`, with
 tests in `tests/test_neighbor_command_buffer_delivery_evidence_bundle.py`.
+
+## ADR-0077: Neighbor Delivery Recipient Chain
+
+Goal: add the first executable two-step handoff from neighbor command-buffer
+delivery into recipient init-family command consumption.
+
+Deliverables:
+
+- `autarkic_systems/transition_chains.py`;
+- `tests/test_neighbor_delivery_recipient_chain.py`;
+- tests proving accepted init delivery consumption, sender precondition
+  failure, recipient readiness failure, and delivered non-init rejection;
+- human-facing chain note and project navigation updates.
+
+Status: accepted in `docs/adr/0077-neighbor-delivery-recipient-chain.md`.
+Implemented in `autarkic_systems/transition_chains.py`, with tests in
+`tests/test_neighbor_delivery_recipient_chain.py`.

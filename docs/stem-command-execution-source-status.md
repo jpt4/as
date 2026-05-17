@@ -54,7 +54,8 @@ registers the completed self-target command-buffer init dispatch as an
 integrated evidence bundle. ADR-0075 registers the completed self-target
 non-init command-buffer append boundary as an integrated evidence bundle.
 ADR-0076 registers the completed neighbor-target command-buffer delivery path
-as an integrated evidence bundle.
+as an integrated evidence bundle. ADR-0077 composes that delivery output into
+recipient init-family consumption without widening stem command execution.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
 does not execute non-init command-message inputs on recipient cells.
