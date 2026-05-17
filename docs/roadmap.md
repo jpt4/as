@@ -211,3 +211,19 @@ Status: accepted in `docs/adr/0012-transition-claim-language.md`. Implemented
 in `language/transition_claim_language.json` and
 `autarkic_systems/object_language.py`, with tests in
 `tests/test_object_language.py`.
+
+## ADR-0013: Willard Definition Map
+
+Goal: anchor the formal-confidence side of AS to exact Willard definitions,
+constructions, theorem statements, and boundary results.
+
+Deliverables:
+
+- structured Willard anchor map for the four core sources named by P5;
+- loader and validator for local witness paths, uniqueness, and AS relevance;
+- human-facing definition map;
+- tests proving required source coverage.
+
+Status: accepted in `docs/adr/0013-willard-definition-map.md`. Implemented in
+`sources/willard_definition_map.json` and `autarkic_systems/willard_map.py`,
+with tests in `tests/test_willard_definition_map.py`.

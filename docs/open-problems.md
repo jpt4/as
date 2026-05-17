@@ -70,8 +70,12 @@ Question: Which definitions and theorem statements from Willard 2001, 2011,
 Why it matters: Current SJAS evidence is strong at the repository level, but AS
 needs exact theorem/definition anchors before it can make non-hand-wavy claims.
 
-Likely next artifact: `docs/willard-definition-map.md` with local witness paths,
-definition IDs, and AS relevance.
+Status: started by ADR-0013. `docs/willard-definition-map.md` and
+`sources/willard_definition_map.json` now identify the first definition,
+construction, theorem, and boundary anchors from Willard 2001, 2011, 2016, and
+2020, with local PDF witnesses and AS relevance. Remaining work is to turn one
+of those anchors into executable syntax, proof-code, or proof-apparatus
+machinery.
 
 ## P6: Recover Or Replace The Active Proflog Frontier
 

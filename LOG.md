@@ -183,3 +183,30 @@
 - Verified `python -m unittest tests.test_object_language` passed 6 tests,
   `python -m unittest discover` passed 42 tests, py_compile passed for the new
   module and tests, JSON checks passed, and `git diff --check` passed.
+
+## 2026-05-17 - Willard Definition Map
+
+- Rechecked publication status before continuing. `python -m unittest discover`
+  passed 42 tests, but `git push origin main ...` failed with `Permission to
+  jpt4/as.git denied to Sean-Kenneth-Doherty`; the authenticated account has
+  only read permission on `jpt4/as`.
+- Restored the missing local SJAS witness checkout by cloning
+  `https://github.com/jpt4/sjas.git` to `/home/sean/Projects/_upstream/sjas`.
+  The checkout resolved to the pinned commit
+  `f1c11af5f310d39f487c3b91ee1ca70f4ade8871`.
+- Added ADR-0013 for P5: a definition-granularity Willard anchor map over
+  Willard 2001, 2011, 2016, and 2020.
+- Wrote `tests/test_willard_definition_map.py` before implementation. The red
+  run failed because `autarkic_systems.willard_map` did not exist.
+- Added `sources/willard_definition_map.json` with anchors for the core
+  definitions, constructions, theorem statements, and boundary results needed
+  before AS can claim Willard-style formal confidence.
+- Added `autarkic_systems/willard_map.py` to load and validate required source
+  coverage, local SJAS PDF witnesses, unique anchor IDs/loci, and explicit AS
+  relevance.
+- Added `docs/willard-definition-map.md` as the human-facing guide to the
+  anchor map.
+- Verified `python -m unittest tests.test_willard_definition_map` passed 4
+  tests, `python -m unittest discover` passed 46 tests, py_compile passed for
+  the new module and tests, `jq -e . sources/willard_definition_map.json`
+  passed, and `git diff --check` passed.

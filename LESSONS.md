@@ -12,3 +12,6 @@
   Proflog work than public `jpt4/proflog` exposes on `main`.
 - For this repo's standard-library Python tests, keep `tests/__init__.py` so
   plain `python -m unittest discover` finds the suite from the repository root.
+- For AS formal-confidence work, a source list is not enough. Exact definition,
+  theorem, construction, and boundary anchors should be made structured and
+  testable before any self-consistency claim is implemented.

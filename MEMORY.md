@@ -44,3 +44,11 @@
 - `automail_reconfigures_stem` is the predicate/claim bridge for stem automail;
   `claim_manifest.py` must preserve `automail`, `control`, and `buffer` when
   parsing manifest cells.
+- `docs/willard-definition-map.md`, `sources/willard_definition_map.json`, and
+  `autarkic_systems/willard_map.py` are the first definition-granularity Willard
+  anchor layer for P5. The required core sources are Willard2001, Willard2011,
+  Willard2016, and Willard2020.
+- The Willard map is an anchor index, not an SJAS proof implementation. It
+  constrains future formal-confidence work around exact syntax, deduction
+  apparatus, proof-code/self-reference, consistency level, and excluded-middle
+  boundary choices.

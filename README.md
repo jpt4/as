@@ -30,10 +30,14 @@ the project legible:
   direction decision.
 - `docs/transition-claim-language.md` explains the first explicit object
   language for transition claims.
+- `docs/willard-definition-map.md` records the first definition-granularity map
+  of Willard anchors needed for formal-confidence claims.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
   those transition claims.
+- `sources/willard_definition_map.json` makes the Willard anchor map
+  machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.
@@ -52,7 +56,8 @@ The current executable probes live in `autarkic_systems/universal_cell.py` and
 `autarkic_systems/transition_predicates.py`, with claim-manifest,
 proof-certificate, and object-language support in
 `autarkic_systems/claim_manifest.py`, `autarkic_systems/proof_certificates.py`,
-and `autarkic_systems/object_language.py`. They are covered by `tests/`.
+`autarkic_systems/object_language.py`, and
+`autarkic_systems/willard_map.py`. They are covered by `tests/`.
 
 ## Subordinate Programs
 

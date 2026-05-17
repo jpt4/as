@@ -30,6 +30,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | --- | --- | --- | --- |
 | SJAS README | `/home/sean/Projects/_upstream/sjas/README.md` | Defines the self-justifying logic program: consistency relative to PA plus self-provability of consistency under expressivity constraints. | Basis for AFS-R2 through AFS-R5. |
 | Willard paper witness archive | `/home/sean/Projects/_upstream/sjas/nachlass/papers/README.md` | Maps many Willard primary texts to local/public witnesses and records gaps. | Primary source index for formal-confidence claims. |
+| AS Willard definition map | `docs/willard-definition-map.md` and `sources/willard_definition_map.json` | Names the first exact Willard definitions, constructions, theorem statements, and boundaries that AS formal-confidence claims must preserve. | Active anchor map for P5 and later proof-code/object-language ADRs. |
 | Works citing Willard archive | `/home/sean/Projects/_upstream/sjas/nachlass/works-citing-dew/README.md` | Maps second-order literature around self-verifying theories, provability of consistency, and AI-adjacent Loebian concerns. | Source for broader significance and related-work review. |
 | ISLA notes | `/home/sean/Projects/_upstream/sjas/code/isla/notes.txt` | Records implementation notes for IS(A)/IS-lambda(A), grounding functions, tableaux with equality, and syntax/formula distinctions. | Candidate basis for the first syntax and proof-apparatus ADR. |
 | ISLA Racket sketch | `/home/sean/Projects/_upstream/sjas/code/isla/isla.rkt` | Exploratory grammar and grounding-function implementation. | Background for future object-language validators. |
@@ -54,6 +55,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | SJAS work requires careful expressivity/proof-apparatus tradeoffs. | SJAS README and Willard witness archive. | Strong enough for AFS requirements; detailed theorem claims still need paper-level annotation. |
 | Proflog is relevant but not currently a passing dependency. | SJAS `nachlass/LOG.md`, public Proflog repo, failed Guile run. | Gap recorded in `docs/afs-requirements.md` and `sources/manifest.json`. |
 | AS should start proof work with a tiny local certificate checker. | Current claim manifest, LeanTAP source, public Proflog source, SJAS Proflog boundary log. | Decision recorded in ADR-0010 and `docs/proof-apparatus-options.md`. |
+| AS cannot claim Willard-style formal confidence until it preserves exact syntax, proof-code, deduction-method, and consistency-level anchors. | Willard 2001 Definitions 1.1/1.2 and Theorem 4.3; Willard 2011 Definitions 3.4/5.6/5.7 and Theorem 5.9; Willard 2016 Definitions 3.2/3.4/4.1 and Theorem 6.7; Willard 2020 Definitions 3.2/3.4 and Theorems 4.4/4.5. | First anchored in ADR-0013, `docs/willard-definition-map.md`, and `sources/willard_definition_map.json`. |
 
 ## Evidence Gaps
 
@@ -65,6 +67,6 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`.
 - AS has not yet annotated the actual Willard papers at theorem/definition
-  granularity; current use is repository-level and README-level.
+  granularity beyond the first four-source ADR-0013 map.
 - LeanTAP has now been reviewed as a transparency reference, but AS has not
   ported or executed it as a project dependency.
