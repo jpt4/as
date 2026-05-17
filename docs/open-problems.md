@@ -74,6 +74,7 @@ open. ADR-0051 adds a schematic-linked trace for the recipient init slice.
 ADR-0052 adds the rendered SVG view of that trace.
 ADR-0053 records recipient non-init command-message execution as blocked and
 selects a named rejection-boundary claim as the next safe slice.
+ADR-0054 promotes that rejection boundary into the named claim/proof surface.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -192,3 +193,4 @@ surface.
 ADR-0051 adds the corresponding schematic-linked trace.
 ADR-0052 adds the corresponding rendered SVG view.
 ADR-0053 records the remaining recipient non-init command-message blockers.
+ADR-0054 adds the corresponding named rejection-boundary claim.

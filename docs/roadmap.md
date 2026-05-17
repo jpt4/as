@@ -1022,3 +1022,27 @@ Status: accepted in
 `sources/recipient_non_init_command_source_status.json` and
 `docs/recipient-non-init-command-source-status.md`, with tests in
 `tests/test_recipient_non_init_command_source_status.py`.
+
+## ADR-0054: Recipient Non-Init Command Rejection Claim
+
+Goal: promote the ADR-0053 recipient non-init command-message rejection
+boundary into the named transition-claim and proof-certificate surface.
+
+Deliverables:
+
+- `recipient_non_init_command_message_rejected` predicate;
+- `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED` claim manifest entry;
+- proof-certificate manifest entry using `manifest-example`;
+- transition-language predicate vocabulary update;
+- human-facing claim note;
+- tests covering fixed direct rejection, fixed upstream rejection, stem
+  multi-command conflict rejection, inactive preconditions, manifest examples,
+  proof certificates, and object-language coverage.
+
+Status: accepted in
+`docs/adr/0054-recipient-non-init-command-rejection-claim.md`. Implemented in
+`autarkic_systems/transition_predicates.py`,
+`claims/transition_claims.json`, `claims/proof_certificates.json`,
+`language/transition_claim_language.json`, and
+`docs/recipient-non-init-command-rejection-claim.md`, with tests in
+`tests/test_recipient_non_init_command_rejection_claim.py`.

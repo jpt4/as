@@ -243,3 +243,8 @@
   `tests/test_recipient_non_init_command_source_status.py`. It blocks
   recipient `standard-signal`, write-buffer, and multi-command input execution
   and selects a named rejection-boundary claim as the next safe slice.
+- ADR-0054 adds `docs/recipient-non-init-command-rejection-claim.md` and
+  `tests/test_recipient_non_init_command_rejection_claim.py`. The claim
+  `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED` is checked by
+  `recipient_non_init_command_message_rejected` and covers fixed direct,
+  fixed upstream, and stem multi-command rejection boundaries.

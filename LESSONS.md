@@ -132,3 +132,6 @@
 - When legacy command sources agree on command names but disagree on clearing
   and buffer behavior, record the divergence before implementing. The honest
   next step can be a claim over the current rejection boundary, not execution.
+- Rejection claims should include the input source. Fixed direct input and
+  fixed upstream input both reject non-init command messages, but upstream
+  rejection must also prove the pulled command source was cleared.

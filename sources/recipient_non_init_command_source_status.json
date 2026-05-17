@@ -4,7 +4,15 @@
   "decision": "do-not-implement-recipient-non-init-command-messages-yet",
   "runtime_change": "none-source-status-only",
   "depends_on": "sources/recipient_command_consumption_source_status.json",
-  "safe_next_slice": "promote-recipient-non-init-command-message-rejection-boundary",
+  "safe_next_slice": "add-recipient-non-init-command-message-rejection-trace",
+  "implemented_claims": [
+    {
+      "adr": "ADR-0054",
+      "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+      "predicate": "recipient_non_init_command_message_rejected",
+      "summary": "AS now has a named transition claim and proof-certificate entry for the recipient non-init command-message rejection boundary."
+    }
+  ],
   "blocked_runtime_commands": [
     "standard-signal",
     "write-buf-zero",
@@ -72,7 +80,7 @@
     "as_boundary": "ADR-0049 consumes exactly one single command-message input token and leaves multiple simultaneous command-message tokens at the rejected-input boundary."
   },
   "allowed_next_slices": [
-    "Promote recipient-side non-init command-message rejection boundary into a named claim and proof certificate.",
+    "Add a schematic-linked non-init command-message rejection trace.",
     "Resolve write-buffer command-message execution semantics before appending to recipient buffers.",
     "Resolve standard-signal command-message divergence before routing or executing standard-signal command tokens."
   ]

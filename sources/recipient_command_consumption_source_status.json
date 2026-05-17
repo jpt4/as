@@ -134,7 +134,7 @@
     }
   ],
   "allowed_next_slices": [
-    "Promote recipient-side non-init command-message rejection boundary into a named claim and proof certificate.",
+    "Add a schematic-linked non-init command-message rejection trace.",
     "Resolve write-buffer command-message execution semantics before appending to recipient buffers.",
     "Resolve standard-signal command-message divergence before routing or executing standard-signal command tokens."
   ]

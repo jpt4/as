@@ -25,7 +25,16 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "promote-recipient-non-init-command-message-rejection-boundary",
+            "add-recipient-non-init-command-message-rejection-trace",
+        )
+        claim = self.status["implemented_claims"][0]
+        self.assertEqual(
+            claim["claim_id"],
+            "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+        )
+        self.assertEqual(
+            claim["predicate"],
+            "recipient_non_init_command_message_rejected",
         )
 
         blocked = self.status["blocked_runtime_commands"]
@@ -79,13 +88,13 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "non-init command-message rejection boundary" in item
+                "non-init command-message rejection trace" in item
                 for item in recipient_status["allowed_next_slices"]
             )
         )
         self.assertTrue(
             any(
-                "non-init command-message rejection boundary" in item
+                "non-init command-message rejection trace" in item
                 for item in stem_status["allowed_next_slices"]
             )
         )

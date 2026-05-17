@@ -1167,3 +1167,30 @@
   touched source-status tests, JSON parsing passed for the recipient non-init,
   recipient consumption, and stem source-status manifests, and
   `git diff --check` passed.
+
+## 2026-05-17 - Recipient Non-Init Command Rejection Claim
+
+- Added ADR-0054 to promote the ADR-0053 recipient non-init command-message
+  rejection boundary into the named transition-claim and proof-certificate
+  surface.
+- Wrote `tests/test_recipient_non_init_command_rejection_claim.py` before
+  implementation. The red run failed because
+  `recipient_non_init_command_message_rejected` was absent from
+  `autarkic_systems.transition_predicates`.
+- Added `recipient_non_init_command_message_rejected` to
+  `autarkic_systems/transition_predicates.py`. The predicate covers fixed
+  direct non-init rejection, fixed pulled-upstream non-init rejection, and stem
+  multi-command conflict rejection.
+- Added `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED` to
+  `claims/transition_claims.json`, added the matching proof-certificate entry,
+  and updated the transition-claim object language.
+- Updated recipient non-init, recipient consumption, and stem source-status
+  artifacts so the next safe slice is a schematic-linked rejection trace, not
+  claim promotion or execution.
+- Added `docs/recipient-non-init-command-rejection-claim.md` and updated
+  README, roadmap, literature map, open problems, project memory, and lessons.
+- Verified the focused rejection-claim/source-status/predicate suite passed
+  37 tests. `python -m unittest discover` passed 322 tests, py_compile passed
+  for the touched predicate module and tests, JSON parsing passed for claim,
+  certificate, language, and source-status manifests, and `git diff --check`
+  passed.

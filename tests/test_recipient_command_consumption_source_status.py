@@ -124,7 +124,7 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "non-init command-message rejection boundary"
+                "non-init command-message rejection trace"
                 in item
                 for item in allowed
             )

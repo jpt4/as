@@ -96,7 +96,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertTrue(allowed)
         self.assertTrue(
             any(
-                "non-init command-message rejection boundary" in item
+                "non-init command-message rejection trace" in item
                 for item in allowed
             )
         )

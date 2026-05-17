@@ -71,6 +71,9 @@ ADR-0053 records the remaining non-init command-message blockers in
 `sources/recipient_non_init_command_source_status.json` and selects a named
 rejection-boundary claim as the next safe slice.
 
+ADR-0054 promotes that rejection boundary into the named claim
+`UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`.
+
 ## Verification
 
 Run:

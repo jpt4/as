@@ -31,6 +31,10 @@ multi-command recipient inputs. The next safe slice is to promote that
 rejection boundary into a named transition claim and proof-certificate entry,
 without executing the blocked commands.
 
+ADR-0054 completes that promotion as
+`UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`. The next safe evidence slice
+is a schematic-linked rejection trace.
+
 ## Verification
 
 Run:

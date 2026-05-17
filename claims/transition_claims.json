@@ -648,6 +648,82 @@
           }
         }
       ]
+    },
+    {
+      "id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+      "predicate": "recipient_non_init_command_message_rejected",
+      "description": "A recipient cell that receives a blocked non-init or conflicting command-message input rejects it without changing role, memory, output, or command state.",
+      "examples": [
+        {
+          "name": "fixed upstream standard-signal command rejected",
+          "expected": true,
+          "before": {
+            "role": "proc",
+            "memory": "left",
+            "upstream": ["_", "standard-signal", "_"]
+          },
+          "result": {
+            "status": "rejected-input",
+            "cell": {
+              "role": "proc",
+              "memory": "left",
+              "upstream": ["_", "_", "_"],
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        },
+        {
+          "name": "stem multi command conflict rejected",
+          "expected": true,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "input": ["wire-r-init", "write-buf-one", "_"],
+            "control": [0, 0, 1],
+            "buffer": [1]
+          },
+          "result": {
+            "status": "rejected-input",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [0, 0, 1],
+              "buffer": [1]
+            }
+          }
+        },
+        {
+          "name": "recipient non-init rejection changed role",
+          "expected": false,
+          "before": {
+            "role": "wire",
+            "memory": "right",
+            "input": ["write-buf-zero", "_", "_"]
+          },
+          "result": {
+            "status": "rejected-input",
+            "cell": {
+              "role": "proc",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        }
+      ]
     }
   ]
 }

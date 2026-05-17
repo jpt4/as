@@ -489,6 +489,49 @@ def recipient_init_command_message_processed(
     )
 
 
+def recipient_non_init_command_message_rejected(
+    before: Cell,
+    result: StepResult,
+) -> PredicateResult:
+    """Check the recipient non-init command-message rejection boundary."""
+
+    name = "recipient_non_init_command_message_rejected"
+    source_kind = _recipient_non_init_command_source(before)
+    if source_kind is None:
+        return PredicateResult(name, True, "precondition not active")
+
+    if result.status != "rejected-input":
+        return PredicateResult(
+            name,
+            False,
+            f"expected rejected-input, got {result.status}",
+        )
+    if result.cell.role != before.role or result.cell.memory != before.memory:
+        return PredicateResult(name, False, "rejection changed role or memory")
+    if result.cell.input != EMPTY:
+        return PredicateResult(name, False, "rejection left input uncleared")
+    if result.cell.output != EMPTY:
+        return PredicateResult(name, False, "rejection created output")
+    if result.cell.automail != before.automail:
+        return PredicateResult(name, False, "rejection changed automail")
+    if result.cell.self_mailbox != before.self_mailbox:
+        return PredicateResult(name, False, "rejection changed self mailbox")
+    if result.cell.control != before.control or result.cell.buffer != before.buffer:
+        return PredicateResult(name, False, "rejection changed control or buffer")
+
+    if source_kind == "upstream":
+        if result.cell.upstream != EMPTY:
+            return PredicateResult(name, False, "rejection left upstream uncleared")
+    elif result.cell.upstream != before.upstream:
+        return PredicateResult(name, False, "direct rejection changed upstream")
+
+    return PredicateResult(
+        name,
+        True,
+        f"{source_kind} recipient non-init command message rejected",
+    )
+
+
 def _completed_self_init_target(before: Cell) -> tuple[str, str] | None:
     decoded = _completed_command_buffer(before)
     if decoded is None:
@@ -574,6 +617,43 @@ def _single_init_command_message(
     if len(commands) != 1 or signal.count("_") != 2:
         return None
     return commands[0]
+
+
+def _recipient_non_init_command_source(before: Cell) -> str | None:
+    if before.output != EMPTY:
+        return None
+
+    direct = _is_non_init_or_conflict_command_input(before.input)
+    if before.role in {"wire", "proc"}:
+        if direct:
+            return "direct"
+        if before.input == EMPTY and _is_non_init_or_conflict_command_input(before.upstream):
+            return "upstream"
+        return None
+
+    if before.role == "stem" and before.automail == "_" and direct:
+        return "direct"
+    return None
+
+
+def _is_non_init_or_conflict_command_input(
+    signal: tuple[object, object, object],
+) -> bool:
+    command_tokens = [
+        channel
+        for channel in signal
+        if isinstance(channel, str)
+        and channel != "_"
+        and (
+            channel in SELF_MAILBOX_INIT_TARGETS
+            or channel in SELF_MAILBOX_UNSUPPORTED_COMMANDS
+        )
+    ]
+    if not command_tokens:
+        return False
+    if len(command_tokens) >= 2:
+        return True
+    return command_tokens[0] in SELF_MAILBOX_UNSUPPORTED_COMMANDS
 
 
 def _is_one_hot_standard_signal(signal: tuple[object, object, object]) -> bool:
