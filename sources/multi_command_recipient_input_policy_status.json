@@ -74,5 +74,14 @@
       "summary": "AS now has a rendered SVG view checked exactly against the multi-command recipient rejection trace."
     }
   ],
+  "implemented_evidence_bundles": [
+    {
+      "adr": "ADR-0069",
+      "path": "evidence/multi_command_recipient_rejection_bundle.json",
+      "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+      "positive_example": "fixed all-init command conflict rejected",
+      "summary": "AS now has an integrated evidence bundle validating one multi-command rejection boundary across claim, proof, trace, render, and source-status layers."
+    }
+  ],
   "as_boundary": "AS accepts exactly one init-family recipient command-message input. Two or more command-message tokens in the same recipient activation are rejected and cleared; no priority or sequencing rule is inferred."
 }

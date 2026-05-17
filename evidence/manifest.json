@@ -15,6 +15,12 @@
       "path": "evidence/recipient_non_init_command_rejection_bundle.json",
       "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
       "expected_status": "rejected-input"
+    },
+    {
+      "bundle_id": "multi-command-recipient-rejection-evidence-bundle",
+      "path": "evidence/multi_command_recipient_rejection_bundle.json",
+      "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+      "expected_status": "rejected-input"
     }
   ]
 }

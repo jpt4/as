@@ -1526,3 +1526,26 @@
   `python -m unittest discover` passed 404 tests. `py_compile` passed for the
   touched tests, JSON parsing passed for the registry, new bundle, and touched
   source-status manifest, and `git diff --check` passed.
+
+## 2026-05-17 - Multi-Command Rejection Evidence Bundle
+
+- Added ADR-0069 to register the simultaneous command-message rejection
+  boundary as the third transition evidence bundle.
+- Wrote `tests/test_multi_command_evidence_bundle.py` before implementation.
+  The red run failed because
+  `evidence/multi_command_recipient_rejection_bundle.json` was absent.
+- Added `evidence/multi_command_recipient_rejection_bundle.json` for the
+  positive `fixed all-init command conflict rejected` example under
+  `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`.
+- Registered the bundle in `evidence/manifest.json`, so the evidence registry
+  and CLI now validate three bundles: recipient init execution, recipient
+  non-init rejection, and multi-command rejection.
+- Added `docs/multi-command-rejection-evidence-bundle.md` and updated README,
+  roadmap, literature map, open problems, evidence registry docs,
+  multi-command source status, project memory, and lessons.
+- Verified the focused bundle/registry/CLI/source-status tests passed 20
+  tests, the actual registry CLI printed an all-`OK` report for three bundles,
+  the adjacent multi-command/rejection/evidence stack passed 68 tests, and
+  `python -m unittest discover` passed 410 tests. `py_compile` passed for the
+  touched tests, JSON parsing passed for the registry, new bundle, and touched
+  source-status manifest, and `git diff --check` passed.

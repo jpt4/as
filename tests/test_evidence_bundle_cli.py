@@ -30,7 +30,7 @@ class EvidenceBundleCliTests(unittest.TestCase):
             report,
         )
         self.assertIn("OK registry-schema: registry schema accepted", report)
-        self.assertIn("OK registry-bundle-validation: validated 2 bundles", report)
+        self.assertIn("OK registry-bundle-validation: validated 3 bundles", report)
         self.assertNotIn("FAIL", report)
 
     def test_cli_returns_zero_for_checked_in_registry(self):

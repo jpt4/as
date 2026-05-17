@@ -44,6 +44,12 @@ SVG render. The multi-command evidence ladder is now complete; the next
 command-execution work should revisit `standard-signal` or write-buffer only
 if new source evidence resolves their runtime surfaces.
 
+ADR-0069 records the same direct `wire-r-init` plus `proc-l-init` conflict as
+an integrated evidence bundle in
+`evidence/multi_command_recipient_rejection_bundle.json`, tying the claim,
+proof certificate, schematic trace, SVG render, hardware witness map, and
+source-status boundaries together.
+
 ## Verification
 
 Run:
@@ -53,4 +59,5 @@ python -m unittest tests.test_multi_command_recipient_input_policy_status
 ```
 
 The tests check the selected policy, existing fixed/stem runtime behavior, the
-claim-manifest example, and adjacent source-status frontier updates.
+claim-manifest example, evidence bundle cross-link, and adjacent source-status
+frontier updates.

@@ -1342,3 +1342,20 @@ Deliverables:
 Status: accepted in `docs/adr/0068-recipient-non-init-evidence-bundle.md`.
 Implemented in `evidence/recipient_non_init_command_rejection_bundle.json`,
 with tests in `tests/test_recipient_non_init_evidence_bundle.py`.
+
+## ADR-0069: Multi-Command Rejection Evidence Bundle
+
+Goal: add the simultaneous command-message rejection boundary as the third
+transition evidence bundle.
+
+Deliverables:
+
+- `evidence/multi_command_recipient_rejection_bundle.json`;
+- registry entry in `evidence/manifest.json`;
+- tests proving bundle fields, artifact paths, cross-layer validation,
+  registry coverage, and drifted claim-ID rejection;
+- human-facing evidence-bundle note and multi-command source-status cross-link.
+
+Status: accepted in `docs/adr/0069-multi-command-rejection-evidence-bundle.md`.
+Implemented in `evidence/multi_command_recipient_rejection_bundle.json`, with
+tests in `tests/test_multi_command_evidence_bundle.py`.

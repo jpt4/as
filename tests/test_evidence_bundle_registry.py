@@ -17,6 +17,8 @@ REJECTION_BUNDLE = Path("evidence/recipient_non_init_command_rejection_bundle.js
 REJECTION_BUNDLE_ID = "recipient-non-init-command-rejection-evidence-bundle"
 REJECTION_CLAIM_ID = "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED"
 REJECTION_STATUS = "rejected-input"
+MULTI_COMMAND_BUNDLE = Path("evidence/multi_command_recipient_rejection_bundle.json")
+MULTI_COMMAND_BUNDLE_ID = "multi-command-recipient-rejection-evidence-bundle"
 
 
 class EvidenceBundleRegistryTests(unittest.TestCase):
@@ -42,8 +44,16 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         entries = {entry.bundle_id: entry for entry in self.registry.bundles}
         entry = entries[REJECTION_BUNDLE_ID]
 
-        self.assertEqual(len(self.registry.bundles), 2)
         self.assertEqual(entry.path, REJECTION_BUNDLE)
+        self.assertEqual(entry.claim_id, REJECTION_CLAIM_ID)
+        self.assertEqual(entry.expected_status, REJECTION_STATUS)
+
+    def test_registry_records_the_multi_command_rejection_bundle(self):
+        entries = {entry.bundle_id: entry for entry in self.registry.bundles}
+        entry = entries[MULTI_COMMAND_BUNDLE_ID]
+
+        self.assertEqual(len(self.registry.bundles), 3)
+        self.assertEqual(entry.path, MULTI_COMMAND_BUNDLE)
         self.assertEqual(entry.claim_id, REJECTION_CLAIM_ID)
         self.assertEqual(entry.expected_status, REJECTION_STATUS)
 

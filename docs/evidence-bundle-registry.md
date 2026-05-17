@@ -9,6 +9,8 @@ The registry currently lists:
   for the positive fixed-upstream recipient init command-message transition;
 - `evidence/recipient_non_init_command_rejection_bundle.json`, the ADR-0068
   bundle for the positive upstream `standard-signal` rejection boundary.
+- `evidence/multi_command_recipient_rejection_bundle.json`, the ADR-0069
+  bundle for the positive direct simultaneous-command rejection boundary.
 
 Future bundle-producing ADRs should add one entry per bundle.
 

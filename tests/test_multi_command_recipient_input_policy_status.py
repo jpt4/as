@@ -140,6 +140,20 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
             svg["path"],
             "schematics/multi_command_recipient_rejection_trace.svg",
         )
+        bundle = self.status["implemented_evidence_bundles"][0]
+        self.assertEqual(bundle["adr"], "ADR-0069")
+        self.assertEqual(
+            bundle["path"],
+            "evidence/multi_command_recipient_rejection_bundle.json",
+        )
+        self.assertEqual(
+            bundle["claim_id"],
+            "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+        )
+        self.assertEqual(
+            bundle["positive_example"],
+            "fixed all-init command conflict rejected",
+        )
         self.assertFalse(
             any(
                 item.startswith("Select a multi-command")

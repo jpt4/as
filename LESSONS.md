@@ -184,3 +184,6 @@
 - Evidence registries should include blocked-boundary examples, not only
   successful execution examples. A rejection bundle proves the negative
   frontier is just as inspectable as the green path.
+- Multi-command policies deserve their own evidence bundle even when they
+  share a rejection claim. The inspected question is not only "is rejection
+  correct?" but also "did AS avoid inventing priority or sequencing?"

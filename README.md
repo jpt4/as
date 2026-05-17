@@ -105,6 +105,9 @@ the project legible:
 - `docs/recipient-non-init-evidence-bundle.md` records the second integrated
   evidence bundle, tying one recipient non-init rejection boundary to the same
   cross-layer evidence surface.
+- `docs/multi-command-rejection-evidence-bundle.md` records the third
+  integrated evidence bundle, tying one simultaneous command-message rejection
+  boundary to that evidence surface.
 - `docs/evidence-bundle-registry.md` records the registry for discovering and
   batch-validating transition evidence bundles.
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
@@ -194,6 +197,8 @@ the project legible:
 - `evidence/recipient_non_init_command_rejection_bundle.json` makes one
   recipient non-init rejection evidence path inspectable across the same
   layers.
+- `evidence/multi_command_recipient_rejection_bundle.json` makes one
+  multi-command rejection evidence path inspectable across the same layers.
 - `evidence/manifest.json` indexes transition evidence bundles for
   batch-validation.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first

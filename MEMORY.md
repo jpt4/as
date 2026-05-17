@@ -329,3 +329,8 @@
   `tests/test_recipient_non_init_evidence_bundle.py`. It registers the
   recipient upstream `standard-signal` rejection boundary as the second
   evidence bundle.
+- ADR-0069 adds `docs/multi-command-rejection-evidence-bundle.md`,
+  `evidence/multi_command_recipient_rejection_bundle.json`, and
+  `tests/test_multi_command_evidence_bundle.py`. It registers the direct
+  simultaneous `wire-r-init` plus `proc-l-init` rejection boundary as the third
+  evidence bundle.
