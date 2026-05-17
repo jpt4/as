@@ -195,3 +195,6 @@
 - Integrated evidence can expose near-miss fixture drift. If a trace and a
   claim describe the same transition with different incidental state, align the
   artifacts so the bundle proves one exact path.
+- Negative-frontier evidence bundles are useful for the same reason as green
+  execution bundles: they prove AS preserved a boundary instead of merely
+  failing to implement behavior.

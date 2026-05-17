@@ -26,6 +26,10 @@ execution, neighbor delivery, dynamic GELC reconfiguration, or physical
 circulator verification. It renders the one `write-buf-one` unsupported
 self-mailbox trace from ADR-0035.
 
+ADR-0073 regenerates the SVG from the claim-aligned trace so the evidence
+bundle can validate the claim example, JSON trace, and rendered artifact as one
+exact path.
+
 ## Verification
 
 Run:

@@ -347,3 +347,9 @@
   `tests/test_self_mailbox_init_evidence_bundle.py`. It registers the direct
   self-mailbox `proc-l-init` transition as the fourth evidence bundle and
   aligns the checked trace/SVG fixture with the named claim example.
+- ADR-0073 adds `docs/self-mailbox-unsupported-evidence-bundle.md`,
+  `evidence/self_mailbox_unsupported_bundle.json`, and
+  `tests/test_self_mailbox_unsupported_evidence_bundle.py`. It registers the
+  direct unsupported self-mailbox `write-buf-one` preservation boundary as the
+  fifth evidence bundle and aligns the checked trace/SVG fixture with the
+  named claim example.

@@ -84,7 +84,7 @@ class MultiCommandEvidenceBundleTests(unittest.TestCase):
         registry = load_evidence_bundle_registry(REGISTRY)
         entries = {entry.bundle_id: entry for entry in registry.bundles}
 
-        self.assertEqual(len(entries), 4)
+        self.assertEqual(len(entries), 5)
         self.assertIn("recipient-init-command-message-transition-evidence-bundle", entries)
         self.assertIn("recipient-non-init-command-rejection-evidence-bundle", entries)
         self.assertIn(BUNDLE_ID, entries)

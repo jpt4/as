@@ -48,8 +48,8 @@ class SelfMailboxUnsupportedTraceTests(unittest.TestCase):
         self.assertEqual(before["role"], "stem")
         self.assertEqual(before["automail"], "_")
         self.assertEqual(before["self_mailbox"], "write-buf-one")
-        self.assertEqual(before["control"], [1, 1, 0])
-        self.assertEqual(before["buffer"], [1, 0, 1])
+        self.assertEqual(before["control"], [1, 0, 1])
+        self.assertEqual(before["buffer"], [0, 1])
         self.assertEqual(after, before)
         self.assertEqual(self.trace.trace.expected_status, "self-mailbox-unsupported")
 

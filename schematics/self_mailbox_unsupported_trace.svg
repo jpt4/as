@@ -51,10 +51,10 @@
     <text class="small" x="52" y="196">memory after: right</text>
     <text class="small" x="52" y="220">self_mailbox before: write-buf-one</text>
     <text class="small" x="52" y="244">self_mailbox after: write-buf-one</text>
-    <text class="small" x="52" y="268">control before: [1, 1, 0]</text>
-    <text class="small" x="52" y="292">control after: [1, 1, 0]</text>
-    <text class="small" x="52" y="316">buffer before: [1, 0, 1]</text>
-    <text class="small" x="52" y="340">buffer after: [1, 0, 1]</text>
+    <text class="small" x="52" y="268">control before: [1, 0, 1]</text>
+    <text class="small" x="52" y="292">control after: [1, 0, 1]</text>
+    <text class="small" x="52" y="316">buffer before: [0, 1]</text>
+    <text class="small" x="52" y="340">buffer after: [0, 1]</text>
     <text class="small" x="52" y="376">routed signal flow</text>
     <text class="small" x="72" y="402">self_mailbox[write-buf-one] unsupported</text>
     <text class="small" x="72" y="426">cell state preserved</text>

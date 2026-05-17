@@ -1613,3 +1613,28 @@
   bundles, and `python -m unittest discover` passed 422 tests. `py_compile`
   passed for the touched tests, JSON parsing passed for the registry, new
   bundle, touched source status, and aligned trace.
+
+## 2026-05-17 - Self-Mailbox Unsupported Evidence Bundle
+
+- Added ADR-0073 to register the direct unsupported self-mailbox preservation
+  boundary as the fifth transition evidence bundle.
+- Wrote `tests/test_self_mailbox_unsupported_evidence_bundle.py` before
+  implementation. The red run failed because
+  `evidence/self_mailbox_unsupported_bundle.json` was absent.
+- Added `evidence/self_mailbox_unsupported_bundle.json` for the positive
+  `write buffer one unsupported preserved` example under
+  `UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED`.
+- Registered the bundle in `evidence/manifest.json`, so the evidence registry
+  and CLI now validate five bundles.
+- Aligned `schematics/self_mailbox_unsupported_trace.json` and its generated
+  SVG with the named claim example so the integrated validator checks one
+  exact preservation path.
+- Added `docs/self-mailbox-unsupported-evidence-bundle.md` and updated README,
+  roadmap, literature map, open problems, evidence registry docs, stem command
+  source status, project memory, and lessons.
+- Verified the focused bundle test passed 5 tests, the registry/CLI/trace/SVG
+  focused stack passed 55 tests, the adjacent unsupported self-mailbox/evidence
+  stack passed 69 tests, both actual CLI text and JSON modes passed for five
+  bundles, and `python -m unittest discover` passed 429 tests. `py_compile`
+  passed for the touched tests, JSON parsing passed for the registry, new
+  bundle, touched source status, and aligned trace.

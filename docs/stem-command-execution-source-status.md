@@ -48,7 +48,8 @@ witness rather than an execution-ready source. ADR-0063 records the newer
 confirmed message-list codes. ADR-0064 records the official PRC TLA files as
 partial, stub, or empty rather than executable command authority. ADR-0072
 registers the direct self-mailbox init transition as an integrated evidence
-bundle without widening the command-execution boundary.
+bundle without widening the command-execution boundary. ADR-0073 registers the
+direct unsupported self-mailbox preservation boundary the same way.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
 does not execute non-init command-message inputs on recipient cells.

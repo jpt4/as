@@ -117,11 +117,10 @@
       "self_mailbox": "write-buf-one",
       "control": [
         1,
-        1,
-        0
+        0,
+        1
       ],
       "buffer": [
-        1,
         0,
         1
       ]
@@ -149,11 +148,10 @@
       "self_mailbox": "write-buf-one",
       "control": [
         1,
-        1,
-        0
+        0,
+        1
       ],
       "buffer": [
-        1,
         0,
         1
       ]

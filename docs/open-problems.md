@@ -101,6 +101,9 @@ ADR-0071 adds JSON CLI output so the registry can be consumed by automation
 without parsing human-readable `OK` lines.
 ADR-0072 registers the direct self-mailbox init transition as the fourth
 evidence bundle and aligns its trace/SVG fixture with the named claim example.
+ADR-0073 registers the direct unsupported self-mailbox preservation boundary as
+the fifth evidence bundle and aligns its trace/SVG fixture with the named
+preservation example.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -246,6 +249,8 @@ files.
 ADR-0071 adds machine-readable registry validation output.
 ADR-0072 registers the direct self-mailbox init transition as an integrated
 evidence bundle and claim-aligns the trace/SVG fixture.
+ADR-0073 registers the direct unsupported self-mailbox preservation boundary as
+an integrated evidence bundle and claim-aligns the trace/SVG fixture.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.

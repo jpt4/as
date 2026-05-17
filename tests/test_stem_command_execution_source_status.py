@@ -71,6 +71,24 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertEqual(bundle["positive_example"], "processor left mailbox init")
         self.assertIn("direct self-mailbox init", bundle["summary"])
 
+    def test_self_mailbox_unsupported_evidence_bundle_is_recorded(self):
+        bundles = {
+            bundle["path"]: bundle
+            for bundle in self.status["implemented_evidence_bundles"]
+        }
+        bundle = bundles["evidence/self_mailbox_unsupported_bundle.json"]
+
+        self.assertEqual(bundle["adr"], "ADR-0073")
+        self.assertEqual(
+            bundle["claim_id"],
+            "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
+        )
+        self.assertEqual(
+            bundle["positive_example"],
+            "write buffer one unsupported preserved",
+        )
+        self.assertIn("unsupported-command preservation", bundle["summary"])
+
     def test_legacy_command_and_target_divergences_are_recorded(self):
         divergences = {
             divergence["witness_id"]: divergence

@@ -1413,3 +1413,22 @@ Deliverables:
 Status: accepted in `docs/adr/0072-self-mailbox-init-evidence-bundle.md`.
 Implemented in `evidence/self_mailbox_init_bundle.json`, with tests in
 `tests/test_self_mailbox_init_evidence_bundle.py`.
+
+## ADR-0073: Self-Mailbox Unsupported Evidence Bundle
+
+Goal: add the direct unsupported self-mailbox preservation boundary as the
+fifth transition evidence bundle.
+
+Deliverables:
+
+- `evidence/self_mailbox_unsupported_bundle.json`;
+- registry entry in `evidence/manifest.json`;
+- trace/SVG alignment with the existing positive preservation claim example;
+- tests proving bundle fields, artifact paths, cross-layer validation,
+  registry coverage, and drifted status rejection;
+- human-facing evidence-bundle note and stem command source-status cross-link.
+
+Status: accepted in
+`docs/adr/0073-self-mailbox-unsupported-evidence-bundle.md`. Implemented in
+`evidence/self_mailbox_unsupported_bundle.json`, with tests in
+`tests/test_self_mailbox_unsupported_evidence_bundle.py`.

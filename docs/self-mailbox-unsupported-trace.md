@@ -21,6 +21,11 @@ This is not write-buffer execution. It records that AS currently refuses to
 execute `write-buf-one` from the self mailbox until source-backed semantics are
 resolved.
 
+ADR-0073 aligns this trace with the exact positive claim example used by
+`evidence/self_mailbox_unsupported_bundle.json`, so the integrated evidence
+validator checks one concrete preservation path rather than a nearby fixture
+variant.
+
 ## Schematic Role
 
 The artifact uses the same triangular RLEM/GELC schematic vocabulary as the
