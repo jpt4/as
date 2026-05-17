@@ -1483,3 +1483,23 @@
   tests. `py_compile` passed for the touched evidence bundle module and tests,
   JSON parsing passed for the registry and bundle manifests, and
   `git diff --check` passed.
+
+## 2026-05-17 - Evidence Registry CLI
+
+- Added ADR-0067 to expose evidence registry validation as a direct project
+  command.
+- Wrote `tests/test_evidence_bundle_cli.py` before implementation. The red run
+  failed because `format_registry_validation_report` and the CLI runner were
+  absent from `autarkic_systems.evidence_bundle`.
+- Added `format_registry_validation_report`, `run_evidence_bundle_cli`, and a
+  module entrypoint for
+  `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`.
+- The command prints `OK` or `FAIL` validation lines and returns exit code `0`
+  only when every registry validation result is accepted.
+- Updated README, roadmap, literature map, open problems, evidence registry
+  docs, project memory, and lessons.
+- Verified the focused CLI/registry tests passed 9 tests, the actual module
+  command printed an all-`OK` report, the adjacent evidence stack passed 56
+  tests, and `python -m unittest discover` passed 398 tests. `py_compile`
+  passed for the touched module and tests, JSON parsing passed for the registry
+  and registered bundle manifests, and `git diff --check` passed.

@@ -1308,3 +1308,20 @@ Deliverables:
 Status: accepted in `docs/adr/0066-evidence-bundle-registry.md`. Implemented
 in `evidence/manifest.json` and `autarkic_systems/evidence_bundle.py`, with
 tests in `tests/test_evidence_bundle_registry.py`.
+
+## ADR-0067: Evidence Registry CLI
+
+Goal: expose evidence registry validation as a direct project command.
+
+Deliverables:
+
+- CLI entrypoint through `python -m autarkic_systems.evidence_bundle`;
+- concise `OK`/`FAIL` report formatting for registry validation results;
+- exit code `0` for accepted registries and non-zero for validation failures;
+- tests covering report formatting, successful command execution, missing
+  bundle failure, and module execution;
+- human-facing command documentation.
+
+Status: accepted in `docs/adr/0067-evidence-registry-cli.md`. Implemented in
+`autarkic_systems/evidence_bundle.py`, with tests in
+`tests/test_evidence_bundle_cli.py`.

@@ -8,6 +8,7 @@ source-status boundaries.
 
 from __future__ import annotations
 
+import argparse
 import json
 from dataclasses import dataclass
 from pathlib import Path
@@ -155,6 +156,39 @@ def validate_transition_evidence_bundle(
     results.append(_validate_source_statuses(bundle))
     results.append(_validate_boundary(bundle))
     return results
+
+
+def format_registry_validation_report(
+    registry: EvidenceBundleRegistry,
+    results: list[EvidenceBundleValidation],
+) -> str:
+    """Format a concise operator report for registry validation results."""
+
+    lines = [f"Evidence bundle registry: {registry.registry_id}"]
+    for result in results:
+        prefix = "OK" if result.accepted else "FAIL"
+        lines.append(f"{prefix} {result.subject}: {result.detail}")
+    return "\n".join(lines)
+
+
+def run_evidence_bundle_cli(argv: list[str] | None = None) -> int:
+    """Run the evidence bundle registry validation command."""
+
+    parser = argparse.ArgumentParser(
+        prog="python -m autarkic_systems.evidence_bundle",
+        description="Validate the AS transition evidence bundle registry.",
+    )
+    parser.add_argument(
+        "--registry",
+        default="evidence/manifest.json",
+        help="Path to the evidence bundle registry JSON.",
+    )
+    args = parser.parse_args(argv)
+
+    registry = load_evidence_bundle_registry(args.registry)
+    results = validate_evidence_bundle_registry(registry)
+    print(format_registry_validation_report(registry, results))
+    return 0 if all(result.accepted for result in results) else 1
 
 
 def _validate_registry_schema(
@@ -510,3 +544,7 @@ def _required_text_list(item: dict[str, Any], key: str) -> list[str]:
     if not all(isinstance(entry, str) and entry for entry in value):
         raise ValueError(f"text list has invalid entries: {key}")
     return value
+
+
+if __name__ == "__main__":  # pragma: no cover - exercised by subprocess test.
+    raise SystemExit(run_evidence_bundle_cli())

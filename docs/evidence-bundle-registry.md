@@ -21,6 +21,15 @@ The registry validator checks:
 - agreement between each registry entry and the loaded bundle; and
 - the full cross-layer validation for every registered bundle.
 
+ADR-0067 adds an operator-facing command over the same validator:
+
+```sh
+python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json
+```
+
+The command prints one `OK` or `FAIL` line per validation subject and exits
+with code `0` only when every registry and bundle validation passes.
+
 ## Boundary
 
 The registry is an index and batch-verification surface. It does not create new
@@ -32,6 +41,7 @@ Run:
 
 ```sh
 python -m unittest tests.test_evidence_bundle_registry
+python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json
 ```
 
 The tests cover registry loading, the current ADR-0065 bundle entry, whole

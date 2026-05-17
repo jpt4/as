@@ -320,3 +320,7 @@
   `evidence/manifest.json`, and `tests/test_evidence_bundle_registry.py`. It
   makes transition evidence bundles discoverable and batch-validates every
   registered bundle through the cross-layer bundle validator.
+- ADR-0067 adds `tests/test_evidence_bundle_cli.py` and a module CLI in
+  `autarkic_systems/evidence_bundle.py`: run
+  `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
+  to validate the evidence registry with `OK`/`FAIL` output and exit codes.

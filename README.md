@@ -104,6 +104,8 @@ the project legible:
   proof certificate, schematic trace, SVG render, and source-status boundaries.
 - `docs/evidence-bundle-registry.md` records the registry for discovering and
   batch-validating transition evidence bundles.
+- `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
+  validates the evidence bundle registry from the command line.
 - `docs/self-mailbox-init-claim.md` records the named claim and
   proof-certificate surface for the self-mailbox init-command subset.
 - `docs/self-mailbox-unsupported-claim.md` records the named preservation

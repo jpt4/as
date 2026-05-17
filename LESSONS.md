@@ -178,3 +178,6 @@
 - Evidence bundles need a registry before there are many of them. Discovery
   should be machine-checkable, with duplicate and missing-path failures, not
   left to filesystem convention.
+- A registry that only runs in unit tests is still too hidden for operators.
+  Give important validation surfaces a direct command with meaningful exit
+  codes once the underlying checks are stable.

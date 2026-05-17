@@ -89,6 +89,8 @@ recipient init transition, tying one runtime example to its claim, certificate,
 trace, SVG, and source-status boundaries without widening command semantics.
 ADR-0066 adds the evidence bundle registry so those integrated paths can be
 discovered and batch-validated as they multiply.
+ADR-0067 adds a module CLI so the registry can be validated directly from the
+command line.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -224,6 +226,7 @@ ADR-0065 records the first integrated evidence bundle for a recipient init
 transition so the claim/proof/trace/render/source path can be inspected as one
 artifact.
 ADR-0066 records the registry for those integrated evidence bundles.
+ADR-0067 exposes that registry validation as an operator-facing command.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.
