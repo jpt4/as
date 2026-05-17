@@ -180,3 +180,7 @@
   slice into `UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED` and
   `stem_command_buffer_preserves_unsupported_completion`. Neighbor-target and
   self non-init completed buffers still stop at `stem-buffer-appended`.
+- ADR-0042 adds `schematics/command_buffer_unsupported_trace.json`,
+  `docs/command-buffer-unsupported-trace.md`, and
+  `tests/test_command_buffer_unsupported_trace.py` for one completed
+  `neighbor-a/stem-init` command buffer preserved at the append boundary.

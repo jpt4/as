@@ -761,3 +761,23 @@ Implemented in `autarkic_systems/transition_predicates.py`,
 `claims/transition_claims.json`, `claims/proof_certificates.json`, and
 `language/transition_claim_language.json`, with tests in
 `tests/test_command_buffer_unsupported_claim.py`.
+
+## ADR-0042: Command Buffer Unsupported Trace
+
+Goal: add a schematic-linked trace for one unsupported completed command
+buffer.
+
+Deliverables:
+
+- `schematics/command_buffer_unsupported_trace.json`;
+- command-buffer unsupported artifact identity in the schematic-trace
+  validator;
+- validation that separates completed unsupported command-buffer flow from
+  ordinary buffer accumulation and supported self-init dispatch;
+- tests for artifact identity, schema vocabulary, decode flow, execution
+  replay, witness-map validation, and drift rejection.
+
+Status: accepted in `docs/adr/0042-command-buffer-unsupported-trace.md`.
+Implemented in `autarkic_systems/schematic_trace.py` and
+`schematics/command_buffer_unsupported_trace.json`, with tests in
+`tests/test_command_buffer_unsupported_trace.py`.

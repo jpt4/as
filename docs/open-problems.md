@@ -64,7 +64,8 @@ coverage. ADR-0039 adds the corresponding schematic-linked trace for one
 completed `self/proc-l-init` command buffer. ADR-0040 adds the rendered SVG
 view of that trace. ADR-0041 adds the named claim for completed command buffers
 that still stop at the append boundary because they are neighbor-target or
-self-target non-init commands.
+self-target non-init commands. ADR-0042 adds a schematic-linked trace for one
+decoded `neighbor-a/stem-init` buffer that remains at that boundary.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -164,3 +165,4 @@ ADR-0038 adds the corresponding claim/proof surface.
 ADR-0039 adds the corresponding schematic-linked trace.
 ADR-0040 adds the corresponding rendered SVG view.
 ADR-0041 adds the corresponding unsupported completed-buffer boundary claim.
+ADR-0042 adds the corresponding schematic-linked trace.

@@ -45,6 +45,9 @@ SELF_MAILBOX_UNSUPPORTED_TRACE_ARTIFACT_ID = (
 SELF_COMMAND_BUFFER_INIT_TRACE_ARTIFACT_ID = (
     "self-command-buffer-init-schematic-and-uc-transition-trace"
 )
+COMMAND_BUFFER_UNSUPPORTED_TRACE_ARTIFACT_ID = (
+    "command-buffer-unsupported-schematic-and-uc-transition-trace"
+)
 VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     SINGLE_NODE_TRACE_ARTIFACT_ID,
     PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID,
@@ -53,6 +56,7 @@ VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     SELF_MAILBOX_INIT_TRACE_ARTIFACT_ID,
     SELF_MAILBOX_UNSUPPORTED_TRACE_ARTIFACT_ID,
     SELF_COMMAND_BUFFER_INIT_TRACE_ARTIFACT_ID,
+    COMMAND_BUFFER_UNSUPPORTED_TRACE_ARTIFACT_ID,
 )
 
 REQUIRED_INTERPRETIVE_LAYERS = (
@@ -425,6 +429,13 @@ def _validate_schematic_trace_alignment(
         ):
             results.extend(
                 _validate_self_command_buffer_init_trace_alignment(schematic_trace)
+            )
+        elif (
+            schematic_trace.artifact_id
+            == COMMAND_BUFFER_UNSUPPORTED_TRACE_ARTIFACT_ID
+        ):
+            results.extend(
+                _validate_command_buffer_unsupported_trace_alignment(schematic_trace)
             )
         else:
             results.extend(_validate_stem_buffer_trace_alignment(schematic_trace))
@@ -862,6 +873,113 @@ def _validate_self_command_buffer_init_trace_alignment(
             _accepted(
                 "self-command-buffer-init",
                 "self command-buffer init target and clearing match",
+            )
+        )
+
+    return results
+
+
+def _validate_command_buffer_unsupported_trace_alignment(
+    schematic_trace: SingleNodeSchematicTrace,
+) -> list[SchematicTraceValidation]:
+    results: list[SchematicTraceValidation] = []
+
+    if schematic_trace.schematic.geometry != "triangular-rlem-node":
+        results.append(_rejected("geometry", "schematic geometry is not triangular"))
+    else:
+        results.append(_accepted("geometry", "schematic geometry is triangular"))
+
+    before = schematic_trace.trace.before_cell
+    after = schematic_trace.trace.expected_after_cell
+    decode = _completed_command_buffer_decode(before)
+    if decode is None:
+        results.append(
+            _rejected(
+                "command-buffer-unsupported",
+                "trace does not complete a decodable five-bit command buffer",
+            )
+        )
+        return results
+
+    value, completed_buffer, target_id, command_id = decode
+    self_init_commands = {
+        "stem-init",
+        "wire-r-init",
+        "wire-l-init",
+        "proc-r-init",
+        "proc-l-init",
+    }
+    if target_id == "self" and command_id in self_init_commands:
+        results.append(
+            _rejected(
+                "command-buffer-unsupported",
+                "trace is a supported self-target init command",
+            )
+        )
+        return results
+
+    if schematic_trace.schematic.memory_direction != before.get("memory"):
+        results.append(
+            _rejected(
+                "memory_direction",
+                "schematic memory does not match preserved stem memory",
+            )
+        )
+    else:
+        results.append(_accepted("memory_direction", "schematic memory matches stem"))
+
+    bit = completed_buffer[-1]
+    match_text = "matches" if bit == 1 else "differs from"
+    command_subject = "self command" if target_id == "self" else "neighbor command"
+    expected_flow = (
+        f"control{_compact_list(before.get('control'))} active",
+        (
+            f"input{_compact_list(before.get('input'))} {match_text} control "
+            f"-> append {bit}"
+        ),
+        (
+            f"buffer{_compact_list(before.get('buffer'))} -> "
+            f"buffer{_compact_list(completed_buffer)}"
+        ),
+        f"decode value {value} -> {target_id}/{command_id}",
+        f"{command_subject}[{command_id}] unsupported",
+        "completed command buffer preserved at append boundary",
+    )
+    if schematic_trace.trace.routed_signal_flow != expected_flow:
+        results.append(
+            _rejected("routed_signal_flow", "unsupported command-buffer flow mismatch")
+        )
+    else:
+        results.append(
+            _accepted("routed_signal_flow", "unsupported command-buffer flow explicit")
+        )
+
+    if (
+        schematic_trace.trace.expected_status != "stem-buffer-appended"
+        or before.get("automail") != "_"
+        or before.get("self_mailbox") != "_"
+        or before.get("output") != ["_", "_", "_"]
+        or after.get("role") != before.get("role")
+        or after.get("memory") != before.get("memory")
+        or after.get("upstream") != before.get("upstream")
+        or after.get("input") != ["_", "_", "_"]
+        or after.get("output") != ["_", "_", "_"]
+        or after.get("automail") != "_"
+        or after.get("self_mailbox") != "_"
+        or after.get("control") != before.get("control")
+        or after.get("buffer") != completed_buffer
+    ):
+        results.append(
+            _rejected(
+                "command-buffer-unsupported",
+                "unsupported command-buffer append state mismatch",
+            )
+        )
+    else:
+        results.append(
+            _accepted(
+                "command-buffer-unsupported",
+                "unsupported command-buffer append boundary matches",
             )
         )
 

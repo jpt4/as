@@ -81,6 +81,8 @@ the project legible:
   claim for unsupported completed command buffers.
 - `docs/self-command-buffer-init-trace.md` records the schematic-linked trace
   for one self-target command-buffer init dispatch.
+- `docs/command-buffer-unsupported-trace.md` records the schematic-linked trace
+  for one unsupported completed command buffer.
 - `docs/self-command-buffer-init-svg.md` records the rendered view of that
   self command-buffer trace.
 - `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
@@ -137,6 +139,8 @@ the project legible:
   command-buffer init dispatch trace machine-checkable.
 - `schematics/self_command_buffer_init_trace.svg` is the generated rendered
   view checked against the command-buffer JSON trace.
+- `schematics/command_buffer_unsupported_trace.json` makes the unsupported
+  completed command-buffer append-boundary trace machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

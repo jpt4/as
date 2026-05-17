@@ -100,3 +100,6 @@
 - When a command-buffer case is deliberately not executed, name the append
   boundary before building the next behavior. That preserves the current
   frontier as a claim instead of an accidental hole between tests.
+- Unsupported command-buffer traces should prefer neighbor examples first.
+  They keep the biggest remaining blocker, delivery semantics, visible without
+  inventing routing behavior.

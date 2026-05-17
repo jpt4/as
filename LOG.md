@@ -871,3 +871,27 @@
   51 tests, `python -m unittest discover` passed 230 tests, py_compile passed
   for the touched Python files, JSON parsing passed for the claim/proof/
   language/source-status manifests, and `git diff --check` passed.
+
+## 2026-05-17 - Command Buffer Unsupported Trace
+
+- Added ADR-0042 for a schematic-linked trace of one unsupported completed
+  command buffer.
+- Wrote `tests/test_command_buffer_unsupported_trace.py` before implementation.
+  The red run failed because `COMMAND_BUFFER_UNSUPPORTED_TRACE_ARTIFACT_ID`
+  did not exist in `autarkic_systems.schematic_trace`.
+- Added `schematics/command_buffer_unsupported_trace.json` for the completed
+  `neighbor-a/stem-init` buffer `01001`.
+- Added `COMMAND_BUFFER_UNSUPPORTED_TRACE_ARTIFACT_ID` and a dedicated
+  validation path so completed unsupported command buffers are not mistaken for
+  ordinary stem buffer accumulation.
+- Added `docs/command-buffer-unsupported-trace.md` as the human-facing trace
+  boundary note.
+- Updated README, roadmap, literature map, open problems, command-buffer
+  unsupported claim note, stem command execution source-status note/artifact,
+  project memory, and lessons.
+- Verified `python -m unittest tests.test_command_buffer_unsupported_trace`
+  passed 9 tests, the adjacent command-buffer/trace/source-status suite passed
+  46 tests, `python -m unittest discover` passed 239 tests, py_compile passed
+  for the touched Python files, JSON parsing passed for
+  `schematics/command_buffer_unsupported_trace.json` and the source-status
+  manifest, and `git diff --check` passed.

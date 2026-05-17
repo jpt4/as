@@ -8,6 +8,8 @@ transition-claim surface. The claim is
 `claims/transition_claims.json`, checked by
 `stem_command_buffer_preserves_unsupported_completion` in
 `autarkic_systems/transition_predicates.py`.
+ADR-0042 adds a schematic-linked trace for one positive neighbor-target
+example.
 
 ## Claim Boundary
 
