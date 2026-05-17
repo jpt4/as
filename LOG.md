@@ -972,3 +972,27 @@
   py_compile passed for the touched Python module and tests, JSON parsing
   passed for the claim/proof/language/source-status manifests, and
   `git diff --check` passed.
+
+## 2026-05-17 - Neighbor Command Buffer Delivery Trace
+
+- Added ADR-0046 for a schematic-linked trace of one completed neighbor-target
+  command buffer delivered onto an output channel.
+- Wrote `tests/test_neighbor_command_buffer_delivery_trace.py` before
+  implementation. The red run failed because
+  `NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID` did not exist in
+  `autarkic_systems.schematic_trace`.
+- Added `schematics/neighbor_command_buffer_delivery_trace.json` for the
+  completed `neighbor-b/proc-l-init` buffer `10101`.
+- Added `NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID` and a dedicated
+  validation path so neighbor delivery traces are not mistaken for ordinary
+  stem buffer accumulation.
+- Added `docs/neighbor-command-buffer-delivery-trace.md` as the human-facing
+  trace boundary note.
+- Updated README, roadmap, literature map, open problems, stem command
+  execution source-status note/artifact, and project memory.
+- Verified `python -m unittest tests.test_neighbor_command_buffer_delivery_trace`
+  passed 9 tests and the adjacent trace/claim/source-status/object-language
+  suite passed 35 tests. `python -m unittest discover` passed 267 tests,
+  py_compile passed for the touched Python module and tests, JSON parsing
+  passed for the source-status and neighbor-delivery trace manifests, and
+  `git diff --check` passed.

@@ -849,3 +849,24 @@ Status: accepted in
 `claims/proof_certificates.json`, and
 `language/transition_claim_language.json`, with tests in
 `tests/test_neighbor_command_buffer_delivery_claim.py`.
+
+## ADR-0046: Neighbor Command Buffer Delivery Trace
+
+Goal: add a schematic-linked trace for one completed neighbor-target command
+buffer delivered onto an output channel.
+
+Deliverables:
+
+- `schematics/neighbor_command_buffer_delivery_trace.json`;
+- neighbor command-buffer delivery artifact identity in the schematic-trace
+  validator;
+- validation that separates neighbor delivery from self init dispatch,
+  unsupported append-boundary traces, and ordinary stem buffer accumulation;
+- tests for artifact identity, schema vocabulary, decode flow, execution
+  replay, witness-map validation, and drift rejection.
+
+Status: accepted in
+`docs/adr/0046-neighbor-command-buffer-delivery-trace.md`. Implemented in
+`autarkic_systems/schematic_trace.py` and
+`schematics/neighbor_command_buffer_delivery_trace.json`, with tests in
+`tests/test_neighbor_command_buffer_delivery_trace.py`.

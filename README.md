@@ -83,6 +83,8 @@ the project legible:
   proof-certificate surface for neighbor command-buffer delivery.
 - `docs/self-command-buffer-init-trace.md` records the schematic-linked trace
   for one self-target command-buffer init dispatch.
+- `docs/neighbor-command-buffer-delivery-trace.md` records the
+  schematic-linked trace for one neighbor command-buffer delivery.
 - `docs/command-buffer-unsupported-trace.md` records the schematic-linked trace
   for one unsupported completed command buffer.
 - `docs/command-buffer-unsupported-svg.md` records the rendered view of that
@@ -148,6 +150,8 @@ the project legible:
   completed command-buffer append-boundary trace machine-checkable.
 - `schematics/command_buffer_unsupported_trace.svg` is the generated rendered
   view checked against the unsupported command-buffer JSON trace.
+- `schematics/neighbor_command_buffer_delivery_trace.json` makes the neighbor
+  command-buffer delivery trace machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

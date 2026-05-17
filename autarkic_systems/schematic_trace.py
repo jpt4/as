@@ -48,6 +48,9 @@ SELF_COMMAND_BUFFER_INIT_TRACE_ARTIFACT_ID = (
 COMMAND_BUFFER_UNSUPPORTED_TRACE_ARTIFACT_ID = (
     "command-buffer-unsupported-schematic-and-uc-transition-trace"
 )
+NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID = (
+    "neighbor-command-buffer-delivery-schematic-and-uc-transition-trace"
+)
 VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     SINGLE_NODE_TRACE_ARTIFACT_ID,
     PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID,
@@ -57,6 +60,7 @@ VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     SELF_MAILBOX_UNSUPPORTED_TRACE_ARTIFACT_ID,
     SELF_COMMAND_BUFFER_INIT_TRACE_ARTIFACT_ID,
     COMMAND_BUFFER_UNSUPPORTED_TRACE_ARTIFACT_ID,
+    NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID,
 )
 
 REQUIRED_INTERPRETIVE_LAYERS = (
@@ -436,6 +440,15 @@ def _validate_schematic_trace_alignment(
         ):
             results.extend(
                 _validate_command_buffer_unsupported_trace_alignment(schematic_trace)
+            )
+        elif (
+            schematic_trace.artifact_id
+            == NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID
+        ):
+            results.extend(
+                _validate_neighbor_command_buffer_delivery_trace_alignment(
+                    schematic_trace
+                )
             )
         else:
             results.extend(_validate_stem_buffer_trace_alignment(schematic_trace))
@@ -980,6 +993,113 @@ def _validate_command_buffer_unsupported_trace_alignment(
             _accepted(
                 "command-buffer-unsupported",
                 "unsupported command-buffer append boundary matches",
+            )
+        )
+
+    return results
+
+
+def _validate_neighbor_command_buffer_delivery_trace_alignment(
+    schematic_trace: SingleNodeSchematicTrace,
+) -> list[SchematicTraceValidation]:
+    results: list[SchematicTraceValidation] = []
+
+    if schematic_trace.schematic.geometry != "triangular-rlem-node":
+        results.append(_rejected("geometry", "schematic geometry is not triangular"))
+    else:
+        results.append(_accepted("geometry", "schematic geometry is triangular"))
+
+    before = schematic_trace.trace.before_cell
+    after = schematic_trace.trace.expected_after_cell
+    decode = _completed_command_buffer_decode(before)
+    if decode is None:
+        results.append(
+            _rejected(
+                "neighbor-command-buffer-delivery",
+                "trace does not complete a decodable five-bit command buffer",
+            )
+        )
+        return results
+
+    value, completed_buffer, target_id, command_id = decode
+    neighbor_output_index = {
+        "neighbor-a": 0,
+        "neighbor-b": 1,
+        "neighbor-c": 2,
+    }.get(target_id)
+    if neighbor_output_index is None:
+        results.append(
+            _rejected(
+                "neighbor-command-buffer-delivery",
+                "command buffer is not neighbor-targeted",
+            )
+        )
+        return results
+
+    if schematic_trace.schematic.memory_direction != before.get("memory"):
+        results.append(
+            _rejected(
+                "memory_direction",
+                "schematic memory does not match preserved stem memory",
+            )
+        )
+    else:
+        results.append(_accepted("memory_direction", "schematic memory matches stem"))
+
+    bit = completed_buffer[-1]
+    match_text = "matches" if bit == 1 else "differs from"
+    expected_flow = (
+        f"control{_compact_list(before.get('control'))} active",
+        (
+            f"input{_compact_list(before.get('input'))} {match_text} control "
+            f"-> append {bit}"
+        ),
+        (
+            f"buffer{_compact_list(before.get('buffer'))} -> "
+            f"buffer{_compact_list(completed_buffer)}"
+        ),
+        f"decode value {value} -> {target_id}/{command_id}",
+        f"neighbor command[{command_id}] -> output[{neighbor_output_index}]",
+        "command buffer delivered; control/buffer cleared",
+    )
+    if schematic_trace.trace.routed_signal_flow != expected_flow:
+        results.append(
+            _rejected("routed_signal_flow", "neighbor command-buffer flow mismatch")
+        )
+    else:
+        results.append(
+            _accepted("routed_signal_flow", "neighbor command-buffer flow explicit")
+        )
+
+    expected_output = ["_", "_", "_"]
+    expected_output[neighbor_output_index] = command_id
+    if (
+        schematic_trace.trace.expected_status
+        != "stem-command-buffer-neighbor-delivered"
+        or before.get("automail") != "_"
+        or before.get("self_mailbox") != "_"
+        or before.get("output") != ["_", "_", "_"]
+        or after.get("role") != before.get("role")
+        or after.get("memory") != before.get("memory")
+        or after.get("upstream") != before.get("upstream")
+        or after.get("input") != ["_", "_", "_"]
+        or after.get("output") != expected_output
+        or after.get("automail") != "_"
+        or after.get("self_mailbox") != "_"
+        or after.get("control") != []
+        or after.get("buffer") != []
+    ):
+        results.append(
+            _rejected(
+                "neighbor-command-buffer-delivery",
+                "neighbor command-buffer delivery state mismatch",
+            )
+        )
+    else:
+        results.append(
+            _accepted(
+                "neighbor-command-buffer-delivery",
+                "neighbor command-buffer delivery channel and clearing match",
             )
         )
 

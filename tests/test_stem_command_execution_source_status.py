@@ -95,7 +95,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertTrue(allowed)
         self.assertTrue(
             any(
-                "schematic trace and SVG for neighbor-target command delivery" in item
+                "rendered SVG for neighbor-target command delivery" in item
                 for item in allowed
             )
         )

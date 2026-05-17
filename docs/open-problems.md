@@ -173,3 +173,5 @@ ADR-0044 delivers neighbor-target command buffers to output channels, narrowing
 the remaining open command-buffer questions to recipient-side consumption and
 self-target non-init commands.
 ADR-0045 promotes that delivery behavior into the named claim/proof surface.
+ADR-0046 adds the corresponding schematic-linked trace for one neighbor B
+delivery case.

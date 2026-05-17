@@ -203,3 +203,7 @@
   `stem_command_buffer_delivers_neighbor_command`, with manifest examples and
   proof-certificate coverage. Recipient-side command-message consumption
   remains open.
+- ADR-0046 adds `schematics/neighbor_command_buffer_delivery_trace.json`,
+  `docs/neighbor-command-buffer-delivery-trace.md`, and
+  `tests/test_neighbor_command_buffer_delivery_trace.py` for one completed
+  `neighbor-b/proc-l-init` command buffer delivered to output channel 1.
