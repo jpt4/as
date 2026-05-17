@@ -108,3 +108,7 @@
   `docs/stem-buffer-accumulation-trace.md`, and
   `tests/test_stem_buffer_accumulation_trace.py` add a schematic-linked trace
   for one matching-input stem buffer append.
+- `schematics/stem_buffer_accumulation_trace.svg`,
+  `docs/stem-buffer-accumulation-svg.md`, and
+  `tests/test_stem_buffer_svg.py` render that buffer trace and must expose
+  control and buffer before/after details.

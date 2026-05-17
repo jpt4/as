@@ -8,7 +8,8 @@ stem buffer behavior. It records a stem cell with an active control rail
 bit `1` to buffer `[0]`, producing buffer `[0, 1]`.
 
 The structured artifact lives in
-`schematics/stem_buffer_accumulation_trace.json`.
+`schematics/stem_buffer_accumulation_trace.json`. ADR-0025 renders the same
+trace as `schematics/stem_buffer_accumulation_trace.svg`.
 
 ## Trace Shape
 

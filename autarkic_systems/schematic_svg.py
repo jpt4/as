@@ -19,6 +19,7 @@ PROCESSOR_SVG_ARTIFACT = Path("schematics/processor_memory_toggle_trace.svg")
 STEM_AUTOMAIL_SVG_ARTIFACT = Path(
     "schematics/stem_automail_reconfiguration_trace.svg"
 )
+STEM_BUFFER_SVG_ARTIFACT = Path("schematics/stem_buffer_accumulation_trace.svg")
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 
 PORT_LAYOUT = {
@@ -136,6 +137,16 @@ def render_schematic_svg(trace: SingleNodeSchematicTrace) -> str:
             ]
         )
         next_y = 304
+    elif _shows_buffer_accumulation(before, after):
+        lines.extend(
+            [
+                f"    <text class=\"small\" x=\"52\" y=\"220\">control before: {_text(_cell_field(before, 'control'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"244\">buffer before: {_text(_cell_field(before, 'buffer'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"268\">buffer after: {_text(_cell_field(after, 'buffer'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"292\">input after: {_text(_cell_field(after, 'input'))}</text>",
+            ]
+        )
+        next_y = 328
     lines.append(f'    <text class="small" x="52" y="{next_y}">routed signal flow</text>')
     for index, flow in enumerate(trace.trace.routed_signal_flow):
         y = next_y + 26 + index * 24
@@ -260,6 +271,15 @@ def _shows_reconfiguration(
     """Return true when a trace changes role or consumes an automail marker."""
 
     return before["role"] != after["role"] or before["automail"] != after["automail"]
+
+
+def _shows_buffer_accumulation(
+    before: dict[str, object],
+    after: dict[str, object],
+) -> bool:
+    """Return true when a trace changes the stem command buffer."""
+
+    return before["buffer"] != after["buffer"]
 
 
 def _shorten(value: str, limit: int) -> str:

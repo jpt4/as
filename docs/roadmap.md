@@ -431,3 +431,21 @@ Status: accepted in `docs/adr/0024-stem-buffer-accumulation-trace.md`.
 Implemented in `schematics/stem_buffer_accumulation_trace.json` and
 `autarkic_systems/schematic_trace.py`, with tests in
 `tests/test_stem_buffer_accumulation_trace.py`.
+
+## ADR-0025: Stem Buffer Accumulation SVG
+
+Goal: render the ADR-0024 stem buffer accumulation trace as a checked SVG while
+keeping the JSON artifact authoritative.
+
+Deliverables:
+
+- stem buffer SVG artifact generated from the JSON trace;
+- generic schematic SVG support for buffer/control summary fields;
+- human-facing note for the stem buffer render boundary;
+- tests proving source metadata, ports, layers, control rail, buffer
+  before/after, cleared input, exact renderer match, and drift rejection.
+
+Status: accepted in `docs/adr/0025-stem-buffer-accumulation-svg.md`.
+Implemented in `schematics/stem_buffer_accumulation_trace.svg` and
+`autarkic_systems/schematic_svg.py`, with tests in
+`tests/test_stem_buffer_svg.py`.

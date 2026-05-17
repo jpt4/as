@@ -49,3 +49,6 @@
 - When a new stem trace is added, route validation by the actual stem subset.
   Automail and standard-signal buffering share role `stem` but have different
   evidence obligations.
+- A buffer SVG has to show buffer state explicitly. The renderer should add
+  trace-specific summary fields when generic role/memory/status text would
+  hide the actual claim.

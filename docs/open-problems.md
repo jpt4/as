@@ -118,4 +118,5 @@ the same schema and executable replay path. ADR-0019 added the first stem
 automail reconfiguration trace. ADR-0020 added a generated SVG render for the
 processor trace. ADR-0021 added a generated SVG render for the stem trace. Full
 stem command decoding, dynamic reconfiguration, larger GELC examples, and
-physical-simulation renders remain open.
+physical-simulation renders remain open. ADR-0025 added a generated SVG render
+for the stem buffer trace.

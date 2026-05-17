@@ -33,6 +33,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS stem buffer accumulation | `docs/stem-buffer-accumulation.md`, `autarkic_systems/universal_cell.py`, and `tests/test_stem_buffer_accumulation.py` | First standard-signal stem command-buffer subset. | Implements high-rail selection and 1/0 buffer append while leaving full command execution open. |
 | AS stem buffer claim | `docs/stem-buffer-claim.md`, `claims/transition_claims.json`, and `claims/proof_certificates.json` | Named claim and proof-certificate surface for stem buffer accumulation. | Keeps ADR-0022 behavior available to later proof/object-language work. |
 | AS stem buffer accumulation trace | `docs/stem-buffer-accumulation-trace.md` and `schematics/stem_buffer_accumulation_trace.json` | Schematic-linked trace for one matching-input stem buffer append. | Extends P7 beyond automail reconfiguration into standard-signal stem buffering. |
+| AS stem buffer accumulation SVG | `docs/stem-buffer-accumulation-svg.md` and `schematics/stem_buffer_accumulation_trace.svg` | Visible render of the stem buffer accumulation trace. | Checked against generic renderer output and exposes control/buffer before/after details. |
 
 ## SJAS: Formal Confidence
 
@@ -78,6 +79,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | Stem command-buffer behavior can advance in a bounded subset before full command execution. | PRC formal model, `autarkic_systems/universal_cell.py`, and `tests/test_stem_buffer_accumulation.py`. | Implemented in ADR-0022 for high-rail selection and bit accumulation only. |
 | Stem buffer accumulation belongs in the named claim surface before command decoding depends on it. | `claims/transition_claims.json`, `claims/proof_certificates.json`, and `autarkic_systems/transition_predicates.py`. | Implemented in ADR-0023 with positive/negative manifest examples and certificate coverage. |
 | Schematic-linked stem traces must distinguish automail reconfiguration from standard-signal buffer accumulation. | `autarkic_systems/schematic_trace.py` and `schematics/stem_buffer_accumulation_trace.json`. | Implemented in ADR-0024 with separate buffer alignment validation. |
+| A stem buffer render must expose command-buffer state, not only role and port geometry. | `autarkic_systems/schematic_svg.py` and `schematics/stem_buffer_accumulation_trace.svg`. | Implemented in ADR-0025 with exact renderer-output matching and drift rejection. |
 
 ## Evidence Gaps
 
@@ -86,9 +88,9 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   in the SJAS paper archive.
 - PRC's Scheme simulator and TLA+ sketch need deeper verification before AS
   treats either as canonical.
-- AS has rendered the wire, processor, and stem automail PRC-derived traces and
-  has a structured stem buffer accumulation trace. Full stem command decoding,
-  larger GELC, and physical-simulation renders remain open.
+- AS has rendered the wire, processor, stem automail, and stem buffer
+  PRC-derived traces. Full stem command decoding, larger GELC, and
+  physical-simulation renders remain open.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

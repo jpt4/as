@@ -498,3 +498,27 @@
   unittest discover` passed 117 tests, py_compile passed for the touched module
   and new test, `jq -e . schematics/stem_buffer_accumulation_trace.json`
   passed, and `git diff --check` passed.
+
+## 2026-05-17 - Stem Buffer Accumulation SVG
+
+- Added ADR-0025 for rendering the ADR-0024 stem buffer accumulation trace as a
+  generated SVG while keeping the JSON trace authoritative.
+- Wrote `tests/test_stem_buffer_svg.py` before implementation. The red run
+  failed because `STEM_BUFFER_SVG_ARTIFACT` was not yet exported from
+  `autarkic_systems.schematic_svg`.
+- Extended `autarkic_systems/schematic_svg.py` with the stem buffer SVG
+  artifact path and conditional control/buffer summary fields for traces whose
+  buffer changes.
+- Added `schematics/stem_buffer_accumulation_trace.svg`, showing the active
+  control rail, buffer before/after, cleared input, trace metadata, and
+  interpretive layer IDs.
+- Added `docs/stem-buffer-accumulation-svg.md` as the human-facing render
+  boundary note.
+- Updated README, roadmap, literature map, open problems, stem buffer trace
+  note, project memory, and lessons.
+- Verified `python -m unittest tests.test_stem_buffer_svg
+  tests.test_stem_automail_svg tests.test_processor_memory_toggle_svg
+  tests.test_single_node_schematic_svg` passed 28 tests, `python -m unittest
+  discover` passed 124 tests, py_compile passed for the touched module and new
+  test, XML parsing passed for all four checked-in SVGs, and `git diff --check`
+  passed.
