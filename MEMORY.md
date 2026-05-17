@@ -52,3 +52,6 @@
   constrains future formal-confidence work around exact syntax, deduction
   apparatus, proof-code/self-reference, consistency level, and excluded-middle
   boundary choices.
+- Direct pushes to `jpt4/as` are blocked for `Sean-Kenneth-Doherty`; current AS
+  work is published at `https://github.com/Sean-Kenneth-Doherty/as`, and
+  upstream issue `jpt4/as#1` records the permission blocker and fork handoff.

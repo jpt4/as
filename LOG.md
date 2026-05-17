@@ -210,3 +210,13 @@
   tests, `python -m unittest discover` passed 46 tests, py_compile passed for
   the new module and tests, `jq -e . sources/willard_definition_map.json`
   passed, and `git diff --check` passed.
+- Committed ADR-0013 as `854e345 Add Willard definition map`, fast-forwarded it
+  into local `main`, and verified `python -m unittest discover` passed 46 tests
+  on integrated `main`.
+- Direct pushes of `adr-0013-willard-definition-map` and `main` to
+  `https://github.com/jpt4/as.git` failed with 403 permission errors.
+- Created the fork `https://github.com/Sean-Kenneth-Doherty/as` and pushed
+  integrated `main` plus all ADR branches there.
+- Opened upstream issue `https://github.com/jpt4/as/issues/1` to report the
+  ready fork, latest commit, validation status, and blocked upstream push
+  permission.
