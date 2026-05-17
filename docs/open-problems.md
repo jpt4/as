@@ -25,8 +25,9 @@ pretending to reimplement all of PRC?
 Why it matters: Reconfiguration is central to PRC and AS, while the current
 probe only covers fixed wire/proc behavior.
 
-Likely next artifact: a red-green test slice for one stem-init or automail
-transition family, with explicit non-goals for buffer processing.
+Status: started by ADR-0008. `step_stem_cell` now covers automail
+reconfiguration commands `wr`, `wl`, `pr`, and `pl`. Full stem input
+classification and buffer processing remain open.
 
 ## P3: Choose The First Proof Apparatus
 

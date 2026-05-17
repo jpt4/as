@@ -132,3 +132,19 @@ Deliverables:
 Status: accepted in `docs/adr/0007-transition-claim-manifest.md`. Implemented
 in `claims/transition_claims.json` and `autarkic_systems/claim_manifest.py`,
 with tests in `tests/test_claim_manifest.py`.
+
+## ADR-0008: Stem Automail Probe
+
+Goal: add the first executable stem/reconfiguration slice.
+
+Deliverables:
+
+- stem-state fields for automail, control, and buffer;
+- `step_stem_cell` automail transition subset;
+- tests for `wr`, `wl`, `pr`, `pl`, idle no-mail behavior, output blocking,
+  and invalid automail values;
+- explicit non-goals for full stem buffer processing.
+
+Status: accepted in `docs/adr/0008-stem-automail-probe.md`. Implemented in
+`autarkic_systems/universal_cell.py` with tests in
+`tests/test_stem_automail.py`.

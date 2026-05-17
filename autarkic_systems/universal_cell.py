@@ -15,8 +15,10 @@ from typing import Literal
 Signal = Literal[0, 1, "_", "si"]
 Role = Literal["wire", "proc", "stem"]
 Memory = Literal["right", "left"]
+Automail = Literal["_", "wr", "wl", "pr", "pl"]
 Status = Literal[
     "idle",
+    "automail-reconfigured",
     "blocked-output",
     "rejected-input",
     "routed",
@@ -27,6 +29,13 @@ EMPTY: tuple[Signal, Signal, Signal] = ("_", "_", "_")
 VALID_ROLES = {"wire", "proc", "stem"}
 FIXED_ROLES = {"wire", "proc"}
 VALID_MEMORY = {"right", "left"}
+VALID_AUTOMAIL = {"_", "wr", "wl", "pr", "pl"}
+AUTOMAIL_RECONFIGURATION: dict[Automail, tuple[Role, Memory]] = {
+    "wr": ("wire", "right"),
+    "wl": ("wire", "left"),
+    "pr": ("proc", "right"),
+    "pl": ("proc", "left"),
+}
 
 
 @dataclass(frozen=True)
@@ -42,6 +51,9 @@ class Cell:
     upstream: tuple[Signal, Signal, Signal] = EMPTY
     input: tuple[Signal, Signal, Signal] = EMPTY
     output: tuple[Signal, Signal, Signal] = EMPTY
+    automail: Automail = "_"
+    control: tuple[Signal, ...] = ()
+    buffer: tuple[Signal, ...] = ()
 
     def __post_init__(self) -> None:
         _validate_role(self.role)
@@ -49,6 +61,9 @@ class Cell:
         _validate_channels("upstream", self.upstream)
         _validate_channels("input", self.input)
         _validate_channels("output", self.output)
+        _validate_automail(self.automail)
+        _validate_signal_tuple("control", self.control)
+        _validate_signal_tuple("buffer", self.buffer)
 
 
 @dataclass(frozen=True)
@@ -90,6 +105,39 @@ def step_fixed_cell(cell: Cell) -> StepResult:
     return StepResult(
         "routed",
         _replace(active, input=EMPTY, output=routed, memory=next_memory),
+    )
+
+
+def step_stem_cell(cell: Cell) -> StepResult:
+    """Perform one high-level stem activation for the automail subset.
+
+    Full PRC stem behavior includes input classification, command-buffer
+    construction, target routing, and buffer processing. This first stem probe
+    covers only the explicit automail reconfiguration commands.
+    """
+
+    if cell.role != "stem":
+        raise ValueError(f"stem transition requires stem role, got {cell.role!r}")
+
+    if _non_empty(cell.output):
+        return StepResult("blocked-output", cell)
+
+    if cell.automail == "_":
+        return StepResult("idle", cell)
+
+    role, memory = AUTOMAIL_RECONFIGURATION[cell.automail]
+    return StepResult(
+        "automail-reconfigured",
+        _replace(
+            cell,
+            role=role,
+            memory=memory,
+            input=EMPTY,
+            output=EMPTY,
+            automail="_",
+            control=(),
+            buffer=(),
+        ),
     )
 
 
@@ -153,6 +201,9 @@ def _replace(cell: Cell, **changes: object) -> Cell:
         "upstream": cell.upstream,
         "input": cell.input,
         "output": cell.output,
+        "automail": cell.automail,
+        "control": cell.control,
+        "buffer": cell.buffer,
     }
     data.update(changes)
     return Cell(**data)  # type: ignore[arg-type]
@@ -168,9 +219,18 @@ def _validate_memory(memory: str) -> None:
         raise ValueError(f"unknown Universal Cell memory: {memory!r}")
 
 
+def _validate_automail(automail: str) -> None:
+    if automail not in VALID_AUTOMAIL:
+        raise ValueError(f"unknown Universal Cell automail: {automail!r}")
+
+
 def _validate_channels(name: str, value: tuple[Signal, ...]) -> None:
     if len(value) != 3:
         raise ValueError(f"{name} must contain exactly three channels")
+    _validate_signal_tuple(name, value)
+
+
+def _validate_signal_tuple(name: str, value: tuple[Signal, ...]) -> None:
     for channel in value:
         if channel not in (0, 1, "_", "si"):
             raise ValueError(f"{name} contains invalid channel value {channel!r}")

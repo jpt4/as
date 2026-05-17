@@ -107,3 +107,16 @@
 - Verified `python -m unittest tests.test_claim_manifest` passed 4 tests,
   `python -m unittest discover` passed 20 tests, `jq -e
   claims/transition_claims.json` passed, and `git diff --check` passed.
+
+## 2026-05-17 - Stem Automail Probe
+
+- Added ADR-0008 for the first tested stem/reconfiguration slice.
+- Wrote `tests/test_stem_automail.py` before implementation. The first run
+  failed because `step_stem_cell` did not exist, confirming the red step.
+- Extended `Cell` with stem-state fields for `automail`, `control`, and
+  `buffer`.
+- Added `step_stem_cell` for the automail subset: `wr`, `wl`, `pr`, and `pl`
+  reconfigure a stem cell into the corresponding fixed role and memory.
+- Verified `python -m unittest tests.test_stem_automail` passed 8 tests,
+  `python -m unittest discover` passed 28 tests, and `git diff --check`
+  passed.

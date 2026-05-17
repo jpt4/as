@@ -38,3 +38,6 @@
   problem.
 - `claims/transition_claims.json` plus `autarkic_systems/claim_manifest.py`
   make the current transition predicates executable as named AS claims.
+- `step_stem_cell` in `autarkic_systems/universal_cell.py` covers only the
+  stem automail reconfiguration subset (`wr`, `wl`, `pr`, `pl`), not full stem
+  buffer processing.
