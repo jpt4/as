@@ -24,6 +24,9 @@ SELF_MAILBOX_INIT_SVG_ARTIFACT = Path("schematics/self_mailbox_init_trace.svg")
 SELF_MAILBOX_UNSUPPORTED_SVG_ARTIFACT = Path(
     "schematics/self_mailbox_unsupported_trace.svg"
 )
+SELF_COMMAND_BUFFER_INIT_SVG_ARTIFACT = Path(
+    "schematics/self_command_buffer_init_trace.svg"
+)
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 
 PORT_LAYOUT = {
@@ -132,7 +135,21 @@ def render_schematic_svg(trace: SingleNodeSchematicTrace) -> str:
         ]
     )
     next_y = 232
-    if _shows_self_mailbox_unsupported(trace):
+    if _shows_self_command_buffer_init(trace):
+        lines.extend(
+            [
+                f"    <text class=\"small\" x=\"52\" y=\"220\">role after: {_text(after['role'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"244\">self_mailbox before: {_text(before['self_mailbox'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"268\">self_mailbox after: {_text(after['self_mailbox'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"292\">control before: {_text(_cell_field(before, 'control'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"316\">buffer before: {_text(_cell_field(before, 'buffer'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"340\">input after: {_text(_cell_field(after, 'input'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"364\">control after: {_text(_cell_field(after, 'control'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"388\">buffer after: {_text(_cell_field(after, 'buffer'))}</text>",
+            ]
+        )
+        next_y = 424
+    elif _shows_self_mailbox_unsupported(trace):
         lines.extend(
             [
                 f"    <text class=\"small\" x=\"52\" y=\"220\">self_mailbox before: {_text(before['self_mailbox'])}</text>",
@@ -321,6 +338,12 @@ def _shows_self_mailbox_unsupported(trace: SingleNodeSchematicTrace) -> bool:
         and before["self_mailbox"] != "_"
         and before["self_mailbox"] == after["self_mailbox"]
     )
+
+
+def _shows_self_command_buffer_init(trace: SingleNodeSchematicTrace) -> bool:
+    """Return true for traces that consume a completed self-init buffer."""
+
+    return trace.trace.expected_status == "stem-command-buffer-self-processed"
 
 
 def _shows_buffer_accumulation(

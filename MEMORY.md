@@ -171,3 +171,8 @@
   `self/proc-l-init` command-buffer dispatch. The schematic trace validator
   now separates `stem-command-buffer-self-processed` traces from ordinary
   buffer accumulation.
+- ADR-0040 adds `schematics/self_command_buffer_init_trace.svg`,
+  `docs/self-command-buffer-init-svg.md`, and
+  `tests/test_self_command_buffer_init_svg.py`. The SVG renderer now gives
+  command-buffer init dispatch its own summary branch before generic
+  reconfiguration or buffer rendering.

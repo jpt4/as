@@ -94,3 +94,6 @@
 - Completed-buffer traces need their own validation path when they share the
   same visible fields as accumulation traces. Status-dispatch keeps a
   processed command buffer from being mistaken for another append.
+- Command-buffer renders should show the decoded command state directly. A
+  role-changing dispatch can look like generic reconfiguration unless the SVG
+  exposes buffer before/after and cleared command state.

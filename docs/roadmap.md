@@ -722,3 +722,21 @@ Status: accepted in `docs/adr/0039-self-command-buffer-init-trace.md`.
 Implemented in `autarkic_systems/schematic_trace.py` and
 `schematics/self_command_buffer_init_trace.json`, with tests in
 `tests/test_self_command_buffer_init_trace.py`.
+
+## ADR-0040: Self Command Buffer Init SVG
+
+Goal: add a rendered SVG view of the ADR-0039 self command-buffer init trace.
+
+Deliverables:
+
+- `schematics/self_command_buffer_init_trace.svg`;
+- exported command-buffer SVG artifact path;
+- renderer summary fields for command-buffer before/after and cleared command
+  state;
+- tests proving parseability, trace metadata, port/layer annotations, visible
+  command-buffer details, exact renderer-output matching, and drift rejection.
+
+Status: accepted in `docs/adr/0040-self-command-buffer-init-svg.md`.
+Implemented in `autarkic_systems/schematic_svg.py` and
+`schematics/self_command_buffer_init_trace.svg`, with tests in
+`tests/test_self_command_buffer_init_svg.py`.

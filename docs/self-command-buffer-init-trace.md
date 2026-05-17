@@ -5,6 +5,7 @@ Status: schematic-linked trace artifact, 2026-05-17.
 ADR-0039 adds `schematics/self_command_buffer_init_trace.json`, a structured
 schematic-linked Universal Cell trace for the self-target init command-buffer
 slice implemented in ADR-0037 and named as a claim in ADR-0038.
+ADR-0040 adds the rendered SVG view of this trace.
 
 ## Trace Boundary
 

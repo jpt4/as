@@ -826,3 +826,24 @@
   touched module and test, JSON parsing passed for
   `schematics/self_command_buffer_init_trace.json`, and `git diff --check`
   passed.
+
+## 2026-05-17 - Self Command Buffer Init SVG
+
+- Added ADR-0040 for a generated SVG render of the self command-buffer init
+  trace.
+- Wrote `tests/test_self_command_buffer_init_svg.py` before implementation.
+  The red run failed because `SELF_COMMAND_BUFFER_INIT_SVG_ARTIFACT` did not
+  exist in `autarkic_systems.schematic_svg`.
+- Added `SELF_COMMAND_BUFFER_INIT_SVG_ARTIFACT` and a renderer summary branch
+  that exposes command-buffer dispatch details before generic
+  reconfiguration/buffer summaries.
+- Generated `schematics/self_command_buffer_init_trace.svg` from
+  `render_schematic_svg()`.
+- Added `docs/self-command-buffer-init-svg.md` as the human-facing render
+  boundary note.
+- Updated README, roadmap, literature map, open problems, trace note, project
+  memory, and lessons.
+- Verified `python -m unittest tests.test_self_command_buffer_init_svg` passed
+  7 tests, the adjacent schematic SVG/trace suite passed 58 tests,
+  `python -m unittest discover` passed 224 tests, py_compile passed for the
+  touched module and test, and `git diff --check` passed.
