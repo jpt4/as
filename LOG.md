@@ -81,3 +81,14 @@
 - Verified `python -m unittest tests.test_transition_predicates` passed 8
   tests, `python -m unittest discover` passed 16 tests, and `git diff --check`
   passed.
+
+## 2026-05-17 - Literature Map And Open Problems
+
+- Added `docs/adr/0006-literature-map.md` for the first literature/open-problem
+  mapping slice.
+- Added `docs/literature-map.md`, organizing AS, AFS, PRC, SJAS, and adjacent
+  Proflog/Fitting sources by their role in the AS project.
+- Added `docs/open-problems.md`, ranking the next project questions from
+  transition-claim formalization through hardware/schematic evidence.
+- Corrected the roadmap's duplicate ADR-0005 heading by making the literature
+  map ADR-0006.

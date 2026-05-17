@@ -102,7 +102,7 @@ Status: accepted in `docs/adr/0005-transition-predicates.md`. Implemented in
 `autarkic_systems/transition_predicates.py` with tests under
 `tests/test_transition_predicates.py`.
 
-## ADR-0005: Literature Map And Open Problems
+## ADR-0006: Literature Map And Open Problems
 
 Goal: turn the first review into a usable research map.
 
@@ -113,3 +113,7 @@ Candidate outputs:
   computing, and agent architecture;
 - dependency graph from sources to claims;
 - ranked open questions that can generate executable probes.
+
+Status: accepted in `docs/adr/0006-literature-map.md`. The first map is
+`docs/literature-map.md`; ranked project questions are in
+`docs/open-problems.md`.

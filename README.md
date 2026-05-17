@@ -24,6 +24,8 @@ the project legible:
   Autarkic Formal Systems.
 - `docs/source-manifest.md` explains the pinned source manifest in
   `sources/manifest.json`.
+- `docs/literature-map.md` and `docs/open-problems.md` connect reviewed
+  sources to AS claims and next ADRs.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

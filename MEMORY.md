@@ -33,3 +33,6 @@
   `python -m unittest discover` for the current fast test suite.
 - `autarkic_systems/transition_predicates.py` is the first named predicate
   bridge over Universal Cell transition results.
+- `docs/literature-map.md` is the first source-to-claim map; `docs/open-problems.md`
+  ranks likely next ADRs, with transition-claim formalization as the top near-term
+  problem.
