@@ -51,6 +51,8 @@ the project legible:
   stem automail reconfiguration trace.
 - `docs/stem-buffer-accumulation.md` records the first standard-signal stem
   buffer accumulation behavior.
+- `docs/stem-buffer-claim.md` records the named claim and proof-certificate
+  surface for that buffer behavior.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over

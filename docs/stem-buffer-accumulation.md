@@ -7,7 +7,9 @@ reconfiguration. PRC's formal model describes stem cells using standard signals
 to select a high rail and accumulate a five-bit command buffer before later
 command processing. ADR-0022 implements only that accumulation boundary.
 
-The implementation lives in `autarkic_systems/universal_cell.py`.
+The implementation lives in `autarkic_systems/universal_cell.py`. ADR-0023
+promotes the implemented subset into the named claim
+`UC-STEM-BUFFER-ACCUMULATES`.
 
 ## Implemented Behavior
 

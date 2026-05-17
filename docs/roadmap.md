@@ -393,3 +393,23 @@ Deliverables:
 Status: accepted in `docs/adr/0022-stem-buffer-accumulation.md`. Implemented in
 `autarkic_systems/universal_cell.py`, with tests in
 `tests/test_stem_buffer_accumulation.py`.
+
+## ADR-0023: Stem Buffer Claim
+
+Goal: promote ADR-0022 stem buffer accumulation into the named transition-claim
+and proof-certificate surface.
+
+Deliverables:
+
+- `stem_buffer_accumulates` predicate;
+- `UC-STEM-BUFFER-ACCUMULATES` claim manifest entry;
+- proof-certificate manifest entry for the new claim examples;
+- object-language predicate vocabulary update;
+- human-facing note for the claim boundary;
+- tests covering predicate, claim manifest, proof certificates, and language
+  vocabulary.
+
+Status: accepted in `docs/adr/0023-stem-buffer-claim.md`. Implemented in
+`autarkic_systems/transition_predicates.py`,
+`claims/transition_claims.json`, and `claims/proof_certificates.json`, with
+tests in `tests/test_transition_predicates.py`.

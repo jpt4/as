@@ -33,7 +33,9 @@ standard-signal buffer accumulation subset: high-rail selection, matching and
 non-matching bit append, explicit full-buffer boundary, and malformed-input
 rejection. Full command decoding, target delivery, and dynamic reconfiguration
 remain open. ADR-0009 added the corresponding `automail_reconfigures_stem`
-predicate and manifest claim.
+predicate and manifest claim. ADR-0023 added the corresponding
+`stem_buffer_accumulates` predicate and manifest claim for the buffer
+accumulation subset.
 
 ## P3: Choose The First Proof Apparatus
 

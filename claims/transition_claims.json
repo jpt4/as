@@ -219,6 +219,95 @@
           }
         }
       ]
+    },
+    {
+      "id": "UC-STEM-BUFFER-ACCUMULATES",
+      "predicate": "stem_buffer_accumulates",
+      "description": "A stem cell accumulates one-hot standard signals into the command buffer without executing full-buffer commands.",
+      "examples": [
+        {
+          "name": "control rail selected",
+          "expected": true,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "input": [0, 0, 1]
+          },
+          "result": {
+            "status": "stem-control-selected",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "control": [0, 0, 1],
+              "buffer": []
+            }
+          }
+        },
+        {
+          "name": "matching control appends one",
+          "expected": true,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "input": [0, 1, 0],
+            "control": [0, 1, 0],
+            "buffer": [0]
+          },
+          "result": {
+            "status": "stem-buffer-appended",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "control": [0, 1, 0],
+              "buffer": [0, 1]
+            }
+          }
+        },
+        {
+          "name": "full buffer boundary preserved",
+          "expected": true,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "input": [0, 0, 1],
+            "control": [0, 0, 1],
+            "buffer": [1, 0, 1, 0, 1]
+          },
+          "result": {
+            "status": "stem-buffer-full",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "input": [0, 0, 1],
+              "control": [0, 0, 1],
+              "buffer": [1, 0, 1, 0, 1]
+            }
+          }
+        },
+        {
+          "name": "wrong appended bit",
+          "expected": false,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "input": [0, 1, 0],
+            "control": [0, 1, 0],
+            "buffer": [0]
+          },
+          "result": {
+            "status": "stem-buffer-appended",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "control": [0, 1, 0],
+              "buffer": [0, 0]
+            }
+          }
+        }
+      ]
     }
   ]
 }

@@ -100,3 +100,7 @@
   `tests/test_stem_buffer_accumulation.py` add the first non-automail stem
   behavior: one-hot high-rail selection, 1/0 bit append, full-buffer boundary,
   malformed-input rejection, and automail priority.
+- `UC-STEM-BUFFER-ACCUMULATES`, `stem_buffer_accumulates`, and
+  `docs/stem-buffer-claim.md` promote that buffer subset into the claim and
+  proof-certificate surface. It still excludes command decoding and target
+  routing.

@@ -18,6 +18,12 @@ AUTOMAIL_TARGETS = {
     "pr": ("proc", "right"),
     "pl": ("proc", "left"),
 }
+STEM_BUFFER_STATUSES = {
+    "stem-control-selected",
+    "stem-buffer-appended",
+    "stem-buffer-full",
+    "rejected-input",
+}
 
 
 @dataclass(frozen=True)
@@ -122,3 +128,66 @@ def automail_reconfigures_stem(before: Cell, result: StepResult) -> PredicateRes
     if result.cell.input != EMPTY or result.cell.output != EMPTY:
         return PredicateResult(name, False, "input or output was not cleared")
     return PredicateResult(name, True, "automail reconfigured stem as expected")
+
+
+def stem_buffer_accumulates(before: Cell, result: StepResult) -> PredicateResult:
+    """Check the standard-signal stem command-buffer accumulation subset."""
+
+    name = "stem_buffer_accumulates"
+    if before.role != "stem" or before.automail != "_":
+        return PredicateResult(name, True, "precondition not active")
+    if result.status not in STEM_BUFFER_STATUSES:
+        return PredicateResult(name, True, f"precondition not active for {result.status}")
+
+    if result.status == "rejected-input":
+        if result.cell.input != EMPTY:
+            return PredicateResult(name, False, "rejected stem input was not cleared")
+        if result.cell.control != before.control or result.cell.buffer != before.buffer:
+            return PredicateResult(
+                name,
+                False,
+                "rejected stem input changed control or buffer",
+            )
+        return PredicateResult(name, True, "malformed stem input was rejected")
+
+    if result.status == "stem-buffer-full":
+        if result.cell != before:
+            return PredicateResult(name, False, "full buffer boundary changed cell")
+        return PredicateResult(name, True, "full buffer boundary preserved cell")
+
+    if not _is_one_hot_standard_signal(before.input):
+        return PredicateResult(name, False, "stem buffer transition lacked one-hot input")
+    if result.cell.input != EMPTY:
+        return PredicateResult(name, False, "stem buffer transition left input uncleared")
+
+    if result.status == "stem-control-selected":
+        if before.control:
+            return PredicateResult(name, False, "control selection ran with control set")
+        if result.cell.control != before.input:
+            return PredicateResult(name, False, "control rail did not match input")
+        if result.cell.buffer != before.buffer:
+            return PredicateResult(name, False, "control selection changed buffer")
+        return PredicateResult(name, True, "stem control rail selected")
+
+    if result.status == "stem-buffer-appended":
+        if not before.control:
+            return PredicateResult(name, False, "buffer append ran without control rail")
+        expected_bit = 1 if before.input == before.control else 0
+        expected_buffer = before.buffer + (expected_bit,)
+        if result.cell.control != before.control:
+            return PredicateResult(name, False, "buffer append changed control rail")
+        if result.cell.buffer != expected_buffer:
+            return PredicateResult(
+                name,
+                False,
+                f"expected buffer {expected_buffer}, got {result.cell.buffer}",
+            )
+        return PredicateResult(name, True, "stem buffer accumulated expected bit")
+
+    return PredicateResult(name, False, f"unexpected stem buffer status {result.status}")
+
+
+def _is_one_hot_standard_signal(signal: tuple[object, object, object]) -> bool:
+    """A stem command-buffer signal has one high binary channel."""
+
+    return all(value in (0, 1) for value in signal) and sum(signal) == 1

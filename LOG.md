@@ -452,3 +452,27 @@
   passed 104 tests, py_compile passed for the touched module and new test,
   `jq -e . language/transition_claim_language.json` passed, and
   `git diff --check` passed.
+
+## 2026-05-17 - Stem Buffer Claim
+
+- Added ADR-0023 to promote ADR-0022 stem buffer accumulation into the named
+  AS claim and proof-certificate surface.
+- Wrote direct predicate tests before implementation. The red run failed
+  because `stem_buffer_accumulates` was not yet exported from
+  `autarkic_systems.transition_predicates`.
+- Added `stem_buffer_accumulates`, covering control-rail selection, matching
+  and non-matching bit append, full-buffer boundary preservation, and
+  malformed-input rejection for the ADR-0022 statuses.
+- Added `UC-STEM-BUFFER-ACCUMULATES` to `claims/transition_claims.json` with
+  positive control-selection, positive append, positive full-buffer-boundary,
+  and negative wrong-bit examples.
+- Added a `manifest-example` proof certificate for the new claim and updated
+  `language/transition_claim_language.json` with the new predicate symbol.
+- Added `docs/stem-buffer-claim.md` and updated README, roadmap, literature
+  map, open problems, transition-claim language note, project memory, and
+  lessons.
+- Verified `python -m unittest tests.test_transition_predicates
+  tests.test_claim_manifest tests.test_proof_certificates
+  tests.test_object_language` passed 31 tests, JSON checks passed for the
+  claim/proof/language manifests, py_compile passed for the touched predicate
+  module and test, and `git diff --check` passed.

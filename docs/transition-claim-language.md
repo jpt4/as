@@ -7,7 +7,8 @@ Status: ADR-0012 object-language note, 2026-05-17.
 `language/transition_claim_language.json` names the first explicit AS object
 language. It is deliberately small: it covers the Universal Cell transition
 claims that AS can currently execute, not the full IS(A) or SJAS arithmetic
-language.
+language. ADR-0023 extends the current predicate vocabulary with
+`stem_buffer_accumulates` for the stem buffer accumulation subset.
 
 The point is to stop relying on implicit Python/JSON shape as the only syntax
 boundary. Current claims can now be checked against named syntax classes before

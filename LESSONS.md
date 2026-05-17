@@ -43,3 +43,6 @@
 - For stem behavior, implementing accumulation separately from command
   execution keeps the PRC source model honest. A full buffer should be an
   explicit boundary until command decoding and target routing are tested.
+- After adding a new transition status or behavior, promote only the stable
+  subset into the claim surface. The claim should repeat the boundary rather
+  than smuggling in future command-decoding obligations.

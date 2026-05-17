@@ -75,6 +75,31 @@
           "expected": false
         }
       ]
+    },
+    {
+      "claim_id": "UC-STEM-BUFFER-ACCUMULATES",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "control rail selected",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "matching control appends one",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "full buffer boundary preserved",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "wrong appended bit",
+          "expected": false
+        }
+      ]
     }
   ]
 }

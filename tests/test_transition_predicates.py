@@ -5,6 +5,7 @@ from autarkic_systems.transition_predicates import (
     consumed_input_cleared,
     fixed_role_memory_rule,
     output_not_overwritten,
+    stem_buffer_accumulates,
     stem_init_resets_to_stem,
 )
 from autarkic_systems.universal_cell import Cell, StepResult, step_fixed_cell
@@ -107,6 +108,114 @@ class TransitionPredicateTests(unittest.TestCase):
 
         self.assertFalse(predicate.holds)
         self.assertIn("expected", predicate.detail)
+
+    def test_stem_buffer_accumulates_accepts_control_selection(self):
+        before = Cell(role="stem", memory="right", input=(0, 0, 1))
+        result = StepResult(
+            status="stem-control-selected",
+            cell=Cell(role="stem", memory="right", input=EMPTY, control=(0, 0, 1)),
+        )
+
+        predicate = stem_buffer_accumulates(before, result)
+
+        self.assertEqual(predicate.name, "stem_buffer_accumulates")
+        self.assertTrue(predicate.holds)
+
+    def test_stem_buffer_accumulates_accepts_matching_and_nonmatching_bits(self):
+        cases = [
+            (
+                Cell(
+                    role="stem",
+                    memory="right",
+                    input=(0, 1, 0),
+                    control=(0, 1, 0),
+                    buffer=(0,),
+                ),
+                StepResult(
+                    status="stem-buffer-appended",
+                    cell=Cell(
+                        role="stem",
+                        memory="right",
+                        input=EMPTY,
+                        control=(0, 1, 0),
+                        buffer=(0, 1),
+                    ),
+                ),
+            ),
+            (
+                Cell(
+                    role="stem",
+                    memory="right",
+                    input=(1, 0, 0),
+                    control=(0, 1, 0),
+                    buffer=(0,),
+                ),
+                StepResult(
+                    status="stem-buffer-appended",
+                    cell=Cell(
+                        role="stem",
+                        memory="right",
+                        input=EMPTY,
+                        control=(0, 1, 0),
+                        buffer=(0, 0),
+                    ),
+                ),
+            ),
+        ]
+
+        for before, result in cases:
+            with self.subTest(before=before):
+                self.assertTrue(stem_buffer_accumulates(before, result).holds)
+
+    def test_stem_buffer_accumulates_accepts_full_buffer_boundary(self):
+        before = Cell(
+            role="stem",
+            memory="right",
+            input=(0, 0, 1),
+            control=(0, 0, 1),
+            buffer=(1, 0, 1, 0, 1),
+        )
+        result = StepResult(status="stem-buffer-full", cell=before)
+
+        predicate = stem_buffer_accumulates(before, result)
+
+        self.assertTrue(predicate.holds)
+
+    def test_stem_buffer_accumulates_rejects_wrong_appended_bit(self):
+        before = Cell(
+            role="stem",
+            memory="right",
+            input=(0, 1, 0),
+            control=(0, 1, 0),
+            buffer=(0,),
+        )
+        bad = StepResult(
+            status="stem-buffer-appended",
+            cell=Cell(
+                role="stem",
+                memory="right",
+                input=EMPTY,
+                control=(0, 1, 0),
+                buffer=(0, 0),
+            ),
+        )
+
+        predicate = stem_buffer_accumulates(before, bad)
+
+        self.assertFalse(predicate.holds)
+        self.assertIn("buffer", predicate.detail)
+
+    def test_stem_buffer_accumulates_rejects_uncleared_consumed_input(self):
+        before = Cell(role="stem", memory="right", input=(0, 0, 1))
+        bad = StepResult(
+            status="stem-control-selected",
+            cell=Cell(role="stem", memory="right", input=(0, 0, 1), control=(0, 0, 1)),
+        )
+
+        predicate = stem_buffer_accumulates(before, bad)
+
+        self.assertFalse(predicate.holds)
+        self.assertIn("input", predicate.detail)
 
 
 if __name__ == "__main__":

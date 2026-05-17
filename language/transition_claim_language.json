@@ -36,7 +36,8 @@
         "consumed_input_cleared",
         "fixed_role_memory_rule",
         "stem_init_resets_to_stem",
-        "automail_reconfigures_stem"
+        "automail_reconfigures_stem",
+        "stem_buffer_accumulates"
       ],
       "form": "predicate(before_cell, step_result)"
     },
