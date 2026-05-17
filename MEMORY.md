@@ -316,3 +316,7 @@
   `tests/test_recipient_init_transition_evidence_bundle.py`. It validates one
   recipient init transition across claim, proof, schematic trace, SVG render,
   hardware witness map, and source-status boundaries.
+- ADR-0066 adds `docs/evidence-bundle-registry.md`,
+  `evidence/manifest.json`, and `tests/test_evidence_bundle_registry.py`. It
+  makes transition evidence bundles discoverable and batch-validates every
+  registered bundle through the cross-layer bundle validator.

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "registry_id": "transition-evidence-bundle-registry",
+  "reviewed_at": "2026-05-17",
+  "purpose": "Registry of transition evidence bundles that can be batch-validated across runtime, claim, proof, schematic, render, and source-status layers.",
+  "bundles": [
+    {
+      "bundle_id": "recipient-init-command-message-transition-evidence-bundle",
+      "path": "evidence/recipient_init_command_message_bundle.json",
+      "claim_id": "UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED",
+      "expected_status": "recipient-init-command-message-processed"
+    }
+  ]
+}

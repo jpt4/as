@@ -56,12 +56,49 @@ class TransitionEvidenceBundle:
 
 
 @dataclass(frozen=True)
+class EvidenceBundleRegistryEntry:
+    """One registered transition evidence bundle."""
+
+    bundle_id: str
+    path: Path
+    claim_id: str
+    expected_status: str
+
+
+@dataclass(frozen=True)
+class EvidenceBundleRegistry:
+    """Project-level index of transition evidence bundles."""
+
+    schema_version: int
+    registry_id: str
+    reviewed_at: str
+    purpose: str
+    bundles: tuple[EvidenceBundleRegistryEntry, ...]
+
+
+@dataclass(frozen=True)
 class EvidenceBundleValidation:
     """One validation result for a transition evidence bundle."""
 
     subject: str
     accepted: bool
     detail: str
+
+
+def load_evidence_bundle_registry(path: Path | str) -> EvidenceBundleRegistry:
+    """Load the project transition evidence bundle registry."""
+
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    bundles = data.get("bundles")
+    if not isinstance(bundles, list) or not bundles:
+        raise ValueError("evidence bundle registry must contain a non-empty bundles list")
+    return EvidenceBundleRegistry(
+        schema_version=_required_int(data, "schema_version"),
+        registry_id=_required_text(data, "registry_id"),
+        reviewed_at=_required_text(data, "reviewed_at"),
+        purpose=_required_text(data, "purpose"),
+        bundles=tuple(_parse_registry_entry(entry) for entry in bundles),
+    )
 
 
 def load_transition_evidence_bundle(path: Path | str) -> TransitionEvidenceBundle:
@@ -90,6 +127,20 @@ def load_transition_evidence_bundle(path: Path | str) -> TransitionEvidenceBundl
     )
 
 
+def validate_evidence_bundle_registry(
+    registry: EvidenceBundleRegistry,
+) -> list[EvidenceBundleValidation]:
+    """Validate every bundle listed in a registry."""
+
+    results = [
+        _validate_registry_schema(registry),
+        _validate_registry_entries(registry),
+        _validate_registry_bundle_paths(registry),
+    ]
+    results.append(_validate_registry_bundles(registry))
+    return results
+
+
 def validate_transition_evidence_bundle(
     bundle: TransitionEvidenceBundle,
 ) -> list[EvidenceBundleValidation]:
@@ -104,6 +155,91 @@ def validate_transition_evidence_bundle(
     results.append(_validate_source_statuses(bundle))
     results.append(_validate_boundary(bundle))
     return results
+
+
+def _validate_registry_schema(
+    registry: EvidenceBundleRegistry,
+) -> EvidenceBundleValidation:
+    if registry.schema_version != 1:
+        return _rejected(
+            "registry-schema",
+            f"unsupported schema version {registry.schema_version}",
+        )
+    if not registry.registry_id:
+        return _rejected("registry-schema", "registry id is empty")
+    if not registry.bundles:
+        return _rejected("registry-schema", "registry has no bundles")
+    return _accepted("registry-schema", "registry schema accepted")
+
+
+def _validate_registry_entries(
+    registry: EvidenceBundleRegistry,
+) -> EvidenceBundleValidation:
+    bundle_ids = [entry.bundle_id for entry in registry.bundles]
+    paths = [entry.path for entry in registry.bundles]
+    duplicate_ids = sorted(_duplicates(bundle_ids))
+    duplicate_paths = sorted(str(path) for path in _duplicates(paths))
+    details: list[str] = []
+    if duplicate_ids:
+        details.append(f"duplicate bundle ids: {', '.join(duplicate_ids)}")
+    if duplicate_paths:
+        details.append(f"duplicate bundle paths: {', '.join(duplicate_paths)}")
+    if details:
+        return _rejected("registry-entries", "; ".join(details))
+    return _accepted("registry-entries", f"registered {len(registry.bundles)} bundles")
+
+
+def _validate_registry_bundle_paths(
+    registry: EvidenceBundleRegistry,
+) -> EvidenceBundleValidation:
+    missing = [str(entry.path) for entry in registry.bundles if not entry.path.exists()]
+    if missing:
+        return _rejected("registry-bundle-paths", f"missing bundle: {', '.join(missing)}")
+    return _accepted("registry-bundle-paths", "all registered bundle paths exist")
+
+
+def _validate_registry_bundles(
+    registry: EvidenceBundleRegistry,
+) -> EvidenceBundleValidation:
+    failures: list[str] = []
+    for entry in registry.bundles:
+        try:
+            bundle = load_transition_evidence_bundle(entry.path)
+        except Exception as exc:
+            failures.append(f"{entry.path}: {exc}")
+            continue
+
+        if bundle.bundle_id != entry.bundle_id:
+            failures.append(
+                f"{entry.path}: bundle id mismatch {bundle.bundle_id}"
+            )
+        if bundle.claim_id != entry.claim_id:
+            failures.append(f"{entry.path}: claim id mismatch {bundle.claim_id}")
+        if bundle.expected_status != entry.expected_status:
+            failures.append(
+                f"{entry.path}: status mismatch {bundle.expected_status}"
+            )
+
+        bundle_results = validate_transition_evidence_bundle(bundle)
+        rejected = [result.detail for result in bundle_results if not result.accepted]
+        if rejected:
+            failures.append(f"{entry.path}: {'; '.join(rejected)}")
+
+    if failures:
+        return _rejected("registry-bundle-validation", " | ".join(failures))
+    return _accepted(
+        "registry-bundle-validation",
+        f"validated {len(registry.bundles)} bundles",
+    )
+
+
+def _parse_registry_entry(item: dict[str, Any]) -> EvidenceBundleRegistryEntry:
+    return EvidenceBundleRegistryEntry(
+        bundle_id=_required_text(item, "bundle_id"),
+        path=Path(_required_text(item, "path")),
+        claim_id=_required_text(item, "claim_id"),
+        expected_status=_required_text(item, "expected_status"),
+    )
 
 
 def _validate_schema(bundle: TransitionEvidenceBundle) -> EvidenceBundleValidation:
@@ -334,6 +470,16 @@ def _accepted(subject: str, detail: str) -> EvidenceBundleValidation:
 
 def _rejected(subject: str, detail: str) -> EvidenceBundleValidation:
     return EvidenceBundleValidation(subject=subject, accepted=False, detail=detail)
+
+
+def _duplicates(items: list[Any]) -> set[Any]:
+    seen: set[Any] = set()
+    duplicates: set[Any] = set()
+    for item in items:
+        if item in seen:
+            duplicates.add(item)
+        seen.add(item)
+    return duplicates
 
 
 def _required_dict(item: dict[str, Any], key: str) -> dict[str, Any]:

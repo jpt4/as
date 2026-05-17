@@ -1463,3 +1463,23 @@
   `python -m unittest discover` passed 389 tests. `py_compile` passed for the
   new validator and touched tests, JSON parsing passed for the bundle and
   recipient source-status manifest, and `git diff --check` passed.
+
+## 2026-05-17 - Evidence Bundle Registry
+
+- Added ADR-0066 to make transition evidence bundles discoverable and
+  batch-verifiable.
+- Wrote `tests/test_evidence_bundle_registry.py` before implementation. The
+  red run failed because `load_evidence_bundle_registry` was absent from
+  `autarkic_systems.evidence_bundle`.
+- Added `evidence/manifest.json` with the ADR-0065 recipient init evidence
+  bundle as the first registered bundle.
+- Extended `autarkic_systems/evidence_bundle.py` with registry dataclasses,
+  loading, duplicate detection, missing-path detection, entry-to-bundle
+  agreement checks, and whole-bundle validation.
+- Added `docs/evidence-bundle-registry.md` and updated README, roadmap,
+  literature map, open problems, project memory, and lessons.
+- Verified the focused registry/bundle tests passed 10 tests, the adjacent
+  evidence stack passed 52 tests, and `python -m unittest discover` passed 394
+  tests. `py_compile` passed for the touched evidence bundle module and tests,
+  JSON parsing passed for the registry and bundle manifests, and
+  `git diff --check` passed.

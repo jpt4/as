@@ -1291,3 +1291,20 @@ Status: accepted in
 `evidence/recipient_init_command_message_bundle.json` and
 `autarkic_systems/evidence_bundle.py`, with tests in
 `tests/test_recipient_init_transition_evidence_bundle.py`.
+
+## ADR-0066: Evidence Bundle Registry
+
+Goal: make transition evidence bundles discoverable and batch-verifiable.
+
+Deliverables:
+
+- `evidence/manifest.json`;
+- registry dataclasses, loader, and validator in
+  `autarkic_systems/evidence_bundle.py`;
+- tests proving registry loading, bundle entry coverage, whole-registry
+  validation, duplicate bundle-ID rejection, and missing path rejection;
+- human-facing registry note.
+
+Status: accepted in `docs/adr/0066-evidence-bundle-registry.md`. Implemented
+in `evidence/manifest.json` and `autarkic_systems/evidence_bundle.py`, with
+tests in `tests/test_evidence_bundle_registry.py`.

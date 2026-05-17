@@ -175,3 +175,6 @@
 - Evidence bundles should validate links, not merely list them. A useful
   bundle proves that its claim example, proof certificate, trace replay, SVG
   render, and source-status boundary still agree.
+- Evidence bundles need a registry before there are many of them. Discovery
+  should be machine-checkable, with duplicate and missing-path failures, not
+  left to filesystem convention.

@@ -46,3 +46,6 @@ python -m unittest tests.test_recipient_init_transition_evidence_bundle
 
 The tests cover the bundle fields, path set, cross-layer validation, drifted
 claim IDs, and missing SVG paths.
+
+ADR-0066 also registers this bundle in `evidence/manifest.json` so batch
+validation can discover it without hard-coding the bundle path.

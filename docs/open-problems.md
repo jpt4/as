@@ -87,6 +87,8 @@ ADR-0060 adds a schematic-linked trace for that multi-command rejection policy.
 ADR-0065 adds the first integrated evidence bundle for the already implemented
 recipient init transition, tying one runtime example to its claim, certificate,
 trace, SVG, and source-status boundaries without widening command semantics.
+ADR-0066 adds the evidence bundle registry so those integrated paths can be
+discovered and batch-validated as they multiply.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -221,6 +223,7 @@ TLA files are partial, stub, or empty and do not resolve command semantics.
 ADR-0065 records the first integrated evidence bundle for a recipient init
 transition so the claim/proof/trace/render/source path can be inspected as one
 artifact.
+ADR-0066 records the registry for those integrated evidence bundles.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.
