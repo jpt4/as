@@ -7,7 +7,8 @@ ADR-0244 adds `claims/substitution_representability_targets.json` and
 checked graph point for the `substitution_code` diagonal route introduced by
 ADR-0242. ADR-0245 makes this witness a structured dependency of the aggregate
 formal-confidence target, so formal-confidence validation fails closed if this
-surface drifts.
+surface drifts. ADR-0246 adds the next target boundary: a checked delta0 graph
+formula target for `subst_code_graph`.
 
 ## Purpose
 
@@ -67,4 +68,6 @@ This is not a delta0 substitution graph formula, not a substitution
 representability proof, not a diagonal lemma, not a fixed-point equation proof,
 and not a self-consistency theorem. The next AS step is to turn this concrete
 meta-level witness into a formal graph target before claiming diagonal
-representability.
+representability. That target is now recorded by
+`python -m autarkic_systems.substitution_graph_target`; the actual formula and
+proof remain open.

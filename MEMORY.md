@@ -157,6 +157,12 @@
   structured fail-closed dependency of `autarkic_systems.formal_confidence`;
   missing or invalid substitution witness references now reject
   formal-confidence validation as `target-substitution-representability`.
+- ADR-0246 adds `claims/substitution_graph_targets.json` and
+  `autarkic_systems.substitution_graph_target`, recording
+  `AS-SUBSTITUTION-GRAPH-DELTA0-TARGET` as
+  `graph-formula-target-not-constructed`. It validates the delta0 graph target
+  against the formal language/codebook and the checked witness output length
+  `296`, but still does not construct the formula or prove representability.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

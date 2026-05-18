@@ -5303,3 +5303,26 @@
   formal-confidence text/JSON output reported the substitution-representability
   dependency accepted, while the formal-confidence target remained blocked on
   `fixed-point-construction`.
+
+## 2026-05-18 - Substitution Graph Target
+
+- Added ADR-0246 to record the first checked delta0 graph-formula target
+  boundary for `substitution_code` without constructing or proving that
+  formula.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.substitution_graph_target` and
+  `claims/substitution_graph_targets.json` did not exist.
+- Added `claims/substitution_graph_targets.json`, recording
+  `AS-SUBSTITUTION-GRAPH-DELTA0-TARGET` as
+  `graph-formula-target-not-constructed`.
+- Added `autarkic_systems/substitution_graph_target.py`, validating the formal
+  arithmetic language, formal codebook, substitution-representability witness
+  dependency, required delta0/bounded-quantifier/relation/function-symbol
+  language features, graph variables, and the checked witness tuple.
+- The target is tethered to
+  `AS-SUBSTITUTION-REPRESENTABILITY-DIAGONAL-SEED-WITNESS`; the checked
+  witness output remains closed with code length `296`.
+- Focused substitution-graph target tests passed 12 tests. This preserves the
+  fixed-point blocker: no delta0 graph formula, formula correctness proof,
+  substitution representability proof, diagonal lemma, fixed-point equation
+  proof, or self-consistency theorem is claimed.

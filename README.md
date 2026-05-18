@@ -58,6 +58,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/substitution-representability.md` records the first checked
   meta-level substitution graph witness for that diagonal seed, while leaving
   the delta0 graph formula and representability proof open.
+- `docs/substitution-graph-target.md` records the first checked target
+  boundary for a future delta0 formula representing that substitution graph,
+  while leaving formula construction and correctness proof open.
 - `docs/consistency-level-target.md` records Level-1 consistency as the first
   selected AS formal-confidence target notion.
 - `docs/deduction-apparatus-target.md` records the AS-local
@@ -402,6 +405,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   first checked meta-level substitution graph witness for the diagonal seed,
   while leaving the delta0 graph formula and substitution representability
   proof open.
+- `autarkic_systems/substitution_graph_target.py` validates and runs the first
+  checked delta0 graph-formula target boundary for `subst_code_graph(x,y,z)`,
+  while leaving formula construction and representability proof open.
 - `autarkic_systems/consistency_level.py` validates the first consistency-level
   target selection, tying Level-1 consistency to the checked arithmetic
   language, codebook, substitution surface, and complement surface without
@@ -504,6 +510,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   validates `claims/substitution_representability_targets.json`, including the
   checked self-application graph witness from the diagonal seed code to the
   closed quoted seed instance.
+- `python -m autarkic_systems.substitution_graph_target --format json`
+  validates `claims/substitution_graph_targets.json`, including the checked
+  `delta0` target boundary for a future `subst_code_graph(x,y,z)` formula.
 - `python -m autarkic_systems.fixed_point_obstruction --format json` validates
   `claims/fixed_point_obstructions.json`, including the current
   `obstruction-observed` result and minimum length-growth delta for direct

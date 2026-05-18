@@ -5129,3 +5129,28 @@ Status: accepted in
 `docs/adr/0245-formal-confidence-substitution-witness-dependency.md`.
 Implemented in `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0246: Substitution Graph Target
+
+Goal: record the first checked delta0 graph-formula target boundary for
+`substitution_code` without constructing or proving the graph formula.
+
+Deliverables:
+
+- `claims/substitution_graph_targets.json` with one checked
+  `subst_code_graph` target tethered to the ADR-0244 witness;
+- `autarkic_systems.substitution_graph_target` validation that checks formal
+  language, codebook, and substitution-witness dependencies;
+- validation that required delta0, bounded-quantifier, relation, and
+  `substitution_code` language features are present;
+- text/JSON CLI validation for the target surface;
+- fail-closed rejection for unknown witness IDs, stale witness facts, missing
+  language features, and constructed/proved status overclaims; and
+- no delta0 graph formula, formula correctness proof, substitution
+  representability proof, diagonal lemma, fixed-point equation proof,
+  self-consistency theorem, runtime behavior, command semantics, evidence
+  bundle, or GitHub submission logic changes.
+
+Status: accepted in `docs/adr/0246-substitution-graph-target.md`.
+Implemented in `autarkic_systems/substitution_graph_target.py`, with tests in
+`tests/test_substitution_graph_target.py`.
