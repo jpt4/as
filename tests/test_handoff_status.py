@@ -262,6 +262,10 @@ class HandoffStatusTests(unittest.TestCase):
             "04158fc29229d091f616734725be3c8f54198200",
         )
         self.assertEqual(
+            payload["github_submission"]["fork_main"]["web_url"],
+            "https://github.com/Sean-Kenneth-Doherty/as/tree/main",
+        )
+        self.assertEqual(
             payload["github_submission"]["fork_main"]["remote_ref_freshness"]["state"],
             "fresh",
         )
@@ -294,6 +298,10 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertIn(
             "Fork commit: https://github.com/Sean-Kenneth-Doherty/as/commit/"
             "04158fc29229d091f616734725be3c8f54198200",
+            text,
+        )
+        self.assertIn(
+            "Fork main: https://github.com/Sean-Kenneth-Doherty/as/tree/main",
             text,
         )
         self.assertIn("fork/main: matches HEAD (04158fc)", text)

@@ -4682,3 +4682,20 @@
   handoff commands reported accepted status and retained the web fork commit
   URL. `compileall`, `git diff --check`, and `python -m unittest discover`
   passed; the full suite ran 909 tests.
+
+## 2026-05-18 - Fork Main Web URL
+
+- Added ADR-0220 to make the local GitHub submission report and inherited
+  handoff report include a direct browser URL for fork `main`.
+- Added red GitHub-submission and handoff tests before implementation. The red
+  run failed because JSON lacked `fork_main.web_url` and text lacked
+  `Fork main: ...`.
+- Updated `autarkic_systems/github_submission.py` with a derived
+  `fork_main_url`, JSON `fork_main.web_url`, and text `Fork main:` line using
+  the same normalized GitHub remote web URL as the submitted commit link.
+- Updated README, roadmap, and repo memory notes for the fork `main` browser
+  URL.
+- Focused GitHub-submission and handoff tests passed 17 tests. Live
+  GitHub-submission text/JSON and handoff commands reported accepted status
+  and displayed the fork `main` web URL. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 909 tests.

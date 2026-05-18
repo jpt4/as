@@ -89,6 +89,10 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         )
         self.assertTrue(payload["fork_main"]["matches_head"])
         self.assertEqual(payload["fork_main"]["short"], "be59d20")
+        self.assertEqual(
+            payload["fork_main"]["web_url"],
+            "https://github.com/Sean-Kenneth-Doherty/as/tree/main",
+        )
         self.assertFalse(payload["origin_main"]["matches_head"])
         self.assertEqual(payload["origin_main"]["head_ahead_by"], 190)
         self.assertEqual(payload["origin_main"]["head_behind_by"], 0)
@@ -140,6 +144,10 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
             "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
             text,
         )
+        self.assertIn(
+            "Fork main: https://github.com/Sean-Kenneth-Doherty/as/tree/main",
+            text,
+        )
         self.assertIn("fork/main: matches HEAD (be59d20)", text)
         self.assertIn("fork/main freshness: fresh (300s old, max 86400s)", text)
         self.assertIn("origin/main: HEAD ahead by 190 commits, behind by 0 commits", text)
@@ -164,6 +172,10 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
             "https://github.com/Sean-Kenneth-Doherty/as/commit/"
             "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
         )
+        self.assertEqual(
+            payload["fork_main"]["web_url"],
+            "https://github.com/Sean-Kenneth-Doherty/as/tree/main",
+        )
         self.assertIn(
             "Fork commit: https://github.com/Sean-Kenneth-Doherty/as/commit/"
             "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
@@ -186,6 +198,10 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
             payload["head"]["fork_commit_url"],
             "https://github.com/Sean-Kenneth-Doherty/as/commit/"
             "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
+        )
+        self.assertEqual(
+            payload["fork_main"]["web_url"],
+            "https://github.com/Sean-Kenneth-Doherty/as/tree/main",
         )
 
     def test_refresh_remotes_runs_fetch_before_status_and_reports_result(self):

@@ -4482,3 +4482,24 @@ Status: accepted in
 `docs/adr/0219-github-remote-web-url-normalization.md`.
 Implemented in `autarkic_systems/github_submission.py`, with tests in
 `tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.
+
+## ADR-0220: Fork Main Web URL
+
+Goal: make the GitHub submission and handoff reports link directly to the
+public fork `main` branch as well as the submitted commit.
+
+Deliverables:
+
+- `fork_main_url` derived from the normalized fork remote URL;
+- JSON `fork_main.web_url` in GitHub submission status;
+- text output rendering `Fork main: ...`;
+- SSH-normalized fork remotes producing the same canonical fork `main` web URL;
+- handoff JSON/text inheriting the expanded submission surface; and
+- no GitHub API dependency, submission-acceptance change, remote-refresh
+  behavior change, handoff-readiness change, project-status change,
+  vertical-demo change, evidence/claim/proof/source-status change, or runtime
+  semantics change.
+
+Status: accepted in `docs/adr/0220-fork-main-web-url.md`.
+Implemented in `autarkic_systems/github_submission.py`, with tests in
+`tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.
