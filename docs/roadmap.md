@@ -1963,3 +1963,21 @@ Status: accepted in
 `docs/adr/0103-project-status-source-command-attribution.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0104: Project Status Nonempty Source Commands
+
+Goal: reject blank command-token strings in source-status records consumed by
+project status.
+
+Deliverables:
+
+- `source-status-schema` failure for source-status command fields containing
+  blank strings;
+- unchanged `schema_version: 2` project status JSON shape;
+- focused tests covering blank command-token rejection; and
+- documentation update for the nonempty source command-token contract.
+
+Status: accepted in
+`docs/adr/0104-project-status-nonempty-source-commands.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

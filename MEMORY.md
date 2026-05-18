@@ -481,3 +481,6 @@
   adds a per-source `commands` list to accepted `frontier.source_statuses`
   entries so the status report attributes blocked commands to source-status
   artifacts.
+- ADR-0104 makes `autarkic_systems.project_status` reject blank command-token
+  strings in source-status command fields as `source-status-schema`, preserving
+  `schema_version: 2`.

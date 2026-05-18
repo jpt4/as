@@ -51,6 +51,8 @@ ADR-0102 requires accepted source-status records to expose at least one
 blocked command token through `command`, `commands`, or
 `blocked_runtime_commands`. ADR-0103 adds those extracted commands to each
 accepted `frontier.source_statuses` entry and bumps the schema version to `2`.
+ADR-0104 rejects blank command-token strings as `source-status-schema`
+failures.
 
 ## Boundary
 

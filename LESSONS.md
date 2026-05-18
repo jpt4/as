@@ -287,3 +287,6 @@
 - When a status report aggregates evidence from multiple artifacts, preserve
   attribution in the machine-readable surface. A single summary list is useful,
   but scripts also need to know which file contributed each term.
+- Shape checks should reject blank strings in semantic token fields, not only
+  missing fields. Empty text can satisfy a type check while erasing the meaning
+  an operator report is supposed to expose.

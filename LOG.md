@@ -2312,3 +2312,23 @@
   per-source command attribution for the recipient, standard-signal, and
   write-buffer source-status files. `py_compile`, `git diff --check`, and
   `python -m unittest discover` passed, with the full suite running 553 tests.
+
+## 2026-05-18 - Project Status Nonempty Source Commands
+
+- Added ADR-0104 to reject blank command-token strings in source-status records
+  consumed by the project status command.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed because a source-status record with `commands:
+  ["standard-signal", "  "]` was accepted as a valid frontier contributor.
+- Updated `autarkic_systems.project_status` so blank strings in `command`,
+  `commands`, or `blocked_runtime_commands` report `source-status-schema`.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the nonempty source command-token contract.
+- Verified the focused project status test passed 18 tests; adjacent project
+  status, transition registry, and chain registry tests passed 43 tests. The
+  checked-in JSON status reported `schema_version: 2`, `accepted: true`,
+  transition `bundle_count: 8`, chain `bundle_count: 2`, aggregate blocked
+  commands `standard-signal`, `write-buf-zero`, and `write-buf-one`, per-source
+  command attribution, and `frontier.failed_subjects: []`. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed, with the full
+  suite running 554 tests.

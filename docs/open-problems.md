@@ -160,6 +160,8 @@ ADR-0102 tightens the shape check so source-status records without command
 tokens cannot erase the blocked-command frontier.
 ADR-0103 attributes blocked commands to each source-status entry and bumps the
 project status schema version to `2`.
+ADR-0104 rejects blank command-token strings so the project status frontier
+cannot contain invisible command terms.
 
 ## P3: Choose The First Proof Apparatus
 
