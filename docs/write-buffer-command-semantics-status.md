@@ -1,6 +1,6 @@
 # Write-Buffer Command Semantics Status
 
-Status: source-status decision, 2026-05-17.
+Status: source-status decision, updated 2026-05-18.
 
 The structured status lives in
 `sources/write_buffer_command_semantics_status.json`.
@@ -35,13 +35,22 @@ ADR-0144 records the remaining source conflicts in
 `resolution_question_evidence`, including the RAA buffer-full guard divergence
 and the post-append clearing disagreement between RAA, SEMSIM, and FSMSIM.
 
+ADR-0152 resolves the recipient-surface part of the older
+`recipient-vs-stem-surface` question: delivered recipient `write-buf-zero` and
+`write-buf-one` command messages are rejected as non-init command-message
+inputs under the existing recipient rejection claim. Self-target write-buffer
+execution remains unresolved.
+
 ## AS Boundary
 
 AS keeps write-buffer command execution blocked across these runtime surfaces:
 
-- recipient command-message input;
 - self-mailbox command;
 - self-target command-buffer dispatch.
+
+Recipient command-message input is no longer an unresolved write-buffer
+execution surface. AS rejects delivered recipient write-buffer command messages
+through `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`.
 
 The current rejection and preservation claims remain the correct executable
 boundary until a later ADR selects source-backed semantics for append,
@@ -57,7 +66,9 @@ ADR-0064 records the official PRC TLA files as incomplete and missing
 write-buffer command-token semantics. ADR-0129 records the literal command
 bit-source evidence without changing runtime behavior. ADR-0142 moves the
 standard-signal interaction blocker out of the unresolved queue because the bit
-source is literal rather than high-rail derived.
+source is literal rather than high-rail derived. ADR-0152 moves
+`recipient-surface` into resolved questions and leaves `self-target-surface`,
+`buffer-full-boundary`, and `post-append-clearing` unresolved.
 
 ## Verification
 
@@ -68,4 +79,5 @@ python -m unittest tests.test_write_buffer_command_semantics_status
 ```
 
 The tests check the decision, formal-model gap, legacy witness divergence,
-required resolution questions, and source-status frontier updates.
+resolved recipient surface, remaining required resolution questions, and
+source-status frontier updates.

@@ -271,6 +271,9 @@ through the existing self-mailbox unsupported-preservation and self-target
 command-buffer append-boundary claims. Standard-signal now has no unresolved
 source-status questions; write-buffer remains the command-token semantics
 frontier.
+ADR-0152 resolves the write-buffer recipient surface through the existing
+recipient non-init rejection boundary and narrows the remaining write-buffer
+surface question to self-mailbox / self-target command-buffer behavior.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

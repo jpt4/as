@@ -63,6 +63,9 @@ ordinary binary-input standard-signal behavior by default.
 ADR-0151 moves the standard-signal `self-target-surface` question from
 unresolved to resolved, so the standard-signal source-status record no longer
 has live resolution questions.
+ADR-0152 moves the write-buffer recipient command-message surface from
+unresolved to resolved and narrows the remaining write-buffer surface question
+to self-mailbox and self-target command-buffer behavior.
 
 ## Boundary
 

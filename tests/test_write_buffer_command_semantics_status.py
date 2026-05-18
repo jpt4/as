@@ -31,7 +31,6 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(
             self.status["blocked_runtime_surfaces"],
             [
-                "recipient-command-message",
                 "self-mailbox-command",
                 "self-target-command-buffer",
             ],
@@ -110,10 +109,34 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(
             question_ids,
             {
-                "recipient-vs-stem-surface",
+                "self-target-surface",
                 "buffer-full-boundary",
                 "post-append-clearing",
             },
+        )
+
+    def test_recipient_surface_is_resolved_to_existing_rejection_boundary(self):
+        resolved_questions = {
+            question["question_id"]: question
+            for question in self.status["resolved_resolution_questions"]
+        }
+        recipient_non_init = json.loads(
+            RECIPIENT_NON_INIT.read_text(encoding="utf-8")
+        )
+
+        resolved = resolved_questions["recipient-surface"]
+        self.assertEqual(
+            resolved["decision"],
+            "reject-recipient-write-buffer-command-message-as-non-init",
+        )
+        self.assertEqual(resolved["source_status"], str(RECIPIENT_NON_INIT))
+        self.assertIn(
+            "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+            resolved["legacy_divergence"],
+        )
+        self.assertIn(
+            "write-buf-zero",
+            recipient_non_init["blocked_runtime_commands"],
         )
 
     def test_standard_signal_interaction_is_resolved_as_literal_bits(self):

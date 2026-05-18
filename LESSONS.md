@@ -423,3 +423,6 @@
   without pretending to know the final command behavior.
 - A checked unsupported boundary can close a source-status question when the
   decision is to preserve/report unsupported rather than implement execution.
+- When an unresolved question bundles multiple runtime surfaces, split off the
+  surface already covered by a checked boundary instead of leaving the whole
+  bundle open.

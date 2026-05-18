@@ -631,3 +631,6 @@
 - ADR-0151 resolves standard-signal `self-target-surface` through existing
   unsupported preservation boundaries, leaving no unresolved standard-signal
   source-status questions.
+- ADR-0152 resolves write-buffer `recipient-surface` through the existing
+  recipient non-init rejection boundary, replacing the old unresolved
+  `recipient-vs-stem-surface` question with `self-target-surface`.

@@ -2983,3 +2983,29 @@ Implemented in `sources/standard_signal_command_semantics_status.json`,
 `tests/test_standard_signal_command_semantics_status.py`,
 `tests/test_project_status_report.py`, and
 `tests/test_source_status_frontier_cli.py`.
+
+## ADR-0152: Write-Buffer Recipient Surface Resolution
+
+Goal: resolve delivered recipient write-buffer command messages through the
+existing recipient non-init rejection boundary while keeping self-target
+write-buffer execution questions open.
+
+Deliverables:
+
+- `recipient-command-message` removed from write-buffer blocked runtime
+  surfaces;
+- `recipient-surface` added to write-buffer `resolved_resolution_questions`;
+- the old unresolved `recipient-vs-stem-surface` question replaced by
+  `self-target-surface`;
+- write-buffer unresolved evidence updated to describe only the self-target
+  surface;
+- project-status and source-status frontier text/JSON output showing the
+  settled recipient surface and narrowed self-target question; and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in
+`docs/adr/0152-write-buffer-recipient-surface-resolution.md`. Implemented in
+`sources/write_buffer_command_semantics_status.json`, with tests in
+`tests/test_write_buffer_command_semantics_status.py`,
+`tests/test_project_status_report.py`, and
+`tests/test_source_status_frontier_cli.py`.

@@ -3284,3 +3284,23 @@
   project-status JSON remained accepted at `schema_version: 14`; `py_compile`
   and `git diff --check` passed; and `python -m unittest discover` passed 660
   tests.
+
+## 2026-05-18 - Write-Buffer Recipient Surface Resolution
+
+- Added ADR-0152 to resolve delivered recipient write-buffer command messages
+  through the existing recipient non-init rejection boundary.
+- Updated write-buffer, project-status, and source-status frontier tests before
+  implementation. The red run executed 84 tests and failed because
+  `recipient-vs-stem-surface` was still unresolved, recipient command-message
+  remained a blocked write-buffer surface, and `recipient-surface` was absent
+  from write-buffer resolved questions.
+- Updated `sources/write_buffer_command_semantics_status.json` so write-buffer
+  unresolved surface work is narrowed to `self-target-surface`.
+- Focused verification passed 84 tests. `sources/write_buffer_command_semantics_status.json`
+  parsed as JSON. Source-status JSON accepted schema 1 with write-buffer
+  unresolved questions narrowed to `self-target-surface`,
+  `buffer-full-boundary`, and `post-append-clearing`, and with
+  `recipient-surface` resolved. Project-status JSON accepted schema 14 with
+  write-buffer blocked runtime surfaces narrowed to `self-mailbox-command` and
+  `self-target-command-buffer`. `py_compile`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 661 tests.

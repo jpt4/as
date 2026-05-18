@@ -176,6 +176,10 @@ as a negative equivalence decision while leaving project status
 ADR-0151 resolves the standard-signal `self-target-surface` question through
 the existing unsupported preservation boundaries while leaving project status
 `schema_version: 14`.
+ADR-0152 resolves the write-buffer `recipient-surface` question through the
+existing recipient non-init rejection boundary and replaces the old
+`recipient-vs-stem-surface` unresolved question with `self-target-surface`,
+preserving project status `schema_version: 14`.
 
 ## Boundary
 

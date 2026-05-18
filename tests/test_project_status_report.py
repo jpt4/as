@@ -27,7 +27,6 @@ STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-target-command-buffer",
 ]
 WRITE_BUFFER_BLOCKED_RUNTIME_SURFACES = [
-    "recipient-command-message",
     "self-mailbox-command",
     "self-target-command-buffer",
 ]
@@ -44,9 +43,9 @@ STANDARD_SIGNAL_AS_BOUNDARY = (
     "blocks only command-token execution."
 )
 WRITE_BUFFER_AS_BOUNDARY = (
-    "Continue rejecting or preserving write-buffer commands at the existing "
-    "claimed boundaries until a later ADR selects one source-backed execution "
-    "semantics."
+    "Continue preserving or rejecting write-buffer commands at the existing "
+    "self-target boundaries until a later ADR selects source-backed "
+    "buffer-full and post-append semantics."
 )
 TRANSITION_BUNDLES = [
     {
@@ -179,7 +178,7 @@ CHAIN_CLAIMS = {
 }
 STANDARD_SIGNAL_QUESTIONS = []
 WRITE_BUFFER_QUESTIONS = [
-    "recipient-vs-stem-surface",
+    "self-target-surface",
     "buffer-full-boundary",
     "post-append-clearing",
 ]
@@ -254,14 +253,24 @@ WRITE_BUFFER_RESOLVED_QUESTIONS = [
             "surface, buffer-full handling, and post-append clearing."
         ),
     },
+    {
+        "question_id": "recipient-surface",
+        "decision": "reject-recipient-write-buffer-command-message-as-non-init",
+        "source_status": "sources/recipient_non_init_command_source_status.json",
+        "legacy_divergence": (
+            "AS already rejects delivered recipient write-buffer command "
+            "messages under UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED; "
+            "self-target write-buffer execution remains unresolved."
+        ),
+    },
 ]
 WRITE_BUFFER_RESOLUTION_QUESTIONS = [
     {
-        "question_id": "recipient-vs-stem-surface",
+        "question_id": "self-target-surface",
         "summary": (
-            "Decide whether write-buffer command messages execute on fixed "
-            "recipient cells, stem cells only, or only through self-mailbox / "
-            "command-buffer surfaces."
+            "Decide whether write-buffer command messages execute from "
+            "self-mailbox or self-target command-buffer surfaces, or remain "
+            "unsupported there."
         ),
     },
     {
@@ -283,12 +292,12 @@ WRITE_BUFFER_RESOLUTION_QUESTIONS = [
 ]
 WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE = [
     {
-        "question_id": "recipient-vs-stem-surface",
+        "question_id": "self-target-surface",
         "evidence": (
             "The formal model names write-buffer commands in generic "
             "special-message and stem loci, while the legacy witnesses expose "
-            "different special-message, stem, and self-mailbox surfaces; no "
-            "reviewed source selects one AS execution surface."
+            "different self-target write-buffer surfaces; no reviewed source "
+            "selects one AS self-target execution boundary."
         ),
     },
     {
@@ -824,11 +833,12 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn("write-buf-zero, write-buf-one:", text)
         self.assertIn(
-            "post-append-clearing: Decide whether write-buffer execution "
-            "preserves the appended buffer, clears it like SEMSIM's stem "
-            "wrapper, or clears only input/mail state.",
+            "self-target-surface: Decide whether write-buffer command "
+            "messages execute from self-mailbox or self-target "
+            "command-buffer surfaces, or remain unsupported there.",
             text,
         )
+        self.assertNotIn("recipient-vs-stem-surface", text)
 
     def test_text_status_names_resolution_question_evidence(self):
         report = build_project_status_report()
@@ -846,11 +856,14 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn("write-buf-zero, write-buf-one:", text)
         self.assertIn(
-            "buffer-full-boundary: RAA guards write-buffer append with "
-            "buffer-full? while SEMSIM and FSMSIM expose no matching "
-            "buffer-full guard.",
+            "self-target-surface: The formal model names write-buffer "
+            "commands in generic special-message and stem loci, while the "
+            "legacy witnesses expose different self-target write-buffer "
+            "surfaces; no reviewed source selects one AS self-target "
+            "execution boundary.",
             text,
         )
+        self.assertNotIn("recipient-vs-stem-surface", text)
 
     def test_text_status_names_resolved_resolution_questions(self):
         report = build_project_status_report()
@@ -935,10 +948,23 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn(
+            "recipient-surface: "
+            "reject-recipient-write-buffer-command-message-as-non-init "
+            "(sources/recipient_non_init_command_source_status.json)",
+            text,
+        )
+        self.assertIn(
             "legacy divergence: The formal model, RAA, SEMSIM, and FSMSIM "
             "agree that write-buf-zero and write-buf-one carry literal 0 "
             "and 1 append bits; remaining divergence concerns execution "
             "surface, buffer-full handling, and post-append clearing.",
+            text,
+        )
+        self.assertIn(
+            "legacy divergence: AS already rejects delivered recipient "
+            "write-buffer command messages under "
+            "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED; self-target "
+            "write-buffer execution remains unresolved.",
             text,
         )
 

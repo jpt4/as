@@ -9,7 +9,6 @@
     "write-buf-one"
   ],
   "blocked_runtime_surfaces": [
-    "recipient-command-message",
     "self-mailbox-command",
     "self-target-command-buffer"
   ],
@@ -72,10 +71,17 @@
     "fsmsim_locus": "lines 262-267, write-buf-zero appends 0 and write-buf-one appends 1 while clearing self-mailbox and input channels",
     "summary": "The named write-buffer commands carry literal 0 and 1 append bits. The bit value is not derived from the ordinary standard-signal high-rail comparison path, though high-rail and post-append state clearing remain unresolved."
   },
+  "recipient_surface_resolution": {
+    "decision": "reject-recipient-write-buffer-command-message-as-non-init",
+    "source_status": "sources/recipient_non_init_command_source_status.json",
+    "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+    "evidence_bundle": "evidence/recipient_non_init_command_rejection_bundle.json",
+    "summary": "Delivered recipient write-buffer command messages stay in the existing recipient non-init rejection boundary. Self-target write-buffer execution remains unresolved."
+  },
   "required_resolution_questions": [
     {
-      "question_id": "recipient-vs-stem-surface",
-      "summary": "Decide whether write-buffer command messages execute on fixed recipient cells, stem cells only, or only through self-mailbox / command-buffer surfaces."
+      "question_id": "self-target-surface",
+      "summary": "Decide whether write-buffer command messages execute from self-mailbox or self-target command-buffer surfaces, or remain unsupported there."
     },
     {
       "question_id": "buffer-full-boundary",
@@ -88,8 +94,8 @@
   ],
   "resolution_question_evidence": [
     {
-      "question_id": "recipient-vs-stem-surface",
-      "evidence": "The formal model names write-buffer commands in generic special-message and stem loci, while the legacy witnesses expose different special-message, stem, and self-mailbox surfaces; no reviewed source selects one AS execution surface."
+      "question_id": "self-target-surface",
+      "evidence": "The formal model names write-buffer commands in generic special-message and stem loci, while the legacy witnesses expose different self-target write-buffer surfaces; no reviewed source selects one AS self-target execution boundary."
     },
     {
       "question_id": "buffer-full-boundary",
@@ -106,6 +112,12 @@
       "decision": "write-buffer-command-bits-are-literal-not-high-rail-derived",
       "source_status": "sources/write_buffer_command_semantics_status.json",
       "legacy_divergence": "The formal model, RAA, SEMSIM, and FSMSIM agree that write-buf-zero and write-buf-one carry literal 0 and 1 append bits; remaining divergence concerns execution surface, buffer-full handling, and post-append clearing."
+    },
+    {
+      "question_id": "recipient-surface",
+      "decision": "reject-recipient-write-buffer-command-message-as-non-init",
+      "source_status": "sources/recipient_non_init_command_source_status.json",
+      "legacy_divergence": "AS already rejects delivered recipient write-buffer command messages under UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED; self-target write-buffer execution remains unresolved."
     }
   ],
   "additional_source_statuses": [
@@ -125,5 +137,5 @@
       "summary": "The official PRC TLA files are partial/stub/empty and do not define write-buf-zero or write-buf-one command-token semantics."
     }
   ],
-  "as_boundary": "Continue rejecting or preserving write-buffer commands at the existing claimed boundaries until a later ADR selects one source-backed execution semantics."
+  "as_boundary": "Continue preserving or rejecting write-buffer commands at the existing self-target boundaries until a later ADR selects source-backed buffer-full and post-append semantics."
 }

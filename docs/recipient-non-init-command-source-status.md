@@ -1,6 +1,6 @@
 # Recipient Non-Init Command Source Status
 
-Status: source-status decision, 2026-05-17.
+Status: source-status decision, updated 2026-05-18.
 
 ADR-0053 records why recipient-side non-init command-message inputs remain
 blocked after the init-family recipient ladder was implemented, claimed,
@@ -73,6 +73,11 @@ source-status boundaries together.
 ADR-0148 reuses this completed rejection evidence ladder to resolve the
 standard-signal `recipient-surface` question: delivered recipient
 `standard-signal` command messages are rejected as non-init command-message
+inputs rather than executed.
+
+ADR-0152 reuses the same rejection evidence ladder to resolve the write-buffer
+`recipient-surface` question: delivered recipient `write-buf-zero` and
+`write-buf-one` command messages are rejected as non-init command-message
 inputs rather than executed.
 
 The rejection evidence ladder is complete again. `standard-signal` and
