@@ -5057,3 +5057,26 @@ Deliverables:
 Status: accepted in `docs/adr/0242-diagonal-seed-surface.md`. Implemented in
 `autarkic_systems/diagonal_construction.py`, with tests in
 `tests/test_diagonal_construction.py`.
+
+## ADR-0243: Formal Confidence Diagonal Dependency
+
+Goal: make the diagonal-construction target a checked dependency of the
+aggregate formal-confidence target instead of a standalone surface.
+
+Deliverables:
+
+- `claims/formal_confidence_targets.json` with a structured
+  `diagonal_construction` configuration field;
+- `autarkic_systems.formal_confidence` validation that loads and checks the
+  referenced diagonal-construction target;
+- accepted text/JSON report output for the healthy checked diagonal target;
+- fail-closed rejection for missing or invalid diagonal references, reported
+  as `target-diagonal-construction`; and
+- no substitution representability proof, diagonal lemma, fixed-point equation
+  proof, arithmetized proof predicate, theorem prover, runtime behavior,
+  command semantics, evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in
+`docs/adr/0243-formal-confidence-diagonal-dependency.md`. Implemented in
+`autarkic_systems/formal_confidence.py`, with tests in
+`tests/test_formal_confidence_target.py`.

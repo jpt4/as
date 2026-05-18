@@ -5,7 +5,9 @@ Status: checked syntactic seed, not a diagonal lemma, 2026-05-18.
 ADR-0242 adds `claims/diagonal_construction_targets.json` and
 `autarkic_systems/diagonal_construction.py`. It is the first checked artifact
 that uses the ADR-0241 `substitution_code(t,u)` term to build the diagonal
-route.
+route. ADR-0243 makes this seed a structured dependency of the aggregate
+formal-confidence target, so formal-confidence validation fails closed if this
+surface drifts.
 
 ## Purpose
 

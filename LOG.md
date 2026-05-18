@@ -5240,3 +5240,23 @@
 - Focused diagonal-construction tests passed 13 tests. This preserves the
   fixed-point blocker: no substitution representability proof, diagonal lemma,
   fixed-point equation proof, or self-consistency theorem is claimed.
+
+## 2026-05-18 - Formal Confidence Diagonal Dependency
+
+- Added ADR-0243 to make the checked diagonal seed a structured dependency of
+  the aggregate formal-confidence target.
+- Added red tests before implementation. The red run failed because
+  `diagonal_construction` was not a required configuration field, the
+  aggregate report did not expose an accepted diagonal-construction result,
+  and missing diagonal-construction manifests did not reject
+  formal-confidence validation.
+- Added `diagonal_construction` to
+  `claims/formal_confidence_targets.json` and required configuration fields.
+- Updated `autarkic_systems.formal_confidence` to load and validate the
+  referenced diagonal-construction target, report `diagonal construction
+  accepted` on the healthy path, and fail closed as
+  `target-diagonal-construction` when the dependency is missing or invalid.
+- Focused formal-confidence and project-status tests passed 102 tests. Live
+  formal-confidence text/JSON output reported the diagonal-construction
+  dependency accepted, while the formal-confidence target remained blocked on
+  `fixed-point-construction`.

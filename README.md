@@ -412,7 +412,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   formal-confidence target manifest against the Willard definition map, keeping
   the current AS self-consistency claim explicitly blocked until fixed-point
   construction exists and fail-closed over the current consistency-level,
-  fixed-point equation candidate, and obstruction dependencies.
+  diagonal-construction, fixed-point equation candidate, and obstruction
+  dependencies.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -442,8 +443,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   formal-confidence target over the current AS proof/evidence surface and the
   first checked syntax-only arithmetic language, proof-code, substitution, and
   consistency-level, deduction-apparatus, and fixed-point target artifacts,
-  with structured dependency checks for the consistency-level target, fixed
-  point equation candidate, and fixed-point obstruction.
+  with structured dependency checks for the consistency-level target, diagonal
+  construction, fixed-point equation candidate, and fixed-point obstruction.
 - `python -m autarkic_systems.formal_arithmetic --format json` validates
   `language/formal_arithmetic_language.json`, including required Willard
   anchors, the Type-NS profile, `delta0`, `pi1`, `sigma1`, and the
@@ -497,8 +498,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.formal_confidence --format json` validates that
   target against `sources/willard_definition_map.json`, including required
   Willard anchors, required configuration fields, the consistency-level target,
-  fixed-point equation candidate, and obstruction dependencies, explicit
-  blockers, and the next AS action.
+  diagonal-construction, fixed-point equation candidate, and obstruction
+  dependencies, explicit blockers, and the next AS action.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init/write-buffer delivery and rejected
   standard-signal delivery.

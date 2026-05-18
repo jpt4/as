@@ -19,6 +19,10 @@ from autarkic_systems.consistency_level import (
     load_consistency_level_targets,
     validate_consistency_level_targets,
 )
+from autarkic_systems.diagonal_construction import (
+    load_diagonal_construction_targets,
+    validate_diagonal_construction_targets,
+)
 from autarkic_systems.fixed_point_equation import (
     load_fixed_point_equation_candidates,
     validate_fixed_point_equation_candidates,
@@ -42,6 +46,7 @@ REQUIRED_CONFIGURATION_FIELDS = (
     "consistency_notion",
     "consistency_level_target",
     "self_reference",
+    "diagonal_construction",
     "fixed_point_equation_candidate",
     "fixed_point_obstruction",
     "substrate_bridge",
@@ -368,6 +373,9 @@ def _validate_target(
     if "consistency_level_target" in target.configuration:
         results.extend(_validate_consistency_level_target(target))
 
+    if "diagonal_construction" in target.configuration:
+        results.extend(_validate_diagonal_construction(target))
+
     if "fixed_point_equation_candidate" in target.configuration:
         results.extend(_validate_fixed_point_equation_candidate(target))
 
@@ -419,6 +427,32 @@ def _validate_consistency_level_target(
         _rejected(
             subject,
             "consistency-level target rejected: "
+            + _joined_or_none(report.failed_subjects),
+        )
+    ]
+
+
+def _validate_diagonal_construction(
+    target: FormalConfidenceTarget,
+) -> list[FormalConfidenceValidation]:
+    subject = f"{target.target_id}.diagonal_construction"
+    target_path = target.configuration["diagonal_construction"]
+    try:
+        diagonal_targets = load_diagonal_construction_targets(target_path)
+        report = validate_diagonal_construction_targets(diagonal_targets)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return [
+            _rejected(
+                subject,
+                "diagonal construction rejected: " + str(exc),
+            )
+        ]
+    if report.accepted:
+        return [_accepted(subject, "diagonal construction accepted")]
+    return [
+        _rejected(
+            subject,
+            "diagonal construction rejected: "
             + _joined_or_none(report.failed_subjects),
         )
     ]
@@ -483,6 +517,8 @@ def _failed_subject_for_result(subject: str) -> str:
         return "target-configuration"
     if subject.endswith(".consistency_level_target"):
         return "target-consistency-level-target"
+    if subject.endswith(".diagonal_construction"):
+        return "target-diagonal-construction"
     if subject.endswith(".fixed_point_equation_candidate"):
         return "target-fixed-point-equation-candidate"
     if subject.endswith(".fixed_point_obstruction"):

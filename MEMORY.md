@@ -142,6 +142,10 @@
   instance length `296`, and still does not prove substitution
   representability, a diagonal lemma, a fixed-point equation, or
   self-consistency.
+- ADR-0243 makes `claims/diagonal_construction_targets.json` a structured
+  fail-closed dependency of `autarkic_systems.formal_confidence`; missing or
+  invalid diagonal-construction references now reject formal-confidence
+  validation as `target-diagonal-construction`.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive
