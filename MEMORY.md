@@ -808,3 +808,9 @@
   recipient-not-ready` and `--case sender-not-delivered`, completing the
   operator-visible fixture surface over the ADR-0194 witness without changing
   transition behavior.
+- ADR-0196 adds `autarkic_systems.network_sequence`, a post-handoff signal
+  witness that composes accepted `proc-l-init` neighbor delivery with one later
+  recipient binary input. The accepted fixture observes recipient `proc/left`,
+  follow-up input `(1, 0, 0)`, routed output `(0, 0, 1)`, and processor memory
+  toggled to `right` without adding scheduler, topology, timing, or new command
+  semantics.

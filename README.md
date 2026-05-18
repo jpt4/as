@@ -263,6 +263,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   neighbor-delivery execution as an inspectable network-shaped witness with
   sender state, recipient state, delivered tuple, event trail, and text/JSON
   CLI output.
+- `autarkic_systems/network_sequence.py` records a bounded post-handoff
+  witness showing that a delivered init command has a later recipient behavior:
+  `proc-l-init` reconfigures the recipient to `proc/left`, after which a binary
+  follow-up signal routes through the existing fixed-cell logic.
 - `autarkic_systems/chain_trace.py` validates the recorded transition-chain
   traces for consumed and rejected neighbor-delivery handoffs.
 - `autarkic_systems/chain_svg.py` renders and validates transition-chain SVG
@@ -342,6 +346,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.network_witness --format json` emits the bounded
   two-cell neighbor-delivery witness as machine-readable JSON, including sender
   and recipient before/after state, delivered tuple, and ordered events.
+- `python -m autarkic_systems.network_sequence --format json` emits the
+  post-handoff signal witness as machine-readable JSON, including the
+  underlying delivery witness, follow-up input, follow-up status, and recipient
+  before/after follow-up state.
 - `python -m autarkic_systems.project_status --format summary` emits a compact
   six-line operator digest over the accepted state, evidence counts, claim
   counts, proof-rule audit, blocked commands, and safe next slice.

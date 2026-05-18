@@ -4184,3 +4184,22 @@
   new failure fixtures emitted the expected witness payloads with nonzero
   rejected-witness exits. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 816 tests.
+
+## 2026-05-18 - Post-Handoff Signal Witness
+
+- Added ADR-0196 to show one durable recipient behavior after an accepted
+  init-family neighbor-delivery handoff.
+- Added red post-handoff witness tests before implementation. The focused red
+  run failed because `autarkic_systems.network_sequence` did not exist.
+- Added `autarkic_systems/network_sequence.py`, composing the existing two-cell
+  network witness with one explicit recipient follow-up input and the existing
+  fixed/stem transition functions.
+- The accepted fixture delivers `proc-l-init`, observes the recipient as
+  `proc/left`, applies binary follow-up input `(1, 0, 0)`, and records routed
+  output `(0, 0, 1)` with processor memory toggled to `right`.
+- Added rejected fixtures for consumed non-init handoff and malformed follow-up
+  input, plus operator notes in `docs/post-handoff-signal-witness.md`.
+- Focused green verification passed 7 tests. Live JSON/text runs for accepted
+  and malformed-follow-up fixtures exposed the expected sequence status and
+  recipient final state. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 823 tests.

@@ -3981,3 +3981,23 @@ Status: accepted in
 `docs/adr/0195-complete-network-witness-fixtures.md`. Implemented in
 `autarkic_systems/network_witness.py`, with tests in
 `tests/test_two_cell_network_witness.py`.
+
+## ADR-0196: Post-Handoff Signal Witness
+
+Goal: show one durable recipient behavior after an accepted init-family
+neighbor-delivery handoff.
+
+Deliverables:
+
+- `autarkic_systems/network_sequence.py`;
+- post-handoff witness payload over delivery witness plus one recipient
+  follow-up input;
+- text and JSON CLI output for accepted and rejected fixture cases;
+- tests for routed follow-up, non-init handoff rejection, and malformed
+  follow-up rejection; and
+- no scheduler, timing, topology, output-clearing, or new command semantics.
+
+Status: accepted in `docs/adr/0196-post-handoff-signal-witness.md`.
+Implemented in `autarkic_systems/network_sequence.py`, with tests in
+`tests/test_post_handoff_signal_witness.py` and operator notes in
+`docs/post-handoff-signal-witness.md`.
