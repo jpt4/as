@@ -416,3 +416,5 @@
 - If a negative runtime boundary already has claim, proof, trace, render, and
   evidence-bundle coverage, use it to close the matching source-status
   question instead of keeping the same surface artificially unresolved.
+- When moving a question from open to settled, add a validator guard that
+  prevents the old unresolved entry and the new resolved entry from coexisting.

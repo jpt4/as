@@ -2911,3 +2911,24 @@ in `sources/standard_signal_command_semantics_status.json`, with tests in
 `tests/test_standard_signal_command_semantics_status.py`,
 `tests/test_project_status_report.py`, and
 `tests/test_source_status_frontier_cli.py`.
+
+## ADR-0149: Resolution Question Disjointness
+
+Goal: reject source-status records that report the same question as both
+unresolved and resolved.
+
+Deliverables:
+
+- shared source-status validation for overlap between
+  `required_resolution_questions[].question_id` and
+  `resolved_resolution_questions[].question_id`;
+- project-status and source-status frontier schema-failure tests covering the
+  overlap;
+- unchanged project status `schema_version: 14`;
+- unchanged source-status frontier `schema_version: 1`; and
+- unchanged accepted frontier payload shape.
+
+Status: accepted in `docs/adr/0149-resolution-question-disjointness.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py` and
+`tests/test_source_status_frontier_cli.py`.

@@ -169,6 +169,48 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 
+    def test_report_rejects_overlapping_unresolved_and_resolved_question_id(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid = Path(tmp) / "overlapping-question-id.json"
+            invalid.write_text(
+                json.dumps(
+                    {
+                        "decision": "do-not-implement-command-yet",
+                        "safe_next_slice": "revisit-command-source-evidence",
+                        "command": "standard-signal",
+                        "as_boundary": "Keep this command blocked here.",
+                        "required_resolution_questions": [
+                            {
+                                "question_id": "recipient-surface",
+                                "summary": "Decide the recipient surface.",
+                            }
+                        ],
+                        "resolution_question_evidence": [
+                            {
+                                "question_id": "recipient-surface",
+                                "evidence": "Evidence keeps unresolved shape valid.",
+                            }
+                        ],
+                        "resolved_resolution_questions": [
+                            {
+                                "question_id": "recipient-surface",
+                                "decision": "resolved",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            report = build_source_status_frontier_report([invalid])
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["failed_subjects"], ["source-status-schema"])
+        self.assertIn(
+            "cannot be both unresolved and resolved",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
     def test_cli_returns_zero_for_checked_in_source_status_frontier(self):
         stdout = io.StringIO()
 

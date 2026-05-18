@@ -623,3 +623,5 @@
   the existing recipient non-init rejection boundary, leaving
   `command-token-vs-binary-input` and `self-target-surface` as the live
   standard-signal unresolved questions.
+- ADR-0149 makes unresolved and resolved source-status question IDs disjoint,
+  so a source-status record cannot present a blocker as both live and settled.

@@ -168,6 +168,8 @@ preserving `schema_version: 14`.
 ADR-0148 resolves the standard-signal `recipient-surface` question through the
 existing recipient non-init rejection boundary, preserving
 `schema_version: 14`.
+ADR-0149 rejects source-status records that list the same `question_id` as both
+unresolved and resolved, preserving `schema_version: 14`.
 
 ## Boundary
 

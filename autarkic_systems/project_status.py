@@ -1065,6 +1065,9 @@ def _source_status_schema_error(data: Any) -> str:
     resolved_question_error = _resolved_resolution_question_shape_error(data)
     if resolved_question_error:
         return resolved_question_error
+    question_disjointness_error = _resolution_question_disjointness_error(data)
+    if question_disjointness_error:
+        return question_disjointness_error
     additional_source_status_error = _additional_source_status_shape_error(data)
     if additional_source_status_error:
         return additional_source_status_error
@@ -1202,6 +1205,32 @@ def _resolved_resolution_question_shape_error(data: dict[str, Any]) -> str:
                     "source_status path must contain a JSON object: "
                     f"{source_status_path}"
                 )
+    return ""
+
+
+def _resolved_resolution_question_ids(data: dict[str, Any]) -> list[str]:
+    questions = data.get("resolved_resolution_questions")
+    if not isinstance(questions, list):
+        return []
+    question_ids: list[str] = []
+    for question in questions:
+        if isinstance(question, dict):
+            question_id = question.get("question_id")
+            if isinstance(question_id, str) and question_id:
+                question_ids.append(question_id)
+    return question_ids
+
+
+def _resolution_question_disjointness_error(data: dict[str, Any]) -> str:
+    overlapping_question_ids = sorted(
+        set(_resolution_question_ids(data))
+        & set(_resolved_resolution_question_ids(data))
+    )
+    if overlapping_question_ids:
+        return (
+            "source-status question_id cannot be both unresolved and resolved: "
+            + ", ".join(overlapping_question_ids)
+        )
     return ""
 
 

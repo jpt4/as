@@ -54,6 +54,9 @@ source-status record as `source-status-schema`.
 ADR-0148 moves the standard-signal `recipient-surface` question from
 unresolved to resolved, tying delivered recipient `standard-signal` command
 messages to the existing non-init rejection boundary.
+ADR-0149 rejects any source-status record that lists the same question ID as
+both unresolved and resolved, so the focused frontier cannot present a blocker
+as live and settled at the same time.
 
 ## Boundary
 

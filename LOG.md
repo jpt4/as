@@ -3229,3 +3229,19 @@
   JSON remained accepted at `schema_version: 14`; `py_compile` and
   `git diff --check` passed; and `python -m unittest discover` passed 656
   tests.
+
+## 2026-05-18 - Resolution Question Disjointness
+
+- Added ADR-0149 to prevent source-status records from listing one
+  `question_id` as both unresolved and resolved.
+- Updated project-status and source-status frontier tests before
+  implementation. The red run executed 76 tests and failed because a scratch
+  record with overlapping `recipient-surface` entries was still accepted.
+- Updated the shared source-status schema validator in
+  `autarkic_systems.project_status` so overlapping unresolved/resolved
+  question IDs reject as `source-status-schema`.
+- Verification passed: focused project-status and source-status frontier tests
+  ran 76 tests; source-status JSON was accepted at `schema_version: 1`;
+  project-status JSON remained accepted at `schema_version: 14`; `py_compile`
+  and `git diff --check` passed; and `python -m unittest discover` passed 658
+  tests.

@@ -347,7 +347,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   per-source decisions, blocked runtime surfaces, AS boundaries, unresolved
   questions, source evidence for those questions, resolved decisions,
   source-status cross-links, missing/invalid source-status paths, and the safe
-  next slice. Text mode renders the same frontier for operator diagnosis.
+  next slice. The shared validator rejects frontier records whose question IDs
+  are simultaneously unresolved and resolved. Text mode renders the same
+  frontier for operator diagnosis.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

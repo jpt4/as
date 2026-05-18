@@ -2143,6 +2143,51 @@ class ProjectStatusReportTests(unittest.TestCase):
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 
+    def test_overlapping_unresolved_and_resolved_question_id_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "overlapping_resolution_question.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "required_resolution_questions": [
+                        {
+                            "question_id": "recipient-surface",
+                            "summary": "Decide the recipient surface.",
+                        }
+                    ],
+                    "resolution_question_evidence": [
+                        {
+                            "question_id": "recipient-surface",
+                            "evidence": "Evidence keeps the unresolved shape valid.",
+                        }
+                    ],
+                    "resolved_resolution_questions": [
+                        {
+                            "question_id": "recipient-surface",
+                            "decision": "resolved",
+                        }
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "cannot be both unresolved and resolved",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
     def test_scalar_additional_source_statuses_is_structured_failure_subject(self):
         with tempfile.TemporaryDirectory() as tmp:
             invalid_status = Path(tmp) / "scalar_additional_source_statuses.json"
