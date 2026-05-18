@@ -2,7 +2,7 @@
   "schema_version": 1,
   "bundle_id": "post-handoff-signal-sequence-evidence-bundle",
   "reviewed_at": "2026-05-18",
-  "purpose": "Tie the executable post-handoff signal witness to its sequence claim, proof certificate, checked trace, underlying delivery chain evidence, and source-status boundaries.",
+  "purpose": "Tie the executable post-handoff signal witness to its sequence claim, proof certificate, checked trace, SVG render, underlying delivery chain evidence, and source-status boundaries.",
   "sequence_claim_id": "UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED",
   "predicate": "post_handoff_signal_routed",
   "positive_example": "proc left init handoff routes later binary signal",
@@ -15,6 +15,7 @@
     "sequence_claim_validator": "autarkic_systems/network_sequence_claims.py",
     "sequence_witness": "autarkic_systems/network_sequence.py",
     "sequence_trace": "schematics/sequences/post_handoff_signal_sequence_trace.json",
+    "sequence_svg": "schematics/sequences/post_handoff_signal_sequence_trace.svg",
     "chain_bundles": [
       "evidence/chains/neighbor_delivery_chain_bundle.json"
     ],

@@ -3,8 +3,8 @@
 Network sequence evidence bundles sit above the ADR-0197 claim surface. They
 do not add a new Universal Cell transition or a general scheduler; they make
 one post-handoff sequence auditable across its sequence claim, proof
-certificate, executable witness, trace, underlying delivery chain bundle, and
-source-status boundaries.
+certificate, executable witness, trace, SVG, underlying delivery chain bundle,
+and source-status boundaries.
 """
 
 from __future__ import annotations
@@ -34,6 +34,7 @@ from autarkic_systems.network_sequence_trace import (
     load_network_sequence_trace,
     validate_network_sequence_trace,
 )
+from autarkic_systems.network_sequence_svg import validate_network_sequence_svg
 
 
 @dataclass(frozen=True)
@@ -55,6 +56,7 @@ class NetworkSequenceEvidenceBundle:
     sequence_claim_validator_path: Path
     sequence_witness_path: Path
     sequence_trace_path: Path
+    sequence_svg_path: Path
     chain_bundle_paths: tuple[Path, ...]
     source_status_paths: tuple[Path, ...]
     boundaries: tuple[str, ...]
@@ -120,6 +122,7 @@ def load_network_sequence_evidence_bundle(
         ),
         sequence_witness_path=Path(_required_text(artifacts, "sequence_witness")),
         sequence_trace_path=Path(_required_text(artifacts, "sequence_trace")),
+        sequence_svg_path=Path(_required_text(artifacts, "sequence_svg")),
         chain_bundle_paths=tuple(
             Path(path) for path in _required_text_list(artifacts, "chain_bundles")
         ),
@@ -164,6 +167,7 @@ def validate_network_sequence_evidence_bundle(
     results.append(_validate_sequence_language(bundle))
     results.append(_validate_sequence_witness(bundle))
     results.append(_validate_sequence_trace(bundle))
+    results.append(_validate_sequence_svg(bundle))
     results.append(_validate_underlying_chain_bundles(bundle))
     results.append(_validate_source_statuses(bundle))
     results.append(_validate_boundary(bundle))
@@ -331,6 +335,7 @@ def _validate_schema(
         bundle.sequence_claim_validator_path,
         bundle.sequence_witness_path,
         bundle.sequence_trace_path,
+        bundle.sequence_svg_path,
         *bundle.chain_bundle_paths,
         *bundle.source_status_paths,
     )
@@ -498,6 +503,24 @@ def _validate_sequence_trace(
     if failures:
         return _rejected("sequence-trace", " | ".join(failures))
     return _accepted("sequence-trace", f"validated {trace.artifact_id}")
+
+
+def _validate_sequence_svg(
+    bundle: NetworkSequenceEvidenceBundle,
+) -> NetworkSequenceEvidenceBundleValidation:
+    try:
+        trace = load_network_sequence_trace(bundle.sequence_trace_path)
+        svg_text = bundle.sequence_svg_path.read_text(encoding="utf-8")
+        svg_results = validate_network_sequence_svg(trace, svg_text=svg_text)
+    except Exception as exc:
+        return _rejected("sequence-svg", f"{type(exc).__name__}: {exc}")
+
+    failures = [
+        result.detail for result in svg_results if not result.accepted
+    ]
+    if failures:
+        return _rejected("sequence-svg", " | ".join(failures))
+    return _accepted("sequence-svg", f"validated {bundle.sequence_svg_path}")
 
 
 def _validate_underlying_chain_bundles(

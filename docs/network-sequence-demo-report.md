@@ -7,8 +7,9 @@ report for the checked post-handoff network-sequence evidence bundle.
 
 The network-sequence work is intentionally split across claims, proof
 certificates, object-language manifests, an executable witness, a checked
-trace, lower-level chain evidence, source-status records, and an evidence
-bundle. That split is good for audit, but it is awkward as a demo surface.
+trace and SVG, lower-level chain evidence, source-status records, and an
+evidence bundle. That split is good for audit, but it is awkward as a demo
+surface.
 
 The network sequence demo report keeps the existing validator as the authority
 and presents the current post-handoff sequence as one claim-to-evidence path.
@@ -29,7 +30,8 @@ For one bundle, the text report names:
 - the predicate, positive example, sequence helper, and expected status;
 - validation status, result count, and failed subjects;
 - missing evidence paths, if any;
-- the sequence claim, proof, language, validator, witness, and trace artifacts;
+- the sequence claim, proof, language, validator, witness, trace, and SVG
+  artifacts;
 - the underlying transition-chain evidence bundles;
 - the source-status boundaries; and
 - the explicit boundary terms.

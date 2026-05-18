@@ -23,6 +23,7 @@ CLAIM_ID = "UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED"
 LANGUAGE = "language/network_sequence_claim_language.json"
 WITNESS = "autarkic_systems/network_sequence.py"
 TRACE = "schematics/sequences/post_handoff_signal_sequence_trace.json"
+SVG = "schematics/sequences/post_handoff_signal_sequence_trace.svg"
 
 
 class NetworkSequenceDemoReportTests(unittest.TestCase):
@@ -38,7 +39,7 @@ class NetworkSequenceDemoReportTests(unittest.TestCase):
             "execute_post_handoff_signal_witness",
         )
         self.assertEqual(report["validation"]["failed_subjects"], [])
-        self.assertEqual(report["validation"]["result_count"], 9)
+        self.assertEqual(report["validation"]["result_count"], 10)
         self.assertEqual(report["missing_evidence_paths"], [])
 
         layers = {
@@ -66,6 +67,7 @@ class NetworkSequenceDemoReportTests(unittest.TestCase):
         )
         self.assertIn(("sequence-witness", WITNESS), layers)
         self.assertIn(("sequence-trace", TRACE), layers)
+        self.assertIn(("sequence-svg", SVG), layers)
         self.assertIn(
             ("chain-bundle", "evidence/chains/neighbor_delivery_chain_bundle.json"),
             layers,
@@ -115,6 +117,7 @@ class NetworkSequenceDemoReportTests(unittest.TestCase):
         self.assertIn(f"Language: {LANGUAGE}", text)
         self.assertIn(f"Sequence witness: {WITNESS}", text)
         self.assertIn(f"Trace: {TRACE}", text)
+        self.assertIn(f"SVG: {SVG}", text)
         self.assertIn("Missing evidence paths: none", text)
         self.assertIn("Chain bundles: 1", text)
         self.assertIn("Source-status boundaries: 5", text)
@@ -135,8 +138,8 @@ class NetworkSequenceDemoReportTests(unittest.TestCase):
         self.assertEqual(payload["missing_evidence_paths"], [])
         self.assertTrue(
             any(
-                layer["role"] == "sequence-trace"
-                and layer["path"] == TRACE
+                layer["role"] == "sequence-svg"
+                and layer["path"] == SVG
                 and layer["exists"]
                 for layer in payload["evidence_layers"]
             )

@@ -4222,3 +4222,25 @@ Status: accepted in `docs/adr/0207-post-handoff-sequence-svg.md`.
 Implemented in `autarkic_systems/network_sequence_svg.py`, with tests in
 `tests/test_post_handoff_sequence_svg.py` and operator notes in
 `docs/post-handoff-sequence-svg.md`.
+
+## ADR-0208: Sequence SVG Evidence Link
+
+Goal: make the network-sequence evidence bundle fail closed over the checked
+post-handoff sequence SVG.
+
+Deliverables:
+
+- `sequence_svg` artifact path in
+  `evidence/sequences/post_handoff_signal_bundle.json`;
+- `sequence_svg_path` loaded by `NetworkSequenceEvidenceBundle`;
+- schema path validation for the sequence-SVG artifact;
+- `sequence-svg` validation result using the existing SVG validator;
+- vertical demo reporting for the sequence SVG layer; and
+- no runtime behavior, claim, proof-rule, project-status, scheduler, topology,
+  timing, or command-semantics changes.
+
+Status: accepted in `docs/adr/0208-sequence-svg-evidence-link.md`.
+Implemented in `autarkic_systems/network_sequence_evidence_bundle.py` and
+`autarkic_systems/network_sequence_demo.py`, with tests in
+`tests/test_network_sequence_evidence_bundle.py` and
+`tests/test_network_sequence_demo_report.py`.

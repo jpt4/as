@@ -2,7 +2,7 @@
 
 Network-sequence artifacts deliberately live in separate files: sequence
 claims, proof certificates, an object-language manifest, an executable
-witness, a checked trace, chain evidence, source-status records, and the
+witness, a checked trace and SVG, chain evidence, source-status records, and the
 evidence bundle that ties them together. This module is a first-run reporting
 layer over those artifacts. It delegates acceptance to
 ``network_sequence_evidence_bundle`` and formats the already-validated path as
@@ -87,6 +87,7 @@ def format_network_sequence_demo_report(report: dict[str, Any]) -> str:
         f"Claim validator: {_path_for_role(layers, 'sequence-claim-validator')}",
         f"Sequence witness: {_path_for_role(layers, 'sequence-witness')}",
         f"Trace: {_path_for_role(layers, 'sequence-trace')}",
+        f"SVG: {_path_for_role(layers, 'sequence-svg')}",
         f"Chain bundles: {len(chain_bundles)}",
     ]
     lines.extend(f"- {path}" for path in chain_bundles)
@@ -236,6 +237,10 @@ def _evidence_layers(bundle: Any) -> list[dict[str, Any]]:
         {
             "role": "sequence-trace",
             "path": str(bundle.sequence_trace_path),
+        },
+        {
+            "role": "sequence-svg",
+            "path": str(bundle.sequence_svg_path),
         },
     ]
     layers.extend(

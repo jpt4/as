@@ -862,3 +862,6 @@
 - ADR-0207 adds `autarkic_systems.network_sequence_svg` and
   `schematics/sequences/post_handoff_signal_sequence_trace.svg`, a
   renderer-locked SVG view of the checked post-handoff sequence trace.
+- ADR-0208 adds that sequence SVG as a checked `sequence_svg` artifact in the
+  network-sequence evidence bundle and demo. Bundle validation now reports
+  `sequence-svg` using the existing renderer-locked SVG validator.

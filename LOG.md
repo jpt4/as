@@ -4429,3 +4429,28 @@
   sequence labels, and follow-up flow. The committed SVG is nonblank at 4206
   bytes. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 891 tests.
+
+## 2026-05-18 - Sequence SVG Evidence Link
+
+- Added ADR-0208 to make the post-handoff sequence evidence bundle cite and
+  validate the checked sequence SVG artifact.
+- Added red evidence-bundle and demo-report tests before implementation. The
+  focused red run failed because loaded bundles had no `sequence_svg_path`, the
+  validation result set lacked `sequence-svg`, missing SVG paths were not
+  rejected by bundle validation, reports lacked `OK sequence-svg:`, and the
+  demo omitted the SVG layer.
+- Updated `autarkic_systems/network_sequence_evidence_bundle.py` to load a
+  `sequence_svg` artifact, include it in schema path validation, and validate
+  it through the existing network-sequence SVG validator against the checked
+  sequence trace.
+- Updated `evidence/sequences/post_handoff_signal_bundle.json` to cite
+  `schematics/sequences/post_handoff_signal_sequence_trace.svg`, and updated
+  the vertical sequence demo to report that SVG layer.
+- Focused green verification passed 26 sequence evidence-bundle and demo-report
+  tests. Adjacent sequence evidence/demo/SVG/trace/witness tests passed 47
+  tests. Live bundle JSON reported 10 accepted checks including
+  `sequence-svg`, and demo JSON listed both sequence trace and SVG evidence
+  layers with `exists: true`. Registry demo JSON reported `bundle_count: 1`,
+  `accepted_count: 1`, and no missing evidence paths. `compileall`,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 892 tests.
