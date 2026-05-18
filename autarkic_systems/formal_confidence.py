@@ -31,6 +31,10 @@ from autarkic_systems.fixed_point_obstruction import (
     load_fixed_point_obstructions,
     validate_fixed_point_obstructions,
 )
+from autarkic_systems.substitution_representability import (
+    load_substitution_representability_targets,
+    validate_substitution_representability_targets,
+)
 from autarkic_systems.willard_map import load_willard_definition_map
 
 
@@ -47,6 +51,7 @@ REQUIRED_CONFIGURATION_FIELDS = (
     "consistency_level_target",
     "self_reference",
     "diagonal_construction",
+    "substitution_representability",
     "fixed_point_equation_candidate",
     "fixed_point_obstruction",
     "substrate_bridge",
@@ -376,6 +381,9 @@ def _validate_target(
     if "diagonal_construction" in target.configuration:
         results.extend(_validate_diagonal_construction(target))
 
+    if "substitution_representability" in target.configuration:
+        results.extend(_validate_substitution_representability(target))
+
     if "fixed_point_equation_candidate" in target.configuration:
         results.extend(_validate_fixed_point_equation_candidate(target))
 
@@ -458,6 +466,32 @@ def _validate_diagonal_construction(
     ]
 
 
+def _validate_substitution_representability(
+    target: FormalConfidenceTarget,
+) -> list[FormalConfidenceValidation]:
+    subject = f"{target.target_id}.substitution_representability"
+    target_path = target.configuration["substitution_representability"]
+    try:
+        witnesses = load_substitution_representability_targets(target_path)
+        report = validate_substitution_representability_targets(witnesses)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return [
+            _rejected(
+                subject,
+                "substitution representability rejected: " + str(exc),
+            )
+        ]
+    if report.accepted:
+        return [_accepted(subject, "substitution representability accepted")]
+    return [
+        _rejected(
+            subject,
+            "substitution representability rejected: "
+            + _joined_or_none(report.failed_subjects),
+        )
+    ]
+
+
 def _validate_fixed_point_equation_candidate(
     target: FormalConfidenceTarget,
 ) -> list[FormalConfidenceValidation]:
@@ -519,6 +553,8 @@ def _failed_subject_for_result(subject: str) -> str:
         return "target-consistency-level-target"
     if subject.endswith(".diagonal_construction"):
         return "target-diagonal-construction"
+    if subject.endswith(".substitution_representability"):
+        return "target-substitution-representability"
     if subject.endswith(".fixed_point_equation_candidate"):
         return "target-fixed-point-equation-candidate"
     if subject.endswith(".fixed_point_obstruction"):

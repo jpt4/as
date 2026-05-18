@@ -5,7 +5,9 @@ Status: checked meta-level graph witness, not a proof, 2026-05-18.
 ADR-0244 adds `claims/substitution_representability_targets.json` and
 `autarkic_systems/substitution_representability.py`. It records the first
 checked graph point for the `substitution_code` diagonal route introduced by
-ADR-0242.
+ADR-0242. ADR-0245 makes this witness a structured dependency of the aggregate
+formal-confidence target, so formal-confidence validation fails closed if this
+surface drifts.
 
 ## Purpose
 

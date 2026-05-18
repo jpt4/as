@@ -25,6 +25,9 @@ CONSISTENCY_LEVEL_TARGETS = Path("claims/consistency_level_targets.json")
 DEDUCTION_APPARATUS_TARGETS = Path("claims/deduction_apparatus_targets.json")
 FIXED_POINT_TARGETS = Path("claims/fixed_point_targets.json")
 DIAGONAL_CONSTRUCTION_TARGETS = Path("claims/diagonal_construction_targets.json")
+SUBSTITUTION_REPRESENTABILITY_TARGETS = Path(
+    "claims/substitution_representability_targets.json"
+)
 FIXED_POINT_EQUATION_CANDIDATES = Path("claims/fixed_point_equation_candidates.json")
 FIXED_POINT_OBSTRUCTIONS = Path("claims/fixed_point_obstructions.json")
 
@@ -49,6 +52,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
                 "consistency_level_target",
                 "self_reference",
                 "diagonal_construction",
+                "substitution_representability",
                 "fixed_point_equation_candidate",
                 "fixed_point_obstruction",
                 "substrate_bridge",
@@ -100,6 +104,10 @@ class FormalConfidenceTargetTests(unittest.TestCase):
             str(DIAGONAL_CONSTRUCTION_TARGETS),
         )
         self.assertEqual(
+            target.configuration["substitution_representability"],
+            str(SUBSTITUTION_REPRESENTABILITY_TARGETS),
+        )
+        self.assertEqual(
             target.configuration["fixed_point_equation_candidate"],
             str(FIXED_POINT_EQUATION_CANDIDATES),
         )
@@ -138,6 +146,13 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertTrue(
             any(
                 result.subject == "AS-FORMAL-CONFIDENCE-TARGET-001.diagonal_construction"
+                and result.accepted
+                for result in report.results
+            )
+        )
+        self.assertTrue(
+            any(
+                result.subject == "AS-FORMAL-CONFIDENCE-TARGET-001.substitution_representability"
                 and result.accepted
                 for result in report.results
             )
@@ -217,6 +232,13 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
+                result["subject"].endswith(".substitution_representability")
+                and result["accepted"]
+                for result in payload["results"]
+            )
+        )
+        self.assertTrue(
+            any(
                 result["subject"].endswith(".fixed_point_equation_candidate")
                 and result["accepted"]
                 for result in payload["results"]
@@ -247,6 +269,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertIn("Willard anchors:", text)
         self.assertIn("consistency-level target accepted", text)
         self.assertIn("diagonal construction accepted", text)
+        self.assertIn("substitution representability accepted", text)
         self.assertIn("fixed-point equation candidate accepted", text)
         self.assertIn("fixed-point obstruction accepted", text)
         self.assertNotIn("FAIL", text)
@@ -353,6 +376,24 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertIn("target-diagonal-construction", report.failed_subjects)
         self.assertTrue(
             any("diagonal construction rejected" in result.detail for result in report.results)
+        )
+
+    def test_missing_substitution_representability_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target_path = Path(tmp) / "targets.json"
+            data = json.loads(TARGETS.read_text(encoding="utf-8"))
+            data["targets"][0]["configuration"]["substitution_representability"] = (
+                "claims/missing_substitution_representability_targets.json"
+            )
+            target_path.write_text(json.dumps(data), encoding="utf-8")
+            manifest = load_formal_confidence_targets(target_path)
+
+            report = validate_formal_confidence_targets(manifest, WILLARD_MAP)
+
+        self.assertFalse(report.accepted)
+        self.assertIn("target-substitution-representability", report.failed_subjects)
+        self.assertTrue(
+            any("substitution representability rejected" in result.detail for result in report.results)
         )
 
     def test_blocked_target_without_blockers_is_rejected(self):

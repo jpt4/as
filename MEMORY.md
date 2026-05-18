@@ -153,6 +153,10 @@
   output is closed with code length `296`, and this still does not prove a
   delta0 substitution graph formula, substitution representability, a diagonal
   lemma, fixed-point equation, or self-consistency.
+- ADR-0245 makes `claims/substitution_representability_targets.json` a
+  structured fail-closed dependency of `autarkic_systems.formal_confidence`;
+  missing or invalid substitution witness references now reject
+  formal-confidence validation as `target-substitution-representability`.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

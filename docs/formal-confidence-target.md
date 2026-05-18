@@ -3,8 +3,8 @@
 Status: checked target boundary with arithmetic syntax, codebook, substitution,
 consistency-level target, deduction-apparatus target, fixed-point target, and
 quotation sequence/term dependencies, plus validated consistency-level,
-diagonal-construction, fixed-point equation candidate, and obstruction
-dependencies, 2026-05-18.
+diagonal-construction, substitution-representability witness, fixed-point
+equation candidate, and obstruction dependencies, 2026-05-18.
 
 ADR-0224 adds `claims/formal_confidence_targets.json` and
 `autarkic_systems/formal_confidence.py`. The target records what AS would need
@@ -60,7 +60,9 @@ construction. ADR-0238 makes that obstruction surface a structured,
 fail-closed dependency of the aggregate formal-confidence validator. ADR-0242
 adds the first checked substitution-code diagonal seed, and ADR-0243 makes
 that diagonal seed a structured, fail-closed dependency of the aggregate
-formal-confidence validator.
+formal-confidence validator. ADR-0244 adds the first checked substitution
+graph witness for that seed, and ADR-0245 makes that witness a structured,
+fail-closed dependency of the aggregate formal-confidence validator.
 
 ## Current Target
 
@@ -86,12 +88,14 @@ fixed-point target in `claims/fixed_point_targets.json`, which now references
 `language/formal_quotation_term_examples.json`. The consistency-level target is
 recorded and validated through `claims/consistency_level_targets.json`; the
 diagonal seed is recorded and validated through
-`claims/diagonal_construction_targets.json`; the naive equation candidate is
-recorded and validated through `claims/fixed_point_equation_candidates.json`.
-The checked obstruction in `claims/fixed_point_obstructions.json` is also
-validated as an aggregate dependency and records why that naive direct
-embedding route is closed. The target also records the remaining blocker:
-`fixed-point-construction`.
+`claims/diagonal_construction_targets.json`; the substitution witness is
+recorded and validated through
+`claims/substitution_representability_targets.json`; the naive equation
+candidate is recorded and validated through
+`claims/fixed_point_equation_candidates.json`. The checked obstruction in
+`claims/fixed_point_obstructions.json` is also validated as an aggregate
+dependency and records why that naive direct embedding route is closed. The
+target also records the remaining blocker: `fixed-point-construction`.
 
 ## Run
 
@@ -114,6 +118,8 @@ python -m autarkic_systems.formal_quotation_term
 python -m autarkic_systems.formal_quotation_term --format json
 python -m autarkic_systems.diagonal_construction
 python -m autarkic_systems.diagonal_construction --format json
+python -m autarkic_systems.substitution_representability
+python -m autarkic_systems.substitution_representability --format json
 python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.fixed_point_equation --format json
 python -m autarkic_systems.fixed_point_obstruction
@@ -131,6 +137,7 @@ The validator checks that:
 - every required configuration field is present and non-blank;
 - the referenced consistency-level target validates;
 - the referenced diagonal-construction target validates;
+- the referenced substitution-representability witness validates;
 - the referenced fixed-point equation candidate surface validates;
 - the referenced fixed-point obstruction surface validates;
 - blocked targets name blockers; and

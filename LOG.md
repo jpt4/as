@@ -5282,3 +5282,24 @@
   the fixed-point blocker: no delta0 graph formula, substitution
   representability proof, diagonal lemma, fixed-point equation proof, or
   self-consistency theorem is claimed.
+
+## 2026-05-18 - Formal Confidence Substitution Witness Dependency
+
+- Added ADR-0245 to make the checked substitution-representability witness a
+  structured dependency of the aggregate formal-confidence target.
+- Added red tests before implementation. The red run failed because
+  `substitution_representability` was not a required configuration field, the
+  aggregate report did not expose an accepted substitution-representability
+  result, and missing substitution witness manifests did not reject
+  formal-confidence validation.
+- Added `substitution_representability` to
+  `claims/formal_confidence_targets.json` and required configuration fields.
+- Updated `autarkic_systems.formal_confidence` to load and validate the
+  referenced substitution-representability target, report `substitution
+  representability accepted` on the healthy path, and fail closed as
+  `target-substitution-representability` when the dependency is missing or
+  invalid.
+- Focused formal-confidence and project-status tests passed 103 tests. Live
+  formal-confidence text/JSON output reported the substitution-representability
+  dependency accepted, while the formal-confidence target remained blocked on
+  `fixed-point-construction`.

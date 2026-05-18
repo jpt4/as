@@ -5105,3 +5105,27 @@ Status: accepted in
 `docs/adr/0244-substitution-representability-witness.md`. Implemented in
 `autarkic_systems/substitution_representability.py`, with tests in
 `tests/test_substitution_representability.py`.
+
+## ADR-0245: Formal Confidence Substitution Witness Dependency
+
+Goal: make the substitution-representability witness a checked dependency of
+the aggregate formal-confidence target instead of a standalone surface.
+
+Deliverables:
+
+- `claims/formal_confidence_targets.json` with a structured
+  `substitution_representability` configuration field;
+- `autarkic_systems.formal_confidence` validation that loads and checks the
+  referenced substitution witness surface;
+- accepted text/JSON report output for the healthy checked witness;
+- fail-closed rejection for missing or invalid substitution witness references,
+  reported as `target-substitution-representability`; and
+- no delta0 substitution graph formula, substitution representability proof,
+  diagonal lemma, fixed-point equation proof, arithmetized proof predicate,
+  theorem prover, runtime behavior, command semantics, evidence bundle, or
+  GitHub submission logic changes.
+
+Status: accepted in
+`docs/adr/0245-formal-confidence-substitution-witness-dependency.md`.
+Implemented in `autarkic_systems/formal_confidence.py`, with tests in
+`tests/test_formal_confidence_target.py`.
