@@ -354,3 +354,5 @@
 - A live cross-link is still weak evidence if the target cannot be consumed as
   the artifact type the report names. Check the target's basic data shape
   before rendering it as an operator trail.
+- When a source narrows only one runtime surface, record that narrower fact
+  without pretending it resolves the whole command-token frontier.

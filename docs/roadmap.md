@@ -2425,3 +2425,26 @@ Status: accepted in
 `docs/adr/0126-source-status-cross-link-json-targets.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0127: Standard-Signal Self-Mailbox Exception Evidence
+
+Goal: promote the PRC formal-model self-mailbox exception into the
+standard-signal command-semantics source-status artifact.
+
+Deliverables:
+
+- a `formal_model_self_mailbox_exception` witness in
+  `sources/standard_signal_command_semantics_status.json`;
+- tests that read the PRC formal model and verify the self-mailbox exception
+  anchor;
+- human-facing source-status documentation that explains the narrowed
+  self-target-surface question;
+- unchanged Universal Cell runtime behavior;
+- unchanged project status JSON at `schema_version: 8`; and
+- focused standard-signal source-status tests.
+
+Status: accepted in
+`docs/adr/0127-standard-signal-self-mailbox-exception.md`. Implemented in
+`sources/standard_signal_command_semantics_status.json` and
+`docs/standard-signal-command-semantics-status.md`, with tests in
+`tests/test_standard_signal_command_semantics_status.py`.

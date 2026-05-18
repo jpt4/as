@@ -2820,3 +2820,20 @@
 - Updated `autarkic_systems.project_status` so invalid JSON and non-object JSON
   cross-link targets reject the owning source-status record as
   `source-status-schema`.
+
+## 2026-05-18 - Standard-Signal Self-Mailbox Exception Evidence
+
+- Added ADR-0127 to promote the PRC formal-model self-mailbox exception into
+  the standard-signal command-semantics source-status artifact.
+- Updated `tests/test_standard_signal_command_semantics_status.py` before
+  implementation. The red run executed 6 tests and failed because
+  `formal_model_self_mailbox_exception` was absent.
+- Updated `sources/standard_signal_command_semantics_status.json` and
+  `docs/standard-signal-command-semantics-status.md` to record
+  `/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt` lines
+  207-218 as evidence that stem self-mailbox `standard-signal` must not be
+  treated as ordinary binary-input standard-signal behavior by default.
+- Verification passed: focused standard-signal, write-buffer, and
+  project-status tests ran 54 tests; JSON formatting, `py_compile`, and
+  `git diff --check` passed; project status text and JSON remained accepted at
+  `schema_version: 8`; and `python -m unittest discover` passed 588 tests.

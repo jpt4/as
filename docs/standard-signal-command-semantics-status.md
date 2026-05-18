@@ -17,6 +17,13 @@ not define whether that token should replay ordinary binary-input behavior,
 execute from recipient command-message input, execute from self-mailbox state,
 or remain unsupported.
 
+The formal-model prose narrows one self-target case: it says wire, proc, and
+stem cells all perform productive behavior on standard signals "unless sent to
+the self-mailbox of a stem cell." AS therefore must not treat a stem
+self-mailbox `standard-signal` command as ordinary binary-input
+standard-signal behavior without a later source-backed ADR selecting the exact
+preserve, clear/no-op, or execution rule.
+
 The restored legacy sketches do not supply a stable execution rule:
 
 - RAA excludes `standard-signal` from `special-messages`, treats ordinary
@@ -48,7 +55,9 @@ signals to a process-buffer command list; this strengthens the blocker rather
 than resolving command-token semantics. ADR-0063 reviews `practice/asmsim.scm`,
 which uses `tar+sic?` and code-shape predicates rather than a named
 `standard-signal` command token. ADR-0064 records the official PRC TLA files
-as incomplete and missing `standard-signal` command-token semantics.
+as incomplete and missing `standard-signal` command-token semantics. ADR-0127
+records the formal-model self-mailbox exception as a narrowed
+self-target-surface source anchor without changing runtime behavior.
 
 ## Verification
 

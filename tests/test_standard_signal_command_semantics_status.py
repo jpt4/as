@@ -48,6 +48,24 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(formal["command_table_offset"], 0)
         self.assertIn("binary-input behavior", formal["gap"])
 
+    def test_formal_model_self_mailbox_exception_is_recorded(self):
+        exception = self.status["formal_model_self_mailbox_exception"]
+        formal_text = FORMAL_MODEL.read_text(encoding="utf-8")
+
+        self.assertEqual(Path(exception["local_witness"]), FORMAL_MODEL)
+        self.assertIn("lines 207-218", exception["locus"])
+        self.assertIn("self-mailbox of a stem cell", formal_text)
+        self.assertEqual(
+            exception["narrowed_question"],
+            "self-target-surface",
+        )
+        self.assertEqual(
+            exception["decision"],
+            "do-not-treat-self-mailbox-standard-signal-as-binary-input",
+        )
+        self.assertIn("self-mailbox", exception["summary"])
+        self.assertIn("ordinary binary-input", exception["summary"])
+
     def test_legacy_witnesses_exclude_standard_signal_from_special_messages(self):
         witnesses = {
             witness["witness_id"]: witness

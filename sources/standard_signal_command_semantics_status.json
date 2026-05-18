@@ -19,6 +19,13 @@
     "command_table_offset": 0,
     "gap": "The formal model gives binary-input behavior for ordinary standard signals and also names standard-signal at command offset 0, but it does not define whether that command token should replay ordinary binary-input behavior, execute on recipient command-message inputs, execute from self mailbox state, or preserve the current command boundary."
   },
+  "formal_model_self_mailbox_exception": {
+    "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
+    "locus": "lines 207-218",
+    "narrowed_question": "self-target-surface",
+    "decision": "do-not-treat-self-mailbox-standard-signal-as-binary-input",
+    "summary": "The formal model says wire, proc, and stem cells perform productive behavior on standard signals unless the standard signal is sent to the self-mailbox of a stem cell. This blocks treating a stem self-mailbox standard-signal command as ordinary binary-input standard-signal behavior."
+  },
   "legacy_standard_signal_witnesses": [
     {
       "witness_id": "LEGACY-RAA-STANDARD-SIGNAL",

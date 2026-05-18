@@ -549,3 +549,8 @@
 - ADR-0126 makes those project-status source-status cross-links fail closed
   when the target file does not contain parseable top-level JSON object
   content, preserving project status `schema_version: 8`.
+- ADR-0127 adds the PRC formal-model self-mailbox exception to
+  `sources/standard_signal_command_semantics_status.json`: ordinary productive
+  standard-signal behavior must not be applied by default to stem
+  self-mailbox `standard-signal` command tokens, so runtime behavior remains
+  blocked pending a later preserve/clear/no-op semantics decision.
