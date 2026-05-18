@@ -45,6 +45,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
                 "deduction_method",
                 "proof_code_encoding",
                 "consistency_notion",
+                "consistency_level_target",
                 "self_reference",
                 "fixed_point_equation_candidate",
                 "fixed_point_obstruction",
@@ -84,6 +85,10 @@ class FormalConfidenceTargetTests(unittest.TestCase):
             str(CONSISTENCY_LEVEL_TARGETS),
             target.configuration["consistency_notion"],
         )
+        self.assertEqual(
+            target.configuration["consistency_level_target"],
+            str(CONSISTENCY_LEVEL_TARGETS),
+        )
         self.assertIn(
             str(FIXED_POINT_TARGETS),
             target.configuration["self_reference"],
@@ -113,6 +118,13 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertTrue(
             any(
                 result.subject == "AS-FORMAL-CONFIDENCE-TARGET-001.willard_anchors"
+                and result.accepted
+                for result in report.results
+            )
+        )
+        self.assertTrue(
+            any(
+                result.subject == "AS-FORMAL-CONFIDENCE-TARGET-001.consistency_level_target"
                 and result.accepted
                 for result in report.results
             )
@@ -178,6 +190,13 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
+                result["subject"].endswith(".consistency_level_target")
+                and result["accepted"]
+                for result in payload["results"]
+            )
+        )
+        self.assertTrue(
+            any(
                 result["subject"].endswith(".fixed_point_equation_candidate")
                 and result["accepted"]
                 for result in payload["results"]
@@ -206,6 +225,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertNotIn("deduction-apparatus-selection", text)
         self.assertNotIn("self-reference-fixed-point", text)
         self.assertIn("Willard anchors:", text)
+        self.assertIn("consistency-level target accepted", text)
         self.assertIn("fixed-point equation candidate accepted", text)
         self.assertIn("fixed-point obstruction accepted", text)
         self.assertNotIn("FAIL", text)
@@ -276,6 +296,24 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertIn("target-fixed-point-obstruction", report.failed_subjects)
         self.assertTrue(
             any("fixed-point obstruction rejected" in result.detail for result in report.results)
+        )
+
+    def test_missing_consistency_level_target_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target_path = Path(tmp) / "targets.json"
+            data = json.loads(TARGETS.read_text(encoding="utf-8"))
+            data["targets"][0]["configuration"]["consistency_level_target"] = (
+                "claims/missing_consistency_level_targets.json"
+            )
+            target_path.write_text(json.dumps(data), encoding="utf-8")
+            manifest = load_formal_confidence_targets(target_path)
+
+            report = validate_formal_confidence_targets(manifest, WILLARD_MAP)
+
+        self.assertFalse(report.accepted)
+        self.assertIn("target-consistency-level-target", report.failed_subjects)
+        self.assertTrue(
+            any("consistency-level target rejected" in result.detail for result in report.results)
         )
 
     def test_blocked_target_without_blockers_is_rejected(self):

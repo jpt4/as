@@ -2,8 +2,8 @@
 
 Status: checked target boundary with arithmetic syntax, codebook, substitution,
 consistency-level target, deduction-apparatus target, fixed-point target, and
-quotation sequence/term dependencies, plus validated fixed-point equation
-candidate and obstruction dependencies, 2026-05-18.
+quotation sequence/term dependencies, plus validated consistency-level,
+fixed-point equation candidate, and obstruction dependencies, 2026-05-18.
 
 ADR-0224 adds `claims/formal_confidence_targets.json` and
 `autarkic_systems/formal_confidence.py`. The target records what AS would need
@@ -38,8 +38,9 @@ examples now validate against those codes. ADR-0229 adds
 `claims/consistency_level_targets.json`, so Level-1 consistency is selected as
 the first target notion. ADR-0239 adds `language/formal_complement_examples.json`,
 so that consistency target now validates a checked `pi1`/`sigma1` complement
-surface. ADR-0230 adds
-`claims/deduction_apparatus_targets.json`, so the AS-local predicate-result
+surface. ADR-0240 makes that consistency-level target a structured,
+fail-closed dependency of the aggregate formal-confidence validator. ADR-0230
+adds `claims/deduction_apparatus_targets.json`, so the AS-local predicate-result
 proof-certificate checker is selected as the current deduction-apparatus
 target. ADR-0231 adds `claims/fixed_point_targets.json`, so a first `pi1`
 fixed-point target template and checked substitution instance are selected.
@@ -78,12 +79,13 @@ object languages, `language/formal_arithmetic_language.json`,
 certificates through `claims/deduction_apparatus_targets.json`, plus the
 fixed-point target in `claims/fixed_point_targets.json`, which now references
 `language/formal_quotation_sequence_examples.json` and
-`language/formal_quotation_term_examples.json`; the naive equation candidate
-is recorded and validated through `claims/fixed_point_equation_candidates.json`.
-The checked obstruction in `claims/fixed_point_obstructions.json` is also
-validated as an aggregate dependency and records why that naive direct
-embedding route is closed. The target also records the remaining blocker:
-`fixed-point-construction`.
+`language/formal_quotation_term_examples.json`. The consistency-level target is
+recorded and validated through `claims/consistency_level_targets.json`; the
+naive equation candidate is recorded and validated through
+`claims/fixed_point_equation_candidates.json`. The checked obstruction in
+`claims/fixed_point_obstructions.json` is also validated as an aggregate
+dependency and records why that naive direct embedding route is closed. The
+target also records the remaining blocker: `fixed-point-construction`.
 
 ## Run
 
@@ -119,6 +121,7 @@ The validator checks that:
 - referenced Willard anchors exist;
 - required Willard anchors are present;
 - every required configuration field is present and non-blank;
+- the referenced consistency-level target validates;
 - the referenced fixed-point equation candidate surface validates;
 - the referenced fixed-point obstruction surface validates;
 - blocked targets name blockers; and

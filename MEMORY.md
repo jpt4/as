@@ -86,6 +86,10 @@
   `autarkic_systems/formal_complement.py`, validating a checked `pi1` to
   `sigma1` and `sigma1` to `pi1` sentence-wrapper complement surface without
   proving a complement theorem or simplifying double negation.
+- ADR-0240 makes `claims/consistency_level_targets.json` a structured
+  fail-closed dependency of `autarkic_systems.formal_confidence`; missing or
+  invalid consistency-level references now reject formal-confidence validation
+  as `target-consistency-level-target`.
 - `AS-FORMAL-CONFIDENCE-TARGET-001` now also points at the consistency-level
   target and no longer lists `consistency-level-selection` as a blocker. It
   remains blocked on self-reference-fixed-point and

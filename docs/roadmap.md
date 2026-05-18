@@ -4984,3 +4984,27 @@ Status: accepted in `docs/adr/0239-formal-complement-surface.md`.
 Implemented in `autarkic_systems/formal_complement.py`, with tests in
 `tests/test_formal_complement.py` and
 `tests/test_consistency_level_target.py`.
+
+## ADR-0240: Formal Confidence Consistency Dependency
+
+Goal: make the consistency-level target a checked dependency of the aggregate
+formal-confidence target instead of a text-only reference.
+
+Deliverables:
+
+- `claims/formal_confidence_targets.json` with a structured
+  `consistency_level_target` configuration field;
+- `autarkic_systems.formal_confidence` validation that loads and checks the
+  referenced consistency-level target;
+- accepted text/JSON report output for the healthy checked consistency-level
+  target;
+- fail-closed rejection for missing or invalid consistency-level references,
+  reported as `target-consistency-level-target`; and
+- no consistency theorem proof, fixed-point construction, fixed-point equation
+  proof, arithmetized proof predicate, theorem prover, runtime behavior,
+  command semantics, evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in
+`docs/adr/0240-formal-confidence-consistency-dependency.md`. Implemented in
+`autarkic_systems/formal_confidence.py`, with tests in
+`tests/test_formal_confidence_target.py`.

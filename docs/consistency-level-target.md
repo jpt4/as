@@ -14,7 +14,10 @@ ADR-0229 chooses Level-1 consistency as the first AS target notion and ties
 that choice to the existing formal arithmetic language, codebook, and
 substitution examples. ADR-0239 adds
 `language/formal_complement_examples.json`, so the target now also validates a
-checked `pi1`/`sigma1` complement surface.
+checked `pi1`/`sigma1` complement surface. ADR-0240 makes this target a
+structured dependency of the aggregate formal-confidence validator, so the
+formal-confidence boundary fails closed if this consistency-level target or
+its complement dependency drifts.
 
 The target currently records:
 

@@ -33,7 +33,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/formal-confidence-target.md` records the first checked
   formal-confidence target boundary, explicitly marking current AS
   self-consistency claims as blocked pending fixed-point construction while
-  validating the current fixed-point equation candidate dependency.
+  validating the current consistency-level, fixed-point equation candidate,
+  and fixed-point obstruction dependencies.
 - `docs/formal-arithmetic-language.md` records the first checked syntax-only
   Type-NS arithmetic language surface for the formal-confidence path.
 - `docs/formal-codebook.md` records the first checked proof-code encoding
@@ -399,8 +400,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/formal_confidence.py` validates the first
   formal-confidence target manifest against the Willard definition map, keeping
   the current AS self-consistency claim explicitly blocked until fixed-point
-  construction exists and fail-closed over the current fixed-point equation
-  candidate and obstruction dependencies.
+  construction exists and fail-closed over the current consistency-level,
+  fixed-point equation candidate, and obstruction dependencies.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -429,7 +430,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   `AS-FORMAL-CONFIDENCE-TARGET-001`, a blocked Willard-style
   formal-confidence target over the current AS proof/evidence surface and the
   first checked syntax-only arithmetic language, proof-code, substitution, and
-  consistency-level, deduction-apparatus, and fixed-point target artifacts.
+  consistency-level, deduction-apparatus, and fixed-point target artifacts,
+  with structured dependency checks for the consistency-level target, fixed
+  point equation candidate, and fixed-point obstruction.
 - `python -m autarkic_systems.formal_arithmetic --format json` validates
   `language/formal_arithmetic_language.json`, including required Willard
   anchors, the Type-NS profile, `delta0`, `pi1`, `sigma1`, and the
@@ -477,9 +480,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   quotation-term embedding.
 - `python -m autarkic_systems.formal_confidence --format json` validates that
   target against `sources/willard_definition_map.json`, including required
-  Willard anchors, required configuration fields, the fixed-point equation
-  candidate and obstruction dependencies, explicit blockers, and the next AS
-  action.
+  Willard anchors, required configuration fields, the consistency-level target,
+  fixed-point equation candidate, and obstruction dependencies, explicit
+  blockers, and the next AS action.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init/write-buffer delivery and rejected
   standard-signal delivery.

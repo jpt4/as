@@ -15,6 +15,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from autarkic_systems.consistency_level import (
+    load_consistency_level_targets,
+    validate_consistency_level_targets,
+)
 from autarkic_systems.fixed_point_equation import (
     load_fixed_point_equation_candidates,
     validate_fixed_point_equation_candidates,
@@ -36,6 +40,7 @@ REQUIRED_CONFIGURATION_FIELDS = (
     "deduction_method",
     "proof_code_encoding",
     "consistency_notion",
+    "consistency_level_target",
     "self_reference",
     "fixed_point_equation_candidate",
     "fixed_point_obstruction",
@@ -360,6 +365,9 @@ def _validate_target(
             )
         )
 
+    if "consistency_level_target" in target.configuration:
+        results.extend(_validate_consistency_level_target(target))
+
     if "fixed_point_equation_candidate" in target.configuration:
         results.extend(_validate_fixed_point_equation_candidate(target))
 
@@ -388,6 +396,32 @@ def _validate_target(
         )
 
     return results
+
+
+def _validate_consistency_level_target(
+    target: FormalConfidenceTarget,
+) -> list[FormalConfidenceValidation]:
+    subject = f"{target.target_id}.consistency_level_target"
+    target_path = target.configuration["consistency_level_target"]
+    try:
+        consistency_targets = load_consistency_level_targets(target_path)
+        report = validate_consistency_level_targets(consistency_targets)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return [
+            _rejected(
+                subject,
+                "consistency-level target rejected: " + str(exc),
+            )
+        ]
+    if report.accepted:
+        return [_accepted(subject, "consistency-level target accepted")]
+    return [
+        _rejected(
+            subject,
+            "consistency-level target rejected: "
+            + _joined_or_none(report.failed_subjects),
+        )
+    ]
 
 
 def _validate_fixed_point_equation_candidate(
@@ -447,6 +481,8 @@ def _failed_subject_for_result(subject: str) -> str:
         return "target-willard-anchor"
     if subject.endswith(".configuration"):
         return "target-configuration"
+    if subject.endswith(".consistency_level_target"):
+        return "target-consistency-level-target"
     if subject.endswith(".fixed_point_equation_candidate"):
         return "target-fixed-point-equation-candidate"
     if subject.endswith(".fixed_point_obstruction"):
