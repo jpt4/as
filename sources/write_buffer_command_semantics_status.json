@@ -86,6 +86,20 @@
       "summary": "Decide whether write-buffer execution preserves the appended buffer, clears it like SEMSIM's stem wrapper, or clears only input/mail state."
     }
   ],
+  "resolution_question_evidence": [
+    {
+      "question_id": "recipient-vs-stem-surface",
+      "evidence": "The formal model names write-buffer commands in generic special-message and stem loci, while the legacy witnesses expose different special-message, stem, and self-mailbox surfaces; no reviewed source selects one AS execution surface."
+    },
+    {
+      "question_id": "buffer-full-boundary",
+      "evidence": "RAA guards write-buffer append with buffer-full? while SEMSIM and FSMSIM expose no matching buffer-full guard."
+    },
+    {
+      "question_id": "post-append-clearing",
+      "evidence": "RAA preserves the appended buffer, SEMSIM's stem wrapper clears the buffer after append, and FSMSIM clears self-mailbox and input channels without a matching buffer clear."
+    }
+  ],
   "resolved_resolution_questions": [
     {
       "question_id": "standard-signal-interaction",

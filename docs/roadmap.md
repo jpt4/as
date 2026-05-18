@@ -2799,3 +2799,26 @@ in `sources/standard_signal_command_semantics_status.json` and
 `docs/standard-signal-command-semantics-status.md`, with tests in
 `tests/test_standard_signal_command_semantics_status.py` and
 `tests/test_project_status_report.py`.
+
+## ADR-0144: Resolution Question Evidence Surface
+
+Goal: expose the source conflict or missing authority behind each unresolved
+command-token blocker from the first project diagnostic command.
+
+Deliverables:
+
+- project status JSON `schema_version: 14`;
+- `resolution_question_evidence` arrays on accepted source-status entries;
+- default text `Resolution question evidence:` output grouped by command;
+- fail-closed source-status schema validation for malformed evidence metadata;
+- standard-signal and write-buffer source-status evidence for each unresolved
+  question;
+- unchanged Universal Cell runtime behavior; and
+- focused project-status tests covering JSON, text, and malformed evidence
+  fixtures.
+
+Status: accepted in `docs/adr/0144-resolution-question-evidence.md`.
+Implemented in `autarkic_systems/project_status.py`,
+`sources/standard_signal_command_semantics_status.json`, and
+`sources/write_buffer_command_semantics_status.json`, with tests in
+`tests/test_project_status_report.py`.

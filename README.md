@@ -290,7 +290,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   examples, claim/proof and language failed subjects when present, the
   standard-signal and write-buffer blocked runtime surfaces, source-status AS
   boundaries, the resolution-question IDs and summaries that define the next
-  source-backed decision work, resolved question decisions that should not be
+  source-backed decision work, the source evidence explaining why unresolved
+  questions remain blocked, resolved question decisions that should not be
   reopened without new evidence, and the source-status cross-links behind the
   blocked frontier. Schema version `2` attributes
   blocked commands to each
@@ -313,7 +314,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   version `11` adds transition and chain language summaries to JSON/text.
   Schema version `12` adds base transition claim and proof-certificate
   summaries to JSON/text. Schema version `13` adds the transition-chain claim
-  summary to JSON/text.
+  summary to JSON/text. Schema version `14` adds
+  `resolution_question_evidence` to accepted source-status entries and renders
+  a `Resolution question evidence:` text section.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

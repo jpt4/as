@@ -403,3 +403,6 @@
 - Promote settled negative equivalences into status alongside open blockers.
   "This is not ordinary binary-input behavior" is useful even before the
   project chooses the positive command-token rule.
+- Unresolved blocker IDs need their evidence beside them. A first diagnostic
+  report should say what source conflict keeps a question open, not merely
+  name the open question.

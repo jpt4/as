@@ -21,7 +21,7 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
-PROJECT_STATUS_SCHEMA_VERSION = 13
+PROJECT_STATUS_SCHEMA_VERSION = 14
 BLOCKED_RUNTIME_SURFACES = [
     "recipient-command-message",
     "self-mailbox-command",
@@ -209,6 +209,37 @@ STANDARD_SIGNAL_RESOLUTION_QUESTIONS = [
         ),
     },
 ]
+STANDARD_SIGNAL_RESOLUTION_QUESTION_EVIDENCE = [
+    {
+        "question_id": "command-token-vs-binary-input",
+        "evidence": (
+            "The formal model names standard-signal at command offset 0 while "
+            "also defining ordinary binary-input standard-signal behavior; "
+            "RAA, SEMSIM, and FSMSIM exclude standard-signal from "
+            "special-message dispatch and treat ordinary standard input "
+            "separately."
+        ),
+    },
+    {
+        "question_id": "recipient-surface",
+        "evidence": (
+            "The formal special-message path is generic, but the reviewed "
+            "legacy special-message lists exclude standard-signal and no "
+            "reviewed source defines delivered recipient command-message "
+            "standard-signal execution."
+        ),
+    },
+    {
+        "question_id": "self-target-surface",
+        "evidence": (
+            "The formal model excludes standard signals sent to the "
+            "self-mailbox of a stem cell from ordinary productive behavior, "
+            "and no reviewed source selects preserve, clear/no-op, or "
+            "execution behavior for self-target standard-signal command "
+            "tokens."
+        ),
+    },
+]
 STANDARD_SIGNAL_RESOLVED_QUESTIONS = [
     {
         "question_id": "command-table-offset",
@@ -269,6 +300,32 @@ WRITE_BUFFER_RESOLUTION_QUESTIONS = [
             "Decide whether write-buffer execution preserves the appended "
             "buffer, clears it like SEMSIM's stem wrapper, or clears only "
             "input/mail state."
+        ),
+    },
+]
+WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE = [
+    {
+        "question_id": "recipient-vs-stem-surface",
+        "evidence": (
+            "The formal model names write-buffer commands in generic "
+            "special-message and stem loci, while the legacy witnesses expose "
+            "different special-message, stem, and self-mailbox surfaces; no "
+            "reviewed source selects one AS execution surface."
+        ),
+    },
+    {
+        "question_id": "buffer-full-boundary",
+        "evidence": (
+            "RAA guards write-buffer append with buffer-full? while SEMSIM "
+            "and FSMSIM expose no matching buffer-full guard."
+        ),
+    },
+    {
+        "question_id": "post-append-clearing",
+        "evidence": (
+            "RAA preserves the appended buffer, SEMSIM's stem wrapper clears "
+            "the buffer after append, and FSMSIM clears self-mailbox and "
+            "input channels without a matching buffer clear."
         ),
     },
 ]
@@ -496,6 +553,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 [],
                 STANDARD_SIGNAL_RESOLVED_QUESTIONS,
                 WRITE_BUFFER_RESOLVED_QUESTIONS,
+            ],
+        )
+        self.assertEqual(
+            [
+                item["resolution_question_evidence"]
+                for item in report["frontier"]["source_statuses"]
+            ],
+            [
+                [],
+                STANDARD_SIGNAL_RESOLUTION_QUESTION_EVIDENCE,
+                WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE,
             ],
         )
         self.assertEqual(
@@ -784,6 +852,29 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
 
+    def test_text_status_names_resolution_question_evidence(self):
+        report = build_project_status_report()
+
+        text = format_project_status_report(report)
+
+        self.assertIn("Resolution question evidence:", text)
+        self.assertIn("standard-signal:", text)
+        self.assertIn(
+            "command-token-vs-binary-input: The formal model names "
+            "standard-signal at command offset 0 while also defining ordinary "
+            "binary-input standard-signal behavior; RAA, SEMSIM, and FSMSIM "
+            "exclude standard-signal from special-message dispatch and treat "
+            "ordinary standard input separately.",
+            text,
+        )
+        self.assertIn("write-buf-zero, write-buf-one:", text)
+        self.assertIn(
+            "buffer-full-boundary: RAA guards write-buffer append with "
+            "buffer-full? while SEMSIM and FSMSIM expose no matching "
+            "buffer-full guard.",
+            text,
+        )
+
     def test_text_status_names_resolved_resolution_questions(self):
         report = build_project_status_report()
 
@@ -1022,6 +1113,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 [],
                 STANDARD_SIGNAL_RESOLVED_QUESTIONS,
                 WRITE_BUFFER_RESOLVED_QUESTIONS,
+            ],
+        )
+        self.assertEqual(
+            [
+                item["resolution_question_evidence"]
+                for item in payload["frontier"]["source_statuses"]
+            ],
+            [
+                [],
+                STANDARD_SIGNAL_RESOLUTION_QUESTION_EVIDENCE,
+                WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE,
             ],
         )
         self.assertEqual(
@@ -1585,6 +1687,69 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn(
             "question_id",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_scalar_resolution_question_evidence_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "scalar_resolution_question_evidence.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "resolution_question_evidence": "source conflict",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "resolution_question_evidence",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_blank_resolution_question_evidence_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "blank_resolution_question_evidence.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "resolution_question_evidence": [
+                        {
+                            "question_id": "recipient-surface",
+                            "evidence": " ",
+                        }
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "evidence",
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 

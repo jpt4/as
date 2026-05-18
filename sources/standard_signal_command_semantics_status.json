@@ -83,6 +83,20 @@
       "summary": "Decide whether self-mailbox and self-target command-buffer standard-signal tokens should execute, be preserved, or be reported as unsupported."
     }
   ],
+  "resolution_question_evidence": [
+    {
+      "question_id": "command-token-vs-binary-input",
+      "evidence": "The formal model names standard-signal at command offset 0 while also defining ordinary binary-input standard-signal behavior; RAA, SEMSIM, and FSMSIM exclude standard-signal from special-message dispatch and treat ordinary standard input separately."
+    },
+    {
+      "question_id": "recipient-surface",
+      "evidence": "The formal special-message path is generic, but the reviewed legacy special-message lists exclude standard-signal and no reviewed source defines delivered recipient command-message standard-signal execution."
+    },
+    {
+      "question_id": "self-target-surface",
+      "evidence": "The formal model excludes standard signals sent to the self-mailbox of a stem cell from ordinary productive behavior, and no reviewed source selects preserve, clear/no-op, or execution behavior for self-target standard-signal command tokens."
+    }
+  ],
   "additional_source_statuses": [
     {
       "adr": "ADR-0062",

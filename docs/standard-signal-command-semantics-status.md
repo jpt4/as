@@ -41,6 +41,10 @@ The restored legacy sketches do not supply a stable execution rule:
   nonzero binary input as ordinary standard input, and indexes command-buffer
   messages through the seven special messages only.
 
+ADR-0144 records the source conflict behind each still-unresolved
+standard-signal question in `resolution_question_evidence`, so the project
+status report names both the blocker and the reason it remains blocked.
+
 ## AS Boundary
 
 AS keeps `standard-signal` command-token execution blocked across these runtime

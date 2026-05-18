@@ -3142,3 +3142,21 @@
   tests; JSON formatting, `py_compile`, and `git diff --check` passed; project
   status text and JSON remained accepted at `schema_version: 13`; and
   `python -m unittest discover` passed 638 tests.
+
+## 2026-05-18 - Resolution Question Evidence Surface
+
+- Added ADR-0144 to expose source evidence for unresolved standard-signal and
+  write-buffer resolution questions in project status.
+- Updated project-status tests before implementation. The red run executed 60
+  tests and failed because project status still reported `schema_version: 13`,
+  omitted `resolution_question_evidence`, omitted `Resolution question
+  evidence:` text, and accepted malformed evidence metadata.
+- Updated `autarkic_systems.project_status` so accepted source-status records
+  carry `resolution_question_evidence` into JSON and default text, with
+  fail-closed schema validation for malformed entries.
+- Updated the standard-signal and write-buffer source-status records with
+  evidence for each unresolved question, keeping runtime behavior unchanged.
+- Verification passed: focused project-status tests ran 60 tests; JSON
+  formatting, `py_compile`, and `git diff --check` passed; project status text
+  and JSON were accepted at `schema_version: 14`; and
+  `python -m unittest discover` passed 641 tests.

@@ -607,3 +607,6 @@
   self-mailbox `standard-signal` command must not be treated as ordinary
   binary-input standard-signal behavior, while the broader self-target-surface
   command-token behavior remains unresolved.
+- ADR-0144 bumps `autarkic_systems.project_status` to `schema_version: 14` and
+  exposes `resolution_question_evidence` for unresolved standard-signal and
+  write-buffer blockers in JSON/text, with fail-closed schema validation.

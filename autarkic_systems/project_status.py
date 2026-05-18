@@ -58,7 +58,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 13
+PROJECT_STATUS_SCHEMA_VERSION = 14
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -179,6 +179,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         *_blocked_runtime_surface_text_lines(frontier),
         *_as_boundary_text_lines(frontier),
         *_resolution_question_text_lines(frontier),
+        *_resolution_question_evidence_text_lines(frontier),
         *_resolved_resolution_question_text_lines(frontier),
         *_additional_source_status_text_lines(frontier),
         f"Safe next slice: {frontier['safe_next_slice'] or 'none'}",
@@ -689,6 +690,7 @@ def _frontier_summary(
                 "blocked_runtime_surfaces": _blocked_runtime_surfaces(data),
                 "required_resolution_questions": _resolution_question_ids(data),
                 "resolution_questions": _resolution_questions(data),
+                "resolution_question_evidence": _resolution_question_evidence(data),
                 "resolved_resolution_questions": _resolved_resolution_questions(data),
                 "additional_source_statuses": _additional_source_statuses(data),
             }
@@ -785,6 +787,27 @@ def _resolved_resolution_questions(data: dict[str, Any]) -> list[dict[str, str]]
             resolved_question["legacy_divergence"] = legacy_divergence
         resolved_questions.append(resolved_question)
     return resolved_questions
+
+
+def _resolution_question_evidence(data: dict[str, Any]) -> list[dict[str, str]]:
+    evidence_entries = data.get("resolution_question_evidence")
+    if not isinstance(evidence_entries, list):
+        return []
+    resolution_evidence: list[dict[str, str]] = []
+    for evidence_entry in evidence_entries:
+        if not isinstance(evidence_entry, dict):
+            continue
+        question_id = evidence_entry.get("question_id")
+        evidence = evidence_entry.get("evidence")
+        if not isinstance(question_id, str) or not question_id:
+            continue
+        if not isinstance(evidence, str) or not evidence:
+            continue
+        resolution_evidence.append({
+            "question_id": question_id,
+            "evidence": evidence,
+        })
+    return resolution_evidence
 
 
 def _additional_source_statuses(data: dict[str, Any]) -> list[dict[str, str]]:
@@ -975,6 +998,24 @@ def _resolved_resolution_question_text_lines(frontier: dict[str, Any]) -> list[s
     return lines
 
 
+def _resolution_question_evidence_text_lines(frontier: dict[str, Any]) -> list[str]:
+    lines = ["Resolution question evidence:"]
+    for source_status in frontier["source_statuses"]:
+        evidence_entries = source_status["resolution_question_evidence"]
+        if not evidence_entries:
+            continue
+        command_label = ", ".join(source_status["commands"]) or source_status["path"]
+        lines.append(f"  {command_label}:")
+        for evidence_entry in evidence_entries:
+            lines.append(
+                f"    {evidence_entry['question_id']}: "
+                f"{evidence_entry['evidence']}"
+            )
+    if len(lines) == 1:
+        return ["Resolution question evidence: none"]
+    return lines
+
+
 def _additional_source_status_text_lines(frontier: dict[str, Any]) -> list[str]:
     lines = ["Additional source statuses:"]
     for source_status in frontier["source_statuses"]:
@@ -1018,6 +1059,9 @@ def _source_status_schema_error(data: Any) -> str:
     question_error = _resolution_question_shape_error(data)
     if question_error:
         return question_error
+    question_evidence_error = _resolution_question_evidence_shape_error(data)
+    if question_evidence_error:
+        return question_evidence_error
     resolved_question_error = _resolved_resolution_question_shape_error(data)
     if resolved_question_error:
         return resolved_question_error
@@ -1158,6 +1202,28 @@ def _resolved_resolution_question_shape_error(data: dict[str, Any]) -> str:
                     "source_status path must contain a JSON object: "
                     f"{source_status_path}"
                 )
+    return ""
+
+
+def _resolution_question_evidence_shape_error(data: dict[str, Any]) -> str:
+    if "resolution_question_evidence" not in data:
+        return ""
+    evidence_entries = data.get("resolution_question_evidence")
+    if not isinstance(evidence_entries, list):
+        return "source-status resolution_question_evidence field must be a list"
+    for evidence_entry in evidence_entries:
+        if not isinstance(evidence_entry, dict):
+            return "source-status resolution question evidence entries must be objects"
+        if not _is_nonempty_text(evidence_entry.get("question_id")):
+            return (
+                "source-status resolution question evidence question_id must "
+                "be non-empty text"
+            )
+        if not _is_nonempty_text(evidence_entry.get("evidence")):
+            return (
+                "source-status resolution question evidence must be "
+                "non-empty text"
+            )
     return ""
 
 

@@ -60,12 +60,13 @@ The text report names:
 - blocked runtime surfaces;
 - source-status AS boundaries;
 - blocker resolution question IDs and summaries;
+- source evidence explaining why unresolved blocker questions remain open;
 - resolved blocker question IDs, decisions, and optional detail fields;
 - source-status cross-links behind the current blocker trail; and
 - the safe next slice from the source-status records.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 13`. If a registry file is missing, the corresponding registry
+`schema_version: 14`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -146,6 +147,9 @@ resolved in the source-status frontier while preserving project status
 ADR-0143 records the standard-signal self-mailbox equivalence question as a
 resolved source-status detail while preserving project status
 `schema_version: 13`.
+ADR-0144 adds `resolution_question_evidence` to accepted source-status entries,
+renders that evidence in default text output, rejects malformed evidence
+metadata as `source-status-schema`, and bumps the schema version to `14`.
 
 ## Boundary
 

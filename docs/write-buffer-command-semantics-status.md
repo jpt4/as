@@ -31,6 +31,10 @@ comparison path. ADR-0142 records that as the resolved
 behavior, post-append clearing, or any high-rail state clearing that may be
 chosen as part of post-append execution semantics.
 
+ADR-0144 records the remaining source conflicts in
+`resolution_question_evidence`, including the RAA buffer-full guard divergence
+and the post-append clearing disagreement between RAA, SEMSIM, and FSMSIM.
+
 ## AS Boundary
 
 AS keeps write-buffer command execution blocked across these runtime surfaces:
