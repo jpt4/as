@@ -3795,3 +3795,19 @@
   certificate surface. JSON parsing for the touched certificate manifest,
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 773 tests.
+
+## 2026-05-18 - Stem Buffer Predicate Result Certificates
+
+- Added ADR-0176 to migrate `UC-STEM-BUFFER-ACCUMULATES` from
+  `manifest-example` proof steps to explicit `predicate-result` proof steps.
+- Added red proof-certificate and project-status tests before implementation.
+  The focused red run executed 94 tests and failed because the stem-buffer
+  certificate still used `manifest-example`, and proof/project-status reports
+  still described it as four `manifest-example` steps.
+- Updated `claims/proof_certificates.json` so all four stem-buffer certificate
+  steps use `predicate-result` and name `stem_buffer_accumulates` directly.
+- Focused green verification passed 94 tests. The proof-certificate CLI JSON,
+  project-status JSON, and object-language JSON checks accepted the updated
+  certificate surface. JSON parsing for the touched certificate manifest,
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 774 tests.

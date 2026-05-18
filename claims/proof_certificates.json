@@ -90,24 +90,28 @@
       "claim_id": "UC-STEM-BUFFER-ACCUMULATES",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "control rail selected",
-          "expected": true
+          "expected": true,
+          "predicate": "stem_buffer_accumulates"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "matching control appends one",
-          "expected": true
+          "expected": true,
+          "predicate": "stem_buffer_accumulates"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "full buffer boundary preserved",
-          "expected": true
+          "expected": true,
+          "predicate": "stem_buffer_accumulates"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "wrong appended bit",
-          "expected": false
+          "expected": false,
+          "predicate": "stem_buffer_accumulates"
         }
       ]
     },

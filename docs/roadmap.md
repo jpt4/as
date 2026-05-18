@@ -3551,3 +3551,23 @@ Deliverables:
 Status: accepted in
 `docs/adr/0175-automail-predicate-result-certificates.md`. Implemented in the
 proof-certificate manifest and focused proof/project-status tests.
+
+## ADR-0176: Stem Buffer Predicate Result Certificates
+
+Goal: make the stem buffer accumulation proof certificate name the predicate
+it evaluates instead of relying only on manifest-example lookup.
+
+Deliverables:
+
+- `UC-STEM-BUFFER-ACCUMULATES` proof-certificate steps use
+  `predicate-result`;
+- all four stem-buffer certificate steps name `stem_buffer_accumulates`;
+- proof-certificate text/JSON and aggregate project-status reports render the
+  stem-buffer certificate as four predicate-result steps; and
+- Universal Cell runtime behavior, transition claims, object-language schema,
+  evidence bundles, source-status records, and status schema versions remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0176-stem-buffer-predicate-result-certificates.md`. Implemented in
+the proof-certificate manifest and focused proof/project-status tests.

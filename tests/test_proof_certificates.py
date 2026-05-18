@@ -109,6 +109,23 @@ class ProofCertificateTests(unittest.TestCase):
             {"automail_reconfigures_stem"},
         )
 
+    def test_stem_buffer_claim_uses_explicit_predicate_result_steps(self):
+        certificates = {
+            certificate.claim_id: certificate
+            for certificate in load_proof_certificates(CERTIFICATES)
+        }
+
+        certificate = certificates["UC-STEM-BUFFER-ACCUMULATES"]
+
+        self.assertEqual(len(certificate.steps), 4)
+        self.assertTrue(
+            all(step.rule == "predicate-result" for step in certificate.steps)
+        )
+        self.assertEqual(
+            {step.predicate for step in certificate.steps},
+            {"stem_buffer_accumulates"},
+        )
+
     def test_report_formats_successful_proof_certificate_validation(self):
         report = proof_certificates.validate_proof_certificate_project(
             claims_path=MANIFEST,
@@ -123,6 +140,7 @@ class ProofCertificateTests(unittest.TestCase):
         self.assertIn("OK UC-FIXED-MEMORY-RULE:", text)
         self.assertIn("OK UC-FIXED-STEM-INIT-RESET:", text)
         self.assertIn("OK UC-STEM-AUTOMAIL-RECONFIGURES:", text)
+        self.assertIn("OK UC-STEM-BUFFER-ACCUMULATES:", text)
         self.assertIn("predicate-result", text)
         self.assertNotIn("FAIL", text)
 
@@ -184,6 +202,16 @@ class ProofCertificateTests(unittest.TestCase):
         self.assertEqual(
             automail["detail"],
             "verified 2 certificate steps: 2 predicate-result steps",
+        )
+        stem_buffer = next(
+            result
+            for result in payload["results"]
+            if result["claim_id"] == "UC-STEM-BUFFER-ACCUMULATES"
+        )
+        self.assertTrue(stem_buffer["accepted"])
+        self.assertEqual(
+            stem_buffer["detail"],
+            "verified 4 certificate steps: 4 predicate-result steps",
         )
 
     def test_cli_returns_zero_for_checked_in_proof_certificates(self):

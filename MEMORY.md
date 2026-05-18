@@ -588,6 +588,9 @@
 - ADR-0175 migrates the automail reconfiguration proof certificate to
   `predicate-result`, extending explicit predicate-named proof steps into the
   first stem reconfiguration claim.
+- ADR-0176 migrates the stem buffer accumulation proof certificate to
+  `predicate-result`, extending explicit predicate-named proof steps to the
+  first standard-signal stem buffer claim.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.
