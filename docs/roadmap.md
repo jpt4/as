@@ -4778,3 +4778,29 @@ Deliverables:
 Status: accepted in `docs/adr/0231-fixed-point-target.md`. Implemented in
 `autarkic_systems/fixed_point.py`, with tests in
 `tests/test_fixed_point_target.py`.
+
+## ADR-0232: Formal Quotation Surface
+
+Goal: add the first checked quotation layer needed by fixed-point construction
+without claiming sequence quotation or diagonalization.
+
+Deliverables:
+
+- `language/formal_quotation_examples.json` with checked code-token quotation
+  examples;
+- `natural_to_numeral`, `numeral_to_natural`, and `quote_code_tokens`
+  helpers over unary successor terms;
+- validation against the formal codebook and Willard anchors;
+- rejection for negative tokens, expected-depth mismatches, and sequence-count
+  mismatches;
+- fixed-point target narrowed to depend on the quotation examples while still
+  blocked on sequence quotation, diagonal-lemma proof, and fixed-point equation
+  proof;
+- `autarkic_systems.formal_quotation` text/JSON CLI validation; and
+- no pair/list/sequence coding, full quotation term, diagonal lemma,
+  fixed-point equation proof, theorem prover, runtime behavior, command
+  semantics, evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in `docs/adr/0232-formal-quotation-surface.md`. Implemented
+in `autarkic_systems/formal_quotation.py`, with tests in
+`tests/test_formal_quotation.py`.

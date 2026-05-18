@@ -9,10 +9,10 @@ formal codebook.
 
 ## Purpose
 
-AS now has a formal codebook, capture-avoiding substitution examples, a
-Level-1 consistency target, and a selected deduction-apparatus target. Those
-are prerequisites for a SelfCons-style statement, but they still do not
-construct a diagonal fixed point.
+AS now has a formal codebook, capture-avoiding substitution examples, token
+numeral quotation examples, a Level-1 consistency target, and a selected
+deduction-apparatus target. Those are prerequisites for a SelfCons-style
+statement, but they still do not construct a diagonal fixed point.
 
 The fixed-point target records the next precise obligation:
 
@@ -59,5 +59,6 @@ The validator checks that:
 ## Boundary
 
 This is not a diagonal lemma, not a quotation-term construction, not a
-fixed-point equation proof, and not a self-consistency theorem. The
-formal-confidence target remains blocked on `fixed-point-construction`.
+sequence-level quotation construction, not a fixed-point equation proof, and
+not a self-consistency theorem. The formal-confidence target remains blocked on
+`fixed-point-construction`.

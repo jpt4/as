@@ -40,6 +40,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   surface over that arithmetic language.
 - `docs/formal-substitution.md` records the first checked capture-avoiding
   substitution surface over formal codebook nodes.
+- `docs/formal-quotation.md` records the first checked code-token numeral
+  quotation surface for later fixed-point construction.
 - `docs/consistency-level-target.md` records Level-1 consistency as the first
   selected AS formal-confidence target notion.
 - `docs/deduction-apparatus-target.md` records the AS-local
@@ -360,6 +362,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/formal_substitution.py` validates and runs the first
   capture-avoiding free-variable substitution surface over the formal codebook
   nodes, including binder-respecting and capture-rejection examples.
+- `autarkic_systems/formal_quotation.py` validates and runs the first
+  code-token numeral quotation surface over the formal codebook, while leaving
+  sequence quotation and diagonalization open.
 - `autarkic_systems/consistency_level.py` validates the first consistency-level
   target selection, tying Level-1 consistency to the checked arithmetic
   language, codebook, and substitution surface without claiming a proof.
@@ -409,6 +414,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.formal_substitution --format json` validates
   `language/formal_substitution_examples.json`, including free-variable
   substitution examples, capture rejection, and expected encoded outputs.
+- `python -m autarkic_systems.formal_quotation --format json` validates
+  `language/formal_quotation_examples.json`, including unary successor
+  numerals for code tokens and the current fixed-point target instance token
+  sequence.
 - `python -m autarkic_systems.consistency_level --format json` validates
   `claims/consistency_level_targets.json`, including the Level-1 target,
   `pi1`/`sigma1` sentence classes, and non-claim status.

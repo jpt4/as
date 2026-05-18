@@ -103,6 +103,12 @@
   substitution instance over the formal codebook, but does not prove a
   diagonal lemma, construct quotation terms, prove a fixed-point equation, or
   claim self-consistency.
+- ADR-0232 adds `language/formal_quotation_examples.json` and
+  `autarkic_systems/formal_quotation.py` as the first checked quotation layer.
+  It quotes natural-number code tokens as unary successor numerals and validates
+  the current fixed-point target's expected instance token sequence, but does
+  not implement sequence coding, a full quotation term, a diagonal lemma, or
+  self-consistency.
 - `AS-FORMAL-CONFIDENCE-TARGET-001` now points at the fixed-point target and no
   longer uses the broad `self-reference-fixed-point` blocker. It remains
   blocked on `fixed-point-construction`.

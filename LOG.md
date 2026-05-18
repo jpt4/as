@@ -4967,3 +4967,30 @@
   project-status summary remained accepted. `compileall`, JSON checks,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 1002 tests.
+
+## 2026-05-18 - Formal Quotation Surface
+
+- Added ADR-0232 to add the first checked quotation layer needed by fixed-point
+  construction without claiming sequence quotation, diagonalization, or
+  self-consistency.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.formal_quotation` and
+  `language/formal_quotation_examples.json` did not exist, and the
+  fixed-point target had no quotation dependency.
+- Added `language/formal_quotation_examples.json`, with checked examples for
+  `0` as `zero`, token `13` as a unary successor numeral, and the current
+  fixed-point target instance code token sequence as token numerals only.
+- Added `autarkic_systems/formal_quotation.py` with natural-to-numeral,
+  numeral-to-natural, and token-sequence quotation helpers; formal-codebook
+  dependency validation; Willard anchor checks; and rejection of negative
+  tokens, expected-depth mismatches, and sequence-count mismatches.
+- Narrowed `claims/fixed_point_targets.json` so
+  `AS-FIXED-POINT-SELFCONS1-TARGET` references the quotation examples and
+  replaces broad quotation-term construction future work with
+  sequence-level quotation construction.
+- Focused formal-quotation, fixed-point, and project-status tests passed 112
+  tests. Live formal-quotation text/JSON output reported three accepted
+  examples with no failed subjects; live fixed-point output accepted the new
+  quotation dependency; live project-status summary remained accepted.
+  `compileall`, JSON checks, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 1015 tests.

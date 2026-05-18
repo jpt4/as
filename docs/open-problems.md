@@ -432,7 +432,9 @@ examples over the codebook nodes. ADR-0230 selects the current AS-local
 target for the executable substrate surfaces, without claiming Hilbert,
 tableau, or arithmetized proof-predicate machinery. ADR-0231 adds a checked
 fixed-point target template and substitution instance, but actual quotation
-terms and fixed-point equations remain open.
+terms and fixed-point equations remain open. ADR-0232 adds unary token
+numerals for formal code tokens; sequence quotation and fixed-point equations
+remain open.
 
 ## P5: Annotate Core Willard Sources At Definition Granularity
 
