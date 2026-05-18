@@ -846,3 +846,8 @@
   Bundle validation now fails closed over that language and reports a
   `sequence-language` result without changing runtime behavior or aggregate
   project-status shape.
+- ADR-0204 adds `autarkic_systems.network_sequence_demo`, a vertical
+  claim-to-evidence report over the post-handoff sequence evidence bundle and
+  registry. It exposes validation results, evidence-layer presence, missing
+  paths, source-status boundaries, and explicit boundary terms without adding
+  new validation authority or runtime semantics.

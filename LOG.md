@@ -4345,3 +4345,23 @@
   bundle JSON reported 8 accepted results including `sequence-language`;
   registry JSON accepted 1 bundle. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 863 tests.
+
+## 2026-05-18 - Network Sequence Demo Report
+
+- Added ADR-0204 to make the post-handoff network-sequence
+  claim-to-evidence path legible from one command.
+- Added red demo-report tests before implementation. The focused red run
+  failed because `autarkic_systems.network_sequence_demo` did not exist.
+- Added `autarkic_systems/network_sequence_demo.py` as a thin reporting layer
+  over the existing network-sequence evidence-bundle validators.
+- The demo report exposes accepted status, validation failed subjects, evidence
+  layers, artifact-presence flags, missing evidence paths, source-status
+  boundaries, explicit boundary terms, and registry summaries without adding
+  new validation authority.
+- Focused green verification passed 13 network sequence demo-report tests.
+  Adjacent demo/evidence/language/claim tests passed 46 tests. Live text output
+  named the post-handoff sequence claim, language, witness, one chain bundle,
+  five source-status boundaries, and explicit boundary terms. Live JSON output
+  reported `accepted: true`, 8 validation checks, all evidence layers present,
+  and registry `bundle_count: 1`. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 876 tests.

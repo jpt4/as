@@ -4138,3 +4138,24 @@ Status: accepted in `docs/adr/0203-sequence-evidence-language-link.md`.
 Implemented in `autarkic_systems/network_sequence_evidence_bundle.py`, with
 tests in `tests/test_network_sequence_evidence_bundle.py` and operator notes in
 `docs/network-sequence-evidence-bundles.md`.
+
+## ADR-0204: Network Sequence Demo Report
+
+Goal: make the current post-handoff network-sequence claim-to-evidence path
+legible from one command.
+
+Deliverables:
+
+- `autarkic_systems/network_sequence_demo.py`;
+- single-bundle text/JSON report over the checked sequence evidence bundle;
+- evidence-layer roles for sequence claim, proof, language, validator, witness,
+  underlying chain bundles, and source-status records;
+- artifact-presence flags plus `missing_evidence_paths`;
+- registry text/JSON report over `evidence/sequences/manifest.json`; and
+- no runtime behavior, claim, proof-rule, validator, project-status, scheduler,
+  topology, timing, trace, SVG, or command-semantics changes.
+
+Status: accepted in `docs/adr/0204-network-sequence-demo-report.md`.
+Implemented in `autarkic_systems/network_sequence_demo.py`, with tests in
+`tests/test_network_sequence_demo_report.py` and operator notes in
+`docs/network-sequence-demo-report.md`.
