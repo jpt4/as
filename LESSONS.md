@@ -439,3 +439,6 @@
   cannot be marked allowed, even when the blocker list is empty.
 - Treat readiness fields as a small state machine. Individual fields that make
   sense alone can still create a contradiction in combination.
+- Any source-status field that downstream checks treat as a set should still
+  reject duplicates at the list boundary. Otherwise coverage and disjointness
+  checks can pass while the human frontier shows ambiguous repeated work.

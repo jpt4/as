@@ -652,3 +652,7 @@
 - ADR-0157 makes execution readiness internally consistent: a record whose
   readiness decision is `blocked` cannot allow execution changes. The JSON
   shapes stay at project status schema 15 and source-status schema 2.
+- ADR-0158 makes source-status question IDs unique within each unresolved and
+  resolved question list. Duplicate live blockers or duplicate settled
+  decisions now fail as `source-status-schema`, while project status remains
+  schema 15 and source-status remains schema 2.

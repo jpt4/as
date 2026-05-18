@@ -3391,3 +3391,20 @@
   source-status frontier remains schema 2; this is a validation-only change.
   `py_compile`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 669 tests.
+
+## 2026-05-18 - Resolution Question ID Uniqueness
+
+- Added ADR-0158 to reject duplicate unresolved and duplicate resolved
+  source-status question IDs within a single source-status record.
+- Added the red project-status schema fixtures before implementation. The red
+  run executed the two new tests and failed because duplicate live and settled
+  `question_id` values were accepted.
+- Tightened source-status schema validation so
+  `required_resolution_questions[].question_id` and
+  `resolved_resolution_questions[].question_id` are each unique inside their
+  own list.
+- Focused verification passed 85 tests. Project-status remains schema 15 and
+  source-status frontier remains schema 2; this is a validation-only change.
+  The source-status and project-status JSON CLIs accepted their current
+  schemas. `py_compile`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 671 tests.

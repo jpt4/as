@@ -285,6 +285,9 @@ all live blockers, and allowed readiness is rejected while unresolved
 questions remain.
 ADR-0157 also rejects contradictory readiness metadata where a command is
 marked blocked while execution changes are allowed.
+ADR-0158 rejects duplicate live and resolved question IDs inside a
+source-status record, keeping the frontier queue unambiguous while the
+write-buffer buffer-full and post-append questions remain open.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

@@ -3118,3 +3118,22 @@ Status: accepted in
 `docs/adr/0157-execution-readiness-blocked-consistency.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0158: Resolution Question ID Uniqueness
+
+Goal: prevent duplicate source-status question IDs from creating ambiguous
+frontier output or hiding behind set-based evidence/readiness checks.
+
+Deliverables:
+
+- schema rejection for duplicate
+  `required_resolution_questions[].question_id` values;
+- schema rejection for duplicate
+  `resolved_resolution_questions[].question_id` values;
+- unchanged project-status schema `15`;
+- unchanged source-status frontier schema `2`; and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in `docs/adr/0158-resolution-question-id-uniqueness.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

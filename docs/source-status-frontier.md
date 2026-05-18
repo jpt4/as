@@ -81,6 +81,9 @@ ADR-0156 adds the inverse guard: readiness cannot allow execution changes
 while live unresolved resolution questions remain.
 ADR-0157 adds a consistency guard: readiness cannot use decision `blocked`
 while allowing execution changes.
+ADR-0158 rejects duplicate unresolved and duplicate resolved question IDs
+inside one source-status record, so the focused frontier cannot display the
+same blocker or settled decision twice.
 
 ## Boundary
 

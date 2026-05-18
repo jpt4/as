@@ -198,6 +198,9 @@ status `schema_version: 15`.
 ADR-0157 rejects contradictory `execution_readiness` records that mark a
 command `blocked` while allowing execution changes, preserving project status
 `schema_version: 15`.
+ADR-0158 rejects duplicate unresolved and duplicate resolved source-status
+question IDs within a single record, preserving project status
+`schema_version: 15`.
 
 ## Boundary
 

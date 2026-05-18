@@ -342,6 +342,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   `required_resolution_questions` IDs in the same source-status record.
   When a source-status record has unresolved `required_resolution_questions`,
   `resolution_question_evidence` must cover every unresolved question ID.
+  Unresolved and resolved source-status question IDs must each be unique inside
+  a single source-status record, so set-based coverage checks cannot hide
+  duplicate blockers or duplicate settled decisions.
   When a source-status record declares `execution_readiness.decision` as
   `blocked`, its `blocked_by_resolution_questions` list must also cover every
   unresolved question ID. A source-status record also cannot set

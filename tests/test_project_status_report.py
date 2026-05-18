@@ -1799,6 +1799,50 @@ class ProjectStatusReportTests(unittest.TestCase):
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 
+    def test_duplicate_resolution_question_id_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "duplicate_resolution_question_id.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "write-buf-zero",
+                    "as_boundary": "Keep this command blocked here.",
+                    "required_resolution_questions": [
+                        {
+                            "question_id": "buffer-full-boundary",
+                            "summary": "Decide buffer-full behavior.",
+                        },
+                        {
+                            "question_id": "buffer-full-boundary",
+                            "summary": "Still decide buffer-full behavior.",
+                        },
+                    ],
+                    "resolution_question_evidence": [
+                        {
+                            "question_id": "buffer-full-boundary",
+                            "evidence": "Sources diverge here.",
+                        }
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "duplicate resolution question_id",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
     def test_scalar_resolution_question_evidence_is_structured_failure_subject(self):
         with tempfile.TemporaryDirectory() as tmp:
             invalid_status = Path(tmp) / "scalar_resolution_question_evidence.json"
@@ -2305,6 +2349,43 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn(
             "resolved resolution question decision",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_duplicate_resolved_resolution_question_id_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "duplicate_resolved_resolution_question_id.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "resolved_resolution_questions": [
+                        {
+                            "question_id": "recipient-surface",
+                            "decision": "reject-recipient-command",
+                        },
+                        {
+                            "question_id": "recipient-surface",
+                            "decision": "reject-recipient-command-again",
+                        },
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "duplicate resolved resolution question_id",
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 

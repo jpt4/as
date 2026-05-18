@@ -1098,12 +1098,20 @@ def _source_status_schema_error(data: Any) -> str:
     question_error = _resolution_question_shape_error(data)
     if question_error:
         return question_error
+    duplicate_question_error = _duplicate_resolution_question_id_error(data)
+    if duplicate_question_error:
+        return duplicate_question_error
     question_evidence_error = _resolution_question_evidence_shape_error(data)
     if question_evidence_error:
         return question_evidence_error
     resolved_question_error = _resolved_resolution_question_shape_error(data)
     if resolved_question_error:
         return resolved_question_error
+    duplicate_resolved_question_error = (
+        _duplicate_resolved_resolution_question_id_error(data)
+    )
+    if duplicate_resolved_question_error:
+        return duplicate_resolved_question_error
     question_disjointness_error = _resolution_question_disjointness_error(data)
     if question_disjointness_error:
         return question_disjointness_error
@@ -1261,6 +1269,29 @@ def _resolved_resolution_question_ids(data: dict[str, Any]) -> list[str]:
             if isinstance(question_id, str) and question_id:
                 question_ids.append(question_id)
     return question_ids
+
+
+def _duplicate_resolution_question_id_error(data: dict[str, Any]) -> str:
+    return _duplicate_question_id_error(
+        _resolution_question_ids(data),
+        "resolution question_id",
+    )
+
+
+def _duplicate_resolved_resolution_question_id_error(data: dict[str, Any]) -> str:
+    return _duplicate_question_id_error(
+        _resolved_resolution_question_ids(data),
+        "resolved resolution question_id",
+    )
+
+
+def _duplicate_question_id_error(question_ids: list[str], label: str) -> str:
+    seen: set[str] = set()
+    for question_id in question_ids:
+        if question_id in seen:
+            return f"source-status duplicate {label}: {question_id}"
+        seen.add(question_id)
+    return ""
 
 
 def _resolution_question_disjointness_error(data: dict[str, Any]) -> str:
