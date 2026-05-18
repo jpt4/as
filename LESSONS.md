@@ -365,3 +365,6 @@
 - Status reports should show settled blocker questions alongside unresolved
   ones. Otherwise future work can waste time reopening decisions that were
   already source-backed and recorded.
+- A resolved question is still only useful if the artifact that settled it can
+  be opened and consumed. Validate resolved-decision source paths the same way
+  unresolved frontier trails are validated.

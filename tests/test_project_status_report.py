@@ -1323,6 +1323,113 @@ class ProjectStatusReportTests(unittest.TestCase):
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 
+    def test_missing_resolved_resolution_question_source_path_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing_path = Path(tmp) / "missing_source_status.json"
+            invalid_status = Path(tmp) / "missing_resolved_source_status.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "resolved_resolution_questions": [
+                        {
+                            "question_id": "command-table-offset",
+                            "decision": "resolved",
+                            "source_status": str(missing_path),
+                        }
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "resolved resolution question source_status path must exist",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_invalid_json_resolved_resolution_question_source_path_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_json_path = Path(tmp) / "invalid_source_status.json"
+            invalid_json_path.write_text("{not-json", encoding="utf-8")
+            invalid_status = Path(tmp) / "invalid_resolved_source_status.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "resolved_resolution_questions": [
+                        {
+                            "question_id": "command-table-offset",
+                            "decision": "resolved",
+                            "source_status": str(invalid_json_path),
+                        }
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "resolved resolution question source_status path must contain JSON",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_non_object_resolved_resolution_question_source_path_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            non_object_path = Path(tmp) / "non_object_source_status.json"
+            non_object_path.write_text("[]", encoding="utf-8")
+            invalid_status = Path(tmp) / "non_object_resolved_source_status.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "resolved_resolution_questions": [
+                        {
+                            "question_id": "command-table-offset",
+                            "decision": "resolved",
+                            "source_status": str(non_object_path),
+                        }
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "resolved resolution question source_status path must contain a JSON object",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
     def test_scalar_additional_source_statuses_is_structured_failure_subject(self):
         with tempfile.TemporaryDirectory() as tmp:
             invalid_status = Path(tmp) / "scalar_additional_source_statuses.json"

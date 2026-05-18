@@ -228,6 +228,8 @@ write-buffer execution.
 ADR-0130 exposes resolved source-status questions in project status JSON/text,
 so `command-table-offset` appears as settled while the remaining command-token
 frontier stays open.
+ADR-0131 requires resolved-question source paths to exist and contain JSON
+objects, so settled blocker decisions cannot point at dead artifacts.
 
 ## P3: Choose The First Proof Apparatus
 

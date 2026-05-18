@@ -2521,3 +2521,26 @@ Status: accepted in
 `docs/adr/0130-project-status-resolved-questions.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0131: Project Status Resolved Question Source Paths
+
+Goal: require resolved source-status questions rendered by project status to
+point at live JSON object artifacts when they name a `source_status` path.
+
+Deliverables:
+
+- `source-status-schema` failure for missing
+  `resolved_resolution_questions[].source_status` targets;
+- `source-status-schema` failure for invalid JSON resolved-question source
+  targets;
+- `source-status-schema` failure for non-object JSON resolved-question source
+  targets;
+- checked-in standard-signal `command-table-offset` source path still accepted;
+- unchanged project status JSON at `schema_version: 9`;
+- unchanged default text layout from ADR-0130; and
+- focused project-status schema tests.
+
+Status: accepted in
+`docs/adr/0131-resolved-question-source-paths.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

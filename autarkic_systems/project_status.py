@@ -613,6 +613,29 @@ def _resolved_resolution_question_shape_error(data: dict[str, Any]) -> str:
                 "source-status resolved resolution question source_status "
                 "must be non-empty text"
             )
+        source_status = question.get("source_status")
+        if isinstance(source_status, str):
+            source_status_path = Path(source_status)
+            if not source_status_path.is_file():
+                return (
+                    "source-status resolved resolution question "
+                    f"source_status path must exist: {source_status_path}"
+                )
+            try:
+                linked_source_status = json.loads(
+                    source_status_path.read_text(encoding="utf-8")
+                )
+            except json.JSONDecodeError:
+                return (
+                    "source-status resolved resolution question "
+                    f"source_status path must contain JSON: {source_status_path}"
+                )
+            if not isinstance(linked_source_status, dict):
+                return (
+                    "source-status resolved resolution question "
+                    "source_status path must contain a JSON object: "
+                    f"{source_status_path}"
+                )
     return ""
 
 

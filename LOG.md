@@ -2897,3 +2897,18 @@
   54 tests; `py_compile` and `git diff --check` passed; project status text and
   JSON were accepted at `schema_version: 9`; and
   `python -m unittest discover` passed 594 tests.
+
+## 2026-05-18 - Project Status Resolved Question Source Paths
+
+- Added ADR-0131 to require project-status resolved-question `source_status`
+  paths to point at existing JSON object artifacts.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run executed 50 tests and failed because missing, invalid-JSON, and
+  non-object resolved-question source paths were still accepted.
+- Updated `autarkic_systems.project_status` so malformed resolved-question
+  source paths reject the owning source-status record as `source-status-schema`
+  while preserving project status JSON `schema_version: 9`.
+- Verification passed: adjacent project-status and standard-signal tests ran
+  57 tests; `py_compile` and `git diff --check` passed; project status text and
+  JSON remained accepted at `schema_version: 9`; and
+  `python -m unittest discover` passed 597 tests.

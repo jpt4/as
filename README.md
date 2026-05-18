@@ -299,8 +299,9 @@ the project legible:
   through `command`, `commands`, or `blocked_runtime_commands`, and blank
   command-token strings are rejected as schema failures. Source-status
   `decision` and `safe_next_slice` text must also be non-whitespace, and
-  recognized command-token fields and source-status cross-links must have the
-  expected text/list/object shapes. Source-status cross-link paths must also
+  recognized command-token fields, source-status cross-links, and resolved
+  question source paths must have the expected text/list/object shapes.
+  Source-status cross-link paths and resolved question source paths must also
   point to existing files that contain JSON objects.
   Accepted source-status records must also provide non-empty top-level
   `as_boundary` text so the JSON frontier explains the AS boundary it is

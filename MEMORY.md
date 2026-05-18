@@ -567,3 +567,6 @@
   `resolved_resolution_questions` in JSON/text, so the standard-signal
   `command-table-offset` decision is visible as settled from the first status
   command while the remaining command-token questions stay open.
+- ADR-0131 makes project-status resolved-question `source_status` paths fail
+  closed when the target is missing, invalid JSON, or non-object JSON,
+  preserving project status `schema_version: 9`.

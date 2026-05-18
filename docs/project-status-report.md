@@ -102,6 +102,10 @@ stem command-buffer map, while preserving `schema_version: 8`.
 ADR-0130 adds `resolved_resolution_questions` to accepted source-status entries,
 renders them in the default text report, rejects malformed resolved-question
 metadata as `source-status-schema`, and bumps the schema version to `9`.
+ADR-0131 requires each resolved question `source_status` path to exist and
+contain parseable top-level JSON object content, reporting missing, invalid, or
+non-object targets as `source-status-schema` while preserving
+`schema_version: 9`.
 
 ## Boundary
 
