@@ -467,3 +467,6 @@
   checked-in status reports `[]`, missing source-status files report
   `source-status-file`, malformed source-status files report
   `source-status-json`, and mixed failures preserve that order.
+- ADR-0100 makes `autarkic_systems.project_status` reject source-status JSON
+  that parses but lacks a top-level object, non-empty `decision`, and non-empty
+  `safe_next_slice`, reporting `source-status-schema`.

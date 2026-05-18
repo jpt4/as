@@ -44,7 +44,8 @@ is present but malformed, it reports `registry-json`. Missing or invalid
 source-status files are also reported as structured rejected output instead of
 a traceback. ADR-0099 adds `frontier.failed_subjects`, which reports
 `source-status-file` for missing source-status files and `source-status-json`
-for malformed source-status files.
+for malformed source-status files. ADR-0100 adds `source-status-schema` for
+source-status JSON that parses but is not a usable source-status object.
 
 ## Boundary
 

@@ -126,6 +126,46 @@ class ProjectStatusReportTests(unittest.TestCase):
             [str(invalid_status)],
         )
 
+    def test_schema_invalid_source_status_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "schema_invalid_status.json"
+            invalid_status.write_text("{}", encoding="utf-8")
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertEqual(report["frontier"]["missing_source_statuses"], [])
+        self.assertEqual(
+            [item["path"] for item in report["frontier"]["invalid_source_statuses"]],
+            [str(invalid_status)],
+        )
+
+    def test_non_object_source_status_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "list_status.json"
+            invalid_status.write_text("[]", encoding="utf-8")
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertEqual(
+            [item["path"] for item in report["frontier"]["invalid_source_statuses"]],
+            [str(invalid_status)],
+        )
+
     def test_frontier_failed_subjects_preserve_mixed_failure_order(self):
         with tempfile.TemporaryDirectory() as tmp:
             missing_status = Path(tmp) / "missing_status.json"

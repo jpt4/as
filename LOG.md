@@ -2231,3 +2231,24 @@
   chain `bundle_count: 2`, and `frontier.failed_subjects: []`. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed, with the full
   suite running 550 tests.
+
+## 2026-05-18 - Project Status Source Status Shape
+
+- Added ADR-0100 to reject source-status JSON that parses but lacks the minimal
+  shape needed by the project status frontier report.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run showed `{}` was silently accepted as an empty frontier, while `[]`
+  crashed with `AttributeError` because the report tried to call `.get` on a
+  list.
+- Updated `autarkic_systems.project_status` so source-status inputs must be
+  JSON objects with non-empty text `decision` and `safe_next_slice` fields.
+  Shape failures now report `source-status-schema`, while JSON parse failures
+  keep reporting `source-status-json`.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the source-status shape contract.
+- Verified the focused project status test passed 16 tests; adjacent project
+  status, transition registry, and chain registry tests passed 41 tests. The
+  checked-in JSON status remained accepted with transition `bundle_count: 8`,
+  chain `bundle_count: 2`, and `frontier.failed_subjects: []`. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed, with the full
+  suite running 552 tests.

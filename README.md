@@ -255,7 +255,8 @@ the project legible:
   `standard-signal`, `write-buf-zero`, and `write-buf-one` command-token
   frontier. Missing registries report `registry-file`, malformed registries
   report `registry-json`, and source-status path problems are summarized in
-  `frontier.failed_subjects`.
+  `frontier.failed_subjects` as `source-status-file`, `source-status-json`, or
+  `source-status-schema`.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

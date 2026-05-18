@@ -275,3 +275,6 @@
 - Give every status section a compact failure-subject list once automation may
   consume it. Detail arrays are useful for humans; stable subject names are
   better for scripts and future agents.
+- Valid JSON is not necessarily valid status. If a report depends on specific
+  fields, reject shape-invalid artifacts explicitly instead of letting empty
+  strings masquerade as a quiet frontier.

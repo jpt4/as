@@ -1894,3 +1894,22 @@ Status: accepted in
 `docs/adr/0099-project-status-frontier-failure-summary.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0100: Project Status Source Status Shape
+
+Goal: reject source-status JSON that parses but lacks the minimal shape needed
+by the project status frontier report.
+
+Deliverables:
+
+- source-status top-level object check in `autarkic_systems.project_status`;
+- required non-empty text `decision` check;
+- required non-empty text `safe_next_slice` check;
+- `source-status-schema` frontier failure subject for shape-invalid
+  source-status files;
+- focused tests covering `{}` and non-object JSON source-status inputs;
+- documentation update for the source-status shape contract.
+
+Status: accepted in `docs/adr/0100-project-status-source-status-shape.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

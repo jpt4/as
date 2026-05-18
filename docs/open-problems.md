@@ -153,6 +153,8 @@ ADR-0098 distinguishes malformed registry files from missing registry files in
 that status output.
 ADR-0099 gives the frontier section the same compact failure-subject summary
 for missing or malformed source-status files.
+ADR-0100 makes source-status JSON shape part of that status check, so parseable
+but unusable source-status records cannot pass as an empty frontier.
 
 ## P3: Choose The First Proof Apparatus
 

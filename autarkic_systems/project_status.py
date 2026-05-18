@@ -231,7 +231,20 @@ def _frontier_summary(
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
         except Exception as exc:  # pragma: no cover - defensive drift path.
-            invalid.append({"path": str(path), "error": str(exc)})
+            invalid.append({
+                "path": str(path),
+                "subject": "source-status-json",
+                "error": str(exc),
+            })
+            continue
+
+        schema_error = _source_status_schema_error(data)
+        if schema_error:
+            invalid.append({
+                "path": str(path),
+                "subject": "source-status-schema",
+                "error": schema_error,
+            })
             continue
 
         safe_next_slice = _optional_text(data, "safe_next_slice")
@@ -250,8 +263,11 @@ def _frontier_summary(
     failed_subjects = []
     if missing:
         failed_subjects.append("source-status-file")
-    if invalid:
+    invalid_subjects = {item["subject"] for item in invalid}
+    if "source-status-json" in invalid_subjects:
         failed_subjects.append("source-status-json")
+    if "source-status-schema" in invalid_subjects:
+        failed_subjects.append("source-status-schema")
     return {
         "blocked_commands": _ordered_blocked_commands(blocked_commands),
         "failed_subjects": failed_subjects,
@@ -274,6 +290,16 @@ def _blocked_commands_from_status(data: dict[str, Any]) -> set[str]:
     if isinstance(command_list, list):
         commands.update(item for item in command_list if isinstance(item, str))
     return commands
+
+
+def _source_status_schema_error(data: Any) -> str:
+    if not isinstance(data, dict):
+        return "source-status JSON must be an object"
+    if not isinstance(data.get("decision"), str) or not data["decision"]:
+        return "source-status decision must be non-empty text"
+    if not isinstance(data.get("safe_next_slice"), str) or not data["safe_next_slice"]:
+        return "source-status safe_next_slice must be non-empty text"
+    return ""
 
 
 def _ordered_blocked_commands(commands: set[str]) -> list[str]:
