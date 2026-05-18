@@ -26,7 +26,18 @@ class FakeGitRunner:
         return self.outputs[command]
 
 
+class FetchFailingGitRunner(FakeGitRunner):
+    def __call__(self, args):
+        command = tuple(args)
+        self.commands.append(command)
+        if command == ("fetch", "fork", "main:refs/remotes/fork/main"):
+            raise RuntimeError("fork fetch failed")
+        return self.outputs[command]
+
+
 GIT_OUTPUTS = {
+    ("fetch", "fork", "main:refs/remotes/fork/main"): "",
+    ("fetch", "origin", "main:refs/remotes/origin/main"): "",
     ("branch", "--show-current"): "main",
     ("rev-parse", "HEAD"): "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
     ("rev-parse", "--short", "HEAD"): "be59d20",
@@ -77,6 +88,14 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         self.assertEqual(payload["origin_main"]["head_ahead_by"], 190)
         self.assertEqual(payload["origin_main"]["head_behind_by"], 0)
         self.assertEqual(
+            payload["remote_refresh"],
+            {
+                "requested": False,
+                "accepted": True,
+                "results": [],
+            },
+        )
+        self.assertEqual(
             payload["fork_main"]["remote_ref_freshness"],
             {
                 "state": "fresh",
@@ -118,6 +137,70 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         self.assertIn("Fork: https://github.com/Sean-Kenneth-Doherty/as.git", text)
         self.assertIn(f"Tracking issue: {DEFAULT_TRACKING_ISSUE_URL}", text)
 
+    def test_refresh_remotes_runs_fetch_before_status_and_reports_result(self):
+        runner = FakeGitRunner(GIT_OUTPUTS)
+
+        report = build_github_submission_status(
+            runner=runner,
+            clock=lambda: 1779110300,
+            refresh_remotes=True,
+        )
+        payload = github_submission_status_payload(report)
+
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(
+            runner.commands[:2],
+            [
+                ("fetch", "fork", "main:refs/remotes/fork/main"),
+                ("fetch", "origin", "main:refs/remotes/origin/main"),
+            ],
+        )
+        self.assertEqual(
+            payload["remote_refresh"],
+            {
+                "requested": True,
+                "accepted": True,
+                "results": [
+                    {
+                        "remote": "fork",
+                        "refspec": "main:refs/remotes/fork/main",
+                        "accepted": True,
+                        "detail": "refreshed fork main",
+                    },
+                    {
+                        "remote": "origin",
+                        "refspec": "main:refs/remotes/origin/main",
+                        "accepted": True,
+                        "detail": "refreshed origin main",
+                    },
+                ],
+            },
+        )
+        self.assertIn(
+            "Remote refresh: accepted (fork/main, origin/main)",
+            format_github_submission_status(report),
+        )
+
+    def test_refresh_failure_rejects_submission_status(self):
+        report = build_github_submission_status(
+            runner=FetchFailingGitRunner(GIT_OUTPUTS),
+            clock=lambda: 1779110300,
+            refresh_remotes=True,
+        )
+        payload = github_submission_status_payload(report)
+
+        self.assertFalse(payload["accepted"])
+        self.assertEqual(payload["submission_state"], "refresh-failed")
+        self.assertFalse(payload["remote_refresh"]["accepted"])
+        self.assertEqual(
+            payload["remote_refresh"]["results"][0]["detail"],
+            "RuntimeError: fork fetch failed",
+        )
+        self.assertIn(
+            "Remote refresh: rejected (fork/main failed)",
+            format_github_submission_status(report),
+        )
+
     def test_status_reports_stale_fork_main_ref_freshness(self):
         report = build_github_submission_status(
             runner=FakeGitRunner(GIT_OUTPUTS),
@@ -157,7 +240,7 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
 
         with contextlib.redirect_stdout(stdout):
             exit_code = run_github_submission_cli(
-                ["--format", "json"],
+                ["--format", "json", "--refresh-remotes"],
                 runner=FakeGitRunner(GIT_OUTPUTS),
                 clock=lambda: 1779110300,
             )
@@ -167,6 +250,7 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["submission_state"], "submitted-to-fork")
         self.assertEqual(payload["origin_main"]["head_ahead_by"], 190)
+        self.assertTrue(payload["remote_refresh"]["requested"])
 
     def test_module_execution_runs_live_text_status(self):
         completed = subprocess.run(

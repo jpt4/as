@@ -10,11 +10,15 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 from dataclasses import dataclass
 from typing import Any, Callable
 
 from autarkic_systems.github_submission import (
+    DEFAULT_REMOTE_REF_MAX_AGE_SECONDS,
+    Clock,
     GitHubSubmissionStatus,
+    GitRunner,
     build_github_submission_status,
     format_github_submission_status,
     github_submission_status_payload,
@@ -97,7 +101,9 @@ def format_handoff_status(report: HandoffStatus) -> str:
 def run_handoff_cli(
     argv: list[str] | None = None,
     project_builder: ProjectBuilder = build_project_status_report,
-    submission_builder: SubmissionBuilder = build_github_submission_status,
+    submission_builder: SubmissionBuilder | None = None,
+    submission_runner: GitRunner | None = None,
+    clock: Clock = time.time,
 ) -> int:
     """Run the AS handoff status CLI."""
 
@@ -111,7 +117,25 @@ def run_handoff_cli(
         default="text",
         help="Output format for the handoff report.",
     )
+    parser.add_argument(
+        "--refresh-remotes",
+        action="store_true",
+        help="Fetch fork/main and origin/main before reporting handoff status.",
+    )
+    parser.add_argument(
+        "--max-ref-age-seconds",
+        type=int,
+        default=DEFAULT_REMOTE_REF_MAX_AGE_SECONDS,
+        help="Maximum age for treating the local fork/main ref as fresh.",
+    )
     args = parser.parse_args(argv)
+    if submission_builder is None:
+        submission_builder = lambda: build_github_submission_status(
+            runner=submission_runner,
+            clock=clock,
+            remote_ref_max_age_seconds=args.max_ref_age_seconds,
+            refresh_remotes=args.refresh_remotes,
+        )
 
     report = build_handoff_status(
         project_builder=project_builder,

@@ -343,9 +343,12 @@ proof certificates, object languages, evidence bundles, and status reports:
   fork `main`, how far local `HEAD` is ahead of upstream `origin/main`, and
   where upstream submission notes are tracked. It also reports local
   `fork/main` remote-tracking ref freshness from the git reflog so operators
-  can see how recent the submission evidence is.
+  can see how recent the submission evidence is. `--refresh-remotes` fetches
+  fork `main` and origin `main` into the inspected remote-tracking refs before
+  reporting.
 - `python -m autarkic_systems.handoff` emits a local text/JSON handoff report
-  that combines accepted project status with GitHub submission evidence.
+  that combines accepted project status with GitHub submission evidence; it
+  also accepts `--refresh-remotes` for a refreshed pre-handoff check.
 - `python -m autarkic_systems.project_status --format json` emits the current
   project status as schema-versioned machine-readable JSON: transition
   evidence accepted with 11 bundles, chain evidence accepted with 2 bundles,

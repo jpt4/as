@@ -3923,3 +3923,22 @@ Deliverables:
 Status: accepted in `docs/adr/0192-submission-ref-freshness.md`.
 Implemented in `autarkic_systems/github_submission.py`, with tests in
 `tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.
+
+## ADR-0193: Refresh Remotes Before Handoff
+
+Goal: let operators explicitly refresh inspected remote-tracking refs before
+submission or handoff status is rendered.
+
+Deliverables:
+
+- `--refresh-remotes` for `python -m autarkic_systems.github_submission`;
+- `--refresh-remotes` for `python -m autarkic_systems.handoff`;
+- explicit fetches from fork `main` to `refs/remotes/fork/main` and origin
+  `main` to `refs/remotes/origin/main`;
+- text and JSON refresh-result reporting; and
+- requested refresh failures reject submission and handoff status.
+
+Status: accepted in `docs/adr/0193-refresh-remotes-before-handoff.md`.
+Implemented in `autarkic_systems/github_submission.py` and
+`autarkic_systems/handoff.py`, with tests in
+`tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.

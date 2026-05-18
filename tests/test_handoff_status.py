@@ -18,6 +18,17 @@ from autarkic_systems.handoff import (
 )
 
 
+class FakeGitRunner:
+    def __init__(self, outputs):
+        self.outputs = outputs
+        self.commands = []
+
+    def __call__(self, args):
+        command = tuple(args)
+        self.commands.append(command)
+        return self.outputs[command]
+
+
 PROJECT_REPORT = {
     "accepted": True,
     "transition_evidence": {"bundle_count": 11},
@@ -36,6 +47,30 @@ PROJECT_REPORT = {
         "blocked_commands": ["standard-signal"],
         "safe_next_slice": "",
     },
+}
+
+
+GIT_OUTPUTS = {
+    ("fetch", "fork", "main:refs/remotes/fork/main"): "",
+    ("fetch", "origin", "main:refs/remotes/origin/main"): "",
+    ("branch", "--show-current"): "main",
+    ("rev-parse", "HEAD"): "04158fc29229d091f616734725be3c8f54198200",
+    ("rev-parse", "--short", "HEAD"): "04158fc",
+    ("rev-parse", "fork/main"): "04158fc29229d091f616734725be3c8f54198200",
+    ("rev-parse", "--short", "fork/main"): "04158fc",
+    ("rev-parse", "origin/main"): "1a2fc06b75f5d33aee6655956c2a56df07a7bfb0",
+    ("rev-parse", "--short", "origin/main"): "1a2fc06",
+    ("rev-list", "--left-right", "--count", "origin/main...HEAD"): "0\t191",
+    ("remote", "get-url", "origin"): "https://github.com/jpt4/as.git",
+    ("remote", "get-url", "fork"): "https://github.com/Sean-Kenneth-Doherty/as.git",
+    (
+        "reflog",
+        "show",
+        "--date=unix",
+        "-1",
+        "--format=%cd",
+        "refs/remotes/fork/main",
+    ): "1779110000",
 }
 
 
@@ -146,6 +181,31 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["handoff_state"], "ready")
         self.assertEqual(payload["github_submission"]["head"]["short"], "04158fc")
+
+    def test_refresh_remotes_cli_passes_refresh_to_submission_status(self):
+        stdout = io.StringIO()
+        runner = FakeGitRunner(GIT_OUTPUTS)
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = run_handoff_cli(
+                ["--format", "json", "--refresh-remotes"],
+                project_builder=build_project_report,
+                submission_runner=runner,
+                clock=lambda: 1779110300,
+            )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 0, payload)
+        self.assertEqual(
+            runner.commands[:2],
+            [
+                ("fetch", "fork", "main:refs/remotes/fork/main"),
+                ("fetch", "origin", "main:refs/remotes/origin/main"),
+            ],
+        )
+        self.assertTrue(payload["accepted"])
+        self.assertTrue(payload["github_submission"]["remote_refresh"]["requested"])
+        self.assertTrue(payload["github_submission"]["remote_refresh"]["accepted"])
 
     def test_module_execution_runs_live_handoff_report(self):
         completed = subprocess.run(

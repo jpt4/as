@@ -4129,3 +4129,23 @@
   text/JSON commands reported `fork/main` freshness as fresh before this ADR
   was committed. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 802 tests.
+
+## 2026-05-18 - Refresh Remotes Before Handoff
+
+- Added ADR-0193 to let operators explicitly refresh inspected
+  remote-tracking refs before submission or handoff status is rendered.
+- Added red GitHub-submission and handoff tests before implementation. The
+  focused red run failed because `--refresh-remotes` was not accepted,
+  submission status did not accept `refresh_remotes`, handoff had no submission
+  runner injection, and the payload had no `remote_refresh` field.
+- Updated `autarkic_systems/github_submission.py` so requested refreshes fetch
+  fork `main` into `refs/remotes/fork/main` and origin `main` into
+  `refs/remotes/origin/main` before reporting. Refresh results now appear in
+  text and JSON, and requested refresh failures reject submission status.
+- Updated `autarkic_systems/handoff.py` with `--refresh-remotes`, threaded into
+  the submission report before handoff readiness is computed.
+- Focused green verification passed 14 tests. Live
+  `github_submission --refresh-remotes` and `handoff --refresh-remotes` runs
+  both reported `Remote refresh: accepted (fork/main, origin/main)` before this
+  ADR was committed. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 805 tests.
