@@ -1913,3 +1913,18 @@ Deliverables:
 Status: accepted in `docs/adr/0100-project-status-source-status-shape.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0101: Project Status Schema Version
+
+Goal: make the project status JSON contract explicitly versioned.
+
+Deliverables:
+
+- top-level `schema_version` field in `autarkic_systems.project_status`;
+- initial schema version `1`;
+- in-process report and JSON CLI tests for the schema version;
+- documentation update for the project status JSON contract.
+
+Status: accepted in `docs/adr/0101-project-status-schema-version.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

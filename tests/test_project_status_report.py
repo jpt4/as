@@ -28,6 +28,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         report = build_project_status_report()
 
         self.assertTrue(report["accepted"])
+        self.assertEqual(report["schema_version"], 1)
         self.assertEqual(
             report["transition_evidence"]["registry_id"],
             "transition-evidence-bundle-registry",
@@ -80,6 +81,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         payload = json.loads(stdout.getvalue())
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["schema_version"], 1)
         self.assertEqual(payload["transition_evidence"]["bundle_count"], 8)
         self.assertEqual(payload["chain_evidence"]["bundle_count"], 2)
         self.assertEqual(payload["frontier"]["blocked_commands"], BLOCKED_COMMANDS)

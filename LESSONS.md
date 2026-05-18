@@ -278,3 +278,6 @@
 - Valid JSON is not necessarily valid status. If a report depends on specific
   fields, reject shape-invalid artifacts explicitly instead of letting empty
   strings masquerade as a quiet frontier.
+- Once a status JSON shape becomes an automation contract, version it. A
+  top-level schema version makes future intentional changes auditable instead
+  of implicit drift.

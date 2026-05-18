@@ -250,13 +250,13 @@ the project legible:
   same claim-to-evidence surfaces for automation, including artifact presence
   and missing-path summaries.
 - `python -m autarkic_systems.project_status --format json` emits the current
-  project status as machine-readable JSON: transition evidence accepted with 8
-  bundles, chain evidence accepted with 2 bundles, and the blocked
-  `standard-signal`, `write-buf-zero`, and `write-buf-one` command-token
-  frontier. Missing registries report `registry-file`, malformed registries
-  report `registry-json`, and source-status path problems are summarized in
-  `frontier.failed_subjects` as `source-status-file`, `source-status-json`, or
-  `source-status-schema`.
+  project status as schema-versioned machine-readable JSON: transition
+  evidence accepted with 8 bundles, chain evidence accepted with 2 bundles,
+  and the blocked `standard-signal`, `write-buf-zero`, and `write-buf-one`
+  command-token frontier. Missing registries report `registry-file`, malformed
+  registries report `registry-json`, and source-status path problems are
+  summarized in `frontier.failed_subjects` as `source-status-file`,
+  `source-status-json`, or `source-status-schema`.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

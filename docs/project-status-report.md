@@ -38,14 +38,15 @@ The text report names:
 - blocked command tokens; and
 - the safe next slice from the source-status records.
 
-JSON mode emits the same surface for automation. If a registry file is missing,
-the corresponding registry summary reports `registry-file`; if a registry file
-is present but malformed, it reports `registry-json`. Missing or invalid
-source-status files are also reported as structured rejected output instead of
-a traceback. ADR-0099 adds `frontier.failed_subjects`, which reports
-`source-status-file` for missing source-status files and `source-status-json`
-for malformed source-status files. ADR-0100 adds `source-status-schema` for
-source-status JSON that parses but is not a usable source-status object.
+JSON mode emits the same surface for automation and includes top-level
+`schema_version: 1`. If a registry file is missing, the corresponding registry
+summary reports `registry-file`; if a registry file is present but malformed,
+it reports `registry-json`. Missing or invalid source-status files are also
+reported as structured rejected output instead of a traceback. ADR-0099 adds
+`frontier.failed_subjects`, which reports `source-status-file` for missing
+source-status files and `source-status-json` for malformed source-status
+files. ADR-0100 adds `source-status-schema` for source-status JSON that parses
+but is not a usable source-status object. ADR-0101 adds the schema version.
 
 ## Boundary
 

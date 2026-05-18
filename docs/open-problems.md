@@ -155,6 +155,7 @@ ADR-0099 gives the frontier section the same compact failure-subject summary
 for missing or malformed source-status files.
 ADR-0100 makes source-status JSON shape part of that status check, so parseable
 but unusable source-status records cannot pass as an empty frontier.
+ADR-0101 adds a top-level project status schema version for automation.
 
 ## P3: Choose The First Proof Apparatus
 

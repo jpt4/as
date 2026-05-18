@@ -32,6 +32,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
+PROJECT_STATUS_SCHEMA_VERSION = 1
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -56,6 +57,7 @@ def build_project_status_report(
         and not frontier["invalid_source_statuses"]
     )
     return {
+        "schema_version": PROJECT_STATUS_SCHEMA_VERSION,
         "accepted": accepted,
         "transition_evidence": transition_summary,
         "chain_evidence": chain_summary,
