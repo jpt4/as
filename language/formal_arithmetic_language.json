@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "language_id": "as-formal-arithmetic-v1",
+  "reviewed_at": "2026-05-18",
+  "purpose": "Minimal syntax-only AS bounded arithmetic surface for future Willard-style formal-confidence work. This manifest names classes and examples only; it is not a parser, evaluator, proof-code encoding, deduction apparatus, substitution engine, or self-consistency claim.",
+  "arithmetic_profile": "Type-NS",
+  "willard_anchor_ids": [
+    "W2011-D3.4-GENERIC-CONFIGURATION",
+    "W2011-D5.6-LEVEL-K-CONSISTENCY",
+    "W2011-D5.7-SELFCONSK",
+    "W2020-D3.4-TYPE-NS-A-S-M",
+    "W2020-T4.4-T4.5-LEM-BOUNDARY"
+  ],
+  "syntax_classes": {
+    "terms": {
+      "variables": ["x", "y", "z", "n"],
+      "constants": ["0"],
+      "function_symbols": {
+        "successor": {
+          "notation": "S(t)",
+          "arity": 1,
+          "totality_status": "not-asserted"
+        },
+        "addition": {
+          "notation": "add(t,u)",
+          "arity": 2,
+          "totality_status": "not-in-type-ns-profile"
+        },
+        "multiplication": {
+          "notation": "mul(t,u)",
+          "arity": 2,
+          "totality_status": "not-in-type-ns-profile"
+        }
+      },
+      "examples": ["0", "S(0)", "S(x)"]
+    },
+    "formulae": {
+      "relation_symbols": {
+        "equals": {
+          "notation": "t = u",
+          "arity": 2
+        },
+        "less_than": {
+          "notation": "t < u",
+          "arity": 2
+        }
+      },
+      "logical_connectives": ["not", "and", "or", "implies"],
+      "quantifier_forms": ["forall", "exists", "bounded-forall", "bounded-exists"],
+      "bounded_formula_classes": {
+        "delta0": {
+          "description": "Formulae using only bounded quantifiers over the named term vocabulary.",
+          "allowed_quantifiers": ["bounded-forall", "bounded-exists"],
+          "examples": [
+            "forall x < n: exists y < n: y = x",
+            "exists x < n: S(x) = n"
+          ]
+        }
+      }
+    },
+    "sentences": {
+      "classes": {
+        "pi1": {
+          "description": "Universal closure over a delta0 matrix, named so later Level(k) consistency work can distinguish Pi and Sigma sides.",
+          "examples": ["forall x: phi_delta0(x)"]
+        },
+        "sigma1": {
+          "description": "Existential closure over a delta0 matrix, named so later negation and witness boundaries are explicit.",
+          "examples": ["exists x: phi_delta0(x)"]
+        }
+      }
+    },
+    "proof_objects": {
+      "status": "placeholder-only",
+      "description": "Proof-object syntax is intentionally not implemented in this language slice.",
+      "rules": [],
+      "blocked_by": [
+        "proof-code-encoding",
+        "deduction-apparatus-selection"
+      ]
+    }
+  }
+}

@@ -4796,3 +4796,31 @@
   confidence: 1 target; blocked=1`, and live project-status JSON reported
   schema version `22`. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 924 tests.
+
+## 2026-05-18 - Bounded Arithmetic Language
+
+- Added ADR-0226 to remove the arithmetic-syntax blocker from the
+  formal-confidence target without claiming proof-code, substitution,
+  deduction, or self-consistency machinery.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.formal_arithmetic` and
+  `language/formal_arithmetic_language.json` did not exist, and the
+  formal-confidence target still listed `arithmetic-object-language` as a
+  blocker.
+- Added `language/formal_arithmetic_language.json`, a syntax-only Type-NS
+  arithmetic surface naming terms, formulae, `delta0`, `pi1`, `sigma1`, and
+  placeholder-only proof objects.
+- Added `autarkic_systems/formal_arithmetic.py` with text/JSON validation
+  against `sources/willard_definition_map.json`.
+- Narrowed `claims/formal_confidence_targets.json` so
+  `AS-FORMAL-CONFIDENCE-TARGET-001` points at the formal arithmetic language,
+  records `delta0`, removes the arithmetic-object-language blocker, and
+  remains blocked on proof-code encoding, self-reference substitution,
+  consistency-level selection, and deduction-apparatus selection.
+- Focused formal-arithmetic, formal-confidence, and project-status tests
+  passed 109 tests. Live formal-arithmetic text/JSON output reported accepted
+  Type-NS `delta0` syntax with no failed subjects; live formal-confidence
+  output reported the remaining blockers without `arithmetic-object-language`;
+  live project-status summary and refreshed handoff remained accepted.
+  `compileall`, JSON checks, `git diff --check`, and `python -m unittest
+  discover` passed; the full suite ran 935 tests.

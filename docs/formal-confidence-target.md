@@ -1,6 +1,7 @@
 # Formal Confidence Target
 
-Status: first checked target boundary, 2026-05-18.
+Status: checked target boundary with first arithmetic syntax artifact,
+2026-05-18.
 
 ADR-0224 adds `claims/formal_confidence_targets.json` and
 `autarkic_systems/formal_confidence.py`. The target records what AS would need
@@ -24,7 +25,11 @@ claim needs at least:
 - an exact consistency notion; and
 - a bridge back to the substrate claims AS can execute.
 
-The formal-confidence target keeps those obligations explicit.
+The formal-confidence target keeps those obligations explicit. ADR-0226 adds
+`language/formal_arithmetic_language.json`, so the target now has a checked
+syntax-only Type-NS arithmetic language and `delta0` bounded formula class, but
+the target remains blocked on proof-code, substitution, consistency-level, and
+deduction-apparatus work.
 
 ## Current Target
 
@@ -40,16 +45,18 @@ It names these Willard anchors as constraints:
 - `W2020-T4.4-T4.5-LEM-BOUNDARY`.
 
 It records the current configuration as local AS transition/chain/sequence
-object languages plus local predicate-result proof certificates. It also
-records the blockers: arithmetic object language, proof-code encoding,
-self-reference substitution, consistency-level selection, and deduction
-apparatus selection.
+object languages, `language/formal_arithmetic_language.json`, and local
+predicate-result proof certificates. It also records the remaining blockers:
+proof-code encoding, self-reference substitution, consistency-level selection,
+and deduction-apparatus selection.
 
 ## Run
 
 ```sh
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.formal_confidence --format json
+python -m autarkic_systems.formal_arithmetic
+python -m autarkic_systems.formal_arithmetic --format json
 python -m autarkic_systems.project_status --format summary
 ```
 

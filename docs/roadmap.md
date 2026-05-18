@@ -4620,3 +4620,27 @@ Deliverables:
 Status: accepted in `docs/adr/0225-project-status-formal-confidence.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py` and `tests/test_handoff_status.py`.
+
+## ADR-0226: Bounded Arithmetic Language
+
+Goal: remove the arithmetic-syntax blocker from the formal-confidence target
+without overclaiming proof-code, deduction, substitution, or self-consistency.
+
+Deliverables:
+
+- `language/formal_arithmetic_language.json` with a syntax-only Type-NS
+  arithmetic profile;
+- required syntax classes for terms, formulae, sentences, and proof_objects;
+- `delta0` bounded formula examples and `pi1`/`sigma1` sentence examples;
+- Willard anchor validation against the existing definition map;
+- `autarkic_systems.formal_arithmetic` text/JSON CLI validation;
+- formal-confidence target narrowed to the new language artifact while still
+  blocked on proof-code, self-reference/substitution, consistency-level, and
+  deduction-apparatus choices; and
+- no parser, evaluator, proof-code encoder, substitution engine, theorem
+  prover, runtime behavior, command semantics, evidence bundle, or GitHub
+  submission logic changes.
+
+Status: accepted in `docs/adr/0226-bounded-arithmetic-language.md`.
+Implemented in `autarkic_systems/formal_arithmetic.py`, with tests in
+`tests/test_formal_arithmetic_language.py`.

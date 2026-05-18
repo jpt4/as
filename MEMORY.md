@@ -53,6 +53,17 @@
   constrains future formal-confidence work around exact syntax, deduction
   apparatus, proof-code/self-reference, consistency level, and excluded-middle
   boundary choices.
+- ADR-0226 adds `language/formal_arithmetic_language.json` and
+  `autarkic_systems/formal_arithmetic.py` as the first checked syntax-only
+  Type-NS arithmetic surface. It names `delta0`, `pi1`, `sigma1`, and
+  placeholder-only proof objects, but does not implement a parser, evaluator,
+  proof-code encoding, substitution engine, deduction apparatus, or
+  self-consistency claim.
+- `AS-FORMAL-CONFIDENCE-TARGET-001` now points at the formal arithmetic
+  language artifact and no longer lists `arithmetic-object-language` as a
+  blocker. It remains blocked on proof-code encoding,
+  self-reference-substitution, consistency-level selection, and
+  deduction-apparatus selection.
 - Direct pushes to `jpt4/as` are blocked for `Sean-Kenneth-Doherty`; current AS
   work is published at `https://github.com/Sean-Kenneth-Doherty/as`, and
   upstream issue `jpt4/as#1` records the permission blocker and fork handoff.

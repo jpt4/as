@@ -420,8 +420,11 @@ names the first explicit syntax classes for current transition claims, and
 `autarkic_systems/object_language.py` validates the current claim/certificate
 surface against that language. ADR-0136 exposes that base language/surface
 check through direct text and JSON CLI validation. ADR-0137 gives the
-transition-chain object language the same direct CLI surface. IS(A), Type NS,
-tableaux syntax, and arithmetized proof-code syntax remain open.
+transition-chain object language the same direct CLI surface. ADR-0226 adds
+`language/formal_arithmetic_language.json`, a checked syntax-only Type-NS
+surface with `delta0`, `pi1`, `sigma1`, and placeholder-only proof objects.
+IS(A), parser/evaluator semantics, tableaux syntax, and arithmetized proof-code
+syntax remain open.
 
 ## P5: Annotate Core Willard Sources At Definition Granularity
 
@@ -440,7 +443,10 @@ machinery. ADR-0224 adds the first checked formal-confidence target that uses
 those anchors as constraints while explicitly blocking any Willard-style
 self-consistency claim until arithmetic syntax, proof-code encoding,
 self-reference substitution, consistency-level selection, and deduction
-apparatus selection are implemented.
+apparatus selection are implemented. ADR-0226 removes only the arithmetic
+syntax blocker by adding a checked Type-NS `delta0` language artifact; the
+remaining blockers are proof-code encoding, self-reference substitution,
+consistency-level selection, and deduction-apparatus selection.
 
 ## P6: Recover Or Replace The Active Proflog Frontier
 

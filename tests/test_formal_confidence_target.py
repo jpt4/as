@@ -18,6 +18,7 @@ from autarkic_systems.formal_confidence import (
 
 TARGETS = Path("claims/formal_confidence_targets.json")
 WILLARD_MAP = Path("sources/willard_definition_map.json")
+FORMAL_ARITHMETIC_LANGUAGE = Path("language/formal_arithmetic_language.json")
 
 
 class FormalConfidenceTargetTests(unittest.TestCase):
@@ -62,10 +63,16 @@ class FormalConfidenceTargetTests(unittest.TestCase):
             target.configuration["deduction_method"],
             "as-local-predicate-result-proof-certificate-checker",
         )
+        self.assertIn(
+            str(FORMAL_ARITHMETIC_LANGUAGE),
+            target.configuration["language"],
+        )
+        self.assertEqual(target.configuration["bounded_formula_class"], "delta0")
         self.assertEqual(
             target.configuration["consistency_notion"],
             "not-claimed",
         )
+        self.assertNotIn("arithmetic-object-language", target.blocked_by)
 
     def test_checked_in_target_validates_against_willard_map(self):
         report = validate_formal_confidence_targets(self.manifest, WILLARD_MAP)
@@ -94,6 +101,10 @@ class FormalConfidenceTargetTests(unittest.TestCase):
             "proof-code-encoding",
             payload["targets"][0]["blocked_by"],
         )
+        self.assertNotIn(
+            "arithmetic-object-language",
+            payload["targets"][0]["blocked_by"],
+        )
         self.assertTrue(
             any(
                 result["subject"].endswith(".configuration")
@@ -109,7 +120,8 @@ class FormalConfidenceTargetTests(unittest.TestCase):
 
         self.assertIn("Formal confidence targets: accepted", text)
         self.assertIn("AS-FORMAL-CONFIDENCE-TARGET-001: blocked", text)
-        self.assertIn("Blockers: arithmetic-object-language", text)
+        self.assertIn("Blockers: proof-code-encoding", text)
+        self.assertNotIn("arithmetic-object-language", text)
         self.assertIn("Willard anchors:", text)
         self.assertNotIn("FAIL", text)
 
