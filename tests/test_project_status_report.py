@@ -21,7 +21,7 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
-PROJECT_STATUS_SCHEMA_VERSION = 10
+PROJECT_STATUS_SCHEMA_VERSION = 11
 BLOCKED_RUNTIME_SURFACES = [
     "recipient-command-message",
     "self-mailbox-command",
@@ -132,6 +132,24 @@ CHAIN_BUNDLES = [
         "expected_status": "recipient-not-consumed",
     },
 ]
+TRANSITION_LANGUAGE = {
+    "language_id": "as-transition-claim-v1",
+    "language_path": "language/transition_claim_language.json",
+    "claims_path": "claims/transition_claims.json",
+    "certificates_path": "claims/proof_certificates.json",
+    "claim_count": 13,
+    "certificate_count": 13,
+    "result_count": 63,
+}
+CHAIN_LANGUAGE = {
+    "language_id": "as-transition-chain-claim-v1",
+    "language_path": "language/transition_chain_claim_language.json",
+    "claims_path": "claims/transition_chain_claims.json",
+    "certificates_path": "claims/transition_chain_proof_certificates.json",
+    "claim_count": 2,
+    "certificate_count": 2,
+    "result_count": 32,
+}
 STANDARD_SIGNAL_QUESTIONS = [
     "command-token-vs-binary-input",
     "recipient-surface",
@@ -298,6 +316,14 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertTrue(report["chain_evidence"]["accepted"])
         self.assertEqual(report["chain_evidence"]["bundle_count"], 2)
         self.assertEqual(report["chain_evidence"]["bundles"], CHAIN_BUNDLES)
+        self.assertTrue(report["transition_language"]["accepted"])
+        for key, expected in TRANSITION_LANGUAGE.items():
+            self.assertEqual(report["transition_language"][key], expected)
+        self.assertEqual(report["transition_language"]["failed_subjects"], [])
+        self.assertTrue(report["chain_language"]["accepted"])
+        for key, expected in CHAIN_LANGUAGE.items():
+            self.assertEqual(report["chain_language"][key], expected)
+        self.assertEqual(report["chain_language"]["failed_subjects"], [])
         self.assertEqual(report["frontier"]["blocked_commands"], BLOCKED_COMMANDS)
         self.assertEqual(report["frontier"]["failed_subjects"], [])
         self.assertEqual(report["frontier"]["safe_next_slice"], SAFE_NEXT_SLICE)
@@ -393,6 +419,8 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Autarkic Systems project status: accepted", text)
         self.assertIn("Transition evidence: accepted (8 bundles)", text)
         self.assertIn("Chain evidence: accepted (2 bundles)", text)
+        self.assertIn("Transition language: accepted (13 claims, 13 certificates)", text)
+        self.assertIn("Chain language: accepted (2 claims, 2 certificates)", text)
         self.assertIn("Transition evidence bundles:", text)
         self.assertIn(
             "recipient-init-command-message-transition-evidence-bundle -> "
@@ -629,6 +657,14 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertEqual(payload["chain_evidence"]["bundle_count"], 2)
         self.assertEqual(payload["chain_evidence"]["bundles"], CHAIN_BUNDLES)
+        self.assertTrue(payload["transition_language"]["accepted"])
+        for key, expected in TRANSITION_LANGUAGE.items():
+            self.assertEqual(payload["transition_language"][key], expected)
+        self.assertEqual(payload["transition_language"]["failed_subjects"], [])
+        self.assertTrue(payload["chain_language"]["accepted"])
+        for key, expected in CHAIN_LANGUAGE.items():
+            self.assertEqual(payload["chain_language"][key], expected)
+        self.assertEqual(payload["chain_language"]["failed_subjects"], [])
         self.assertEqual(payload["frontier"]["blocked_commands"], BLOCKED_COMMANDS)
         self.assertEqual(payload["frontier"]["failed_subjects"], [])
         self.assertEqual(

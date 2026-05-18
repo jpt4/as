@@ -588,3 +588,6 @@
 - ADR-0137 adds `python -m autarkic_systems.chain_object_language` with
   text/JSON validation of the transition-chain claim language and checked chain
   claim/proof surface.
+- ADR-0138 bumps `autarkic_systems.project_status` to `schema_version: 11` and
+  adds `transition_language` and `chain_language` summaries for the base and
+  chain object-language surfaces.

@@ -237,6 +237,9 @@ objects, so settled blocker decisions cannot point at dead artifacts.
 ADR-0132 carries the resolved `command-table-offset` formal offset and RAA
 legacy divergence into project status, so the settled decision trail is no
 longer reduced to a label.
+ADR-0138 adds base and chain language summaries to project status, so the first
+diagnostic command covers the object-language surfaces beneath evidence and
+frontier reports.
 
 ## P3: Choose The First Proof Apparatus
 

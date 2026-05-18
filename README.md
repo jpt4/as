@@ -275,7 +275,9 @@ the project legible:
 - `python -m autarkic_systems.project_status --format json` emits the current
   project status as schema-versioned machine-readable JSON: transition
   evidence accepted with 8 bundles, chain evidence accepted with 2 bundles,
-  concrete transition and chain registry bundle entries, and the blocked
+  transition language accepted with 13 claims and 13 certificates, chain
+  language accepted with 2 claims and 2 certificates, concrete transition and
+  chain registry bundle entries, and the blocked
   `standard-signal`, `write-buf-zero`, and `write-buf-one` command-token
   frontier. The default text report also names the concrete transition and
   chain evidence bundle IDs and paths, transition bundle positive and covered
@@ -300,7 +302,8 @@ the project legible:
   present. Schema version `9` adds `resolved_resolution_questions` to accepted
   source-status entries and renders a `Resolved resolution questions:` text
   section. Schema version `10` carries optional resolved-question detail fields
-  such as formal command offset and legacy divergence into JSON/text.
+  such as formal command offset and legacy divergence into JSON/text. Schema
+  version `11` adds transition and chain language summaries to JSON/text.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

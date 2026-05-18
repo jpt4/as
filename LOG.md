@@ -3024,3 +3024,22 @@
   formatting, `py_compile`, and `git diff --check` passed; chain
   object-language text and JSON CLI output were accepted; and
   `python -m unittest discover` passed 631 tests.
+
+## 2026-05-18 - Project Status Language Surfaces
+
+- Added ADR-0138 to include base and chain object-language summaries in
+  `python -m autarkic_systems.project_status`.
+- Updated project-status tests before implementation. The red run executed 52
+  tests and failed because project status still reported `schema_version: 10`
+  and omitted compact transition/chain language text lines.
+- Updated `autarkic_systems.project_status` so project status JSON includes
+  `transition_language` and `chain_language` summaries with accepted state,
+  paths, counts, failed subjects, result counts, and validation results.
+- Added compact default text lines for transition and chain language status,
+  added CLI path overrides for the language/claim/certificate manifests, and
+  bumped project status JSON to `schema_version: 11`.
+- Verification passed: focused project-status tests ran 52 tests; project
+  status JSON was accepted at `schema_version: 11`; base and chain
+  object-language JSON commands were accepted; `py_compile` and
+  `git diff --check` passed; and `python -m unittest discover` passed 631
+  tests.

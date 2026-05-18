@@ -18,21 +18,35 @@ from autarkic_systems.chain_evidence_bundle import (
     load_chain_evidence_bundle_registry,
     validate_chain_evidence_bundle_registry,
 )
+from autarkic_systems.chain_object_language import (
+    transition_chain_claim_language_report_payload,
+    validate_transition_chain_claim_language_project,
+)
 from autarkic_systems.evidence_bundle import (
     load_evidence_bundle_registry,
     registry_validation_report_payload,
     validate_evidence_bundle_registry,
 )
+from autarkic_systems.object_language import (
+    transition_claim_language_report_payload,
+    validate_transition_claim_language_project,
+)
 
 
 DEFAULT_TRANSITION_REGISTRY = Path("evidence/manifest.json")
 DEFAULT_CHAIN_REGISTRY = Path("evidence/chains/manifest.json")
+DEFAULT_TRANSITION_LANGUAGE = Path("language/transition_claim_language.json")
+DEFAULT_TRANSITION_CLAIMS = Path("claims/transition_claims.json")
+DEFAULT_TRANSITION_CERTIFICATES = Path("claims/proof_certificates.json")
+DEFAULT_CHAIN_LANGUAGE = Path("language/transition_chain_claim_language.json")
+DEFAULT_CHAIN_CLAIMS = Path("claims/transition_chain_claims.json")
+DEFAULT_CHAIN_CERTIFICATES = Path("claims/transition_chain_proof_certificates.json")
 DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/recipient_non_init_command_source_status.json"),
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 10
+PROJECT_STATUS_SCHEMA_VERSION = 11
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -43,16 +57,34 @@ BLOCKED_COMMAND_ORDER = (
 def build_project_status_report(
     transition_registry_path: Path | str = DEFAULT_TRANSITION_REGISTRY,
     chain_registry_path: Path | str = DEFAULT_CHAIN_REGISTRY,
+    transition_language_path: Path | str = DEFAULT_TRANSITION_LANGUAGE,
+    transition_claims_path: Path | str = DEFAULT_TRANSITION_CLAIMS,
+    transition_certificates_path: Path | str = DEFAULT_TRANSITION_CERTIFICATES,
+    chain_language_path: Path | str = DEFAULT_CHAIN_LANGUAGE,
+    chain_claims_path: Path | str = DEFAULT_CHAIN_CLAIMS,
+    chain_certificates_path: Path | str = DEFAULT_CHAIN_CERTIFICATES,
     source_status_paths: list[Path | str] | tuple[Path | str, ...] = DEFAULT_SOURCE_STATUS_PATHS,
 ) -> dict[str, Any]:
     """Build a status report from registries and source-status records."""
 
     transition_summary = _transition_registry_summary(transition_registry_path)
     chain_summary = _chain_registry_summary(chain_registry_path)
+    transition_language = _transition_language_summary(
+        transition_language_path,
+        transition_claims_path,
+        transition_certificates_path,
+    )
+    chain_language = _chain_language_summary(
+        chain_language_path,
+        chain_claims_path,
+        chain_certificates_path,
+    )
     frontier = _frontier_summary(source_status_paths)
     accepted = (
         transition_summary["accepted"]
         and chain_summary["accepted"]
+        and transition_language["accepted"]
+        and chain_language["accepted"]
         and not frontier["missing_source_statuses"]
         and not frontier["invalid_source_statuses"]
     )
@@ -61,6 +93,8 @@ def build_project_status_report(
         "accepted": accepted,
         "transition_evidence": transition_summary,
         "chain_evidence": chain_summary,
+        "transition_language": transition_language,
+        "chain_language": chain_language,
         "frontier": frontier,
     }
 
@@ -71,6 +105,8 @@ def format_project_status_report(report: dict[str, Any]) -> str:
     status = "accepted" if report["accepted"] else "rejected"
     transition = report["transition_evidence"]
     chain = report["chain_evidence"]
+    transition_language = report["transition_language"]
+    chain_language = report["chain_language"]
     frontier = report["frontier"]
     transition_status = "accepted" if transition["accepted"] else "rejected"
     chain_status = "accepted" if chain["accepted"] else "rejected"
@@ -94,6 +130,8 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         f"Autarkic Systems project status: {status}",
         f"Transition evidence: {transition_status} ({transition['bundle_count']} bundles)",
         f"Chain evidence: {chain_status} ({chain['bundle_count']} bundles)",
+        _language_text_line("Transition language", transition_language),
+        _language_text_line("Chain language", chain_language),
         *_registry_bundle_text_lines("Transition evidence", transition),
         *_registry_bundle_text_lines("Chain evidence", chain),
         "Blocked commands: "
@@ -134,6 +172,36 @@ def run_project_status_cli(argv: list[str] | None = None) -> int:
         help="Path to the transition-chain evidence registry JSON.",
     )
     parser.add_argument(
+        "--transition-language",
+        default=str(DEFAULT_TRANSITION_LANGUAGE),
+        help="Path to the transition claim language manifest.",
+    )
+    parser.add_argument(
+        "--transition-claims",
+        default=str(DEFAULT_TRANSITION_CLAIMS),
+        help="Path to the transition claim manifest.",
+    )
+    parser.add_argument(
+        "--transition-certificates",
+        default=str(DEFAULT_TRANSITION_CERTIFICATES),
+        help="Path to the transition proof certificate manifest.",
+    )
+    parser.add_argument(
+        "--chain-language",
+        default=str(DEFAULT_CHAIN_LANGUAGE),
+        help="Path to the transition-chain claim language manifest.",
+    )
+    parser.add_argument(
+        "--chain-claims",
+        default=str(DEFAULT_CHAIN_CLAIMS),
+        help="Path to the transition-chain claim manifest.",
+    )
+    parser.add_argument(
+        "--chain-certificates",
+        default=str(DEFAULT_CHAIN_CERTIFICATES),
+        help="Path to the transition-chain proof certificate manifest.",
+    )
+    parser.add_argument(
         "--source-status",
         action="append",
         default=None,
@@ -155,6 +223,12 @@ def run_project_status_cli(argv: list[str] | None = None) -> int:
     report = build_project_status_report(
         transition_registry_path=args.transition_registry,
         chain_registry_path=args.chain_registry,
+        transition_language_path=args.transition_language,
+        transition_claims_path=args.transition_claims,
+        transition_certificates_path=args.transition_certificates,
+        chain_language_path=args.chain_language,
+        chain_claims_path=args.chain_claims,
+        chain_certificates_path=args.chain_certificates,
         source_status_paths=source_status_paths,
     )
     if args.format == "json":
@@ -186,6 +260,94 @@ def _chain_registry_summary(registry_path: Path | str) -> dict[str, Any]:
     results = validate_chain_evidence_bundle_registry(registry)
     payload = chain_registry_validation_report_payload(registry, results)
     return _registry_summary(payload, path)
+
+
+def _transition_language_summary(
+    language_path: Path | str,
+    claims_path: Path | str,
+    certificates_path: Path | str,
+) -> dict[str, Any]:
+    language = Path(language_path)
+    claims = Path(claims_path)
+    certificates = Path(certificates_path)
+    try:
+        report = validate_transition_claim_language_project(
+            language_path=language,
+            claims_path=claims,
+            certificates_path=certificates,
+        )
+    except Exception as exc:
+        return _language_failure_summary(language, claims, certificates, exc)
+
+    payload = transition_claim_language_report_payload(report)
+    return _language_summary(payload)
+
+
+def _chain_language_summary(
+    language_path: Path | str,
+    claims_path: Path | str,
+    certificates_path: Path | str,
+) -> dict[str, Any]:
+    language = Path(language_path)
+    claims = Path(claims_path)
+    certificates = Path(certificates_path)
+    try:
+        report = validate_transition_chain_claim_language_project(
+            language_path=language,
+            claims_path=claims,
+            certificates_path=certificates,
+        )
+    except Exception as exc:
+        return _language_failure_summary(language, claims, certificates, exc)
+
+    payload = transition_chain_claim_language_report_payload(report)
+    return _language_summary(payload)
+
+
+def _language_summary(payload: dict[str, Any]) -> dict[str, Any]:
+    failed_subjects = [
+        result["subject"] for result in payload["results"] if not result["accepted"]
+    ]
+    return {
+        "language_id": payload["language_id"],
+        "language_path": payload["language_path"],
+        "claims_path": payload["claims_path"],
+        "certificates_path": payload["certificates_path"],
+        "accepted": payload["accepted"],
+        "claim_count": payload["claim_count"],
+        "certificate_count": payload["certificate_count"],
+        "failed_subjects": failed_subjects,
+        "result_count": payload["result_count"],
+        "results": payload["results"],
+    }
+
+
+def _language_failure_summary(
+    language_path: Path,
+    claims_path: Path,
+    certificates_path: Path,
+    exc: Exception,
+) -> dict[str, Any]:
+    subject = "language-file" if isinstance(exc, FileNotFoundError) else "language-json"
+    detail = f"{type(exc).__name__}: {exc}"
+    return {
+        "language_id": "",
+        "language_path": str(language_path),
+        "claims_path": str(claims_path),
+        "certificates_path": str(certificates_path),
+        "accepted": False,
+        "claim_count": 0,
+        "certificate_count": 0,
+        "failed_subjects": [subject],
+        "result_count": 1,
+        "results": [
+            {
+                "subject": subject,
+                "accepted": False,
+                "detail": detail,
+            }
+        ],
+    }
 
 
 def _registry_summary(payload: dict[str, Any], path: Path) -> dict[str, Any]:
@@ -419,6 +581,15 @@ def _registry_bundle_text_lines(label: str, summary: dict[str, Any]) -> list[str
         if covered_examples:
             lines.append(f"    covered examples: {'; '.join(covered_examples)}")
     return lines
+
+
+def _language_text_line(label: str, summary: dict[str, Any]) -> str:
+    status = "accepted" if summary["accepted"] else "rejected"
+    return (
+        f"{label}: {status} "
+        f"({summary['claim_count']} claims, "
+        f"{summary['certificate_count']} certificates)"
+    )
 
 
 def _as_boundary_text_lines(frontier: dict[str, Any]) -> list[str]:

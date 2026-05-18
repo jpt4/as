@@ -2662,3 +2662,23 @@ Deliverables:
 Status: accepted in `docs/adr/0137-chain-object-language-cli.md`. Implemented
 in `autarkic_systems/chain_object_language.py`, with tests in
 `tests/test_chain_object_language.py`.
+
+## ADR-0138: Project Status Language Surfaces
+
+Goal: include the base and chain object-language validation surfaces in the
+first project diagnostic command.
+
+Deliverables:
+
+- project status JSON `schema_version: 11`;
+- `transition_language` summary with accepted state, language ID, paths,
+  counts, failed subjects, result count, and validation results;
+- `chain_language` summary with the same shape;
+- compact transition and chain language lines in default text output;
+- CLI path overrides for transition/chain language, claim, and certificate
+  manifests; and
+- focused project-status tests covering JSON, text, and CLI output.
+
+Status: accepted in `docs/adr/0138-project-status-language-surfaces.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

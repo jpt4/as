@@ -385,3 +385,6 @@
   command.
 - When base and chain language layers serve parallel diagnostic roles, keep
   their first-run surfaces parallel too.
+- A first diagnostic command should summarize lower language surfaces once
+  those surfaces have direct validators, while leaving detailed clause output
+  in the specialized commands.

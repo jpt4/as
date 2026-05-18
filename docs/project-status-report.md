@@ -26,6 +26,10 @@ The report validates:
 
 - `evidence/manifest.json`, the transition evidence registry;
 - `evidence/chains/manifest.json`, the transition-chain evidence registry;
+- `language/transition_claim_language.json`, the base transition claim
+  language and checked claim/proof surface;
+- `language/transition_chain_claim_language.json`, the transition-chain claim
+  language and checked chain claim/proof surface;
 - `sources/recipient_non_init_command_source_status.json`;
 - `sources/standard_signal_command_semantics_status.json`; and
 - `sources/write_buffer_command_semantics_status.json`.
@@ -35,6 +39,8 @@ The text report names:
 - overall accepted or rejected status;
 - transition evidence accepted or rejected state and bundle count;
 - chain evidence accepted or rejected state and bundle count;
+- transition language accepted or rejected state and claim/certificate counts;
+- chain language accepted or rejected state and claim/certificate counts;
 - transition and chain evidence bundle IDs and paths;
 - transition bundle primary positive examples and covered examples;
 - blocked command tokens;
@@ -46,7 +52,7 @@ The text report names:
 - the safe next slice from the source-status records.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 10`. If a registry file is missing, the corresponding registry
+`schema_version: 11`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -110,6 +116,9 @@ ADR-0132 carries optional resolved-question detail fields such as
 `formal_command_offset` and `legacy_divergence` into project status JSON/text,
 rejects malformed detail metadata as `source-status-schema`, and bumps the
 schema version to `10`.
+ADR-0138 adds `transition_language` and `chain_language` summaries to project
+status JSON/text, includes failed-subject lists for rejected language results,
+and bumps the schema version to `11`.
 
 ## Boundary
 
