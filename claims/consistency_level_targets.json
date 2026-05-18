@@ -6,6 +6,7 @@
   "language_path": "language/formal_arithmetic_language.json",
   "codebook_path": "language/formal_codebook.json",
   "substitution_examples_path": "language/formal_substitution_examples.json",
+  "complement_examples_path": "language/formal_complement_examples.json",
   "willard_anchor_ids": [
     "W2011-D5.6-LEVEL-K-CONSISTENCY",
     "W2011-D5.7-SELFCONSK"
@@ -19,6 +20,7 @@
       "negation_class": "sigma1",
       "proof_code_source": "language/formal_codebook.json",
       "substitution_source": "language/formal_substitution_examples.json",
+      "complement_source": "language/formal_complement_examples.json",
       "status": "target-selected-not-claimed",
       "non_claims": [
         "no fixed-point self-reference construction",
@@ -26,7 +28,7 @@
         "no proof of Level-1 consistency",
         "no self-consistency theorem"
       ],
-      "next_as_action": "Select a deduction apparatus and construct a fixed-point self-reference target before attempting any Level-1 consistency claim."
+      "next_as_action": "Use the checked complement surface, selected deduction apparatus, and fixed-point target when specifying the Level-1 consistency theorem boundary."
     }
   ]
 }

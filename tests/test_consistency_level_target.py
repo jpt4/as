@@ -19,6 +19,7 @@ TARGETS = Path("claims/consistency_level_targets.json")
 LANGUAGE = Path("language/formal_arithmetic_language.json")
 CODEBOOK = Path("language/formal_codebook.json")
 SUBSTITUTION = Path("language/formal_substitution_examples.json")
+COMPLEMENT = Path("language/formal_complement_examples.json")
 WILLARD_MAP = Path("sources/willard_definition_map.json")
 
 
@@ -34,6 +35,7 @@ class ConsistencyLevelTargetTests(unittest.TestCase):
         self.assertEqual(self.manifest.language_path, str(LANGUAGE))
         self.assertEqual(self.manifest.codebook_path, str(CODEBOOK))
         self.assertEqual(self.manifest.substitution_examples_path, str(SUBSTITUTION))
+        self.assertEqual(self.manifest.complement_examples_path, str(COMPLEMENT))
         self.assertEqual(
             REQUIRED_WILLARD_ANCHORS,
             (
@@ -65,6 +67,12 @@ class ConsistencyLevelTargetTests(unittest.TestCase):
                 for result in report.results
             )
         )
+        self.assertTrue(
+            any(
+                result.subject == "complement" and result.accepted
+                for result in report.results
+            )
+        )
 
     def test_json_payload_exposes_level_target(self):
         report = validate_consistency_level_targets(
@@ -81,6 +89,7 @@ class ConsistencyLevelTargetTests(unittest.TestCase):
         self.assertEqual(payload["target_set_id"], "as-consistency-level-target-v1")
         self.assertEqual(payload["target_count"], 1)
         self.assertEqual(payload["failed_subjects"], [])
+        self.assertEqual(payload["complement_examples_path"], str(COMPLEMENT))
         self.assertEqual(payload["targets"][0]["level"], 1)
         self.assertEqual(payload["targets"][0]["status"], "target-selected-not-claimed")
 
@@ -164,6 +173,22 @@ class ConsistencyLevelTargetTests(unittest.TestCase):
         self.assertIn("consistency-level-status", report.failed_subjects)
         self.assertTrue(
             any("proved consistency is not supported" in result.detail for result in report.results)
+        )
+
+    def test_missing_complement_examples_are_rejected(self):
+        report = validate_consistency_level_targets(
+            self.manifest,
+            LANGUAGE,
+            CODEBOOK,
+            SUBSTITUTION,
+            WILLARD_MAP,
+            Path("language/missing_formal_complement_examples.json"),
+        )
+
+        self.assertFalse(report.accepted)
+        self.assertIn("consistency-level-complement", report.failed_subjects)
+        self.assertTrue(
+            any("formal complement rejected" in result.detail for result in report.results)
         )
 
     def test_cli_returns_zero_for_checked_in_targets(self):

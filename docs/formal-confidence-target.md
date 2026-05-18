@@ -36,7 +36,9 @@ placeholder proof lines. ADR-0228 adds
 `language/formal_substitution_examples.json`, so capture-avoiding substitution
 examples now validate against those codes. ADR-0229 adds
 `claims/consistency_level_targets.json`, so Level-1 consistency is selected as
-the first target notion. ADR-0230 adds
+the first target notion. ADR-0239 adds `language/formal_complement_examples.json`,
+so that consistency target now validates a checked `pi1`/`sigma1` complement
+surface. ADR-0230 adds
 `claims/deduction_apparatus_targets.json`, so the AS-local predicate-result
 proof-certificate checker is selected as the current deduction-apparatus
 target. ADR-0231 adds `claims/fixed_point_targets.json`, so a first `pi1`

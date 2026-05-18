@@ -20,6 +20,10 @@ from autarkic_systems.formal_arithmetic import (
     validate_formal_arithmetic_language,
 )
 from autarkic_systems.formal_code import load_formal_codebook, validate_formal_codebook
+from autarkic_systems.formal_complement import (
+    load_formal_complement_examples,
+    validate_formal_complement_examples,
+)
 from autarkic_systems.formal_substitution import (
     load_substitution_examples,
     validate_substitution_examples,
@@ -31,6 +35,7 @@ DEFAULT_TARGETS = Path("claims/consistency_level_targets.json")
 DEFAULT_LANGUAGE = Path("language/formal_arithmetic_language.json")
 DEFAULT_CODEBOOK = Path("language/formal_codebook.json")
 DEFAULT_SUBSTITUTION = Path("language/formal_substitution_examples.json")
+DEFAULT_COMPLEMENT = Path("language/formal_complement_examples.json")
 DEFAULT_WILLARD_MAP = Path("sources/willard_definition_map.json")
 
 REQUIRED_WILLARD_ANCHORS = (
@@ -54,6 +59,7 @@ class ConsistencyLevelTarget:
     negation_class: str
     proof_code_source: str
     substitution_source: str
+    complement_source: str
     status: str
     non_claims: tuple[str, ...]
     next_as_action: str
@@ -71,6 +77,7 @@ class ConsistencyLevelManifest:
     language_path: str
     codebook_path: str
     substitution_examples_path: str
+    complement_examples_path: str
     willard_anchor_ids: tuple[str, ...]
     targets: tuple[ConsistencyLevelTarget, ...]
 
@@ -92,6 +99,7 @@ class ConsistencyLevelReport:
     language_path: Path
     codebook_path: Path
     substitution_path: Path
+    complement_path: Path
     willard_map_path: Path
     results: tuple[ConsistencyLevelValidation, ...]
 
@@ -121,6 +129,15 @@ class ConsistencyLevelReport:
         return tuple(subjects)
 
 
+@dataclass(frozen=True)
+class _DependencyFailure:
+    """Minimal report-shaped object for failed dependency loading."""
+
+    accepted: bool
+    failed_subjects: tuple[str, ...]
+    detail: str
+
+
 def load_consistency_level_targets(
     path: Path | str = DEFAULT_TARGETS,
 ) -> ConsistencyLevelManifest:
@@ -137,6 +154,7 @@ def load_consistency_level_targets(
         language_path=_required_text(data, "language_path"),
         codebook_path=_required_text(data, "codebook_path"),
         substitution_examples_path=_required_text(data, "substitution_examples_path"),
+        complement_examples_path=_required_text(data, "complement_examples_path"),
         willard_anchor_ids=tuple(_required_text_list(data, "willard_anchor_ids")),
         targets=tuple(_parse_target(item) for item in _required_list(data, "targets")),
     )
@@ -148,12 +166,14 @@ def validate_consistency_level_targets(
     codebook_path: Path | str = DEFAULT_CODEBOOK,
     substitution_path: Path | str = DEFAULT_SUBSTITUTION,
     willard_map_path: Path | str = DEFAULT_WILLARD_MAP,
+    complement_path: Path | str = DEFAULT_COMPLEMENT,
 ) -> ConsistencyLevelReport:
     """Validate consistency-level targets against formal dependencies."""
 
     checked_language_path = Path(language_path)
     checked_codebook_path = Path(codebook_path)
     checked_substitution_path = Path(substitution_path)
+    checked_complement_path = Path(complement_path)
     checked_willard_map_path = Path(willard_map_path)
 
     language = load_formal_arithmetic_language(checked_language_path)
@@ -174,6 +194,20 @@ def validate_consistency_level_targets(
         checked_language_path,
         checked_willard_map_path,
     )
+    try:
+        complement = load_formal_complement_examples(checked_complement_path)
+        complement_report = validate_formal_complement_examples(
+            complement,
+            checked_language_path,
+            checked_codebook_path,
+            checked_willard_map_path,
+        )
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        complement_report = _DependencyFailure(
+            accepted=False,
+            failed_subjects=("formal-complement",),
+            detail="formal complement rejected: " + str(exc),
+        )
     willard_map = load_willard_definition_map(checked_willard_map_path)
     known_anchor_ids = {anchor.anchor_id for anchor in willard_map.anchors}
 
@@ -186,6 +220,7 @@ def validate_consistency_level_targets(
             checked_language_path,
             checked_codebook_path,
             checked_substitution_path,
+            checked_complement_path,
         )
     )
     results.extend(
@@ -193,6 +228,7 @@ def validate_consistency_level_targets(
             language_report,
             codebook_report,
             substitution_report,
+            complement_report,
         )
     )
     results.extend(_validate_willard_anchors(manifest, known_anchor_ids))
@@ -203,6 +239,7 @@ def validate_consistency_level_targets(
         language_path=checked_language_path,
         codebook_path=checked_codebook_path,
         substitution_path=checked_substitution_path,
+        complement_path=checked_complement_path,
         willard_map_path=checked_willard_map_path,
         results=tuple(results),
     )
@@ -223,6 +260,7 @@ def consistency_level_report_payload(
         "language_path": str(report.language_path),
         "codebook_path": str(report.codebook_path),
         "substitution_path": str(report.substitution_path),
+        "complement_examples_path": str(report.complement_path),
         "willard_map": str(report.willard_map_path),
         "willard_anchor_ids": list(report.manifest.willard_anchor_ids),
         "target_count": report.target_count,
@@ -236,6 +274,7 @@ def consistency_level_report_payload(
                 "negation_class": target.negation_class,
                 "proof_code_source": target.proof_code_source,
                 "substitution_source": target.substitution_source,
+                "complement_source": target.complement_source,
                 "status": target.status,
                 "non_claims": list(target.non_claims),
                 "next_as_action": target.next_as_action,
@@ -307,6 +346,11 @@ def run_consistency_level_cli(argv: list[str] | None = None) -> int:
         help="Path to the formal substitution example manifest.",
     )
     parser.add_argument(
+        "--complement",
+        default=str(DEFAULT_COMPLEMENT),
+        help="Path to the formal complement example manifest.",
+    )
+    parser.add_argument(
         "--willard-map",
         default=str(DEFAULT_WILLARD_MAP),
         help="Path to the Willard definition map.",
@@ -326,6 +370,7 @@ def run_consistency_level_cli(argv: list[str] | None = None) -> int:
         args.codebook,
         args.substitution,
         args.willard_map,
+        args.complement,
     )
     if args.format == "json":
         print(json.dumps(consistency_level_report_payload(report), sort_keys=True))
@@ -339,6 +384,7 @@ def _validate_dependency_references(
     language_path: Path,
     codebook_path: Path,
     substitution_path: Path,
+    complement_path: Path,
 ) -> list[ConsistencyLevelValidation]:
     results: list[ConsistencyLevelValidation] = []
     expected = (
@@ -348,6 +394,11 @@ def _validate_dependency_references(
             "substitution_examples_path",
             manifest.substitution_examples_path,
             str(substitution_path),
+        ),
+        (
+            "complement_examples_path",
+            manifest.complement_examples_path,
+            str(complement_path),
         ),
     )
     for subject, actual, expected_value in expected:
@@ -364,6 +415,7 @@ def _validate_dependency_reports(
     language_report: Any,
     codebook_report: Any,
     substitution_report: Any,
+    complement_report: Any,
 ) -> list[ConsistencyLevelValidation]:
     results: list[ConsistencyLevelValidation] = []
     if language_report.accepted:
@@ -396,6 +448,16 @@ def _validate_dependency_reports(
                 + _joined_or_none(substitution_report.failed_subjects),
             )
         )
+    if complement_report.accepted:
+        results.append(_accepted("complement", "formal complement accepted"))
+    else:
+        detail = getattr(
+            complement_report,
+            "detail",
+            "formal complement rejected: "
+            + _joined_or_none(complement_report.failed_subjects),
+        )
+        results.append(_rejected("complement", detail))
     return results
 
 
@@ -508,6 +570,7 @@ def _parse_target(item: dict[str, Any]) -> ConsistencyLevelTarget:
         negation_class=_required_text(item, "negation_class"),
         proof_code_source=_required_text(item, "proof_code_source"),
         substitution_source=_required_text(item, "substitution_source"),
+        complement_source=_required_text(item, "complement_source"),
         status=_required_text(item, "status"),
         non_claims=tuple(_required_text_list(item, "non_claims")),
         next_as_action=_required_text(item, "next_as_action"),
@@ -519,9 +582,16 @@ def _failed_subject_for_result(subject: str) -> str:
         return "consistency-level-willard-anchor"
     if subject.endswith(".sentence_classes"):
         return "consistency-level-sentence-class"
+    if subject == "complement":
+        return "consistency-level-complement"
     if subject in {"language", "codebook", "substitution"}:
         return "consistency-level-dependency"
-    if subject in {"language_path", "codebook_path", "substitution_examples_path"}:
+    if subject in {
+        "language_path",
+        "codebook_path",
+        "substitution_examples_path",
+        "complement_examples_path",
+    }:
         return "consistency-level-reference"
     if subject.startswith("AS-CONSISTENCY"):
         if "status" in subject:

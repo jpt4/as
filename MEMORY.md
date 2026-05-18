@@ -80,8 +80,12 @@
 - ADR-0229 adds `claims/consistency_level_targets.json` and
   `autarkic_systems/consistency_level.py` to select Level-1 consistency as the
   first AS formal-confidence target notion. It validates `pi1`/`sigma1`
-  sentence classes and Willard Level(k)/SelfCons_k anchors, but does not claim
-  a consistency theorem.
+  sentence classes, the checked complement surface, and Willard
+  Level(k)/SelfCons_k anchors, but does not claim a consistency theorem.
+- ADR-0239 adds `language/formal_complement_examples.json` and
+  `autarkic_systems/formal_complement.py`, validating a checked `pi1` to
+  `sigma1` and `sigma1` to `pi1` sentence-wrapper complement surface without
+  proving a complement theorem or simplifying double negation.
 - `AS-FORMAL-CONFIDENCE-TARGET-001` now also points at the consistency-level
   target and no longer lists `consistency-level-selection` as a blocker. It
   remains blocked on self-reference-fixed-point and

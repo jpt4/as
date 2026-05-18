@@ -25,7 +25,8 @@ Codes are tagged natural-number prefix sequences. They are intentionally easy
 to inspect and round-trip before any attempt to build fixed-point
 self-reference or prove consistency over them. ADR-0228 adds the separate
 substitution surface over these nodes; ADR-0234 adds the checked
-quotation-term surface that uses the sequence term constructors.
+quotation-term surface that uses the sequence term constructors. ADR-0239 adds
+a checked complement surface over `pi1` and `sigma1` sentence wrappers.
 
 ## Run
 

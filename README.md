@@ -40,6 +40,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   surface over that arithmetic language.
 - `docs/formal-substitution.md` records the first checked capture-avoiding
   substitution surface over formal codebook nodes.
+- `docs/formal-complement.md` records the first checked `pi1`/`sigma1`
+  sentence-complement surface for Level-1 consistency work.
 - `docs/formal-quotation.md` records the first checked code-token numeral
   quotation surface for later fixed-point construction.
 - `docs/formal-quotation-sequence.md` records the first checked
@@ -371,6 +373,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/formal_substitution.py` validates and runs the first
   capture-avoiding free-variable substitution surface over the formal codebook
   nodes, including binder-respecting and capture-rejection examples.
+- `autarkic_systems/formal_complement.py` validates and runs the first
+  `pi1`/`sigma1` sentence-complement surface over the formal codebook.
 - `autarkic_systems/formal_quotation.py` validates and runs the first
   code-token numeral quotation surface over the formal codebook.
 - `autarkic_systems/formal_quotation_sequence.py` validates and runs the first
@@ -380,7 +384,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   nodes, while leaving diagonalization and fixed-point equation proof open.
 - `autarkic_systems/consistency_level.py` validates the first consistency-level
   target selection, tying Level-1 consistency to the checked arithmetic
-  language, codebook, and substitution surface without claiming a proof.
+  language, codebook, substitution surface, and complement surface without
+  claiming a proof.
 - `autarkic_systems/fixed_point.py` validates the first fixed-point target
   template over the checked codebook, substitution, quotation, and quotation
   sequence/term surfaces without claiming a diagonal lemma, fixed-point
@@ -435,6 +440,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.formal_substitution --format json` validates
   `language/formal_substitution_examples.json`, including free-variable
   substitution examples, capture rejection, and expected encoded outputs.
+- `python -m autarkic_systems.formal_complement --format json` validates
+  `language/formal_complement_examples.json`, including checked `pi1` to
+  `sigma1` and `sigma1` to `pi1` sentence-wrapper complements.
 - `python -m autarkic_systems.formal_quotation --format json` validates
   `language/formal_quotation_examples.json`, including unary successor
   numerals for code tokens and the current fixed-point target instance token
@@ -449,7 +457,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   codebook.
 - `python -m autarkic_systems.consistency_level --format json` validates
   `claims/consistency_level_targets.json`, including the Level-1 target,
-  `pi1`/`sigma1` sentence classes, and non-claim status.
+  `pi1`/`sigma1` sentence classes, complement dependency, and non-claim
+  status.
 - `python -m autarkic_systems.deduction_apparatus --format json` validates
   `claims/deduction_apparatus_targets.json`, including the selected
   AS-local `predicate-result` proof-certificate checker and 52 checked

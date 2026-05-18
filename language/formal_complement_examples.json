@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "complement_set_id": "as-formal-complement-v1",
+  "reviewed_at": "2026-05-18",
+  "purpose": "First checked sentence-complement surface for AS Level-1 consistency work. This wraps pi1/sigma1 sentence bodies in formal negation and flips the sentence class, without proving a complement theorem or simplifying negations.",
+  "language_path": "language/formal_arithmetic_language.json",
+  "codebook_path": "language/formal_codebook.json",
+  "complement_kind": "sentence-wrapper-negation-surface",
+  "willard_anchor_ids": [
+    "W2011-D5.6-LEVEL-K-CONSISTENCY",
+    "W2011-D5.7-SELFCONSK",
+    "W2020-T4.4-T4.5-LEM-BOUNDARY"
+  ],
+  "examples": [
+    {
+      "example_id": "pi1-less-than-to-sigma1-not-less-than",
+      "source_sentence_class": "pi1",
+      "complement_sentence_class": "sigma1",
+      "source_node": {
+        "kind": "pi1",
+        "variable": "x",
+        "body": {
+          "kind": "less_than",
+          "left": {
+            "kind": "variable",
+            "name": "x"
+          },
+          "right": {
+            "kind": "variable",
+            "name": "n"
+          }
+        }
+      },
+      "expected_complement_node": {
+        "kind": "sigma1",
+        "variable": "x",
+        "body": {
+          "kind": "not",
+          "body": {
+            "kind": "less_than",
+            "left": {
+              "kind": "variable",
+              "name": "x"
+            },
+            "right": {
+              "kind": "variable",
+              "name": "n"
+            }
+          }
+        }
+      },
+      "expected_source_code": [41, 1, 22, 11, 1, 11, 4],
+      "expected_complement_code": [42, 1, 23, 22, 11, 1, 11, 4],
+      "status": "complement-surface-only",
+      "non_claims": [
+        "no complement theorem proof",
+        "no double-negation simplification",
+        "no deduction apparatus",
+        "no consistency proof",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Use the checked complement surface when specifying the Level-1 consistency theorem boundary."
+    },
+    {
+      "example_id": "sigma1-not-less-than-to-pi1-double-not-less-than",
+      "source_sentence_class": "sigma1",
+      "complement_sentence_class": "pi1",
+      "source_node": {
+        "kind": "sigma1",
+        "variable": "x",
+        "body": {
+          "kind": "not",
+          "body": {
+            "kind": "less_than",
+            "left": {
+              "kind": "variable",
+              "name": "x"
+            },
+            "right": {
+              "kind": "variable",
+              "name": "n"
+            }
+          }
+        }
+      },
+      "expected_complement_node": {
+        "kind": "pi1",
+        "variable": "x",
+        "body": {
+          "kind": "not",
+          "body": {
+            "kind": "not",
+            "body": {
+              "kind": "less_than",
+              "left": {
+                "kind": "variable",
+                "name": "x"
+              },
+              "right": {
+                "kind": "variable",
+                "name": "n"
+              }
+            }
+          }
+        }
+      },
+      "expected_source_code": [42, 1, 23, 22, 11, 1, 11, 4],
+      "expected_complement_code": [41, 1, 23, 23, 22, 11, 1, 11, 4],
+      "status": "complement-surface-only",
+      "non_claims": [
+        "no complement theorem proof",
+        "no double-negation simplification",
+        "no deduction apparatus",
+        "no consistency proof",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Use the checked complement surface when specifying the Level-1 consistency theorem boundary."
+    }
+  ]
+}

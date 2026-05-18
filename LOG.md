@@ -5158,3 +5158,26 @@
   formal-confidence text/JSON output reported the obstruction dependency
   accepted, while the formal-confidence target remained blocked on
   `fixed-point-construction`; live project-status summary remained accepted.
+
+## 2026-05-18 - Formal Complement Surface
+
+- Added ADR-0239 to close the first code-level complement-relation gap needed
+  by the Level-1 consistency target.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.formal_complement` and
+  `language/formal_complement_examples.json` did not exist, and the
+  consistency-level target had no complement dependency.
+- Added `language/formal_complement_examples.json`, with checked `pi1` to
+  `sigma1` and `sigma1` to `pi1` sentence-wrapper complement examples over the
+  formal codebook.
+- Added `autarkic_systems/formal_complement.py` with `complement_sentence`,
+  text/JSON CLI output, codebook agreement checks, Willard anchor validation,
+  and rejection of non-sentence nodes, stale expected codes, unknown sentence
+  classes, and overclaiming statuses.
+- Updated `claims/consistency_level_targets.json` and
+  `autarkic_systems.consistency_level` so Level-1 consistency selection
+  validates the complement surface as a dependency.
+- Focused formal-complement, consistency-level, and project-status tests
+  passed 111 tests. Live formal-complement text/JSON output reported two
+  accepted examples; live consistency-level output reported `OK complement:
+  formal complement accepted`; live project-status summary remained accepted.

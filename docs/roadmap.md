@@ -4957,3 +4957,30 @@ Status: accepted in
 `docs/adr/0238-formal-confidence-obstruction-dependency.md`. Implemented in
 `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0239: Formal Complement Surface
+
+Goal: add the first checked `pi1`/`sigma1` sentence-complement surface needed
+by Level-1 consistency work.
+
+Deliverables:
+
+- `language/formal_complement_examples.json` with checked `pi1` to `sigma1`
+  and `sigma1` to `pi1` examples;
+- `autarkic_systems.formal_complement` with `complement_sentence`, text/JSON
+  CLI validation, and codebook agreement checks;
+- validation against the formal arithmetic language, formal codebook, and
+  Willard Level(k), SelfCons(k), and excluded-middle boundary anchors;
+- rejection for non-sentence nodes, stale expected codes, unknown sentence
+  classes, and overclaiming complement-theorem statuses;
+- consistency-level target updated to validate the complement surface as a
+  dependency; and
+- no complement theorem proof, double-negation simplification, deduction
+  apparatus, fixed-point construction, consistency proof, self-consistency
+  theorem, runtime behavior, command semantics, evidence bundle, or GitHub
+  submission logic changes.
+
+Status: accepted in `docs/adr/0239-formal-complement-surface.md`.
+Implemented in `autarkic_systems/formal_complement.py`, with tests in
+`tests/test_formal_complement.py` and
+`tests/test_consistency_level_target.py`.
