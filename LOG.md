@@ -2932,3 +2932,23 @@
   59 tests; `py_compile` and `git diff --check` passed; project status text and
   JSON were accepted at `schema_version: 10`; and
   `python -m unittest discover` passed 599 tests.
+
+## 2026-05-18 - Predicate Result Certificates
+
+- Added ADR-0133 to introduce `predicate-result` proof-certificate steps for
+  transition claims.
+- Updated proof-certificate tests before implementation. The red run executed
+  9 tests and failed because the manifest had no `predicate-result` steps and
+  `CertificateStep` could not carry predicate metadata.
+- Updated object-language tests before implementation. The red run executed
+  7 tests and failed because the certificate manifest used `predicate-result`
+  while the transition-claim language still only allowed `manifest-example`.
+- Updated `autarkic_systems.proof_certificates` so `predicate-result` steps
+  require a matching predicate name, still evaluate the claim predicate, and
+  reject missing or mismatched predicate metadata.
+- Updated `claims/proof_certificates.json` so the fixed-output preservation
+  certificate uses `predicate-result`, and updated the transition object
+  language to allow both `manifest-example` and `predicate-result`.
+- Verification passed: adjacent proof-certificate and object-language tests
+  ran 16 tests; JSON formatting, `py_compile`, and `git diff --check` passed;
+  and `python -m unittest discover` passed 603 tests.

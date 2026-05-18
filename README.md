@@ -217,8 +217,8 @@ the project legible:
   traces for consumed and rejected neighbor-delivery handoffs.
 - `autarkic_systems/chain_svg.py` renders and validates transition-chain SVG
   views for consumed and rejected neighbor-delivery handoffs.
-- `autarkic_systems/chain_claims.py` validates the transition-chain
-  claim manifest and manifest-example proof certificates, and exposes
+- `autarkic_systems/chain_claims.py` validates the transition-chain claim
+  manifest and manifest-example proof certificates, and exposes
   `python -m autarkic_systems.chain_claims` for direct chain-claim validation.
 - `autarkic_systems/chain_object_language.py` validates the first
   transition-chain claim language and checked chain claim surface.
@@ -242,7 +242,8 @@ the project legible:
   init-family command-message consumption, recipient non-init command-message
   rejection, and the self-target non-init completed-buffer append boundary.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
-  those transition claims.
+  those transition claims, including `manifest-example` steps and the first
+  `predicate-result` steps that name the evaluated predicate directly.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init delivery and rejected non-init
   delivery.

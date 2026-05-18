@@ -18,6 +18,7 @@ from autarkic_systems.claim_manifest import Claim
 from autarkic_systems.proof_certificates import (
     ClaimCertificate,
     MANIFEST_EXAMPLE_RULE,
+    PREDICATE_RESULT_RULE,
 )
 from autarkic_systems.universal_cell import (
     Cell,
@@ -266,9 +267,18 @@ def _validate_proof_object_class(
     proof_objects: dict[str, Any],
 ) -> list[LanguageValidation]:
     rules = proof_objects.get("rules")
-    if not isinstance(rules, list) or MANIFEST_EXAMPLE_RULE not in rules:
-        return [_rejected("proof_objects.rules", "missing manifest-example rule")]
-    return [_accepted("proof_objects.rules", "manifest-example rule present")]
+    if not isinstance(rules, list):
+        return [_rejected("proof_objects.rules", "proof object rules must be a list")]
+    required_rules = {MANIFEST_EXAMPLE_RULE, PREDICATE_RESULT_RULE}
+    missing_rules = sorted(required_rules - set(rules))
+    if missing_rules:
+        return [
+            _rejected(
+                "proof_objects.rules",
+                f"missing proof object rules: {', '.join(missing_rules)}",
+            )
+        ]
+    return [_accepted("proof_objects.rules", "required proof object rules present")]
 
 
 def _validate_substrate_claim_class(

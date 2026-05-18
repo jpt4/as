@@ -26,6 +26,68 @@ class ProofCertificateTests(unittest.TestCase):
         self.assertEqual(len(results), len(self.claims))
         self.assertTrue(results)
         self.assertTrue(all(result.accepted for result in results), results)
+        self.assertTrue(
+            any(
+                step.rule == "predicate-result"
+                for certificate in certificates
+                for step in certificate.steps
+            )
+        )
+
+    def test_predicate_result_rule_verifies_named_predicate(self):
+        first_claim = self.claims[0]
+        predicate_steps = tuple(
+            CertificateStep(
+                rule="predicate-result",
+                example=example.name,
+                expected=example.expected,
+                predicate=first_claim.predicate,
+            )
+            for example in first_claim.examples
+        )
+        certificate = ClaimCertificate(
+            claim_id=first_claim.claim_id,
+            steps=predicate_steps,
+        )
+
+        results = verify_claim_certificates(
+            self.claims,
+            [certificate, *load_proof_certificates(CERTIFICATES)[1:]],
+        )
+
+        self.assertTrue(results[0].accepted, results[0].detail)
+        self.assertIn("predicate-result", results[0].detail)
+
+    def test_predicate_result_rule_requires_predicate_name(self):
+        certificates = load_proof_certificates(CERTIFICATES)
+        first = certificates[0]
+        bad_step = CertificateStep(
+            rule="predicate-result",
+            example=first.steps[0].example,
+            expected=first.steps[0].expected,
+        )
+        bad = first.with_steps((bad_step, *first.steps[1:]))
+
+        results = verify_claim_certificates(self.claims, [bad, *certificates[1:]])
+
+        self.assertFalse(results[0].accepted)
+        self.assertIn("predicate", results[0].detail)
+
+    def test_predicate_result_rule_rejects_mismatched_predicate_name(self):
+        certificates = load_proof_certificates(CERTIFICATES)
+        first = certificates[0]
+        bad_step = CertificateStep(
+            rule="predicate-result",
+            example=first.steps[0].example,
+            expected=first.steps[0].expected,
+            predicate="not_the_claim_predicate",
+        )
+        bad = first.with_steps((bad_step, *first.steps[1:]))
+
+        results = verify_claim_certificates(self.claims, [bad, *certificates[1:]])
+
+        self.assertFalse(results[0].accepted)
+        self.assertIn("predicate mismatch", results[0].detail)
 
     def test_missing_claim_certificate_is_rejected(self):
         certificates = load_proof_certificates(CERTIFICATES)
@@ -72,6 +134,7 @@ class ProofCertificateTests(unittest.TestCase):
             rule=first.steps[0].rule,
             example=first.steps[0].example,
             expected=not first.steps[0].expected,
+            predicate=first.steps[0].predicate,
         )
         bad = first.with_steps((bad_step, *first.steps[1:]))
 

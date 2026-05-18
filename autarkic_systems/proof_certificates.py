@@ -18,6 +18,7 @@ from autarkic_systems.claim_manifest import Claim
 
 
 MANIFEST_EXAMPLE_RULE = "manifest-example"
+PREDICATE_RESULT_RULE = "predicate-result"
 
 
 @dataclass(frozen=True)
@@ -27,6 +28,7 @@ class CertificateStep:
     rule: str
     example: str
     expected: bool
+    predicate: str | None = None
 
 
 @dataclass(frozen=True)
@@ -147,11 +149,25 @@ def _verify_certificate(
     if checker is None:
         return _rejected(claim.claim_id, f"unknown predicate checker: {claim.predicate}")
 
+    rule_counts: dict[str, int] = {}
     for step in certificate.steps:
-        if step.rule != MANIFEST_EXAMPLE_RULE:
+        if step.rule not in {MANIFEST_EXAMPLE_RULE, PREDICATE_RESULT_RULE}:
             return _rejected(
                 claim.claim_id, f"unknown certificate rule: {step.rule}"
             )
+        if step.rule == PREDICATE_RESULT_RULE:
+            if not step.predicate:
+                return _rejected(
+                    claim.claim_id,
+                    f"predicate-result step for {step.example} lacks predicate",
+                )
+            if step.predicate != claim.predicate:
+                return _rejected(
+                    claim.claim_id,
+                    "predicate mismatch for "
+                    f"{step.example}: certificate named {step.predicate}, "
+                    f"claim uses {claim.predicate}",
+                )
         example = example_by_name[step.example]
         if step.expected != example.expected:
             return _rejected(
@@ -162,6 +178,16 @@ def _verify_certificate(
             )
 
         predicate_result = checker(example.before, example.result)
+        if (
+            step.rule == PREDICATE_RESULT_RULE
+            and predicate_result.name != step.predicate
+        ):
+            return _rejected(
+                claim.claim_id,
+                "predicate result name mismatch for "
+                f"{step.example}: observed {predicate_result.name}, "
+                f"certificate named {step.predicate}",
+            )
         observed = bool(predicate_result.holds)
         if observed != example.expected:
             return _rejected(
@@ -170,11 +196,15 @@ def _verify_certificate(
                 f"{step.example}: observed {observed}, "
                 f"expected {example.expected}",
             )
+        rule_counts[step.rule] = rule_counts.get(step.rule, 0) + 1
 
+    rule_summary = ", ".join(
+        f"{count} {rule} steps" for rule, count in sorted(rule_counts.items())
+    )
     return CertificateVerification(
         claim_id=claim.claim_id,
         accepted=True,
-        detail=f"verified {len(certificate.steps)} manifest-example steps",
+        detail=f"verified {len(certificate.steps)} certificate steps: {rule_summary}",
     )
 
 
@@ -193,6 +223,7 @@ def _parse_step(item: dict[str, Any]) -> CertificateStep:
         rule=_required_text(item, "rule"),
         example=_required_text(item, "example"),
         expected=_required_bool(item, "expected"),
+        predicate=_optional_text(item, "predicate"),
     )
 
 
@@ -211,4 +242,13 @@ def _required_bool(item: dict[str, Any], key: str) -> bool:
     value = item.get(key)
     if not isinstance(value, bool):
         raise ValueError(f"required boolean field missing: {key}")
+    return value
+
+
+def _optional_text(item: dict[str, Any], key: str) -> str | None:
+    if key not in item:
+        return None
+    value = item.get(key)
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"optional text field malformed: {key}")
     return value

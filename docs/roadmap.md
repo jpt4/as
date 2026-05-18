@@ -2564,3 +2564,25 @@ Status: accepted in
 `docs/adr/0132-project-status-resolved-question-details.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0133: Predicate Result Certificates
+
+Goal: make the transition proof-certificate layer less implicit by adding a
+certificate rule that names the predicate evaluated for a manifest example.
+
+Deliverables:
+
+- `predicate-result` proof-certificate rule support;
+- optional `predicate` metadata on parsed certificate steps;
+- rejection for missing or mismatched `predicate-result` predicate metadata;
+- the first fixed-output preservation certificate migrated to
+  `predicate-result`;
+- transition object-language proof-object rules updated to include
+  `predicate-result`; and
+- focused proof-certificate and object-language tests.
+
+Status: accepted in `docs/adr/0133-predicate-result-certificates.md`.
+Implemented in `autarkic_systems/proof_certificates.py`,
+`autarkic_systems/object_language.py`, `claims/proof_certificates.json`, and
+`language/transition_claim_language.json`, with tests in
+`tests/test_proof_certificates.py` and `tests/test_object_language.py`.

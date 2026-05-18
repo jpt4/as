@@ -5,14 +5,16 @@
       "claim_id": "UC-FIXED-OUTPUT-PRESERVED",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "blocked output preserved",
-          "expected": true
+          "expected": true,
+          "predicate": "output_not_overwritten"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "blocked output changed",
-          "expected": false
+          "expected": false,
+          "predicate": "output_not_overwritten"
         }
       ]
     },

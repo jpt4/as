@@ -41,6 +41,12 @@ class ObjectLanguageTests(unittest.TestCase):
         self.assertTrue(results)
         self.assertTrue(all(result.accepted for result in results), results)
 
+    def test_language_manifest_names_current_proof_object_rules(self):
+        rules = self.language.syntax_classes["proof_objects"]["rules"]
+
+        self.assertIn("manifest-example", rules)
+        self.assertIn("predicate-result", rules)
+
     def test_missing_syntax_class_is_rejected(self):
         bad_language = self.language.without_syntax_class("formulae")
 

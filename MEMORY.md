@@ -573,3 +573,6 @@
 - ADR-0132 bumps project status to `schema_version: 10` and preserves optional
   resolved-question details in JSON/text, including the standard-signal
   `formal_command_offset: 0` and the RAA legacy divergence.
+- ADR-0133 adds the `predicate-result` proof-certificate rule for transition
+  claims, migrates the fixed-output preservation certificate to that rule, and
+  updates the transition object-language proof-object rules accordingly.

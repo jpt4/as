@@ -83,7 +83,7 @@
       "claim_id_prefixes": ["UC-"]
     },
     "proof_objects": {
-      "rules": ["manifest-example"]
+      "rules": ["manifest-example", "predicate-result"]
     },
     "substrate_claims": {
       "claim_manifest": "claims/transition_claims.json",

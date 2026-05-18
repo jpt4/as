@@ -17,7 +17,10 @@ Status: started by ADR-0007. `claims/transition_claims.json` names the current
 predicate claims and executable examples. Remaining work is to add proof objects
 or proof-apparatus clauses behind those claim IDs. ADR-0011 adds the first
 minimal proof certificates over the manifest examples; richer object-language
-proof clauses remain open.
+proof clauses remain open. ADR-0133 adds the first `predicate-result`
+certificate steps for the fixed-output preservation claim, making the proof
+object name the predicate it evaluates instead of relying only on the claim
+manifest lookup.
 
 Status update: ADR-0031 promotes the self-mailbox init-command execution subset
 into a named transition claim with manifest examples and proof-certificate
@@ -248,7 +251,8 @@ LeanTAP as a transparent tableaux reference, and keep Proflog/Fitting as the
 long-term SJAS-aligned path once the active frontier is recovered or replaced.
 
 Status update: ADR-0011 added the first local proof-certificate checker for the
-current transition claims.
+current transition claims. ADR-0133 adds the first explicit `predicate-result`
+certificate rule while keeping AS below the bar for a general theorem prover.
 
 ## P4: Define The First Object Language
 

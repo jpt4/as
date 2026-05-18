@@ -80,13 +80,13 @@ Implemented minimum deliverables:
 - documentation that the checker is proof-certificate validation for current
   AS claims, not general theorem proving.
 
-First certificate clause:
+Implemented certificate clauses:
 
 - `manifest-example`: a claim example was evaluated by the manifest evaluator;
+- `predicate-result`: a named predicate returned the expected boolean result;
 
 Candidate future certificate clauses:
 
-- `predicate-result`: a named predicate returned the expected boolean result;
 - `transition-witness`: a before/after transition pair matches a concrete
   Universal Cell step result.
 

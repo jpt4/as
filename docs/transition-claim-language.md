@@ -27,7 +27,8 @@ buffers that remain at the append boundary. ADR-0044 adds
 `stem-command-buffer-neighbor-delivered` for neighbor-target command buffers
 that deliver decoded command tokens onto output channels. ADR-0045 adds
 `stem_command_buffer_delivers_neighbor_command` for the corresponding named
-transition claim.
+transition claim. ADR-0133 adds `predicate-result` as a proof-object rule so
+transition proof certificates can name the predicate evaluated by a step.
 
 The point is to stop relying on implicit Python/JSON shape as the only syntax
 boundary. Current claims can now be checked against named syntax classes before
@@ -40,7 +41,7 @@ later proof or self-reference work builds on them.
 | `terms` | Universal Cell term vocabulary: roles, memory values, channel tokens, automail commands, command-message mailbox values, statuses, and cell fields. |
 | `formulae` | Predicate applications of the form `predicate(before_cell, step_result)`. |
 | `sentences` | Transition-claim sentences named by claim IDs such as `UC-FIXED-OUTPUT-PRESERVED`. |
-| `proof_objects` | Proof-certificate steps. The only current rule is `manifest-example`. |
+| `proof_objects` | Proof-certificate steps using `manifest-example` and `predicate-result` rules. |
 | `substrate_claims` | Paths to the transition-claim and proof-certificate manifests. |
 
 ADR-0078 deliberately keeps two-step transition-chain claims in

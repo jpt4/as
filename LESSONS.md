@@ -371,3 +371,6 @@
 - When an aggregate status lifts settled decisions from source artifacts, carry
   the operator-critical details too. A decision label alone can hide the fact
   that made the decision worth preserving.
+- Proof objects are stronger when they name the rule's semantic target, not
+  only the manifest example being checked. Add explicit predicate metadata
+  before building richer proof clauses on top of examples.
