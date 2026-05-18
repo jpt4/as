@@ -199,6 +199,9 @@ ADR-0119 expands the existing self-mailbox unsupported and self-target
 command-buffer unsupported claim/proof surfaces so each blocked self-command
 token, `standard-signal`, `write-buf-zero`, and `write-buf-one`, has its own
 positive manifest example.
+ADR-0120 carries that explicit coverage into the integrated evidence-bundle
+layer by letting the unsupported self-command bundles validate
+`covered_positive_examples` while keeping one trace-aligned primary example.
 
 ## P3: Choose The First Proof Apparatus
 

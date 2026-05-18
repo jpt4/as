@@ -115,13 +115,15 @@ the project legible:
   evidence surface.
 - `docs/self-mailbox-unsupported-evidence-bundle.md` records the fifth
   integrated evidence bundle, tying one direct unsupported self-mailbox
-  preservation boundary to that evidence surface.
+  preservation boundary to that evidence surface while naming all covered
+  positive unsupported self-mailbox examples.
 - `docs/self-command-buffer-init-evidence-bundle.md` records the sixth
   integrated evidence bundle, tying one completed self-target command-buffer
   init dispatch to that evidence surface.
 - `docs/command-buffer-unsupported-evidence-bundle.md` records the seventh
   integrated evidence bundle, tying one completed self-target non-init
-  command-buffer append boundary to that evidence surface.
+  command-buffer append boundary to that evidence surface while naming all
+  covered positive self-target non-init command-buffer examples.
 - `docs/neighbor-command-buffer-delivery-evidence-bundle.md` records the
   eighth integrated evidence bundle, tying one completed neighbor-target
   command-buffer delivery to that evidence surface.

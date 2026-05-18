@@ -334,3 +334,6 @@
 - When prose says a boundary covers a finite command set, the manifest/proof
   surface should name each command in that set. A representative example is
   weaker evidence than explicit coverage for every blocked token.
+- Evidence bundles can keep one trace-aligned primary example while still
+  validating broader manifest coverage. Separate `positive_example` from
+  covered examples when one trace stands for a finite boundary set.

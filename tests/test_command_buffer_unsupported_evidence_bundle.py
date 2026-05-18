@@ -16,6 +16,11 @@ BUNDLE_ID = "command-buffer-unsupported-evidence-bundle"
 CLAIM_ID = "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED"
 EXAMPLE = "self write buffer command remains appended"
 STATUS = "stem-buffer-appended"
+COVERED_EXAMPLES = (
+    "self standard signal command remains appended",
+    "self write buffer zero command remains appended",
+    "self write buffer command remains appended",
+)
 
 
 class CommandBufferUnsupportedEvidenceBundleTests(unittest.TestCase):
@@ -31,6 +36,7 @@ class CommandBufferUnsupportedEvidenceBundleTests(unittest.TestCase):
             "stem_command_buffer_preserves_unsupported_completion",
         )
         self.assertEqual(self.bundle.positive_example, EXAMPLE)
+        self.assertEqual(self.bundle.covered_positive_examples, COVERED_EXAMPLES)
         self.assertEqual(self.bundle.transition_function, "step_stem_cell")
         self.assertEqual(self.bundle.expected_status, STATUS)
 
@@ -107,6 +113,28 @@ class CommandBufferUnsupportedEvidenceBundleTests(unittest.TestCase):
                 not result.accepted
                 and result.subject in {"claim-example", "schematic-trace"}
                 and "status mismatch" in result.detail
+                for result in results
+            ),
+            results,
+        )
+
+    def test_drifted_covered_example_name_is_rejected(self):
+        drifted = replace(
+            self.bundle,
+            covered_positive_examples=(
+                "self standard signal command remains appended",
+                "not a manifest example",
+                "self write buffer command remains appended",
+            ),
+        )
+
+        results = validate_transition_evidence_bundle(drifted)
+
+        self.assertTrue(
+            any(
+                not result.accepted
+                and result.subject == "claim-example"
+                and "missing covered example" in result.detail
                 for result in results
             ),
             results,

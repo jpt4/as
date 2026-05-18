@@ -6,6 +6,11 @@
   "claim_id": "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
   "predicate": "self_mailbox_preserves_unsupported_command",
   "positive_example": "write buffer one unsupported preserved",
+  "covered_positive_examples": [
+    "standard signal unsupported preserved",
+    "write buffer zero unsupported preserved",
+    "write buffer one unsupported preserved"
+  ],
   "transition_function": "step_stem_cell",
   "expected_status": "self-mailbox-unsupported",
   "artifacts": {

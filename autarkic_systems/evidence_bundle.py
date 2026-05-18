@@ -45,6 +45,7 @@ class TransitionEvidenceBundle:
     claim_id: str
     predicate: str
     positive_example: str
+    covered_positive_examples: tuple[str, ...]
     transition_function: str
     expected_status: str
     claim_manifest_path: Path
@@ -119,6 +120,7 @@ def load_transition_evidence_bundle(path: Path | str) -> TransitionEvidenceBundl
         claim_id=_required_text(data, "claim_id"),
         predicate=_required_text(data, "predicate"),
         positive_example=_required_text(data, "positive_example"),
+        covered_positive_examples=_covered_positive_examples(data),
         transition_function=_required_text(data, "transition_function"),
         expected_status=_required_text(data, "expected_status"),
         claim_manifest_path=Path(_required_text(artifacts, "claim_manifest")),
@@ -410,15 +412,7 @@ def _validate_claim_example(
         )
 
     evaluations = evaluate_claim_examples([claim])
-    matching = next(
-        (
-            evaluation
-            for evaluation in evaluations
-            if evaluation.claim_id == bundle.claim_id
-            and evaluation.example_name == bundle.positive_example
-        ),
-        None,
-    )
+    matching = _matching_evaluation(evaluations, bundle.claim_id, bundle.positive_example)
     if matching is None:
         return claim, example, _rejected("claim-example", "example was not evaluated")
     if not matching.matched or not matching.observed:
@@ -428,7 +422,85 @@ def _validate_claim_example(
             _rejected("claim-example", f"example evaluation failed: {matching.detail}"),
         )
 
-    return claim, example, _accepted("claim-example", "claim example evaluated true")
+    coverage_result = _validate_covered_positive_examples(
+        bundle,
+        claim,
+        evaluations,
+    )
+    if not coverage_result.accepted:
+        return claim, example, coverage_result
+
+    return (
+        claim,
+        example,
+        _accepted(
+            "claim-example",
+            f"claim example evaluated true; "
+            f"covered {len(bundle.covered_positive_examples)} positive examples",
+        ),
+    )
+
+
+def _validate_covered_positive_examples(
+    bundle: TransitionEvidenceBundle,
+    claim: Claim,
+    evaluations: list[Any],
+) -> EvidenceBundleValidation:
+    if bundle.positive_example not in bundle.covered_positive_examples:
+        return _rejected("claim-example", "covered examples must include positive_example")
+
+    example_by_name = {example.name: example for example in claim.examples}
+    for covered_example in bundle.covered_positive_examples:
+        example = example_by_name.get(covered_example)
+        if example is None:
+            return _rejected(
+                "claim-example",
+                f"missing covered example {covered_example}",
+            )
+        if not example.expected:
+            return _rejected(
+                "claim-example",
+                f"covered example is not positive: {covered_example}",
+            )
+        if example.result.status != bundle.expected_status:
+            return _rejected(
+                "claim-example",
+                "covered example status mismatch: "
+                f"{covered_example} has {example.result.status}",
+            )
+
+        matching = _matching_evaluation(
+            evaluations,
+            bundle.claim_id,
+            covered_example,
+        )
+        if matching is None:
+            return _rejected(
+                "claim-example",
+                f"covered example was not evaluated: {covered_example}",
+            )
+        if not matching.matched or not matching.observed:
+            return _rejected(
+                "claim-example",
+                f"covered example evaluation failed: {covered_example}: {matching.detail}",
+            )
+    return _accepted("claim-example", "covered positive examples evaluated true")
+
+
+def _matching_evaluation(
+    evaluations: list[Any],
+    claim_id: str,
+    example_name: str,
+) -> Any:
+    return next(
+        (
+            evaluation
+            for evaluation in evaluations
+            if evaluation.claim_id == claim_id
+            and evaluation.example_name == example_name
+        ),
+        None,
+    )
 
 
 def _validate_proof_certificate(
@@ -615,6 +687,17 @@ def _required_text(item: dict[str, Any], key: str) -> str:
     if not isinstance(value, str) or not value:
         raise ValueError(f"required text field missing: {key}")
     return value
+
+
+def _covered_positive_examples(item: dict[str, Any]) -> tuple[str, ...]:
+    value = item.get("covered_positive_examples")
+    if value is None:
+        return (_required_text(item, "positive_example"),)
+    if not isinstance(value, list) or not value:
+        raise ValueError("covered_positive_examples must be a non-empty text list")
+    if not all(isinstance(entry, str) and entry for entry in value):
+        raise ValueError("covered_positive_examples has invalid entries")
+    return tuple(value)
 
 
 def _required_text_list(item: dict[str, Any], key: str) -> list[str]:

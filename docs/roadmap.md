@@ -2277,3 +2277,27 @@ Status: accepted in
 `claims/transition_claims.json` and `claims/proof_certificates.json`, with
 tests in `tests/test_self_mailbox_unsupported_claim.py` and
 `tests/test_command_buffer_unsupported_claim.py`.
+
+## ADR-0120: Evidence Bundle Covered Examples
+
+Goal: let transition evidence bundles name the positive manifest examples they
+cover separately from the single trace-aligned primary example.
+
+Deliverables:
+
+- optional `covered_positive_examples` field on transition evidence bundles;
+- validator checks that each covered example exists, is positive, has the
+  bundle expected status, and evaluates true;
+- covered-example lists in the unsupported self-mailbox and unsupported
+  self-target command-buffer bundles;
+- drifted covered-example rejection tests; and
+- unchanged Universal Cell runtime behavior, schematic traces, SVGs, claims,
+  and proof certificates.
+
+Status: accepted in
+`docs/adr/0120-evidence-bundle-covered-examples.md`. Implemented in
+`autarkic_systems/evidence_bundle.py`,
+`evidence/self_mailbox_unsupported_bundle.json`, and
+`evidence/command_buffer_unsupported_bundle.json`, with tests in
+`tests/test_self_mailbox_unsupported_evidence_bundle.py` and
+`tests/test_command_buffer_unsupported_evidence_bundle.py`.

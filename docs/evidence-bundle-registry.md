@@ -68,6 +68,10 @@ ADR-0113 makes the JSON payload self-describing by including a `bundles` array
 with each registered bundle ID, path, claim ID, and expected status.
 ADR-0114 adds `failed_subjects`, an ordered list of rejected validation
 subjects, matching the transition-chain registry JSON contract.
+ADR-0120 lets individual transition evidence bundles name
+`covered_positive_examples` in addition to their trace-aligned
+`positive_example`; bundle validation checks every covered example against the
+claim predicate and expected status.
 
 ## Boundary
 

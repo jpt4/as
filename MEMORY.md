@@ -527,3 +527,7 @@
 - ADR-0119 expands the unsupported self-mailbox and self-target command-buffer
   claim/proof surfaces so `standard-signal`, `write-buf-zero`, and
   `write-buf-one` each have explicit positive self-command boundary examples.
+- ADR-0120 adds optional transition evidence bundle `covered_positive_examples`
+  validation and uses it on the unsupported self-mailbox and self-target
+  command-buffer bundles so the integrated evidence layer reflects ADR-0119's
+  explicit command coverage.

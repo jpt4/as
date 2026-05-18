@@ -3,11 +3,16 @@
 ADR-0073 adds `evidence/self_mailbox_unsupported_bundle.json`, the fifth AS
 transition evidence bundle.
 
-The bundle covers the positive
-`UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED` example named
+The bundle's trace-aligned primary example is
 `write buffer one unsupported preserved`, where a stem-right cell with
 `self_mailbox` set to `write-buf-one` reports `self-mailbox-unsupported` and
 preserves the cell unchanged.
+
+ADR-0120 also records broader `covered_positive_examples` for the same claim:
+
+- `standard signal unsupported preserved`;
+- `write buffer zero unsupported preserved`; and
+- `write buffer one unsupported preserved`.
 
 ## Evidence Path
 
@@ -23,11 +28,12 @@ The bundle points to:
 - `sources/standard_signal_command_semantics_status.json`; and
 - `sources/write_buffer_command_semantics_status.json`.
 
-The evidence bundle validator checks that the preservation claim example
-evaluates true, the proof certificate is accepted, the schematic trace
-executes and matches the exact claim example, the committed SVG matches
-renderer output, and the source-status boundary files remain present and
-parseable.
+The evidence bundle validator checks that the trace-aligned preservation claim
+example evaluates true, every covered positive example exists and evaluates
+true with the expected status, the proof certificate is accepted, the
+schematic trace executes and matches the exact primary claim example, the
+committed SVG matches renderer output, and the source-status boundary files
+remain present and parseable.
 
 ## Boundary
 
@@ -44,5 +50,6 @@ python -m unittest tests.test_self_mailbox_unsupported_evidence_bundle
 python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json
 ```
 
-The tests cover the bundle fields, path set, cross-layer validation, registry
-entry, and drifted status rejection.
+The tests cover the bundle fields, covered examples, path set, cross-layer
+validation, registry entry, drifted covered-example rejection, and drifted
+status rejection.

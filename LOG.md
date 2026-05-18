@@ -2680,3 +2680,26 @@
   regression tests ran 62 tests; JSON parsing, `py_compile`,
   `git diff --check`, project status text/JSON, and transition evidence
   registry JSON passed; and `python -m unittest discover` passed 577 tests.
+
+## 2026-05-18 - Evidence Bundle Covered Examples
+
+- Added ADR-0120 to let transition evidence bundles name broader positive
+  manifest coverage with optional `covered_positive_examples` while preserving
+  one trace-aligned `positive_example`.
+- Updated the self-mailbox unsupported and command-buffer unsupported evidence
+  bundle tests before implementation. The red run failed because
+  `TransitionEvidenceBundle` did not expose `covered_positive_examples`.
+- Updated `autarkic_systems.evidence_bundle` so omitted
+  `covered_positive_examples` defaults to the primary positive example, and so
+  every covered example must exist, be positive, match the bundle expected
+  status, and evaluate true.
+- Updated `evidence/self_mailbox_unsupported_bundle.json` and
+  `evidence/command_buffer_unsupported_bundle.json` to list all three covered
+  ADR-0119 positive examples.
+- Updated README, evidence bundle docs, registry docs, open problems, roadmap,
+  memory, and lessons with the covered-example validation contract.
+- Verification passed: focused unsupported evidence-bundle tests ran 12 tests;
+  adjacent evidence-bundle/evidence-registry/project-status tests ran 64
+  tests; JSON parsing, `py_compile`, `git diff --check`, transition evidence
+  registry JSON, and project status text/JSON passed; and
+  `python -m unittest discover` passed 579 tests.

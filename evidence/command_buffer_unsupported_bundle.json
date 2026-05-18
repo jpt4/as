@@ -6,6 +6,11 @@
   "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
   "predicate": "stem_command_buffer_preserves_unsupported_completion",
   "positive_example": "self write buffer command remains appended",
+  "covered_positive_examples": [
+    "self standard signal command remains appended",
+    "self write buffer zero command remains appended",
+    "self write buffer command remains appended"
+  ],
   "transition_function": "step_stem_cell",
   "expected_status": "stem-buffer-appended",
   "artifacts": {
