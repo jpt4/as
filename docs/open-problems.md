@@ -166,6 +166,8 @@ ADR-0105 rejects whitespace-only source-status decision and safe-next text so
 accepted frontier entries keep meaningful operator wording.
 ADR-0106 rejects non-text command-list entries so malformed source-status
 commands cannot disappear from the project report.
+ADR-0107 rejects malformed command-token field container shapes so recognized
+source-status command fields cannot be silently ignored.
 
 ## P3: Choose The First Proof Apparatus
 

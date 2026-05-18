@@ -341,6 +341,90 @@ class ProjectStatusReportTests(unittest.TestCase):
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 
+    def test_non_text_source_status_command_field_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "non_text_command_field_status.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": ["standard-signal"],
+                    "commands": ["write-buf-zero"],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "command",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_scalar_source_status_commands_field_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "scalar_commands_status.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "commands": "write-buf-zero",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "commands",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_scalar_blocked_runtime_commands_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "scalar_blocked_runtime_commands.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "blocked_runtime_commands": "write-buf-one",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "blocked_runtime_commands",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
     def test_frontier_failed_subjects_preserve_mixed_failure_order(self):
         with tempfile.TemporaryDirectory() as tmp:
             missing_status = Path(tmp) / "missing_status.json"

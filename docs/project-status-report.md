@@ -54,7 +54,8 @@ accepted `frontier.source_statuses` entry and bumps the schema version to `2`.
 ADR-0104 rejects blank command-token strings as `source-status-schema`
 failures. ADR-0105 rejects whitespace-only `decision` and `safe_next_slice`
 text as source-status schema failures. ADR-0106 rejects non-text command-list
-entries as source-status schema failures.
+entries as source-status schema failures. ADR-0107 rejects malformed
+command-token field container shapes.
 
 ## Boundary
 

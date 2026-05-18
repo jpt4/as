@@ -2018,3 +2018,22 @@ Status: accepted in
 `docs/adr/0106-project-status-command-token-types.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0107: Project Status Command Field Shapes
+
+Goal: reject malformed command-token field container shapes in source-status
+records consumed by project status.
+
+Deliverables:
+
+- `source-status-schema` failure for non-text `command`;
+- `source-status-schema` failure for non-list `commands`;
+- `source-status-schema` failure for non-list `blocked_runtime_commands`;
+- unchanged `schema_version: 2` project status JSON shape;
+- focused tests covering each malformed command-token field shape; and
+- documentation update for the command-token field-shape contract.
+
+Status: accepted in
+`docs/adr/0107-project-status-command-field-shapes.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

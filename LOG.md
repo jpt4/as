@@ -2373,3 +2373,25 @@
   command attribution, and `frontier.failed_subjects: []`. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed, with the full
   suite running 557 tests.
+
+## 2026-05-18 - Project Status Command Field Shapes
+
+- Added ADR-0107 to reject malformed command-token field container shapes in
+  source-status records consumed by the project status command.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed because non-text `command`, scalar `commands`, and scalar
+  `blocked_runtime_commands` fields were accepted when another command-token
+  field supplied a usable command.
+- Updated `autarkic_systems.project_status` so malformed `command`,
+  `commands`, and `blocked_runtime_commands` field shapes report
+  `source-status-schema`.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the command-token field-shape contract.
+- Verified the focused project status test passed 24 tests; adjacent project
+  status, transition registry, and chain registry tests passed 49 tests. The
+  checked-in JSON status reported `schema_version: 2`, `accepted: true`,
+  transition `bundle_count: 8`, chain `bundle_count: 2`, aggregate blocked
+  commands `standard-signal`, `write-buf-zero`, and `write-buf-one`, per-source
+  command attribution, and `frontier.failed_subjects: []`. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed, with the full
+  suite running 560 tests.

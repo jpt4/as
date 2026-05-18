@@ -295,3 +295,6 @@
   same way missing content fails.
 - Do not silently filter malformed semantic-token lists. Dropping bad entries
   can make an invalid artifact look like a smaller valid one.
+- If a status schema recognizes a field name, validate that field even when
+  another sibling field is sufficient to build a partial report. Ignoring the
+  malformed field hides drift.

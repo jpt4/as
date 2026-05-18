@@ -490,3 +490,6 @@
 - ADR-0106 makes `autarkic_systems.project_status` reject non-text entries in
   source-status command-token lists as `source-status-schema`, preserving
   `schema_version: 2`.
+- ADR-0107 makes `autarkic_systems.project_status` reject malformed
+  source-status command-token field containers as `source-status-schema`,
+  preserving `schema_version: 2`.
