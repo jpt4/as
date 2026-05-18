@@ -21,6 +21,7 @@ WILLARD_MAP = Path("sources/willard_definition_map.json")
 FORMAL_ARITHMETIC_LANGUAGE = Path("language/formal_arithmetic_language.json")
 FORMAL_CODEBOOK = Path("language/formal_codebook.json")
 FORMAL_SUBSTITUTION_EXAMPLES = Path("language/formal_substitution_examples.json")
+CONSISTENCY_LEVEL_TARGETS = Path("claims/consistency_level_targets.json")
 
 
 class FormalConfidenceTargetTests(unittest.TestCase):
@@ -74,9 +75,9 @@ class FormalConfidenceTargetTests(unittest.TestCase):
             str(FORMAL_CODEBOOK),
             target.configuration["proof_code_encoding"],
         )
-        self.assertEqual(
+        self.assertIn(
+            str(CONSISTENCY_LEVEL_TARGETS),
             target.configuration["consistency_notion"],
-            "not-claimed",
         )
         self.assertIn(
             str(FORMAL_SUBSTITUTION_EXAMPLES),
@@ -85,7 +86,9 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertNotIn("arithmetic-object-language", target.blocked_by)
         self.assertNotIn("proof-code-encoding", target.blocked_by)
         self.assertNotIn("self-reference-substitution", target.blocked_by)
+        self.assertNotIn("consistency-level-selection", target.blocked_by)
         self.assertIn("self-reference-fixed-point", target.blocked_by)
+        self.assertIn("deduction-apparatus-selection", target.blocked_by)
 
     def test_checked_in_target_validates_against_willard_map(self):
         report = validate_formal_confidence_targets(self.manifest, WILLARD_MAP)
@@ -126,6 +129,10 @@ class FormalConfidenceTargetTests(unittest.TestCase):
             "self-reference-substitution",
             payload["targets"][0]["blocked_by"],
         )
+        self.assertNotIn(
+            "consistency-level-selection",
+            payload["targets"][0]["blocked_by"],
+        )
         self.assertTrue(
             any(
                 result["subject"].endswith(".configuration")
@@ -145,6 +152,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertNotIn("arithmetic-object-language", text)
         self.assertNotIn("proof-code-encoding", text)
         self.assertNotIn("self-reference-substitution", text)
+        self.assertNotIn("consistency-level-selection", text)
         self.assertIn("Willard anchors:", text)
         self.assertNotIn("FAIL", text)
 

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "target_set_id": "as-consistency-level-target-v1",
+  "reviewed_at": "2026-05-18",
+  "purpose": "First checked AS consistency-level target selection. This chooses the Level-1 consistency notion that later fixed-point and deduction-apparatus work must target, without claiming that AS proves the target.",
+  "language_path": "language/formal_arithmetic_language.json",
+  "codebook_path": "language/formal_codebook.json",
+  "substitution_examples_path": "language/formal_substitution_examples.json",
+  "willard_anchor_ids": [
+    "W2011-D5.6-LEVEL-K-CONSISTENCY",
+    "W2011-D5.7-SELFCONSK"
+  ],
+  "targets": [
+    {
+      "target_id": "AS-CONSISTENCY-LEVEL-1",
+      "level": 1,
+      "notion": "level-1-consistency",
+      "statement_class": "pi1",
+      "negation_class": "sigma1",
+      "proof_code_source": "language/formal_codebook.json",
+      "substitution_source": "language/formal_substitution_examples.json",
+      "status": "target-selected-not-claimed",
+      "non_claims": [
+        "no fixed-point self-reference construction",
+        "no deduction apparatus selected",
+        "no proof of Level-1 consistency",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Select a deduction apparatus and construct a fixed-point self-reference target before attempting any Level-1 consistency claim."
+    }
+  ]
+}

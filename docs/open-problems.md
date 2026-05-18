@@ -451,9 +451,10 @@ blocker by adding a checked Type-NS `delta0` language artifact. ADR-0227
 removes the first proof-code blocker by adding a checked codebook and
 round-trip encoder/decoder for terms, formulae, sentences, and placeholder
 proof-line shells. ADR-0228 removes the substitution blocker by adding checked
-capture-avoiding substitution examples over those codebook nodes. The remaining
-blockers are fixed-point self-reference, consistency-level selection, and
-deduction-apparatus selection.
+capture-avoiding substitution examples over those codebook nodes. ADR-0229
+removes the consistency-level selection blocker by selecting Level-1
+consistency as the first target notion. The remaining blockers are fixed-point
+self-reference and deduction-apparatus selection.
 
 ## P6: Recover Or Replace The Active Proflog Frontier
 

@@ -4697,3 +4697,29 @@ Deliverables:
 Status: accepted in `docs/adr/0228-formal-substitution-surface.md`.
 Implemented in `autarkic_systems/formal_substitution.py`, with tests in
 `tests/test_formal_substitution.py`.
+
+## ADR-0229: Consistency Level Target
+
+Goal: remove the consistency-level selection blocker from the
+formal-confidence target without claiming a consistency theorem.
+
+Deliverables:
+
+- `claims/consistency_level_targets.json` selecting Level-1 consistency;
+- `pi1` statement class and `sigma1` negation class requirements;
+- references to the checked formal arithmetic language, codebook, and
+  substitution examples;
+- Willard Level(k) and SelfCons_k anchor validation;
+- rejection for unknown Willard anchors, missing sentence classes, and status
+  values that claim proved consistency;
+- `autarkic_systems.consistency_level` text/JSON CLI validation;
+- formal-confidence target narrowed to the new consistency-level artifact while
+  still blocked on fixed-point self-reference and deduction-apparatus choices;
+  and
+- no proof checker, deduction apparatus, fixed-point lemma, theorem prover,
+  runtime behavior, command semantics, evidence bundle, or GitHub submission
+  logic changes.
+
+Status: accepted in `docs/adr/0229-consistency-level-target.md`.
+Implemented in `autarkic_systems/consistency_level.py`, with tests in
+`tests/test_consistency_level_target.py`.

@@ -76,9 +76,16 @@
   expected encoded outputs, but does not implement fixed-point self-reference,
   deduction, or self-consistency.
 - `AS-FORMAL-CONFIDENCE-TARGET-001` now also points at the formal substitution
-  examples and no longer lists `self-reference-substitution` as a blocker. It
-  remains blocked on self-reference-fixed-point, consistency-level selection,
-  and deduction-apparatus selection.
+  examples and no longer lists `self-reference-substitution` as a blocker.
+- ADR-0229 adds `claims/consistency_level_targets.json` and
+  `autarkic_systems/consistency_level.py` to select Level-1 consistency as the
+  first AS formal-confidence target notion. It validates `pi1`/`sigma1`
+  sentence classes and Willard Level(k)/SelfCons_k anchors, but does not claim
+  a consistency theorem.
+- `AS-FORMAL-CONFIDENCE-TARGET-001` now also points at the consistency-level
+  target and no longer lists `consistency-level-selection` as a blocker. It
+  remains blocked on self-reference-fixed-point and
+  deduction-apparatus-selection.
 - Direct pushes to `jpt4/as` are blocked for `Sean-Kenneth-Doherty`; current AS
   work is published at `https://github.com/Sean-Kenneth-Doherty/as`, and
   upstream issue `jpt4/as#1` records the permission blocker and fork handoff.

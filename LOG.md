@@ -4880,3 +4880,29 @@
   project-status summary remained accepted. `compileall`, JSON checks,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 966 tests.
+
+## 2026-05-18 - Consistency Level Target
+
+- Added ADR-0229 to remove the consistency-level selection blocker from the
+  formal-confidence target without claiming a consistency theorem.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.consistency_level` and
+  `claims/consistency_level_targets.json` did not exist, and the
+  formal-confidence target still listed `consistency-level-selection` as a
+  blocker.
+- Added `claims/consistency_level_targets.json`, selecting Level-1 consistency
+  over `pi1`/`sigma1` sentence classes as `target-selected-not-claimed`.
+- Added `autarkic_systems/consistency_level.py` with dependency validation
+  against the formal arithmetic language, formal codebook, and formal
+  substitution examples; Willard Level(k)/SelfCons_k anchor checks; sentence
+  class checks; and rejection of status values that claim proved consistency.
+- Narrowed `claims/formal_confidence_targets.json` so
+  `AS-FORMAL-CONFIDENCE-TARGET-001` points at the consistency-level target,
+  removes the consistency-level-selection blocker, and remains blocked on
+  self-reference-fixed-point and deduction-apparatus selection.
+- Focused consistency-level, formal-confidence, and project-status tests passed
+  109 tests. Live consistency-level text/JSON output reported the Level-1
+  target with no failed subjects; live formal-confidence output reported the
+  remaining blockers without `consistency-level-selection`; live project-status
+  summary remained accepted. `compileall`, JSON checks, `git diff --check`,
+  and `python -m unittest discover` passed; the full suite ran 977 tests.
