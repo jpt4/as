@@ -2615,3 +2615,28 @@
   reported all eight transition bundle IDs and both chain bundle IDs with
   paths; project status JSON remained accepted at `schema_version: 6`; and
   `python -m unittest discover` passed 573 tests.
+
+## 2026-05-18 - Project Status Source AS Boundary
+
+- Added ADR-0117 to require non-empty top-level `as_boundary` text on
+  source-status records consumed by project status.
+- Updated `tests/test_project_status_report.py` before implementation. The
+  red run failed because missing and blank `as_boundary` fields were accepted,
+  and the checked-in recipient non-init command-message source-status surfaced
+  in project status with `as_boundary: ""`.
+- Updated `autarkic_systems.project_status` so missing or blank `as_boundary`
+  reports `source-status-schema`.
+- Added a top-level `as_boundary` to
+  `sources/recipient_non_init_command_source_status.json`, preserving the
+  existing nested standard-signal, write-buffer, and multi-command boundary
+  details.
+- Updated README, project-status docs, recipient non-init source-status docs,
+  open problems, roadmap, memory, and lessons with the source-status boundary
+  contract.
+- Verification passed: focused project status tests ran 35 tests; adjacent
+  project-status/recipient-source-status/transition-registry/chain-registry
+  tests ran 69 tests; `py_compile`, `jq`, and `git diff --check` passed;
+  project status JSON remained accepted at `schema_version: 6` and exposed
+  non-empty `as_boundary` text for all accepted source-status entries; default
+  project status text remained accepted; and `python -m unittest discover`
+  passed 575 tests.

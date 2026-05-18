@@ -325,3 +325,6 @@
 - When the JSON first-run surface gains concrete operator evidence, decide
   whether the text first-run surface should gain the same evidence too. Humans
   should not have to switch formats just to see which artifacts were checked.
+- A source-status record that participates in project status should state the
+  AS boundary it enforces at the top level. Nested rationale is useful, but a
+  blank aggregate boundary makes the first diagnostic report weaker.

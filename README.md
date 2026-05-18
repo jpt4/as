@@ -277,6 +277,9 @@ the project legible:
   command-token strings are rejected as schema failures. Source-status
   `decision` and `safe_next_slice` text must also be non-whitespace, and
   recognized command-token fields must have the expected text/list shapes.
+  Accepted source-status records must also provide non-empty top-level
+  `as_boundary` text so the JSON frontier explains the AS boundary it is
+  enforcing.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

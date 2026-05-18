@@ -2213,3 +2213,26 @@ Status: accepted in
 `docs/adr/0116-project-status-text-registry-bundles.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0117: Project Status Source AS Boundary
+
+Goal: require source-status records consumed by project status to explain the
+AS boundary they enforce.
+
+Deliverables:
+
+- non-empty top-level `as_boundary` requirement for accepted source-status
+  records;
+- `source-status-schema` failure for missing `as_boundary`;
+- `source-status-schema` failure for blank `as_boundary`;
+- top-level `as_boundary` in
+  `sources/recipient_non_init_command_source_status.json`;
+- unchanged project status JSON shape at `schema_version: 6`; and
+- focused tests covering accepted checked-in boundaries and malformed
+  source-status boundary text.
+
+Status: accepted in
+`docs/adr/0117-project-status-source-as-boundary.md`. Implemented in
+`autarkic_systems/project_status.py` and
+`sources/recipient_non_init_command_source_status.json`, with tests in
+`tests/test_project_status_report.py`.

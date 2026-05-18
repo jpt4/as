@@ -409,6 +409,8 @@ def _source_status_schema_error(data: Any) -> str:
     question_error = _resolution_question_shape_error(data)
     if question_error:
         return question_error
+    if not _is_nonempty_text(data.get("as_boundary")):
+        return "source-status as_boundary must be non-empty text"
     return ""
 
 

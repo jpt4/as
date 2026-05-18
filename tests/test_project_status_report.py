@@ -27,6 +27,23 @@ BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
     "self-target-command-buffer",
 ]
+RECIPIENT_NON_INIT_AS_BOUNDARY = (
+    "Continue rejecting recipient non-init command-message inputs while AS "
+    "keeps standard-signal and write-buffer command tokens source-blocked; "
+    "the accepted behavior is the ADR-0054 rejection boundary, with "
+    "multi-command conflicts assigned to ADR-0059 reject-and-clear."
+)
+STANDARD_SIGNAL_AS_BOUNDARY = (
+    "Continue rejecting or preserving standard-signal command tokens at the "
+    "existing claimed boundaries. AS already has ordinary standard-signal "
+    "routing and stem buffer accumulation for binary input; this artifact "
+    "blocks only command-token execution."
+)
+WRITE_BUFFER_AS_BOUNDARY = (
+    "Continue rejecting or preserving write-buffer commands at the existing "
+    "claimed boundaries until a later ADR selects one source-backed execution "
+    "semantics."
+)
 TRANSITION_BUNDLES = [
     {
         "bundle_id": "recipient-init-command-message-transition-evidence-bundle",
@@ -228,6 +245,17 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertEqual(
             [
+                item["as_boundary"]
+                for item in report["frontier"]["source_statuses"]
+            ],
+            [
+                RECIPIENT_NON_INIT_AS_BOUNDARY,
+                STANDARD_SIGNAL_AS_BOUNDARY,
+                WRITE_BUFFER_AS_BOUNDARY,
+            ],
+        )
+        self.assertEqual(
+            [
                 item["required_resolution_questions"]
                 for item in report["frontier"]["source_statuses"]
             ],
@@ -303,6 +331,7 @@ class ProjectStatusReportTests(unittest.TestCase):
                     "decision": "do-not-implement-command-yet",
                     "safe_next_slice": "revisit-command-source-evidence",
                     "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
                 }),
                 encoding="utf-8",
             )
@@ -343,6 +372,7 @@ class ProjectStatusReportTests(unittest.TestCase):
                     "decision": "do-not-implement-command-yet",
                     "safe_next_slice": "revisit-command-source-evidence",
                     "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
                 }),
                 encoding="utf-8",
             )
@@ -618,6 +648,69 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn(
             "safe_next_slice",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_missing_source_status_as_boundary_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "missing_as_boundary_status.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertEqual(
+            [item["path"] for item in report["frontier"]["invalid_source_statuses"]],
+            [str(invalid_status)],
+        )
+        self.assertIn(
+            "as_boundary",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_blank_source_status_as_boundary_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "blank_as_boundary_status.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "  ",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertEqual(
+            [item["path"] for item in report["frontier"]["invalid_source_statuses"]],
+            [str(invalid_status)],
+        )
+        self.assertIn(
+            "as_boundary",
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 

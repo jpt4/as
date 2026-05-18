@@ -72,6 +72,9 @@ version to `5`. ADR-0115 adds registry `bundles` arrays to both
 load failures, and bumps the schema version to `6`.
 ADR-0116 renders the accepted registry bundle IDs and paths in the default text
 report without changing the JSON schema.
+ADR-0117 requires every accepted source-status record to provide non-empty
+top-level `as_boundary` text, preserving `schema_version: 6` while preventing
+blank boundary explanations in `frontier.source_statuses`.
 
 ## Boundary
 

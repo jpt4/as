@@ -5,6 +5,7 @@
   "runtime_change": "none-source-status-only",
   "depends_on": "sources/recipient_command_consumption_source_status.json",
   "safe_next_slice": "revisit-standard-signal-or-write-buffer-command-semantics",
+  "as_boundary": "Continue rejecting recipient non-init command-message inputs while AS keeps standard-signal and write-buffer command tokens source-blocked; the accepted behavior is the ADR-0054 rejection boundary, with multi-command conflicts assigned to ADR-0059 reject-and-clear.",
   "implemented_claims": [
     {
       "adr": "ADR-0054",

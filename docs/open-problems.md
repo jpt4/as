@@ -190,6 +190,9 @@ and bumps the schema version to `6`, so the first diagnostic command now names
 the transition and chain bundles it checked.
 ADR-0116 renders those checked bundle IDs and paths in the default text status
 report without changing the JSON schema.
+ADR-0117 requires non-empty top-level `as_boundary` text on source-status
+records consumed by project status, and adds that boundary to the recipient
+non-init command-message source-status artifact.
 
 ## P3: Choose The First Proof Apparatus
 

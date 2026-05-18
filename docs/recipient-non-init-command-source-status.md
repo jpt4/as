@@ -8,6 +8,10 @@ traced, and rendered.
 
 The structured status lives in
 `sources/recipient_non_init_command_source_status.json`.
+ADR-0117 adds a top-level `as_boundary` to that artifact so project status can
+report the recipient non-init rejection boundary directly instead of exposing
+only the nested standard-signal, write-buffer, and multi-command subdecision
+boundaries.
 
 ## Decision
 
@@ -69,6 +73,9 @@ source-status boundaries together.
 The rejection evidence ladder is complete again. `standard-signal` and
 write-buffer command execution should be revisited only if later source
 evidence resolves their runtime surfaces.
+
+ADR-0117 keeps this boundary visible to project-status automation: accepted
+source-status records must now carry non-empty top-level `as_boundary` text.
 
 ## Verification
 
