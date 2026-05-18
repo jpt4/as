@@ -2544,3 +2544,23 @@ Status: accepted in
 `docs/adr/0131-resolved-question-source-paths.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0132: Project Status Resolved Question Details
+
+Goal: carry operator-critical optional details from resolved source-status
+questions into project status JSON and text.
+
+Deliverables:
+
+- project status JSON `schema_version: 10`;
+- `formal_command_offset: 0` visible on the standard-signal
+  `command-table-offset` resolved question;
+- the RAA legacy divergence visible on that resolved question;
+- default text detail lines for formal command offset and legacy divergence;
+- `source-status-schema` failures for malformed optional detail metadata; and
+- focused project-status tests.
+
+Status: accepted in
+`docs/adr/0132-project-status-resolved-question-details.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

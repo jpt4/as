@@ -2912,3 +2912,23 @@
   57 tests; `py_compile` and `git diff --check` passed; project status text and
   JSON remained accepted at `schema_version: 9`; and
   `python -m unittest discover` passed 597 tests.
+
+## 2026-05-18 - Project Status Resolved Question Details
+
+- Added ADR-0132 to carry optional resolved-question details into project
+  status JSON and text.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run executed 52 tests and failed because project status still reported
+  `schema_version: 9`, omitted formal offset and legacy-divergence details, and
+  accepted malformed optional detail metadata.
+- Updated `autarkic_systems.project_status` so resolved questions can expose
+  `formal_command_offset` and `legacy_divergence`, render those details in the
+  default text report, and fail malformed detail metadata as
+  `source-status-schema`.
+- Bumped project status JSON to `schema_version: 10`, carrying the
+  standard-signal `command-table-offset` formal offset `0` and RAA legacy
+  divergence.
+- Verification passed: adjacent project-status and standard-signal tests ran
+  59 tests; `py_compile` and `git diff --check` passed; project status text and
+  JSON were accepted at `schema_version: 10`; and
+  `python -m unittest discover` passed 599 tests.

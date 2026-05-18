@@ -21,7 +21,7 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
-PROJECT_STATUS_SCHEMA_VERSION = 9
+PROJECT_STATUS_SCHEMA_VERSION = 10
 BLOCKED_RUNTIME_SURFACES = [
     "recipient-command-message",
     "self-mailbox-command",
@@ -174,6 +174,11 @@ STANDARD_SIGNAL_RESOLVED_QUESTIONS = [
         "question_id": "command-table-offset",
         "decision": "preserve-formal-command-offset-0",
         "source_status": "sources/stem_command_buffer_map.json",
+        "formal_command_offset": 0,
+        "legacy_divergence": (
+            "RAA maps its final command-buffer case to standard-signal, but AS "
+            "preserves the formal PRC command-buffer map from ADR-0026."
+        ),
     },
 ]
 WRITE_BUFFER_RESOLUTION_QUESTIONS = [
@@ -511,6 +516,13 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn(
             "command-table-offset: preserve-formal-command-offset-0 "
             "(sources/stem_command_buffer_map.json)",
+            text,
+        )
+        self.assertIn("formal command offset: 0", text)
+        self.assertIn(
+            "legacy divergence: RAA maps its final command-buffer case to "
+            "standard-signal, but AS preserves the formal PRC command-buffer "
+            "map from ADR-0026.",
             text,
         )
 
@@ -1427,6 +1439,74 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn(
             "resolved resolution question source_status path must contain a JSON object",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_non_integer_resolved_resolution_question_offset_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "non_integer_resolved_offset.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "resolved_resolution_questions": [
+                        {
+                            "question_id": "command-table-offset",
+                            "decision": "resolved",
+                            "formal_command_offset": "0",
+                        }
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "formal_command_offset",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_blank_resolved_resolution_question_legacy_divergence_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "blank_resolved_legacy_divergence.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "resolved_resolution_questions": [
+                        {
+                            "question_id": "command-table-offset",
+                            "decision": "resolved",
+                            "legacy_divergence": "  ",
+                        }
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "legacy_divergence",
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 

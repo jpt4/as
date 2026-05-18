@@ -32,7 +32,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 9
+PROJECT_STATUS_SCHEMA_VERSION = 10
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -362,6 +362,11 @@ def _resolved_resolution_questions(data: dict[str, Any]) -> list[dict[str, str]]
         source_status = question.get("source_status")
         if isinstance(source_status, str) and source_status:
             resolved_question["source_status"] = source_status
+        if "formal_command_offset" in question:
+            resolved_question["formal_command_offset"] = question["formal_command_offset"]
+        legacy_divergence = question.get("legacy_divergence")
+        if isinstance(legacy_divergence, str) and legacy_divergence:
+            resolved_question["legacy_divergence"] = legacy_divergence
         resolved_questions.append(resolved_question)
     return resolved_questions
 
@@ -462,6 +467,13 @@ def _resolved_resolution_question_text_lines(frontier: dict[str, Any]) -> list[s
             if source_status_path:
                 detail = f"{detail} ({source_status_path})"
             lines.append(f"    {detail}")
+            if "formal_command_offset" in question:
+                lines.append(
+                    f"      formal command offset: {question['formal_command_offset']}"
+                )
+            legacy_divergence = question.get("legacy_divergence")
+            if legacy_divergence:
+                lines.append(f"      legacy divergence: {legacy_divergence}")
     if len(lines) == 1:
         return ["Resolved resolution questions: none"]
     return lines
@@ -611,6 +623,20 @@ def _resolved_resolution_question_shape_error(data: dict[str, Any]) -> str:
         ):
             return (
                 "source-status resolved resolution question source_status "
+                "must be non-empty text"
+            )
+        if "formal_command_offset" in question:
+            offset = question.get("formal_command_offset")
+            if not isinstance(offset, int) or isinstance(offset, bool):
+                return (
+                    "source-status resolved resolution question "
+                    "formal_command_offset must be an integer"
+                )
+        if "legacy_divergence" in question and not _is_nonempty_text(
+            question.get("legacy_divergence")
+        ):
+            return (
+                "source-status resolved resolution question legacy_divergence "
                 "must be non-empty text"
             )
         source_status = question.get("source_status")

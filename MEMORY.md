@@ -570,3 +570,6 @@
 - ADR-0131 makes project-status resolved-question `source_status` paths fail
   closed when the target is missing, invalid JSON, or non-object JSON,
   preserving project status `schema_version: 9`.
+- ADR-0132 bumps project status to `schema_version: 10` and preserves optional
+  resolved-question details in JSON/text, including the standard-signal
+  `formal_command_offset: 0` and the RAA legacy divergence.

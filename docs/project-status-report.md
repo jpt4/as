@@ -41,12 +41,12 @@ The text report names:
 - blocked runtime surfaces;
 - source-status AS boundaries;
 - blocker resolution question IDs and summaries;
-- resolved blocker question IDs and decisions;
+- resolved blocker question IDs, decisions, and optional detail fields;
 - source-status cross-links behind the current blocker trail; and
 - the safe next slice from the source-status records.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 9`. If a registry file is missing, the corresponding registry
+`schema_version: 10`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -106,6 +106,10 @@ ADR-0131 requires each resolved question `source_status` path to exist and
 contain parseable top-level JSON object content, reporting missing, invalid, or
 non-object targets as `source-status-schema` while preserving
 `schema_version: 9`.
+ADR-0132 carries optional resolved-question detail fields such as
+`formal_command_offset` and `legacy_divergence` into project status JSON/text,
+rejects malformed detail metadata as `source-status-schema`, and bumps the
+schema version to `10`.
 
 ## Boundary
 

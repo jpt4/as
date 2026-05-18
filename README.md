@@ -290,7 +290,8 @@ the project legible:
   blocked frontier; the default text report renders those cross-links when
   present. Schema version `9` adds `resolved_resolution_questions` to accepted
   source-status entries and renders a `Resolved resolution questions:` text
-  section.
+  section. Schema version `10` carries optional resolved-question detail fields
+  such as formal command offset and legacy divergence into JSON/text.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

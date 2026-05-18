@@ -368,3 +368,6 @@
 - A resolved question is still only useful if the artifact that settled it can
   be opened and consumed. Validate resolved-decision source paths the same way
   unresolved frontier trails are validated.
+- When an aggregate status lifts settled decisions from source artifacts, carry
+  the operator-critical details too. A decision label alone can hide the fact
+  that made the decision worth preserving.

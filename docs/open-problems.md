@@ -230,6 +230,9 @@ so `command-table-offset` appears as settled while the remaining command-token
 frontier stays open.
 ADR-0131 requires resolved-question source paths to exist and contain JSON
 objects, so settled blocker decisions cannot point at dead artifacts.
+ADR-0132 carries the resolved `command-table-offset` formal offset and RAA
+legacy divergence into project status, so the settled decision trail is no
+longer reduced to a label.
 
 ## P3: Choose The First Proof Apparatus
 
