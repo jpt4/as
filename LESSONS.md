@@ -359,3 +359,6 @@
 - When a previously open blocker is already settled by a checked artifact,
   move it out of the unresolved queue and point to the artifact that settled
   it.
+- When sources agree on a sub-part of an unresolved behavior, record that as
+  narrowed evidence without removing broader blockers from the unresolved
+  queue.

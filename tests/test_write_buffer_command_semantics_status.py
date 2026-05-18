@@ -80,6 +80,27 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(fsmsim["buffer_full_guard"], "absent")
         self.assertIn("lines 262-267", fsmsim["write_buffer_locus"])
 
+    def test_command_bit_source_is_literal_zero_one(self):
+        bit_source = self.status["command_bit_source"]
+
+        self.assertEqual(
+            bit_source["decision"],
+            "write-buffer-command-bit-is-literal",
+        )
+        self.assertEqual(
+            bit_source["commands"],
+            {
+                "write-buf-zero": 0,
+                "write-buf-one": 1,
+            },
+        )
+        self.assertIn("lines 437-454", bit_source["formal_model_locus"])
+        self.assertIn("lines 264-273", bit_source["raa_locus"])
+        self.assertIn("lines 346-365", bit_source["semsim_locus"])
+        self.assertIn("lines 262-267", bit_source["fsmsim_locus"])
+        self.assertIn("literal", bit_source["summary"])
+        self.assertIn("high-rail", bit_source["summary"])
+
     def test_required_resolution_questions_are_explicit(self):
         question_ids = {
             question["question_id"]

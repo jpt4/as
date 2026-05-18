@@ -2857,3 +2857,22 @@
   passed; project status text no longer listed `command-table-offset`; project
   status JSON remained accepted at `schema_version: 8`; and
   `python -m unittest discover` passed 589 tests.
+
+## 2026-05-18 - Write-Buffer Command Bit Source Evidence
+
+- Added ADR-0129 to record that `write-buf-zero` and `write-buf-one` carry
+  literal `0` and `1` append bits across the formal model and the RAA, SEMSIM,
+  and FSMSIM witnesses.
+- Updated `tests/test_write_buffer_command_semantics_status.py` before
+  implementation. The red run executed 6 tests and failed because
+  `command_bit_source` was absent.
+- Updated `sources/write_buffer_command_semantics_status.json` and
+  `docs/write-buffer-command-semantics-status.md` to record the literal
+  command bit-source evidence without changing runtime behavior.
+- Kept the unresolved write-buffer question queue unchanged because execution
+  surface, buffer-full behavior, post-append clearing, and high-rail/state
+  interaction still require later source-backed decisions.
+- Verification passed: adjacent write-buffer and project-status tests ran 49
+  tests; JSON formatting, `py_compile`, and `git diff --check` passed; project
+  status text and JSON remained accepted at `schema_version: 8`; and
+  `python -m unittest discover` passed 590 tests.

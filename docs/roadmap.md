@@ -2474,3 +2474,26 @@ Status: accepted in
 `docs/standard-signal-command-semantics-status.md`, with tests in
 `tests/test_standard_signal_command_semantics_status.py` and
 `tests/test_project_status_report.py`.
+
+## ADR-0129: Write-Buffer Command Bit Source Evidence
+
+Goal: record the source-backed sub-decision that the named write-buffer commands
+carry literal append bits, without widening runtime execution.
+
+Deliverables:
+
+- a `command_bit_source` witness in
+  `sources/write_buffer_command_semantics_status.json`;
+- tests proving `write-buf-zero` maps to literal `0` and `write-buf-one` maps
+  to literal `1`;
+- formal-model, RAA, SEMSIM, and FSMSIM loci for that literal bit source;
+- unchanged unresolved write-buffer question IDs;
+- unchanged Universal Cell runtime behavior;
+- unchanged project status JSON at `schema_version: 8`; and
+- focused write-buffer source-status tests.
+
+Status: accepted in
+`docs/adr/0129-write-buffer-command-bit-source.md`. Implemented in
+`sources/write_buffer_command_semantics_status.json` and
+`docs/write-buffer-command-semantics-status.md`, with tests in
+`tests/test_write_buffer_command_semantics_status.py`.

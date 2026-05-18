@@ -23,6 +23,12 @@ The restored legacy sketches disagree:
 - FSMSIM appends 0 or 1 and clears self-mailbox plus input channels, but does
   not expose the same buffer-full guard.
 
+ADR-0129 records one narrower agreement across those witnesses: the named
+`write-buf-zero` and `write-buf-one` commands carry literal `0` and `1` append
+bits. The bit value is not derived from the ordinary standard-signal high-rail
+comparison path. That does not resolve buffer-full behavior, post-append
+clearing, or high-rail state interaction.
+
 ## AS Boundary
 
 AS keeps write-buffer command execution blocked across these runtime surfaces:
@@ -42,7 +48,8 @@ rejection artifact. ADR-0062 reviews `guile-asmsim.scm`, which has binary
 `practice/asmsim.scm`, whose process-buffer code uses code-shape predicates
 and warning comments rather than named write-buffer command semantics.
 ADR-0064 records the official PRC TLA files as incomplete and missing
-write-buffer command-token semantics.
+write-buffer command-token semantics. ADR-0129 records the literal command
+bit-source evidence without changing runtime behavior.
 
 ## Verification
 

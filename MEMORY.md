@@ -558,3 +558,8 @@
   favor of the formal PRC map encoded by `sources/stem_command_buffer_map.json`
   (`standard-signal` offset `0`) and removes that question from the project
   status unresolved queue; command-token execution remains blocked.
+- ADR-0129 adds `command_bit_source` to
+  `sources/write_buffer_command_semantics_status.json`, recording that
+  `write-buf-zero` and `write-buf-one` carry literal `0` and `1` append bits
+  across the formal model and RAA/SEMSIM/FSMSIM witnesses. Runtime behavior and
+  the unresolved write-buffer question queue remain unchanged.

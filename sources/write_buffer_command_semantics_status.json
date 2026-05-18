@@ -60,6 +60,18 @@
       "summary": "FSMSIM appends 0 or 1 to the buffer and clears self-mailbox plus input channels, without a matching buffer-full guard."
     }
   ],
+  "command_bit_source": {
+    "decision": "write-buffer-command-bit-is-literal",
+    "commands": {
+      "write-buf-zero": 0,
+      "write-buf-one": 1
+    },
+    "formal_model_locus": "lines 437-454, command table names write-buf-zero and write-buf-one as distinct commands",
+    "raa_locus": "lines 264-273, process-special-message dispatches write-buf-zero to write-buf 0 and write-buf-one to write-buf 1",
+    "semsim_locus": "lines 346-365, write-buf-zero appends 0 and write-buf-one appends 1 before the stem wrapper clears buffer/high state",
+    "fsmsim_locus": "lines 262-267, write-buf-zero appends 0 and write-buf-one appends 1 while clearing self-mailbox and input channels",
+    "summary": "The named write-buffer commands carry literal 0 and 1 append bits. The bit value is not derived from the ordinary standard-signal high-rail comparison path, though high-rail and post-append state clearing remain unresolved."
+  },
   "required_resolution_questions": [
     {
       "question_id": "recipient-vs-stem-surface",

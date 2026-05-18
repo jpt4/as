@@ -74,7 +74,9 @@ the project legible:
 - `docs/recipient-non-init-command-rejection-svg.md` records the rendered view
   of that recipient non-init command-message rejection trace.
 - `docs/write-buffer-command-semantics-status.md` records why write-buffer
-  command execution remains source-blocked.
+  command execution remains source-blocked and records the narrowed source
+  agreement that `write-buf-zero` / `write-buf-one` carry literal `0` / `1`
+  append bits.
 - `docs/standard-signal-command-semantics-status.md` records why
   `standard-signal` command-token execution remains source-blocked while
   ordinary standard-signal binary input stays implemented, and records the
@@ -315,7 +317,8 @@ the project legible:
 - `sources/recipient_non_init_command_source_status.json` makes the recipient
   non-init command-message blocking decision machine-checkable.
 - `sources/write_buffer_command_semantics_status.json` makes the write-buffer
-  command semantics source-status decision machine-checkable.
+  command semantics source-status decision machine-checkable, including the
+  literal command bit-source evidence.
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
   machine-checkable, including the formal-model self-mailbox exception and the
