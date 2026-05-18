@@ -855,3 +855,7 @@
   and `autarkic_systems.network_sequence_trace`, recording and validating the
   accepted post-handoff delivery plus follow-up path without adding scheduler,
   topology, timing, SVG, evidence-bundle fields, or runtime semantics.
+- ADR-0206 adds that post-handoff sequence trace as a checked
+  `sequence_trace` artifact in the network-sequence evidence bundle and demo.
+  Bundle validation now reports `sequence-trace` and checks trace agreement
+  with the bundle claim ID, helper, and expected status.

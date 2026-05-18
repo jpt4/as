@@ -4180,3 +4180,26 @@ Status: accepted in `docs/adr/0205-post-handoff-sequence-trace.md`.
 Implemented in `autarkic_systems/network_sequence_trace.py`, with tests in
 `tests/test_post_handoff_sequence_trace.py` and operator notes in
 `docs/post-handoff-sequence-trace.md`.
+
+## ADR-0206: Sequence Trace Evidence Link
+
+Goal: make the network-sequence evidence bundle fail closed over the checked
+post-handoff sequence trace.
+
+Deliverables:
+
+- `sequence_trace` artifact path in
+  `evidence/sequences/post_handoff_signal_bundle.json`;
+- `sequence_trace_path` loaded by `NetworkSequenceEvidenceBundle`;
+- schema path validation for the sequence-trace artifact;
+- `sequence-trace` validation result using the existing trace validator;
+- trace-to-bundle agreement checks for claim ID, helper, and expected status;
+- vertical demo reporting for the sequence trace layer; and
+- no runtime behavior, claim, proof-rule, project-status, scheduler, topology,
+  timing, SVG, or command-semantics changes.
+
+Status: accepted in `docs/adr/0206-sequence-trace-evidence-link.md`.
+Implemented in `autarkic_systems/network_sequence_evidence_bundle.py` and
+`autarkic_systems/network_sequence_demo.py`, with tests in
+`tests/test_network_sequence_evidence_bundle.py` and
+`tests/test_network_sequence_demo_report.py`.

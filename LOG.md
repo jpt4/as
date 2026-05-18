@@ -4386,3 +4386,28 @@
   follow-up status `routed`, and recipient after-follow-up output `[0, 0, 1]`.
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 884 tests.
+
+## 2026-05-18 - Sequence Trace Evidence Link
+
+- Added ADR-0206 to make the post-handoff sequence evidence bundle cite and
+  validate the checked sequence trace artifact.
+- Added red evidence-bundle and demo-report tests before implementation. The
+  focused red run failed because loaded bundles had no `sequence_trace_path`,
+  the validation result set lacked `sequence-trace`, missing trace paths were
+  not rejected by bundle validation, reports lacked `OK sequence-trace:`, and
+  the demo omitted the trace layer.
+- Updated `autarkic_systems/network_sequence_evidence_bundle.py` to load a
+  `sequence_trace` artifact, include it in schema path validation, validate it
+  through the existing network-sequence trace validator, and check trace
+  agreement with bundle claim ID, helper, and expected status.
+- Updated `evidence/sequences/post_handoff_signal_bundle.json` to cite
+  `schematics/sequences/post_handoff_signal_sequence_trace.json`, and updated
+  the vertical sequence demo to report that trace layer.
+- Focused green verification passed 25 sequence evidence-bundle and demo-report
+  tests. Adjacent sequence evidence/demo/trace/witness/language/claim tests
+  passed 62 tests. Live bundle JSON reported 9 accepted checks including
+  `sequence-trace`, and demo JSON listed the sequence trace evidence layer
+  with `exists: true`. Registry demo JSON reported `bundle_count: 1`,
+  `accepted_count: 1`, and no missing evidence paths. `compileall`,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 885 tests.

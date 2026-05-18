@@ -28,6 +28,7 @@ CLAIM_ID = "UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED"
 PREDICATE = "post_handoff_signal_routed"
 EXAMPLE = "proc left init handoff routes later binary signal"
 STATUS = "post-handoff-signal-routed"
+TRACE = Path("schematics/sequences/post_handoff_signal_sequence_trace.json")
 
 
 class NetworkSequenceEvidenceBundleTests(unittest.TestCase):
@@ -68,6 +69,7 @@ class NetworkSequenceEvidenceBundleTests(unittest.TestCase):
             self.bundle.sequence_witness_path,
             Path("autarkic_systems/network_sequence.py"),
         )
+        self.assertEqual(self.bundle.sequence_trace_path, TRACE)
         self.assertEqual(
             self.bundle.chain_bundle_paths,
             (Path("evidence/chains/neighbor_delivery_chain_bundle.json"),),
@@ -90,6 +92,7 @@ class NetworkSequenceEvidenceBundleTests(unittest.TestCase):
                 "sequence-proof-certificate",
                 "sequence-language",
                 "sequence-witness",
+                "sequence-trace",
                 "underlying-chain-bundles",
                 "source-statuses",
                 "boundary",
@@ -136,6 +139,31 @@ class NetworkSequenceEvidenceBundleTests(unittest.TestCase):
             results,
         )
 
+    def test_missing_sequence_trace_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing = Path(tmp) / "missing_post_handoff_sequence_trace.json"
+            drifted = replace(self.bundle, sequence_trace_path=missing)
+
+            results = validate_network_sequence_evidence_bundle(drifted)
+
+        self.assertTrue(
+            any(
+                not result.accepted
+                and result.subject == "schema"
+                and str(missing) in result.detail
+                for result in results
+            ),
+            results,
+        )
+        self.assertTrue(
+            any(
+                not result.accepted
+                and result.subject == "sequence-trace"
+                for result in results
+            ),
+            results,
+        )
+
     def test_report_and_json_payload_record_bundle_validation(self):
         results = validate_network_sequence_evidence_bundle(self.bundle)
 
@@ -145,6 +173,7 @@ class NetworkSequenceEvidenceBundleTests(unittest.TestCase):
         self.assertIn("Network sequence evidence bundle:", report)
         self.assertIn("OK sequence-language:", report)
         self.assertIn("OK sequence-witness:", report)
+        self.assertIn("OK sequence-trace:", report)
         self.assertNotIn("FAIL", report)
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["bundle_id"], BUNDLE_ID)

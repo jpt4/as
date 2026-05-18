@@ -35,6 +35,7 @@ The validator checks:
 - network-sequence proof certificates;
 - the network-sequence claim object language;
 - the executable post-handoff witness status;
+- the checked post-handoff sequence trace;
 - underlying transition-chain evidence bundles;
 - referenced source-status JSON files; and
 - explicit boundary text.

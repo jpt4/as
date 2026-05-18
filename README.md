@@ -277,12 +277,12 @@ proof certificates, object languages, evidence bundles, and status reports:
   surface.
 - `autarkic_systems/network_sequence_evidence_bundle.py` validates the first
   evidence bundle and registry over the post-handoff signal witness claim,
-  proof, object language, executable witness, underlying delivery chain
-  evidence, and source-status boundaries.
+  proof, object language, executable witness, checked trace, underlying
+  delivery chain evidence, and source-status boundaries.
 - `autarkic_systems/network_sequence_demo.py` renders a vertical first-run
   report over the post-handoff sequence evidence bundle or registry, including
-  validation results, artifact presence, lower-level chain bundles,
-  source-status boundaries, and explicit boundary terms.
+  validation results, artifact presence, checked trace, lower-level chain
+  bundles, source-status boundaries, and explicit boundary terms.
 - `autarkic_systems/chain_trace.py` validates the recorded transition-chain
   traces for consumed and rejected neighbor-delivery handoffs.
 - `autarkic_systems/chain_svg.py` renders and validates transition-chain SVG
