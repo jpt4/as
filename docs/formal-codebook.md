@@ -21,8 +21,9 @@ The codebook currently covers:
   and premise references.
 
 Codes are tagged natural-number prefix sequences. They are intentionally easy
-to inspect and round-trip before any attempt to arithmetize substitution or
-prove consistency over them.
+to inspect and round-trip before any attempt to build fixed-point
+self-reference or prove consistency over them. ADR-0228 adds the separate
+substitution surface over these nodes.
 
 ## Run
 
@@ -42,7 +43,6 @@ The validator checks that:
 
 ## Boundary
 
-This is not a parser, evaluator, substitution engine, deduction apparatus,
-proof checker, or self-consistency theorem. It is the smallest inspected
-proof-code surface needed before later ADRs can build substitution and
-self-reference machinery.
+This is not a parser, evaluator, deduction apparatus, proof checker,
+fixed-point self-reference construction, or self-consistency theorem. It is the
+smallest inspected proof-code surface that the substitution layer targets.

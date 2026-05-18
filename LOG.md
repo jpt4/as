@@ -4851,3 +4851,32 @@
   remaining blockers without `proof-code-encoding`; live project-status summary
   remained accepted. `compileall`, JSON checks, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 950 tests.
+
+## 2026-05-18 - Formal Substitution Surface
+
+- Added ADR-0228 to remove the substitution blocker from the formal-confidence
+  target without claiming fixed-point self-reference, deduction, or
+  self-consistency machinery.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.formal_substitution` and
+  `language/formal_substitution_examples.json` did not exist, and the
+  formal-confidence target still listed `self-reference-substitution` as a
+  blocker.
+- Added `language/formal_substitution_examples.json`, a checked example
+  manifest for capture-avoiding substitution over formal codebook nodes.
+- Added `autarkic_systems/formal_substitution.py` with free-variable
+  calculation, term substitution, binder-respecting behavior, capture
+  rejection, expected-node validation, and expected-code validation through the
+  formal codebook.
+- Narrowed `claims/formal_confidence_targets.json` so
+  `AS-FORMAL-CONFIDENCE-TARGET-001` points at the formal substitution examples,
+  removes the self-reference-substitution blocker, and remains blocked on
+  self-reference-fixed-point, consistency-level selection, and
+  deduction-apparatus selection.
+- Focused formal-substitution, formal-confidence, and project-status tests
+  passed 114 tests. Live formal-substitution text/JSON output reported four
+  accepted examples with no failed subjects; live formal-confidence output
+  reported the remaining blockers without `self-reference-substitution`; live
+  project-status summary remained accepted. `compileall`, JSON checks,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 966 tests.

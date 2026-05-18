@@ -425,8 +425,9 @@ transition-chain object language the same direct CLI surface. ADR-0226 adds
 surface with `delta0`, `pi1`, `sigma1`, and placeholder-only proof objects.
 ADR-0227 adds `language/formal_codebook.json`, a first tagged natural-number
 codebook over that syntax and placeholder proof-line shells. IS(A),
-parser/evaluator semantics, tableaux syntax, substitution, and deduction syntax
-remain open.
+parser/evaluator semantics, tableaux syntax, fixed-point self-reference, and
+deduction syntax remain open. ADR-0228 adds capture-avoiding substitution
+examples over the codebook nodes.
 
 ## P5: Annotate Core Willard Sources At Definition Granularity
 
@@ -449,8 +450,10 @@ apparatus selection are implemented. ADR-0226 removes the arithmetic syntax
 blocker by adding a checked Type-NS `delta0` language artifact. ADR-0227
 removes the first proof-code blocker by adding a checked codebook and
 round-trip encoder/decoder for terms, formulae, sentences, and placeholder
-proof-line shells. The remaining blockers are self-reference substitution,
-consistency-level selection, and deduction-apparatus selection.
+proof-line shells. ADR-0228 removes the substitution blocker by adding checked
+capture-avoiding substitution examples over those codebook nodes. The remaining
+blockers are fixed-point self-reference, consistency-level selection, and
+deduction-apparatus selection.
 
 ## P6: Recover Or Replace The Active Proflog Frontier
 

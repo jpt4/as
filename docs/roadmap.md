@@ -4671,3 +4671,29 @@ Deliverables:
 Status: accepted in `docs/adr/0227-formal-proof-code-encoding.md`.
 Implemented in `autarkic_systems/formal_code.py`, with tests in
 `tests/test_formal_code_encoding.py`.
+
+## ADR-0228: Formal Substitution Surface
+
+Goal: remove the substitution blocker from the formal-confidence target
+without overclaiming fixed-point self-reference, deduction, or consistency.
+
+Deliverables:
+
+- `language/formal_substitution_examples.json` with capture-avoiding
+  substitution examples;
+- free-variable calculation over terms, formulae, sentence wrappers, bounded
+  quantifiers, and proof-line shells;
+- substitution of term nodes for free variables;
+- binder-respecting behavior and capture rejection;
+- expected node and expected code validation through the formal codebook;
+- `autarkic_systems.formal_substitution` text/JSON CLI validation;
+- formal-confidence target narrowed to the new substitution artifact while
+  still blocked on fixed-point self-reference, consistency-level, and
+  deduction-apparatus choices; and
+- no parser, evaluator, proof checker, fixed-point lemma, theorem prover,
+  runtime behavior, command semantics, evidence bundle, or GitHub submission
+  logic changes.
+
+Status: accepted in `docs/adr/0228-formal-substitution-surface.md`.
+Implemented in `autarkic_systems/formal_substitution.py`, with tests in
+`tests/test_formal_substitution.py`.

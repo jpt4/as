@@ -68,9 +68,17 @@
   formulae, `pi1`/`sigma1` sentence wrappers, and placeholder proof-line
   shells, but does not implement substitution, deduction, or self-consistency.
 - `AS-FORMAL-CONFIDENCE-TARGET-001` now also points at the formal codebook and
-  no longer lists `proof-code-encoding` as a blocker. It remains blocked on
-  self-reference-substitution, consistency-level selection, and
-  deduction-apparatus selection.
+  no longer lists `proof-code-encoding` as a blocker.
+- ADR-0228 adds `language/formal_substitution_examples.json` and
+  `autarkic_systems/formal_substitution.py` as the first checked
+  capture-avoiding substitution surface over the formal codebook nodes. It
+  validates free-variable substitution, binder blocking, capture rejection, and
+  expected encoded outputs, but does not implement fixed-point self-reference,
+  deduction, or self-consistency.
+- `AS-FORMAL-CONFIDENCE-TARGET-001` now also points at the formal substitution
+  examples and no longer lists `self-reference-substitution` as a blocker. It
+  remains blocked on self-reference-fixed-point, consistency-level selection,
+  and deduction-apparatus selection.
 - Direct pushes to `jpt4/as` are blocked for `Sean-Kenneth-Doherty`; current AS
   work is published at `https://github.com/Sean-Kenneth-Doherty/as`, and
   upstream issue `jpt4/as#1` records the permission blocker and fork handoff.
