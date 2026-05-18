@@ -3571,3 +3571,25 @@ Deliverables:
 Status: accepted in
 `docs/adr/0176-stem-buffer-predicate-result-certificates.md`. Implemented in
 the proof-certificate manifest and focused proof/project-status tests.
+
+## ADR-0177: Self-Mailbox Init Predicate Result Certificates
+
+Goal: make the self-mailbox init command proof certificate name the predicate
+it evaluates instead of relying only on manifest-example lookup.
+
+Deliverables:
+
+- `UC-STEM-SELF-MAILBOX-INIT-COMMAND` proof-certificate steps use
+  `predicate-result`;
+- both self-mailbox init certificate steps name
+  `self_mailbox_executes_init_command`;
+- proof-certificate text/JSON and aggregate project-status reports render the
+  self-mailbox init certificate as two predicate-result steps; and
+- Universal Cell runtime behavior, transition claims, object-language schema,
+  evidence bundles, source-status records, and status schema versions remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0177-self-mailbox-init-predicate-result-certificates.md`.
+Implemented in the proof-certificate manifest and focused proof/project-status
+tests.

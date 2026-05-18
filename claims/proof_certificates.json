@@ -119,14 +119,16 @@
       "claim_id": "UC-STEM-SELF-MAILBOX-INIT-COMMAND",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "processor left mailbox init",
-          "expected": true
+          "expected": true,
+          "predicate": "self_mailbox_executes_init_command"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "wrong mailbox init target",
-          "expected": false
+          "expected": false,
+          "predicate": "self_mailbox_executes_init_command"
         }
       ]
     },
