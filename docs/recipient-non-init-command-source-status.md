@@ -70,6 +70,11 @@ integrated evidence bundle in
 proof certificate, schematic trace, SVG render, hardware witness map, and
 source-status boundaries together.
 
+ADR-0148 reuses this completed rejection evidence ladder to resolve the
+standard-signal `recipient-surface` question: delivered recipient
+`standard-signal` command messages are rejected as non-init command-message
+inputs rather than executed.
+
 The rejection evidence ladder is complete again. `standard-signal` and
 write-buffer command execution should be revisited only if later source
 evidence resolves their runtime surfaces.

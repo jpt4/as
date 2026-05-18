@@ -85,7 +85,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   formal-model self-mailbox exception that prevents treating stem
   self-mailbox `standard-signal` as ordinary binary input by default. It also
   records that AS resolves the command-table offset question in favor of the
-  formal PRC map where `standard-signal` is offset `0`.
+  formal PRC map where `standard-signal` is offset `0`, and resolves the
+  recipient command-message surface through the recipient non-init rejection
+  boundary.
 - `docs/guile-asmsim-command-semantics-status.md` records why the
   `guile-asmsim.scm` command witness strengthens the standard-signal and
   write-buffer blocker rather than resolving it.
@@ -367,7 +369,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
   machine-checkable, including the formal-model self-mailbox exception and the
-  resolved command-table offset and self-mailbox equivalence decisions.
+  resolved command-table offset, self-mailbox equivalence, and recipient
+  command-message surface decisions.
 - `sources/guile_asmsim_command_semantics_status.json` makes the
   `guile-asmsim.scm` command-semantics source-status decision
   machine-checkable.

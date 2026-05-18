@@ -54,6 +54,12 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
         self.assertIn("Resolution questions:", text)
         self.assertIn("Resolution question evidence:", text)
         self.assertIn("Resolved resolution questions:", text)
+        self.assertIn(
+            "recipient-surface: "
+            "reject-recipient-standard-signal-command-message-as-non-init "
+            "(sources/recipient_non_init_command_source_status.json)",
+            text,
+        )
         self.assertIn(f"Safe next slice: {SAFE_NEXT_SLICE}", text)
         self.assertIn("Missing source-status files: none", text)
         self.assertIn("Invalid source-status files: none", text)

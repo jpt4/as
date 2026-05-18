@@ -3208,3 +3208,24 @@
   project status JSON remained accepted at `schema_version: 14`; `py_compile`
   and `git diff --check` passed; and `python -m unittest discover` passed 655
   tests.
+
+## 2026-05-18 - Standard-Signal Recipient Surface Resolution
+
+- Added ADR-0148 to resolve the standard-signal `recipient-surface` question
+  through the existing recipient non-init rejection boundary rather than
+  widening command-token execution.
+- Updated standard-signal, project-status, and source-status frontier tests
+  before implementation. The red run executed 83 tests and failed because
+  `recipient-surface` was still unresolved and `recipient-command-message`
+  still appeared as a blocked standard-signal runtime surface.
+- Updated `sources/standard_signal_command_semantics_status.json` and the
+  standard-signal/recipient/frontier docs so delivered recipient
+  `standard-signal` command messages point at
+  `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`.
+- Verification passed: focused standard-signal, project-status, and
+  source-status frontier tests ran 83 tests; source-status JSON was accepted at
+  `schema_version: 1` with standard-signal unresolved questions narrowed to
+  `command-token-vs-binary-input` and `self-target-surface`; project-status
+  JSON remained accepted at `schema_version: 14`; `py_compile` and
+  `git diff --check` passed; and `python -m unittest discover` passed 656
+  tests.

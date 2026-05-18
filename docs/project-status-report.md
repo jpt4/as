@@ -165,6 +165,9 @@ same source-status record, preserving `schema_version: 14`.
 ADR-0147 requires `resolution_question_evidence` to cover every unresolved
 `required_resolution_questions[].question_id` in the same source-status record,
 preserving `schema_version: 14`.
+ADR-0148 resolves the standard-signal `recipient-surface` question through the
+existing recipient non-init rejection boundary, preserving
+`schema_version: 14`.
 
 ## Boundary
 

@@ -1,6 +1,6 @@
 # Standard-Signal Command Semantics Status
 
-Status: source-status decision, 2026-05-17.
+Status: source-status decision, updated 2026-05-18.
 
 The structured status lives in
 `sources/standard_signal_command_semantics_status.json`.
@@ -14,8 +14,7 @@ fixed wire/proc routing and stem high-rail / command-buffer accumulation. That
 does not settle the separate command-token question. The formal model also
 names `standard-signal` at command offset 0 for each target range, but it does
 not define whether that token should replay ordinary binary-input behavior,
-execute from recipient command-message input, execute from self-mailbox state,
-or remain unsupported.
+execute from self-mailbox state, or remain unsupported.
 
 The formal-model prose narrows one self-target case: it says wire, proc, and
 stem cells all perform productive behavior on standard signals "unless sent to
@@ -29,6 +28,12 @@ ADR-0128 resolves the command-table-offset question: AS preserves the formal
 PRC command-buffer map from ADR-0026, where `standard-signal` is offset `0` in
 each target range. RAA's offset-7 command-buffer divergence remains recorded
 as legacy evidence, but it is no longer an open AS ordering question.
+
+ADR-0148 resolves the recipient-surface question: delivered recipient
+`standard-signal` command messages remain in the already-claimed recipient
+non-init rejection boundary. The formal model gives no recipient execution
+rule for that command token, and the reviewed legacy witnesses exclude
+`standard-signal` from their special-message sets.
 
 The restored legacy sketches do not supply a stable execution rule:
 
@@ -50,9 +55,13 @@ status report names both the blocker and the reason it remains blocked.
 AS keeps `standard-signal` command-token execution blocked across these runtime
 surfaces:
 
-- recipient command-message input;
 - self-mailbox command;
 - self-target command-buffer dispatch.
+
+Recipient command-message input is no longer an unresolved
+`standard-signal` execution surface. AS rejects delivered recipient
+`standard-signal` command messages through
+`UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`.
 
 The current ordinary standard-signal behavior remains valid because it is
 binary-input behavior, not command-token execution. ADR-0059 selects
@@ -71,7 +80,8 @@ self-target-surface source anchor without changing runtime behavior. ADR-0128
 removes `command-table-offset` from the unresolved queue after resolving it in
 favor of the formal PRC command-buffer map. ADR-0143 exposes the self-mailbox
 exception as a resolved sub-decision while leaving `self-target-surface`
-unresolved.
+unresolved. ADR-0148 moves `recipient-surface` into resolved questions through
+the existing recipient non-init rejection boundary.
 
 ## Verification
 
@@ -82,5 +92,5 @@ python -m unittest tests.test_standard_signal_command_semantics_status
 ```
 
 The tests check the decision, formal-model command/binary distinction, legacy
-witness divergence, required resolution questions, and source-status frontier
-updates.
+witness divergence, resolved recipient-surface boundary, remaining required
+resolution questions, and source-status frontier updates.

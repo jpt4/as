@@ -6,7 +6,6 @@
   "safe_next_slice": "revisit-standard-signal-or-write-buffer-command-semantics",
   "command": "standard-signal",
   "blocked_runtime_surfaces": [
-    "recipient-command-message",
     "self-mailbox-command",
     "self-target-command-buffer"
   ],
@@ -26,6 +25,13 @@
     "decision": "do-not-treat-self-mailbox-standard-signal-as-binary-input",
     "summary": "The formal model says wire, proc, and stem cells perform productive behavior on standard signals unless the standard signal is sent to the self-mailbox of a stem cell. This blocks treating a stem self-mailbox standard-signal command as ordinary binary-input standard-signal behavior."
   },
+  "recipient_surface_resolution": {
+    "decision": "reject-recipient-standard-signal-command-message-as-non-init",
+    "source_status": "sources/recipient_non_init_command_source_status.json",
+    "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+    "evidence_bundle": "evidence/recipient_non_init_command_rejection_bundle.json",
+    "summary": "Delivered recipient standard-signal command messages stay in the already-claimed non-init recipient rejection boundary. The formal model gives no recipient execution rule for them, and RAA, SEMSIM, and FSMSIM exclude standard-signal from special-message sets."
+  },
   "resolved_resolution_questions": [
     {
       "question_id": "command-table-offset",
@@ -39,6 +45,12 @@
       "decision": "do-not-treat-self-mailbox-standard-signal-as-binary-input",
       "source_status": "sources/standard_signal_command_semantics_status.json",
       "legacy_divergence": "The formal model excludes standard signals sent to the self-mailbox of a stem cell from productive ordinary standard-signal behavior; legacy witnesses exclude standard-signal from special messages and do not provide a matching command-token execution rule."
+    },
+    {
+      "question_id": "recipient-surface",
+      "decision": "reject-recipient-standard-signal-command-message-as-non-init",
+      "source_status": "sources/recipient_non_init_command_source_status.json",
+      "legacy_divergence": "The formal model provides no recipient execution rule for delivered standard-signal command messages; RAA, SEMSIM, and FSMSIM exclude standard-signal from special-message sets, and AS already claims UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED."
     }
   ],
   "legacy_standard_signal_witnesses": [
@@ -75,10 +87,6 @@
       "summary": "Decide whether a standard-signal command token is supposed to reproduce ordinary binary-input standard-signal behavior or remain a separate unsupported command."
     },
     {
-      "question_id": "recipient-surface",
-      "summary": "Decide whether delivered recipient command-message inputs may execute standard-signal at all, or whether standard-signal remains limited to ordinary binary channel input."
-    },
-    {
       "question_id": "self-target-surface",
       "summary": "Decide whether self-mailbox and self-target command-buffer standard-signal tokens should execute, be preserved, or be reported as unsupported."
     }
@@ -87,10 +95,6 @@
     {
       "question_id": "command-token-vs-binary-input",
       "evidence": "The formal model names standard-signal at command offset 0 while also defining ordinary binary-input standard-signal behavior; RAA, SEMSIM, and FSMSIM exclude standard-signal from special-message dispatch and treat ordinary standard input separately."
-    },
-    {
-      "question_id": "recipient-surface",
-      "evidence": "The formal special-message path is generic, but the reviewed legacy special-message lists exclude standard-signal and no reviewed source defines delivered recipient command-message standard-signal execution."
     },
     {
       "question_id": "self-target-surface",

@@ -413,3 +413,6 @@
   question list, not just have a plausible-looking string ID.
 - Once blocker evidence is part of a first-run status surface, require coverage
   for every live blocker rather than allowing uncovered open questions to pass.
+- If a negative runtime boundary already has claim, proof, trace, render, and
+  evidence-bundle coverage, use it to close the matching source-status
+  question instead of keeping the same surface artificially unresolved.

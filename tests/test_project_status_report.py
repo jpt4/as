@@ -22,7 +22,11 @@ WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
 PROJECT_STATUS_SCHEMA_VERSION = 14
-BLOCKED_RUNTIME_SURFACES = [
+STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
+    "self-mailbox-command",
+    "self-target-command-buffer",
+]
+WRITE_BUFFER_BLOCKED_RUNTIME_SURFACES = [
     "recipient-command-message",
     "self-mailbox-command",
     "self-target-command-buffer",
@@ -175,7 +179,6 @@ CHAIN_CLAIMS = {
 }
 STANDARD_SIGNAL_QUESTIONS = [
     "command-token-vs-binary-input",
-    "recipient-surface",
     "self-target-surface",
 ]
 WRITE_BUFFER_QUESTIONS = [
@@ -190,14 +193,6 @@ STANDARD_SIGNAL_RESOLUTION_QUESTIONS = [
             "Decide whether a standard-signal command token is supposed to "
             "reproduce ordinary binary-input standard-signal behavior or "
             "remain a separate unsupported command."
-        ),
-    },
-    {
-        "question_id": "recipient-surface",
-        "summary": (
-            "Decide whether delivered recipient command-message inputs may "
-            "execute standard-signal at all, or whether standard-signal "
-            "remains limited to ordinary binary channel input."
         ),
     },
     {
@@ -218,15 +213,6 @@ STANDARD_SIGNAL_RESOLUTION_QUESTION_EVIDENCE = [
             "RAA, SEMSIM, and FSMSIM exclude standard-signal from "
             "special-message dispatch and treat ordinary standard input "
             "separately."
-        ),
-    },
-    {
-        "question_id": "recipient-surface",
-        "evidence": (
-            "The formal special-message path is generic, but the reviewed "
-            "legacy special-message lists exclude standard-signal and no "
-            "reviewed source defines delivered recipient command-message "
-            "standard-signal execution."
         ),
     },
     {
@@ -261,6 +247,17 @@ STANDARD_SIGNAL_RESOLVED_QUESTIONS = [
             "standard-signal behavior; legacy witnesses exclude "
             "standard-signal from special messages and do not provide a "
             "matching command-token execution rule."
+        ),
+    },
+    {
+        "question_id": "recipient-surface",
+        "decision": "reject-recipient-standard-signal-command-message-as-non-init",
+        "source_status": "sources/recipient_non_init_command_source_status.json",
+        "legacy_divergence": (
+            "The formal model provides no recipient execution rule for "
+            "delivered standard-signal command messages; RAA, SEMSIM, and "
+            "FSMSIM exclude standard-signal from special-message sets, and "
+            "AS already claims UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED."
         ),
     },
 ]
@@ -507,8 +504,8 @@ class ProjectStatusReportTests(unittest.TestCase):
             ],
             [
                 [],
-                BLOCKED_RUNTIME_SURFACES,
-                BLOCKED_RUNTIME_SURFACES,
+                STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES,
+                WRITE_BUFFER_BLOCKED_RUNTIME_SURFACES,
             ],
         )
         self.assertEqual(
@@ -651,8 +648,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn("Blocked runtime surfaces:", text)
         self.assertIn(
-            "standard-signal: recipient-command-message, "
-            "self-mailbox-command, self-target-command-buffer",
+            "standard-signal: self-mailbox-command, self-target-command-buffer",
             text,
         )
         self.assertIn("AS boundaries:", text)
@@ -901,11 +897,25 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn(
+            "recipient-surface: "
+            "reject-recipient-standard-signal-command-message-as-non-init "
+            "(sources/recipient_non_init_command_source_status.json)",
+            text,
+        )
+        self.assertIn(
             "legacy divergence: The formal model excludes standard signals "
             "sent to the self-mailbox of a stem cell from productive "
             "ordinary standard-signal behavior; legacy witnesses exclude "
             "standard-signal from special messages and do not provide a "
             "matching command-token execution rule.",
+            text,
+        )
+        self.assertIn(
+            "legacy divergence: The formal model provides no recipient "
+            "execution rule for delivered standard-signal command messages; "
+            "RAA, SEMSIM, and FSMSIM exclude standard-signal from "
+            "special-message sets, and AS already claims "
+            "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED.",
             text,
         )
         self.assertIn("write-buf-zero, write-buf-one:", text)
@@ -1078,8 +1088,8 @@ class ProjectStatusReportTests(unittest.TestCase):
             ],
             [
                 [],
-                BLOCKED_RUNTIME_SURFACES,
-                BLOCKED_RUNTIME_SURFACES,
+                STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES,
+                WRITE_BUFFER_BLOCKED_RUNTIME_SURFACES,
             ],
         )
         self.assertEqual(

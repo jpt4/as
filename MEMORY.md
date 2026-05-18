@@ -619,3 +619,7 @@
 - ADR-0147 makes source-status `resolution_question_evidence` fail closed
   unless it covers every unresolved `required_resolution_questions` ID in the
   same record.
+- ADR-0148 resolves the standard-signal `recipient-surface` question through
+  the existing recipient non-init rejection boundary, leaving
+  `command-token-vs-binary-input` and `self-target-surface` as the live
+  standard-signal unresolved questions.

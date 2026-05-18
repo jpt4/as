@@ -2885,3 +2885,29 @@ Status: accepted in `docs/adr/0147-resolution-evidence-coverage.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py` and
 `tests/test_source_status_frontier_cli.py`.
+
+## ADR-0148: Standard-Signal Recipient Surface Resolution
+
+Goal: move the standard-signal recipient command-message surface from
+unresolved to the existing recipient non-init rejection boundary.
+
+Deliverables:
+
+- `recipient-surface` removed from standard-signal unresolved
+  `required_resolution_questions`;
+- `recipient-surface` added to standard-signal
+  `resolved_resolution_questions`;
+- standard-signal blocked runtime surfaces narrowed to self-mailbox and
+  self-target command-buffer surfaces;
+- project-status and source-status frontier text/JSON output showing the
+  settled recipient-surface decision;
+- focused standard-signal, project-status, and source-status frontier tests;
+  and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in
+`docs/adr/0148-standard-signal-recipient-surface-resolution.md`. Implemented
+in `sources/standard_signal_command_semantics_status.json`, with tests in
+`tests/test_standard_signal_command_semantics_status.py`,
+`tests/test_project_status_report.py`, and
+`tests/test_source_status_frontier_cli.py`.

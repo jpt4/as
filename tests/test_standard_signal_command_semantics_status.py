@@ -32,7 +32,6 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(
             self.status["blocked_runtime_surfaces"],
             [
-                "recipient-command-message",
                 "self-mailbox-command",
                 "self-target-command-buffer",
             ],
@@ -106,6 +105,30 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
             self_mailbox["legacy_divergence"],
         )
 
+    def test_recipient_surface_is_resolved_to_existing_rejection_boundary(self):
+        resolved = {
+            question["question_id"]: question
+            for question in self.status["resolved_resolution_questions"]
+        }
+        recipient_non_init = json.loads(
+            RECIPIENT_NON_INIT.read_text(encoding="utf-8")
+        )
+
+        recipient_surface = resolved["recipient-surface"]
+        self.assertEqual(
+            recipient_surface["decision"],
+            "reject-recipient-standard-signal-command-message-as-non-init",
+        )
+        self.assertEqual(recipient_surface["source_status"], str(RECIPIENT_NON_INIT))
+        self.assertIn(
+            "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+            recipient_surface["legacy_divergence"],
+        )
+        self.assertEqual(
+            recipient_non_init["implemented_evidence_bundles"][0]["path"],
+            "evidence/recipient_non_init_command_rejection_bundle.json",
+        )
+
     def test_legacy_witnesses_exclude_standard_signal_from_special_messages(self):
         witnesses = {
             witness["witness_id"]: witness
@@ -139,7 +162,6 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
             question_ids,
             {
                 "command-token-vs-binary-input",
-                "recipient-surface",
                 "self-target-surface",
             },
         )

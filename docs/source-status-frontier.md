@@ -51,6 +51,9 @@ stale evidence ID rejects the source-status record as `source-status-schema`.
 ADR-0147 requires source evidence coverage for every unresolved question ID in
 the same source-status record. Missing or partial evidence coverage rejects the
 source-status record as `source-status-schema`.
+ADR-0148 moves the standard-signal `recipient-surface` question from
+unresolved to resolved, tying delivered recipient `standard-signal` command
+messages to the existing non-init rejection boundary.
 
 ## Boundary
 
