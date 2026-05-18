@@ -4098,3 +4098,18 @@
   Project-status summary, submission-status JSON, `compileall`,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 796 tests.
+
+## 2026-05-18 - End-Of-Month Handoff Status
+
+- Added ADR-0191 to combine compact project status and GitHub submission
+  evidence into one local handoff command.
+- Added red handoff tests before implementation. The focused red run failed
+  because `autarkic_systems.handoff` did not exist.
+- Added `autarkic_systems/handoff.py` with text/JSON output over the existing
+  project-status and GitHub-submission reports. The handoff state is ready only
+  when the project status is accepted and the current `HEAD` is visible on fork
+  `main`.
+- Focused green verification passed 5 tests. Live text and JSON handoff runs
+  accepted the current project status and GitHub submission state before this
+  ADR was committed. Handoff text/JSON, `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 801 tests.

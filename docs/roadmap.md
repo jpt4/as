@@ -3887,3 +3887,22 @@ Deliverables:
 Status: accepted in `docs/adr/0190-github-submission-status.md`.
 Implemented in `autarkic_systems/github_submission.py`, with tests in
 `tests/test_github_submission_status.py`.
+
+## ADR-0191: End-Of-Month Handoff Status
+
+Goal: provide one local command that combines project health and GitHub
+submission evidence for the active end-of-month objective.
+
+Deliverables:
+
+- `autarkic_systems/handoff.py`;
+- `python -m autarkic_systems.handoff` text and JSON reports;
+- accepted handoff state only when project status is accepted and current
+  `HEAD` is visible on fork `main`;
+- injected project/submission builders for deterministic tests; and
+- no new validation authority beyond existing project-status and
+  GitHub-submission reports.
+
+Status: accepted in `docs/adr/0191-end-of-month-handoff-status.md`.
+Implemented in `autarkic_systems/handoff.py`, with tests in
+`tests/test_handoff_status.py`.
