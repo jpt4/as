@@ -4083,3 +4083,18 @@
   boundary paragraphs. Summary and JSON project-status commands, `compileall`,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 791 tests.
+
+## 2026-05-18 - GitHub Submission Status
+
+- Added ADR-0190 to make local GitHub submission evidence visible from a
+  command rather than raw git inspection.
+- Added red GitHub submission status tests before implementation. The focused
+  red run failed because `autarkic_systems.github_submission` did not exist.
+- Added `autarkic_systems/github_submission.py` with text/JSON output over the
+  current branch, `HEAD`, origin/fork remote URLs, fork `main` match state,
+  origin `main` divergence counts, and the upstream tracking issue URL.
+- Focused green verification passed 5 tests. Live text and JSON runs reported
+  the current `HEAD` as submitted to fork `main` before this ADR was committed.
+  Project-status summary, submission-status JSON, `compileall`,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 796 tests.

@@ -634,6 +634,10 @@
 - ADR-0189 adds `python -m autarkic_systems.project_status --format summary`, a
   compact six-line operator digest over the same status payload without
   changing project-status JSON schema 16.
+- ADR-0190 adds `python -m autarkic_systems.github_submission`, a local git
+  evidence command that reports current branch, `HEAD`, fork-main match,
+  origin-main divergence, remotes, and the upstream tracking issue without
+  contacting GitHub APIs.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.

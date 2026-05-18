@@ -284,6 +284,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   claim/proof/language surfaces, transition-chain claim/language surfaces, and
   the checked proof-rule audit, plus the live source-status frontier for
   blocked command-token semantics and their resolution-question IDs.
+- `autarkic_systems/github_submission.py` renders local git evidence for the
+  current GitHub submission path: current branch, `HEAD`, origin/fork remote
+  URLs, fork `main` match state, origin `main` divergence, and the upstream
+  tracking issue.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -332,6 +336,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.project_status --format summary` emits a compact
   six-line operator digest over the accepted state, evidence counts, claim
   counts, proof-rule audit, blocked commands, and safe next slice.
+- `python -m autarkic_systems.github_submission` emits a local text/JSON
+  submission-status report showing whether the current `HEAD` is visible on
+  fork `main`, how far local `HEAD` is ahead of upstream `origin/main`, and
+  where upstream submission notes are tracked.
 - `python -m autarkic_systems.project_status --format json` emits the current
   project status as schema-versioned machine-readable JSON: transition
   evidence accepted with 11 bundles, chain evidence accepted with 2 bundles,

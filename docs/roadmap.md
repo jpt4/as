@@ -3870,3 +3870,20 @@ Status: accepted in `docs/adr/0189-compact-project-status-summary.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py` and summary docs in
 `docs/project-status-report.md`.
+
+## ADR-0190: GitHub Submission Status
+
+Goal: make the current GitHub submission evidence visible from a local command.
+
+Deliverables:
+
+- `autarkic_systems/github_submission.py`;
+- `python -m autarkic_systems.github_submission` text and JSON reports;
+- current branch, `HEAD`, origin/fork remote URL, fork-main match, origin-main
+  divergence, and upstream tracking issue fields;
+- deterministic fake-runner tests for the git command surface; and
+- no GitHub API dependency.
+
+Status: accepted in `docs/adr/0190-github-submission-status.md`.
+Implemented in `autarkic_systems/github_submission.py`, with tests in
+`tests/test_github_submission_status.py`.
