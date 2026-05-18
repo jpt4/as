@@ -14,6 +14,24 @@ DEMONSTRATION = "post-handoff signal routing through checked evidence"
 STANDARD_SIGNAL_BOUNDARY = (
     "no standard-signal command-token execution change without new source evidence"
 )
+REPRODUCTION_COMMANDS = [
+    {
+        "label": "vertical-demo",
+        "command": "python -m autarkic_systems.vertical_demo",
+    },
+    {
+        "label": "sequence-demo-json",
+        "command": "python -m autarkic_systems.network_sequence_demo --format json",
+    },
+    {
+        "label": "project-status-summary",
+        "command": "python -m autarkic_systems.project_status --format summary",
+    },
+    {
+        "label": "handoff-refresh",
+        "command": "python -m autarkic_systems.handoff --refresh-remotes",
+    },
+]
 
 
 def build_vertical_demo_digest() -> dict[str, Any]:
@@ -62,6 +80,7 @@ def build_vertical_demo_digest() -> dict[str, Any]:
             result["subject"]
             for result in sequence_demo["validation"]["results"]
         ],
+        "reproduction_commands": REPRODUCTION_COMMANDS,
         "boundary": STANDARD_SIGNAL_BOUNDARY,
     }
 
@@ -78,6 +97,7 @@ def format_vertical_demo_digest(digest: dict[str, Any]) -> str:
     sequence_bundle = digest["sequence_evidence_bundle"]
     missing_paths = digest["missing_evidence_paths"] or []
     evidence_trail = digest["evidence_trail"]
+    reproduction_commands = digest["reproduction_commands"]
     return "\n".join([
         f"Autarkic Systems vertical demo: {status}",
         f"Current demonstration: {digest['demonstration']}",
@@ -114,6 +134,11 @@ def format_vertical_demo_digest(digest: dict[str, Any]) -> str:
             f"- {layer['role']}: {layer['path']}"
             + ("" if layer["exists"] else " (missing)")
             for layer in evidence_trail
+        ],
+        "Reproduce:",
+        *[
+            f"- {command['label']}: {command['command']}"
+            for command in reproduction_commands
         ],
         f"Boundary: {digest['boundary']}",
     ])

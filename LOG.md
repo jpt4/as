@@ -4627,3 +4627,22 @@
   evidence paths, and the expanded evidence trail. `compileall`,
   `git diff --check`, and `python -m unittest discover` passed; the full
   suite ran 907 tests.
+
+## 2026-05-18 - Vertical Demo Reproduction Commands
+
+- Added ADR-0217 to make the vertical demo digest and handoff report name the
+  exact commands that reproduce the current checked demonstration.
+- Added red vertical-demo and handoff tests before implementation. The focused
+  red run failed because JSON/text output lacked `reproduction_commands` and a
+  `Reproduce:` section.
+- Updated `autarkic_systems/vertical_demo.py` with structured reproduction
+  commands for the vertical demo, network-sequence demo JSON, project-status
+  summary, and refreshed handoff. Text output now renders those commands under
+  `Reproduce:`, and JSON/handoff output inherit the same list.
+- Updated README, roadmap, vertical-demo docs, and repo memory notes for the
+  reproduction-command surface.
+- Focused vertical-demo tests passed 4 tests. Adjacent handoff,
+  vertical-demo, and network-sequence demo tests passed 25 tests. Live
+  vertical-demo text/JSON and handoff commands reported accepted status and
+  carried the new reproduction command list. `compileall`, `git diff --check`,
+  and `python -m unittest discover` passed; the full suite ran 907 tests.

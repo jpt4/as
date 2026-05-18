@@ -4417,3 +4417,24 @@ Deliverables:
 Status: accepted in `docs/adr/0216-vertical-demo-evidence-trail.md`.
 Implemented in `autarkic_systems/vertical_demo.py`, with tests in
 `tests/test_vertical_demo_digest.py` and `tests/test_handoff_status.py`.
+
+## ADR-0217: Vertical Demo Reproduction Commands
+
+Goal: make the top-level vertical demo digest name the exact commands that
+reproduce the current checked demonstration and handoff state.
+
+Deliverables:
+
+- `reproduction_commands` in `build_vertical_demo_digest`;
+- text output with a `Reproduce:` section;
+- JSON output carrying labels and exact command strings for vertical demo,
+  network-sequence demo JSON, project-status summary, and refreshed handoff;
+- handoff output inheriting the expanded digest; and
+- no runtime behavior, claim, proof-rule, validation-authority,
+  project-status schema, source-status decision, registry schema, trace/SVG
+  rendering, scheduler, topology, timing, or command-semantics changes.
+
+Status: accepted in
+`docs/adr/0217-vertical-demo-reproduction-commands.md`.
+Implemented in `autarkic_systems/vertical_demo.py`, with tests in
+`tests/test_vertical_demo_digest.py` and `tests/test_handoff_status.py`.

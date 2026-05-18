@@ -317,7 +317,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   claim/proof counts, proof-rule mix, blocked command frontier, canonical
   registries, the checked network-sequence evidence bundle, and the concrete
   evidence trail from claim/proof/language artifacts through witness, trace,
-  SVG, underlying chain bundle, and source-status records.
+  SVG, underlying chain bundle, and source-status records. It also surfaces
+  the exact reproduction commands for the vertical demo, focused
+  network-sequence JSON, compact project status, and refreshed handoff.
 - `autarkic_systems/github_submission.py` renders local git evidence for the
   current GitHub submission path: current branch, `HEAD`, origin/fork remote
   URLs, fork `main` match state, origin `main` divergence, and the upstream
@@ -408,8 +410,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   submission evidence; it also accepts `--refresh-remotes` for a refreshed
   pre-handoff check.
 - `python -m autarkic_systems.vertical_demo` emits a compact first-run digest
-  for the current accepted demonstration; `--format json` emits the same
-  digest for automation.
+  for the current accepted demonstration, including the evidence trail and
+  reproduction commands; `--format json` emits the same digest for automation.
 - `python -m autarkic_systems.project_status --format json` emits the current
   project status as schema-versioned machine-readable JSON: transition
   evidence accepted with 11 bundles, chain evidence accepted with 2 bundles,

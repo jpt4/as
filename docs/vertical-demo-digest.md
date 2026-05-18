@@ -22,6 +22,9 @@ ADR-0216 extends the digest with the concrete evidence trail from
 `autarkic_systems.network_sequence_demo`: sequence claim/proof/language
 artifacts, witness implementation, trace, SVG, underlying chain bundle, and
 source-status records, each with an existence flag in JSON.
+ADR-0217 adds `reproduction_commands`, the short command list for rerunning
+the vertical demo, focused network-sequence demo JSON, compact project status,
+and refreshed handoff.
 
 The accepted current text output reports:
 
@@ -46,6 +49,13 @@ The evidence trail currently includes:
 - `schematics/sequences/post_handoff_signal_sequence_trace.svg`;
 - `evidence/chains/neighbor_delivery_chain_bundle.json`; and
 - the source-status records that constrain command execution boundaries.
+
+The reproduction command list currently includes:
+
+- `python -m autarkic_systems.vertical_demo`;
+- `python -m autarkic_systems.network_sequence_demo --format json`;
+- `python -m autarkic_systems.project_status --format summary`; and
+- `python -m autarkic_systems.handoff --refresh-remotes`.
 
 ## Boundary
 

@@ -900,3 +900,7 @@
   network-sequence evidence trail: claim/proof/language files, witness, trace,
   SVG, chain bundle, and source-status records, plus missing-path and
   validation-subject summaries inherited by handoff.
+- ADR-0217 extends `autarkic_systems.vertical_demo` with
+  `reproduction_commands`, listing exact rerun commands for the vertical demo,
+  focused network-sequence JSON, project-status summary, and refreshed
+  handoff; `autarkic_systems.handoff` inherits the list.

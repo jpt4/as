@@ -138,6 +138,24 @@ VERTICAL_DEMO_DIGEST = {
         "source-statuses",
         "boundary",
     ],
+    "reproduction_commands": [
+        {
+            "label": "vertical-demo",
+            "command": "python -m autarkic_systems.vertical_demo",
+        },
+        {
+            "label": "sequence-demo-json",
+            "command": "python -m autarkic_systems.network_sequence_demo --format json",
+        },
+        {
+            "label": "project-status-summary",
+            "command": "python -m autarkic_systems.project_status --format summary",
+        },
+        {
+            "label": "handoff-refresh",
+            "command": "python -m autarkic_systems.handoff --refresh-remotes",
+        },
+    ],
     "boundary": "no standard-signal command-token execution change without new source evidence",
 }
 
@@ -222,6 +240,10 @@ class HandoffStatusTests(unittest.TestCase):
             payload["vertical_demo"]["sequence_evidence_bundle"]["path"],
             "evidence/sequences/post_handoff_signal_bundle.json",
         )
+        self.assertEqual(
+            payload["vertical_demo"]["reproduction_commands"][-1]["command"],
+            "python -m autarkic_systems.handoff --refresh-remotes",
+        )
         self.assertIn(
             "Evidence: 11 transition bundles; 2 chain bundles; 1 sequence bundle",
             payload["project_summary"],
@@ -255,6 +277,11 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertIn("Autarkic Systems vertical demo: accepted", text)
         self.assertIn(
             "Current demonstration: post-handoff signal routing through checked evidence",
+            text,
+        )
+        self.assertIn("Reproduce:", text)
+        self.assertIn(
+            "- handoff-refresh: python -m autarkic_systems.handoff --refresh-remotes",
             text,
         )
         self.assertIn("GitHub submission:", text)

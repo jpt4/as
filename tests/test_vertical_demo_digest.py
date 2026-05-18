@@ -44,6 +44,24 @@ VALIDATION_SUBJECTS = [
     "source-statuses",
     "boundary",
 ]
+REPRODUCTION_COMMANDS = [
+    {
+        "label": "vertical-demo",
+        "command": "python -m autarkic_systems.vertical_demo",
+    },
+    {
+        "label": "sequence-demo-json",
+        "command": "python -m autarkic_systems.network_sequence_demo --format json",
+    },
+    {
+        "label": "project-status-summary",
+        "command": "python -m autarkic_systems.project_status --format summary",
+    },
+    {
+        "label": "handoff-refresh",
+        "command": "python -m autarkic_systems.handoff --refresh-remotes",
+    },
+]
 
 
 class VerticalDemoDigestTests(unittest.TestCase):
@@ -97,6 +115,7 @@ class VerticalDemoDigestTests(unittest.TestCase):
         )
         self.assertEqual(digest["missing_evidence_paths"], [])
         self.assertEqual(digest["validation_subjects"], VALIDATION_SUBJECTS)
+        self.assertEqual(digest["reproduction_commands"], REPRODUCTION_COMMANDS)
         self.assertEqual(
             [layer["role"] for layer in digest["evidence_trail"]],
             EVIDENCE_TRAIL_ROLES,
@@ -148,6 +167,15 @@ class VerticalDemoDigestTests(unittest.TestCase):
             "- source-status: sources/standard_signal_command_semantics_status.json",
             text,
         )
+        self.assertIn("Reproduce:", text)
+        self.assertIn(
+            "- vertical-demo: python -m autarkic_systems.vertical_demo",
+            text,
+        )
+        self.assertIn(
+            "- handoff-refresh: python -m autarkic_systems.handoff --refresh-remotes",
+            text,
+        )
         self.assertIn(
             "Boundary: no standard-signal command-token execution change "
             "without new source evidence",
@@ -168,6 +196,7 @@ class VerticalDemoDigestTests(unittest.TestCase):
         self.assertEqual(payload["sequence_evidence_bundle"]["path"], SEQUENCE_BUNDLE)
         self.assertEqual(payload["missing_evidence_paths"], [])
         self.assertEqual(payload["validation_subjects"], VALIDATION_SUBJECTS)
+        self.assertEqual(payload["reproduction_commands"], REPRODUCTION_COMMANDS)
         self.assertEqual(
             payload["evidence_trail"][0]["path"],
             "claims/network_sequence_claims.json",
