@@ -3472,3 +3472,23 @@ Status: accepted in
 `docs/adr/0171-standard-signal-source-review-snapshot.md`. Implemented in the
 standard-signal source-review snapshot, source-status records, and focused
 source-status/project-status tests.
+
+## ADR-0172: Consumed-Input Predicate Result Certificates
+
+Goal: make the consumed-input clearing proof certificate name the predicate it
+evaluates instead of relying only on manifest-example lookup.
+
+Deliverables:
+
+- `UC-FIXED-CONSUMED-INPUT-CLEARED` proof-certificate steps use
+  `predicate-result`;
+- both consumed-input certificate steps name `consumed_input_cleared`;
+- proof-certificate text/JSON and aggregate project-status reports render the
+  consumed-input certificate as two predicate-result steps; and
+- Universal Cell runtime behavior, transition claims, object-language schema,
+  evidence bundles, source-status records, and status schema versions remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0172-consumed-input-predicate-result-certificates.md`. Implemented in
+the proof-certificate manifest and focused proof/project-status tests.

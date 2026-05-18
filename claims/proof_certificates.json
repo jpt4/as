@@ -22,14 +22,16 @@
       "claim_id": "UC-FIXED-CONSUMED-INPUT-CLEARED",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "routed input cleared",
-          "expected": true
+          "expected": true,
+          "predicate": "consumed_input_cleared"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "routed input uncleared",
-          "expected": false
+          "expected": false,
+          "predicate": "consumed_input_cleared"
         }
       ]
     },

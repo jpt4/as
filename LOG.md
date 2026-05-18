@@ -3730,3 +3730,20 @@
   same frontier. Transition and chain evidence registries accepted 11 and 2
   bundles respectively. JSON parsing, `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 769 tests.
+
+## 2026-05-18 - Consumed-Input Predicate Result Certificates
+
+- Added ADR-0172 to migrate
+  `UC-FIXED-CONSUMED-INPUT-CLEARED` from `manifest-example` proof steps to
+  explicit `predicate-result` proof steps.
+- Added red proof-certificate and project-status tests before implementation.
+  The focused red run executed 90 tests and failed because the consumed-input
+  certificate still used `manifest-example`, and proof/project-status reports
+  still described it as two `manifest-example` steps.
+- Updated `claims/proof_certificates.json` so both consumed-input certificate
+  steps use `predicate-result` and name `consumed_input_cleared` directly.
+- Focused green verification passed 90 tests. The proof-certificate CLI JSON,
+  project-status JSON, and object-language JSON checks accepted the updated
+  certificate surface. JSON parsing for the touched certificate manifest,
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 770 tests.

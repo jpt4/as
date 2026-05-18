@@ -41,6 +41,23 @@ class ProofCertificateTests(unittest.TestCase):
             )
         )
 
+    def test_consumed_input_claim_uses_explicit_predicate_result_steps(self):
+        certificates = {
+            certificate.claim_id: certificate
+            for certificate in load_proof_certificates(CERTIFICATES)
+        }
+
+        certificate = certificates["UC-FIXED-CONSUMED-INPUT-CLEARED"]
+
+        self.assertEqual(len(certificate.steps), 2)
+        self.assertTrue(
+            all(step.rule == "predicate-result" for step in certificate.steps)
+        )
+        self.assertEqual(
+            {step.predicate for step in certificate.steps},
+            {"consumed_input_cleared"},
+        )
+
     def test_report_formats_successful_proof_certificate_validation(self):
         report = proof_certificates.validate_proof_certificate_project(
             claims_path=MANIFEST,
@@ -51,6 +68,7 @@ class ProofCertificateTests(unittest.TestCase):
 
         self.assertIn("Transition proof certificates:", text)
         self.assertIn("OK UC-FIXED-OUTPUT-PRESERVED:", text)
+        self.assertIn("OK UC-FIXED-CONSUMED-INPUT-CLEARED:", text)
         self.assertIn("predicate-result", text)
         self.assertNotIn("FAIL", text)
 
@@ -72,6 +90,16 @@ class ProofCertificateTests(unittest.TestCase):
                 and result["accepted"]
                 for result in payload["results"]
             )
+        )
+        consumed = next(
+            result
+            for result in payload["results"]
+            if result["claim_id"] == "UC-FIXED-CONSUMED-INPUT-CLEARED"
+        )
+        self.assertTrue(consumed["accepted"])
+        self.assertEqual(
+            consumed["detail"],
+            "verified 2 certificate steps: 2 predicate-result steps",
         )
 
     def test_cli_returns_zero_for_checked_in_proof_certificates(self):
