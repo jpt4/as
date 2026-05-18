@@ -266,6 +266,10 @@ class HandoffStatusTests(unittest.TestCase):
             "https://github.com/Sean-Kenneth-Doherty/as/tree/main",
         )
         self.assertEqual(
+            payload["github_submission"]["origin_main"]["web_url"],
+            "https://github.com/jpt4/as/tree/main",
+        )
+        self.assertEqual(
             payload["github_submission"]["fork_main"]["remote_ref_freshness"]["state"],
             "fresh",
         )
@@ -306,6 +310,7 @@ class HandoffStatusTests(unittest.TestCase):
         )
         self.assertIn("fork/main: matches HEAD (04158fc)", text)
         self.assertIn("origin/main: HEAD ahead by 191 commits", text)
+        self.assertIn("Origin main: https://github.com/jpt4/as/tree/main", text)
 
     def test_handoff_rejects_when_submission_is_not_on_fork_main(self):
         not_submitted = GitHubSubmissionStatus(

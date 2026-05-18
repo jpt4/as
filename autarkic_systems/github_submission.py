@@ -74,6 +74,12 @@ class GitHubSubmissionStatus:
         return f"{_github_remote_web_url(self.fork_url)}/tree/main"
 
     @property
+    def origin_main_url(self) -> str:
+        """Return the GitHub web URL for origin main."""
+
+        return f"{_github_remote_web_url(self.origin_url)}/tree/main"
+
+    @property
     def origin_main_matches_head(self) -> bool:
         """Return whether origin/main points at the current HEAD."""
 
@@ -166,6 +172,7 @@ def github_submission_status_payload(
             "commit": report.origin_main_commit,
             "short": report.origin_main_short,
             "matches_head": report.origin_main_matches_head,
+            "web_url": report.origin_main_url,
             "head_behind_by": report.head_behind_origin_main_by,
             "head_ahead_by": report.head_ahead_origin_main_by,
         },
@@ -201,6 +208,7 @@ def format_github_submission_status(report: GitHubSubmissionStatus) -> str:
             f"{report.head_ahead_origin_main_by} commits, behind by "
             f"{report.head_behind_origin_main_by} commits"
         ),
+        f"Origin main: {report.origin_main_url}",
         f"Origin: {report.origin_url}",
         f"Fork: {report.fork_url}",
         f"Tracking issue: {report.tracking_issue_url}",

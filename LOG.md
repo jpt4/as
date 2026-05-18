@@ -4699,3 +4699,20 @@
   GitHub-submission text/JSON and handoff commands reported accepted status
   and displayed the fork `main` web URL. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 909 tests.
+
+## 2026-05-18 - Origin Main Web URL
+
+- Added ADR-0221 to make the local GitHub submission report and inherited
+  handoff report include a direct browser URL for upstream origin `main`.
+- Added red GitHub-submission and handoff tests before implementation. The red
+  run failed because JSON lacked `origin_main.web_url` and text lacked
+  `Origin main: ...`.
+- Updated `autarkic_systems/github_submission.py` with a derived
+  `origin_main_url`, JSON `origin_main.web_url`, and text `Origin main:` line
+  using the same normalized GitHub remote web URL as the fork links.
+- Updated README, roadmap, and repo memory notes for the origin `main` browser
+  URL.
+- Focused GitHub-submission and handoff tests passed 18 tests. Live
+  GitHub-submission text/JSON and handoff commands reported accepted status
+  and displayed the origin `main` web URL. `compileall`, `git diff --check`,
+  and `python -m unittest discover` passed; the full suite ran 910 tests.

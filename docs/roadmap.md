@@ -4503,3 +4503,25 @@ Deliverables:
 Status: accepted in `docs/adr/0220-fork-main-web-url.md`.
 Implemented in `autarkic_systems/github_submission.py`, with tests in
 `tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.
+
+## ADR-0221: Origin Main Web URL
+
+Goal: make the GitHub submission and handoff reports link directly to upstream
+origin `main` as well as the submitted fork branch and commit.
+
+Deliverables:
+
+- `origin_main_url` derived from the normalized origin remote URL;
+- JSON `origin_main.web_url` in GitHub submission status;
+- text output rendering `Origin main: ...`;
+- SSH-normalized origin remotes producing the same canonical origin `main` web
+  URL;
+- handoff JSON/text inheriting the expanded submission surface; and
+- no GitHub API dependency, submission-acceptance change, remote-refresh
+  behavior change, handoff-readiness change, project-status change,
+  vertical-demo change, evidence/claim/proof/source-status change, or runtime
+  semantics change.
+
+Status: accepted in `docs/adr/0221-origin-main-web-url.md`.
+Implemented in `autarkic_systems/github_submission.py`, with tests in
+`tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.

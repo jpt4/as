@@ -97,6 +97,10 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         self.assertEqual(payload["origin_main"]["head_ahead_by"], 190)
         self.assertEqual(payload["origin_main"]["head_behind_by"], 0)
         self.assertEqual(
+            payload["origin_main"]["web_url"],
+            "https://github.com/jpt4/as/tree/main",
+        )
+        self.assertEqual(
             payload["remote_refresh"],
             {
                 "requested": False,
@@ -151,9 +155,29 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         self.assertIn("fork/main: matches HEAD (be59d20)", text)
         self.assertIn("fork/main freshness: fresh (300s old, max 86400s)", text)
         self.assertIn("origin/main: HEAD ahead by 190 commits, behind by 0 commits", text)
+        self.assertIn("Origin main: https://github.com/jpt4/as/tree/main", text)
         self.assertIn("Origin: https://github.com/jpt4/as.git", text)
         self.assertIn("Fork: https://github.com/Sean-Kenneth-Doherty/as.git", text)
         self.assertIn(f"Tracking issue: {DEFAULT_TRACKING_ISSUE_URL}", text)
+
+    def test_origin_main_url_normalizes_ssh_origin_remote(self):
+        outputs = dict(GIT_OUTPUTS)
+        outputs[("remote", "get-url", "origin")] = "git@github.com:jpt4/as.git"
+
+        report = build_github_submission_status(
+            runner=FakeGitRunner(outputs),
+            clock=lambda: 1779110300,
+        )
+        payload = github_submission_status_payload(report)
+
+        self.assertEqual(
+            payload["origin_main"]["web_url"],
+            "https://github.com/jpt4/as/tree/main",
+        )
+        self.assertIn(
+            "Origin main: https://github.com/jpt4/as/tree/main",
+            format_github_submission_status(report),
+        )
 
     def test_commit_url_normalizes_scp_like_ssh_fork_remote(self):
         outputs = dict(GIT_OUTPUTS)
