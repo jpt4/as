@@ -2863,3 +2863,25 @@ Status: accepted in `docs/adr/0146-resolution-evidence-question-match.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py` and
 `tests/test_source_status_frontier_cli.py`.
+
+## ADR-0147: Resolution Evidence Coverage
+
+Goal: require every unresolved source-status question to carry a matching
+source evidence entry.
+
+Deliverables:
+
+- fail-closed validation when a source-status record has unresolved
+  `required_resolution_questions` but no `resolution_question_evidence`;
+- fail-closed validation when evidence covers only part of the unresolved
+  question list;
+- unchanged project status `schema_version: 14`;
+- unchanged source-status frontier `schema_version: 1`;
+- project-status and source-status frontier tests covering missing and partial
+  coverage; and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in `docs/adr/0147-resolution-evidence-coverage.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py` and
+`tests/test_source_status_frontier_cli.py`.

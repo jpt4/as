@@ -616,3 +616,6 @@
 - ADR-0146 makes source-status `resolution_question_evidence[].question_id`
   values fail closed unless they match unresolved
   `required_resolution_questions[].question_id` values in the same record.
+- ADR-0147 makes source-status `resolution_question_evidence` fail closed
+  unless it covers every unresolved `required_resolution_questions` ID in the
+  same record.

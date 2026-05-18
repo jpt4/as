@@ -411,3 +411,5 @@
   aggregate commands cannot drift.
 - Evidence attached to named open questions should validate against the live
   question list, not just have a plausible-looking string ID.
+- Once blocker evidence is part of a first-run status surface, require coverage
+  for every live blocker rather than allowing uncovered open questions to pass.

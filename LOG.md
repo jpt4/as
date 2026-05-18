@@ -3192,3 +3192,19 @@
   project status JSON remained accepted at `schema_version: 14`; `py_compile`
   and `git diff --check` passed; and `python -m unittest discover` passed 652
   tests.
+
+## 2026-05-18 - Resolution Evidence Coverage
+
+- Added ADR-0147 to require source-status `resolution_question_evidence` to
+  cover every live unresolved question in the same record.
+- Updated project-status and source-status frontier tests before
+  implementation. The red run executed 74 tests and failed because scratch
+  records with missing or partial evidence coverage were still accepted.
+- Updated the shared source-status frontier validator in
+  `autarkic_systems.project_status` so records with unresolved questions but
+  missing or partial evidence coverage reject as `source-status-schema`.
+- Verification passed: focused project-status and source-status frontier tests
+  ran 74 tests; source-status JSON was accepted at `schema_version: 1`;
+  project status JSON remained accepted at `schema_version: 14`; `py_compile`
+  and `git diff --check` passed; and `python -m unittest discover` passed 655
+  tests.

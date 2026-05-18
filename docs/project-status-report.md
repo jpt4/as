@@ -162,6 +162,9 @@ CLI over the same source-status frontier payload.
 ADR-0146 makes `resolution_question_evidence[].question_id` fail closed unless
 it matches an unresolved `required_resolution_questions[].question_id` in the
 same source-status record, preserving `schema_version: 14`.
+ADR-0147 requires `resolution_question_evidence` to cover every unresolved
+`required_resolution_questions[].question_id` in the same source-status record,
+preserving `schema_version: 14`.
 
 ## Boundary
 

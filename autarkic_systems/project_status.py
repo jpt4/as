@@ -1206,12 +1206,18 @@ def _resolved_resolution_question_shape_error(data: dict[str, Any]) -> str:
 
 
 def _resolution_question_evidence_shape_error(data: dict[str, Any]) -> str:
+    required_question_ids = set(_resolution_question_ids(data))
     if "resolution_question_evidence" not in data:
+        if required_question_ids:
+            return (
+                "source-status resolution_question_evidence must cover "
+                "required_resolution_questions"
+            )
         return ""
     evidence_entries = data.get("resolution_question_evidence")
     if not isinstance(evidence_entries, list):
         return "source-status resolution_question_evidence field must be a list"
-    required_question_ids = set(_resolution_question_ids(data))
+    evidence_question_ids: set[str] = set()
     for evidence_entry in evidence_entries:
         if not isinstance(evidence_entry, dict):
             return "source-status resolution question evidence entries must be objects"
@@ -1225,11 +1231,17 @@ def _resolution_question_evidence_shape_error(data: dict[str, Any]) -> str:
                 "source-status resolution question evidence question_id must "
                 "match required_resolution_questions"
             )
+        evidence_question_ids.add(evidence_entry["question_id"])
         if not _is_nonempty_text(evidence_entry.get("evidence")):
             return (
                 "source-status resolution question evidence must be "
                 "non-empty text"
             )
+    if required_question_ids - evidence_question_ids:
+        return (
+            "source-status resolution_question_evidence must cover "
+            "required_resolution_questions"
+        )
     return ""
 
 

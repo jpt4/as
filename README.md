@@ -332,6 +332,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   question source paths must have the expected text/list/object shapes.
   Source-status `resolution_question_evidence` IDs must match unresolved
   `required_resolution_questions` IDs in the same source-status record.
+  When a source-status record has unresolved `required_resolution_questions`,
+  `resolution_question_evidence` must cover every unresolved question ID.
   Source-status cross-link paths and resolved question source paths must also
   point to existing files that contain JSON objects.
   Accepted source-status records must also provide non-empty top-level
