@@ -77,6 +77,11 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
             "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
         )
         self.assertEqual(payload["head"]["short"], "be59d20")
+        self.assertEqual(
+            payload["head"]["fork_commit_url"],
+            "https://github.com/Sean-Kenneth-Doherty/as/commit/"
+            "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
+        )
         self.assertEqual(payload["remotes"]["origin"], "https://github.com/jpt4/as.git")
         self.assertEqual(
             payload["remotes"]["fork"],
@@ -130,6 +135,11 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         self.assertIn("GitHub submission status: submitted-to-fork", text)
         self.assertIn("Branch: main", text)
         self.assertIn("HEAD: be59d20", text)
+        self.assertIn(
+            "Fork commit: https://github.com/Sean-Kenneth-Doherty/as/commit/"
+            "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
+            text,
+        )
         self.assertIn("fork/main: matches HEAD (be59d20)", text)
         self.assertIn("fork/main freshness: fresh (300s old, max 86400s)", text)
         self.assertIn("origin/main: HEAD ahead by 190 commits, behind by 0 commits", text)
@@ -250,6 +260,11 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["submission_state"], "submitted-to-fork")
         self.assertEqual(payload["origin_main"]["head_ahead_by"], 190)
+        self.assertEqual(
+            payload["head"]["fork_commit_url"],
+            "https://github.com/Sean-Kenneth-Doherty/as/commit/"
+            "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
+        )
         self.assertTrue(payload["remote_refresh"]["requested"])
 
     def test_module_execution_runs_live_text_status(self):

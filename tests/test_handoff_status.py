@@ -257,6 +257,11 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertEqual(payload["github_submission"]["submission_state"], "submitted-to-fork")
         self.assertEqual(payload["github_submission"]["head"]["short"], "04158fc")
         self.assertEqual(
+            payload["github_submission"]["head"]["fork_commit_url"],
+            "https://github.com/Sean-Kenneth-Doherty/as/commit/"
+            "04158fc29229d091f616734725be3c8f54198200",
+        )
+        self.assertEqual(
             payload["github_submission"]["fork_main"]["remote_ref_freshness"]["state"],
             "fresh",
         )
@@ -286,6 +291,11 @@ class HandoffStatusTests(unittest.TestCase):
         )
         self.assertIn("GitHub submission:", text)
         self.assertIn("GitHub submission status: submitted-to-fork", text)
+        self.assertIn(
+            "Fork commit: https://github.com/Sean-Kenneth-Doherty/as/commit/"
+            "04158fc29229d091f616734725be3c8f54198200",
+            text,
+        )
         self.assertIn("fork/main: matches HEAD (04158fc)", text)
         self.assertIn("origin/main: HEAD ahead by 191 commits", text)
 

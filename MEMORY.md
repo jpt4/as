@@ -646,6 +646,9 @@
 - ADR-0193 adds `--refresh-remotes` to GitHub submission and handoff commands,
   fetching fork/origin `main` into inspected remote-tracking refs before
   reporting when explicitly requested.
+- ADR-0218 adds `head.fork_commit_url` / `Fork commit: ...` to GitHub
+  submission and handoff reports, deriving a direct fork commit URL from the
+  fork remote and current `HEAD` without contacting GitHub APIs.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.

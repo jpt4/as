@@ -4438,3 +4438,23 @@ Status: accepted in
 `docs/adr/0217-vertical-demo-reproduction-commands.md`.
 Implemented in `autarkic_systems/vertical_demo.py`, with tests in
 `tests/test_vertical_demo_digest.py` and `tests/test_handoff_status.py`.
+
+## ADR-0218: Submission Commit URL
+
+Goal: make the GitHub submission and handoff reports link directly to the
+submitted fork commit.
+
+Deliverables:
+
+- `fork_commit_url` derived from the fork remote URL and current `HEAD`;
+- JSON `head.fork_commit_url` in GitHub submission status;
+- text output rendering `Fork commit: ...`;
+- handoff JSON/text inheriting the expanded submission surface; and
+- no GitHub API dependency, submission-acceptance change, remote-refresh
+  behavior change, handoff-readiness change, project-status change,
+  vertical-demo change, evidence/claim/proof/source-status change, or runtime
+  semantics change.
+
+Status: accepted in `docs/adr/0218-submission-commit-url.md`.
+Implemented in `autarkic_systems/github_submission.py`, with tests in
+`tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.

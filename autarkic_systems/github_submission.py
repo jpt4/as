@@ -61,6 +61,12 @@ class GitHubSubmissionStatus:
         return self.fork_main_commit == self.head_commit
 
     @property
+    def fork_commit_url(self) -> str:
+        """Return the GitHub web URL for the submitted fork commit."""
+
+        return f"{self.fork_url.removesuffix('.git')}/commit/{self.head_commit}"
+
+    @property
     def origin_main_matches_head(self) -> bool:
         """Return whether origin/main points at the current HEAD."""
 
@@ -136,6 +142,7 @@ def github_submission_status_payload(
         "head": {
             "commit": report.head_commit,
             "short": report.head_short,
+            "fork_commit_url": report.fork_commit_url,
         },
         "remotes": {
             "origin": report.origin_url,
@@ -177,6 +184,7 @@ def format_github_submission_status(report: GitHubSubmissionStatus) -> str:
     lines.extend([
         f"Branch: {report.branch}",
         f"HEAD: {report.head_short}",
+        f"Fork commit: {report.fork_commit_url}",
         f"fork/main: {fork_line}",
         _format_remote_ref_freshness(report.fork_main_ref_freshness),
         (

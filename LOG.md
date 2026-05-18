@@ -4646,3 +4646,20 @@
   vertical-demo text/JSON and handoff commands reported accepted status and
   carried the new reproduction command list. `compileall`, `git diff --check`,
   and `python -m unittest discover` passed; the full suite ran 907 tests.
+
+## 2026-05-18 - Submission Commit URL
+
+- Added ADR-0218 to make the local GitHub submission report and inherited
+  handoff report include a direct fork commit URL for the submitted `HEAD`.
+- Added red GitHub-submission and handoff tests before implementation. The red
+  run failed because JSON lacked `head.fork_commit_url` and text lacked
+  `Fork commit: ...`.
+- Updated `autarkic_systems/github_submission.py` with a derived
+  `fork_commit_url`, JSON `head.fork_commit_url`, and text `Fork commit:`
+  line. This does not contact GitHub APIs or change acceptance/refresh logic.
+- Updated README, roadmap, and repo memory notes for the direct submitted
+  commit link.
+- Focused GitHub-submission and handoff tests passed 15 tests. Live
+  GitHub-submission text/JSON and handoff commands reported accepted status
+  and displayed the fork commit URL. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 907 tests.
