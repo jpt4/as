@@ -350,7 +350,7 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
   machine-checkable, including the formal-model self-mailbox exception and the
-  resolved command-table offset decision.
+  resolved command-table offset and self-mailbox equivalence decisions.
 - `sources/guile_asmsim_command_semantics_status.json` makes the
   `guile-asmsim.scm` command-semantics source-status decision
   machine-checkable.

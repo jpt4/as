@@ -86,6 +86,26 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(command_map["commands"][0]["command_id"], "standard-signal")
         self.assertIn("RAA", offset["legacy_divergence"])
 
+    def test_self_mailbox_binary_input_equivalence_is_resolved(self):
+        resolved = {
+            question["question_id"]: question
+            for question in self.status["resolved_resolution_questions"]
+        }
+
+        self_mailbox = resolved[
+            "self-mailbox-standard-signal-binary-input-equivalence"
+        ]
+        self.assertEqual(
+            self_mailbox["decision"],
+            "do-not-treat-self-mailbox-standard-signal-as-binary-input",
+        )
+        self.assertEqual(self_mailbox["source_status"], str(STATUS))
+        self.assertIn("self-mailbox of a stem cell", self_mailbox["legacy_divergence"])
+        self.assertIn(
+            "command-token execution rule",
+            self_mailbox["legacy_divergence"],
+        )
+
     def test_legacy_witnesses_exclude_standard_signal_from_special_messages(self):
         witnesses = {
             witness["witness_id"]: witness

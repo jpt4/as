@@ -400,3 +400,6 @@
 - Split write-buffer bit-source decisions from post-append state decisions.
   Literal `write-buf-zero` / `write-buf-one` bits can be settled while
   buffer-full and clearing semantics remain blocked.
+- Promote settled negative equivalences into status alongside open blockers.
+  "This is not ordinary binary-input behavior" is useful even before the
+  project chooses the positive command-token rule.

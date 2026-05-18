@@ -228,6 +228,10 @@ runtime behavior.
 ADR-0128 resolves the `standard-signal` command-table offset question in favor
 of the formal PRC map, leaving the command-token/binary-input,
 recipient-surface, and self-target-surface questions open.
+ADR-0143 exposes the formal-model self-mailbox exception as a resolved
+self-mailbox equivalence decision: stem self-mailbox `standard-signal` must not
+be treated as ordinary binary-input standard-signal behavior, though the
+broader self-target-surface behavior remains open.
 ADR-0129 records that `write-buf-zero` and `write-buf-one` carry literal `0`
 and `1` append bits, narrowing standard-signal interaction without resolving
 write-buffer execution.

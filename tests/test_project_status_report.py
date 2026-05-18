@@ -220,6 +220,18 @@ STANDARD_SIGNAL_RESOLVED_QUESTIONS = [
             "preserves the formal PRC command-buffer map from ADR-0026."
         ),
     },
+    {
+        "question_id": "self-mailbox-standard-signal-binary-input-equivalence",
+        "decision": "do-not-treat-self-mailbox-standard-signal-as-binary-input",
+        "source_status": "sources/standard_signal_command_semantics_status.json",
+        "legacy_divergence": (
+            "The formal model excludes standard signals sent to the "
+            "self-mailbox of a stem cell from productive ordinary "
+            "standard-signal behavior; legacy witnesses exclude "
+            "standard-signal from special messages and do not provide a "
+            "matching command-token execution rule."
+        ),
+    },
 ]
 WRITE_BUFFER_RESOLVED_QUESTIONS = [
     {
@@ -789,6 +801,20 @@ class ProjectStatusReportTests(unittest.TestCase):
             "legacy divergence: RAA maps its final command-buffer case to "
             "standard-signal, but AS preserves the formal PRC command-buffer "
             "map from ADR-0026.",
+            text,
+        )
+        self.assertIn(
+            "self-mailbox-standard-signal-binary-input-equivalence: "
+            "do-not-treat-self-mailbox-standard-signal-as-binary-input "
+            "(sources/standard_signal_command_semantics_status.json)",
+            text,
+        )
+        self.assertIn(
+            "legacy divergence: The formal model excludes standard signals "
+            "sent to the self-mailbox of a stem cell from productive "
+            "ordinary standard-signal behavior; legacy witnesses exclude "
+            "standard-signal from special messages and do not provide a "
+            "matching command-token execution rule.",
             text,
         )
         self.assertIn("write-buf-zero, write-buf-one:", text)

@@ -602,3 +602,8 @@
   literal command-bit source evidence rather than high-rail-derived behavior,
   leaving execution surface, buffer-full behavior, and post-append clearing in
   the unresolved write-buffer queue.
+- ADR-0143 resolves the standard-signal
+  `self-mailbox-standard-signal-binary-input-equivalence` detail: a stem
+  self-mailbox `standard-signal` command must not be treated as ordinary
+  binary-input standard-signal behavior, while the broader self-target-surface
+  command-token behavior remains unresolved.

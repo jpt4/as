@@ -21,8 +21,9 @@ The formal-model prose narrows one self-target case: it says wire, proc, and
 stem cells all perform productive behavior on standard signals "unless sent to
 the self-mailbox of a stem cell." AS therefore must not treat a stem
 self-mailbox `standard-signal` command as ordinary binary-input
-standard-signal behavior without a later source-backed ADR selecting the exact
-preserve, clear/no-op, or execution rule.
+standard-signal behavior. ADR-0143 records that narrower equivalence decision
+as resolved without selecting the exact preserve, clear/no-op, or execution
+rule.
 
 ADR-0128 resolves the command-table-offset question: AS preserves the formal
 PRC command-buffer map from ADR-0026, where `standard-signal` is offset `0` in
@@ -64,7 +65,9 @@ as incomplete and missing `standard-signal` command-token semantics. ADR-0127
 records the formal-model self-mailbox exception as a narrowed
 self-target-surface source anchor without changing runtime behavior. ADR-0128
 removes `command-table-offset` from the unresolved queue after resolving it in
-favor of the formal PRC command-buffer map.
+favor of the formal PRC command-buffer map. ADR-0143 exposes the self-mailbox
+exception as a resolved sub-decision while leaving `self-target-surface`
+unresolved.
 
 ## Verification
 

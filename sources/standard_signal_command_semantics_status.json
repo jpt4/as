@@ -33,6 +33,12 @@
       "source_status": "sources/stem_command_buffer_map.json",
       "formal_command_offset": 0,
       "legacy_divergence": "RAA maps its final command-buffer case to standard-signal, but AS preserves the formal PRC command-buffer map from ADR-0026."
+    },
+    {
+      "question_id": "self-mailbox-standard-signal-binary-input-equivalence",
+      "decision": "do-not-treat-self-mailbox-standard-signal-as-binary-input",
+      "source_status": "sources/standard_signal_command_semantics_status.json",
+      "legacy_divergence": "The formal model excludes standard signals sent to the self-mailbox of a stem cell from productive ordinary standard-signal behavior; legacy witnesses exclude standard-signal from special messages and do not provide a matching command-token execution rule."
     }
   ],
   "legacy_standard_signal_witnesses": [

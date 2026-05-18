@@ -143,6 +143,9 @@ version to `13`.
 ADR-0142 records the write-buffer `standard-signal-interaction` question as
 resolved in the source-status frontier while preserving project status
 `schema_version: 13`.
+ADR-0143 records the standard-signal self-mailbox equivalence question as a
+resolved source-status detail while preserving project status
+`schema_version: 13`.
 
 ## Boundary
 

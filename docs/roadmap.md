@@ -2773,3 +2773,29 @@ Status: accepted in
 `docs/write-buffer-command-semantics-status.md`, with tests in
 `tests/test_write_buffer_command_semantics_status.py` and
 `tests/test_project_status_report.py`.
+
+## ADR-0143: Standard-Signal Self-Mailbox Resolution Detail
+
+Goal: expose the formal-model self-mailbox exception as a resolved
+standard-signal sub-decision without widening command-token execution.
+
+Deliverables:
+
+- a `resolved_resolution_questions` entry for
+  `self-mailbox-standard-signal-binary-input-equivalence` in
+  `sources/standard_signal_command_semantics_status.json`;
+- unchanged unresolved standard-signal `self-target-surface` blocker;
+- standard-signal source-status tests proving the resolved detail points at
+  the formal self-mailbox exception;
+- project-status tests proving JSON/text expose the resolved standard-signal
+  self-mailbox equivalence decision while preserving project status
+  `schema_version: 13`;
+- unchanged Universal Cell runtime behavior; and
+- focused standard-signal and project-status tests.
+
+Status: accepted in
+`docs/adr/0143-standard-signal-self-mailbox-resolution-detail.md`. Implemented
+in `sources/standard_signal_command_semantics_status.json` and
+`docs/standard-signal-command-semantics-status.md`, with tests in
+`tests/test_standard_signal_command_semantics_status.py` and
+`tests/test_project_status_report.py`.

@@ -3123,3 +3123,22 @@
   tests; JSON formatting, `py_compile`, and `git diff --check` passed; project
   status text and JSON remained accepted at `schema_version: 13`; and
   `python -m unittest discover` passed 637 tests.
+
+## 2026-05-18 - Standard-Signal Self-Mailbox Resolution Detail
+
+- Added ADR-0143 to expose the formal-model self-mailbox exception as a
+  resolved standard-signal detail in project status.
+- Updated standard-signal and project-status tests before implementation. The
+  red run executed 65 tests and failed because
+  `self-mailbox-standard-signal-binary-input-equivalence` was absent from
+  `resolved_resolution_questions` and default status text.
+- Updated `sources/standard_signal_command_semantics_status.json` and
+  `docs/standard-signal-command-semantics-status.md` so the first diagnostic
+  report shows that stem self-mailbox `standard-signal` must not be treated as
+  ordinary binary-input standard-signal behavior.
+- Kept `self-target-surface` unresolved because this ADR does not choose the
+  preserve, clear/no-op, or execution rule for command tokens.
+- Verification passed: focused standard-signal and project-status tests ran 65
+  tests; JSON formatting, `py_compile`, and `git diff --check` passed; project
+  status text and JSON remained accepted at `schema_version: 13`; and
+  `python -m unittest discover` passed 638 tests.
