@@ -473,3 +473,7 @@
 - ADR-0101 adds top-level `schema_version: 1` to
   `autarkic_systems.project_status` JSON output so automation can detect
   future contract changes.
+- ADR-0102 makes `autarkic_systems.project_status` reject source-status JSON
+  that has process fields but no extractable command tokens, reporting
+  `source-status-schema` instead of accepting an empty blocked-command
+  frontier.

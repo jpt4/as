@@ -281,3 +281,6 @@
 - Once a status JSON shape becomes an automation contract, version it. A
   top-level schema version makes future intentional changes auditable instead
   of implicit drift.
+- A frontier status record must expose the frontier terms it claims to
+  summarize. Decision text and next-step text are not enough if a drifted file
+  can silently remove the command tokens from an operator report.

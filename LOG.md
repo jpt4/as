@@ -2270,3 +2270,24 @@
   transition `bundle_count: 8`, chain `bundle_count: 2`, and
   `frontier.failed_subjects: []`. `py_compile`, `git diff --check`, and
   `python -m unittest discover` passed, with the full suite running 552 tests.
+
+## 2026-05-18 - Project Status Source Command Shape
+
+- Added ADR-0102 to require source-status records consumed by the project
+  status command to expose at least one command token.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed because a source-status record with `decision` and
+  `safe_next_slice`, but no `command`, `commands`, or
+  `blocked_runtime_commands`, was accepted as an empty blocked-command
+  frontier.
+- Updated `autarkic_systems.project_status` so commandless source-status
+  records report `source-status-schema`.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the command-token shape contract.
+- Verified the focused project status test passed 17 tests; adjacent project
+  status, transition registry, and chain registry tests passed 42 tests. The
+  checked-in JSON status reported `schema_version: 1`, `accepted: true`,
+  transition `bundle_count: 8`, chain `bundle_count: 2`, blocked commands
+  `standard-signal`, `write-buf-zero`, and `write-buf-one`, and
+  `frontier.failed_subjects: []`. `py_compile`, `git diff --check`, and
+  `python -m unittest discover` passed, with the full suite running 553 tests.

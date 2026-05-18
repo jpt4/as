@@ -156,6 +156,8 @@ for missing or malformed source-status files.
 ADR-0100 makes source-status JSON shape part of that status check, so parseable
 but unusable source-status records cannot pass as an empty frontier.
 ADR-0101 adds a top-level project status schema version for automation.
+ADR-0102 tightens the shape check so source-status records without command
+tokens cannot erase the blocked-command frontier.
 
 ## P3: Choose The First Proof Apparatus
 

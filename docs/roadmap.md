@@ -1928,3 +1928,21 @@ Deliverables:
 Status: accepted in `docs/adr/0101-project-status-schema-version.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0102: Project Status Source Command Shape
+
+Goal: require source-status records consumed by project status to name the
+command tokens they contribute to the blocked frontier.
+
+Deliverables:
+
+- `source-status-schema` failure for source-status JSON that has process fields
+  but no extractable command tokens;
+- continued acceptance for the checked-in `command`, `commands`, and
+  `blocked_runtime_commands` source-status forms;
+- focused tests covering commandless source-status JSON; and
+- documentation update for the source-status command-token shape.
+
+Status: accepted in `docs/adr/0102-project-status-source-command-shape.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

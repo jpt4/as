@@ -47,6 +47,9 @@ reported as structured rejected output instead of a traceback. ADR-0099 adds
 source-status files and `source-status-json` for malformed source-status
 files. ADR-0100 adds `source-status-schema` for source-status JSON that parses
 but is not a usable source-status object. ADR-0101 adds the schema version.
+ADR-0102 requires accepted source-status records to expose at least one
+blocked command token through `command`, `commands`, or
+`blocked_runtime_commands`.
 
 ## Boundary
 

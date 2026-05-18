@@ -256,7 +256,9 @@ the project legible:
   command-token frontier. Missing registries report `registry-file`, malformed
   registries report `registry-json`, and source-status path problems are
   summarized in `frontier.failed_subjects` as `source-status-file`,
-  `source-status-json`, or `source-status-schema`.
+  `source-status-json`, or `source-status-schema`; source-status records must
+  also expose at least one blocked command token through `command`, `commands`,
+  or `blocked_runtime_commands`.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

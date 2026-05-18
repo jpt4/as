@@ -301,6 +301,8 @@ def _source_status_schema_error(data: Any) -> str:
         return "source-status decision must be non-empty text"
     if not isinstance(data.get("safe_next_slice"), str) or not data["safe_next_slice"]:
         return "source-status safe_next_slice must be non-empty text"
+    if not _blocked_commands_from_status(data):
+        return "source-status command fields must include at least one command token"
     return ""
 
 
