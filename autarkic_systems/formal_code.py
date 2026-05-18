@@ -4,7 +4,8 @@ The encoder in this module is deliberately small and inspectable. It encodes
 the ADR-0226 formal arithmetic node vocabulary as tagged natural-number
 sequences and decodes those sequences back to canonical node dictionaries.
 This is proof-code infrastructure only; it is not a proof checker, deduction
-apparatus, substitution engine, or self-reference theorem.
+apparatus, substitution engine, arithmetic sequence theory, or
+self-reference theorem.
 """
 
 from __future__ import annotations
@@ -185,10 +186,18 @@ def encode_node(node: dict[str, Any], codebook: FormalCodebook) -> tuple[int, ..
         return (codebook.term_tags["variable"], _variable_code(node, codebook))
     if kind == "zero":
         return (codebook.term_tags["zero"],)
+    if kind == "sequence_nil":
+        return (codebook.term_tags["sequence_nil"],)
     if kind == "successor":
         return (
             codebook.term_tags["successor"],
             *encode_node(_required_node(node, "term"), codebook),
+        )
+    if kind == "sequence_cons":
+        return (
+            codebook.term_tags["sequence_cons"],
+            *encode_node(_required_node(node, "head"), codebook),
+            *encode_node(_required_node(node, "tail"), codebook),
         )
     if kind in {"addition", "multiplication"}:
         return (
@@ -409,7 +418,15 @@ def _validate_willard_anchors(
 def _validate_tags(codebook: FormalCodebook) -> list[FormalCodeValidation]:
     results: list[FormalCodeValidation] = []
     required_tags = {
-        "term_tags": ("variable", "zero", "successor", "addition", "multiplication"),
+        "term_tags": (
+            "variable",
+            "zero",
+            "successor",
+            "addition",
+            "multiplication",
+            "sequence_nil",
+            "sequence_cons",
+        ),
         "formula_tags": (
             "equals",
             "less_than",
@@ -537,9 +554,15 @@ def _decode_term(
         return {"kind": "variable", "name": reverse_variables[variable_code]}, index
     if kind == "zero":
         return {"kind": "zero"}, index
+    if kind == "sequence_nil":
+        return {"kind": "sequence_nil"}, index
     if kind == "successor":
         term, index = _decode_at(tokens, index, codebook)
         return {"kind": "successor", "term": term}, index
+    if kind == "sequence_cons":
+        head, index = _decode_at(tokens, index, codebook)
+        tail, index = _decode_at(tokens, index, codebook)
+        return {"kind": "sequence_cons", "head": head, "tail": tail}, index
     if kind in {"addition", "multiplication"}:
         left, index = _decode_at(tokens, index, codebook)
         right, index = _decode_at(tokens, index, codebook)

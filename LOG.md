@@ -5026,3 +5026,41 @@
   project-status summary remained accepted and blocked. `compileall`, JSON
   checks, `git diff --check`, and `python -m unittest discover` passed; the
   full suite ran 1027 tests.
+
+## 2026-05-18 - Quotation Term Surface
+
+- Added ADR-0234 to turn the checked ADR-0233 token-numeral sequence into a
+  formal term surface without claiming arithmetic sequence axioms,
+  diagonalization, fixed-point equation proof, or self-consistency.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.formal_quotation_term` and
+  `language/formal_quotation_term_examples.json` did not exist, the arithmetic
+  language/codebook had no `sequence_nil` or `sequence_cons` constructors, and
+  the fixed-point manifest had no `quotation_term_examples_path` field.
+- Added `sequence_nil` and `sequence_cons` to
+  `language/formal_arithmetic_language.json` and
+  `language/formal_codebook.json`, plus encode/decode support in
+  `autarkic_systems/formal_code.py` and a checked short sequence-term example.
+- Added `language/formal_quotation_term_examples.json`, with checked examples
+  for the current fixed-point target instance code and a short `[1, 0]`
+  sequence.
+- Added `autarkic_systems/formal_quotation_term.py` with nested
+  `sequence_cons`/`sequence_nil` term construction, dependency validation
+  against the formal codebook and quotation-sequence examples, Willard anchor
+  checks, text/JSON CLI output, and rejection of empty token sequences,
+  endpoint-depth mismatches, and unknown term kinds/statuses.
+- Narrowed `claims/fixed_point_targets.json` so
+  `AS-FIXED-POINT-SELFCONS1-TARGET` references the quotation-term examples and
+  leaves `diagonal-lemma-proof`, `fixed-point-equation-proof`, and
+  `self-consistency-theorem` as the remaining future work.
+- Updated the formal-confidence manifest and navigation docs to name the new
+  quotation-term dependency while preserving the `fixed-point-construction`
+  blocker.
+- Focused quotation-term, codebook, arithmetic-language, fixed-point, and
+  project-status tests passed 139 tests. Live quotation-term text/JSON output
+  reported two accepted examples with no failed subjects; live formal-code JSON
+  reported five accepted examples and the new sequence term tags; live
+  fixed-point output accepted the quotation-term dependency; live
+  formal-confidence JSON and project-status summary remained accepted and
+  blocked. `compileall`, JSON checks, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 1041 tests.

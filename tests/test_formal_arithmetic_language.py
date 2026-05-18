@@ -45,6 +45,13 @@ class FormalArithmeticLanguageTests(unittest.TestCase):
         self.assertIn("delta0", self.language.bounded_formula_classes)
         self.assertIn("pi1", self.language.sentence_classes)
         self.assertIn("sigma1", self.language.sentence_classes)
+        term_symbols = self.language.syntax_classes["terms"]["function_symbols"]
+        self.assertEqual(term_symbols["sequence_nil"]["arity"], 0)
+        self.assertEqual(term_symbols["sequence_cons"]["arity"], 2)
+        self.assertEqual(
+            term_symbols["sequence_cons"]["totality_status"],
+            "coding-symbol-not-arithmetic-theorem",
+        )
 
     def test_checked_in_language_validates_against_willard_map(self):
         report = validate_formal_arithmetic_language(self.language, WILLARD_MAP)

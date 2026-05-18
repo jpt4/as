@@ -115,6 +115,12 @@
   `token-numeral-sequence` objects, including the current fixed-point target's
   expected instance code, but does not implement pair/list term coding, a full
   arithmetic-language quotation term, a diagonal lemma, or self-consistency.
+- ADR-0234 adds `sequence_nil`/`sequence_cons` term constructors to the formal
+  arithmetic/codebook surface, plus `language/formal_quotation_term_examples.json`
+  and `autarkic_systems/formal_quotation_term.py` as the first checked
+  quotation-term layer over quoted token sequences. It still does not prove
+  sequence arithmetic axioms, a diagonal lemma, a fixed-point equation, or
+  self-consistency.
 - `AS-FORMAL-CONFIDENCE-TARGET-001` now points at the fixed-point target and no
   longer uses the broad `self-reference-fixed-point` blocker. It remains
   blocked on `fixed-point-construction`.

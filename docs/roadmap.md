@@ -4829,3 +4829,32 @@ Deliverables:
 Status: accepted in `docs/adr/0233-quotation-sequence-surface.md`.
 Implemented in `autarkic_systems/formal_quotation_sequence.py`, with tests in
 `tests/test_formal_quotation_sequence.py`.
+
+## ADR-0234: Quotation Term Surface
+
+Goal: add the first checked formal term surface over quoted code-token
+sequences without claiming a diagonal lemma or fixed-point equation.
+
+Deliverables:
+
+- `sequence_nil` and `sequence_cons` term constructors in the formal arithmetic
+  language manifest;
+- matching formal-codebook tags, encode/decode support, and a checked
+  sequence-term round-trip example;
+- `language/formal_quotation_term_examples.json` with checked quotation-term
+  examples;
+- `quote_tokens_as_term` helper over ADR-0233 token sequences;
+- validation against the formal codebook, quotation sequence examples, and
+  Willard anchors;
+- rejection for empty token sequences, endpoint-depth mismatches, and unknown
+  term kind/status values;
+- fixed-point target narrowed to depend on the quotation-term examples while
+  still blocked on diagonal-lemma proof and fixed-point equation proof;
+- `autarkic_systems.formal_quotation_term` text/JSON CLI validation; and
+- no sequence arithmetic axioms, diagonal lemma, fixed-point equation proof,
+  theorem prover, runtime behavior, command semantics, evidence bundle, or
+  GitHub submission logic changes.
+
+Status: accepted in `docs/adr/0234-quotation-term-surface.md`. Implemented in
+`autarkic_systems/formal_quotation_term.py`, with tests in
+`tests/test_formal_quotation_term.py`.

@@ -10,15 +10,15 @@ formal codebook.
 ## Purpose
 
 AS now has a formal codebook, capture-avoiding substitution examples, token
-numeral quotation examples, token-numeral sequence examples, a Level-1
-consistency target, and a selected deduction-apparatus target. Those are
-prerequisites for a SelfCons-style statement, but they still do not construct a
-diagonal fixed point.
+numeral quotation examples, token-numeral sequence examples, quotation term
+examples, a Level-1 consistency target, and a selected deduction-apparatus
+target. Those are prerequisites for a SelfCons-style statement, but they still
+do not construct a diagonal fixed point.
 
 The fixed-point target records the next precise obligation:
 
 - a `pi1` template with free code variable `n`;
-- a placeholder quotation term used only to validate substitution plumbing;
+- a placeholder term used only to validate substitution plumbing;
 - an expected substituted instance;
 - the expected encoded output for that instance; and
 - explicit future work before any self-consistency claim.
@@ -36,8 +36,9 @@ It names these Willard anchors as constraints:
 - `W2020-D3.2-SELF-JUSTIFYING-GENAC`.
 
 The checked instance proves only that the current substitution, codebook,
-token quotation, and token-numeral sequence surfaces can preserve the selected
-template boundary and round-trip the expected encoded instance.
+token quotation, token-numeral sequence, and quotation-term surfaces can
+preserve the selected template boundary and round-trip the expected encoded
+instance.
 
 ## Run
 
@@ -45,6 +46,7 @@ template boundary and round-trip the expected encoded instance.
 python -m autarkic_systems.fixed_point
 python -m autarkic_systems.fixed_point --format json
 python -m autarkic_systems.formal_quotation_sequence
+python -m autarkic_systems.formal_quotation_term
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.project_status --format summary
 ```
@@ -53,7 +55,8 @@ The validator checks that:
 
 - required Willard anchors are present and known;
 - the codebook, substitution examples, token quotation examples,
-  token-numeral sequence examples, consistency-level target, and
+  token-numeral sequence examples, quotation term examples,
+  consistency-level target, and
   deduction-apparatus target remain accepted;
 - the template is a `pi1` target with the target variable free;
 - the substitution instance matches the expected node and code; and
@@ -61,7 +64,6 @@ The validator checks that:
 
 ## Boundary
 
-This is not a diagonal lemma, not a quotation-term construction inside the
-arithmetic object language, not pair/list term coding, not a fixed-point
-equation proof, and not a self-consistency theorem. The formal-confidence
-target remains blocked on `fixed-point-construction`.
+This is not a diagonal lemma, not arithmetic sequence axioms, not a
+fixed-point equation proof, and not a self-consistency theorem. The
+formal-confidence target remains blocked on `fixed-point-construction`.

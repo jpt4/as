@@ -30,9 +30,19 @@
           "notation": "mul(t,u)",
           "arity": 2,
           "totality_status": "not-in-type-ns-profile"
+        },
+        "sequence_nil": {
+          "notation": "nil",
+          "arity": 0,
+          "totality_status": "coding-symbol-not-arithmetic-theorem"
+        },
+        "sequence_cons": {
+          "notation": "cons(t,u)",
+          "arity": 2,
+          "totality_status": "coding-symbol-not-arithmetic-theorem"
         }
       },
-      "examples": ["0", "S(0)", "S(x)"]
+      "examples": ["0", "S(0)", "S(x)", "cons(S(0), nil)"]
     },
     "formulae": {
       "relation_symbols": {

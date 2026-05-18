@@ -1,7 +1,6 @@
 # Formal Quotation Sequence
 
-Status: checked token-numeral sequence surface, not a quotation term,
-2026-05-18.
+Status: checked token-numeral sequence surface, 2026-05-18.
 
 ADR-0233 adds `language/formal_quotation_sequence_examples.json` and
 `autarkic_systems/formal_quotation_sequence.py`. The surface wraps the
@@ -14,9 +13,9 @@ The fixed-point target needs to move from individual code-token numerals
 toward a quoteable formula code. This slice names and validates the next
 smallest object: a non-empty sequence of quoted token numerals.
 
-The checked sequence is deliberately modest. It is useful because later
-quotation-term work can depend on one validated sequence shape instead of raw
-Python tuples, but it is still outside the arithmetic object language.
+The checked sequence is deliberately modest. It is useful because the
+ADR-0234 quotation-term surface can depend on one validated sequence shape
+instead of raw Python tuples.
 
 ## Current Surface
 
@@ -36,6 +35,7 @@ depth, accepted sequence kind, and accepted status.
 ```sh
 python -m autarkic_systems.formal_quotation_sequence
 python -m autarkic_systems.formal_quotation_sequence --format json
+python -m autarkic_systems.formal_quotation_term
 python -m autarkic_systems.fixed_point
 python -m autarkic_systems.project_status --format summary
 ```
@@ -50,8 +50,7 @@ The validator checks that:
 
 ## Boundary
 
-This is not pair/list coding in the arithmetic language, not a full quotation
-term for formula codes, not a diagonal lemma, not a fixed-point equation proof,
-and not a self-consistency theorem. The fixed-point target now points at this
-sequence surface but remains blocked on quotation-term construction,
-diagonal-lemma proof, and fixed-point equation proof.
+This is not a diagonal lemma, not a fixed-point equation proof, and not a
+self-consistency theorem. The fixed-point target points at this sequence
+surface and the ADR-0234 quotation-term surface but remains blocked on
+diagonal-lemma proof and fixed-point equation proof.

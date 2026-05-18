@@ -12,8 +12,9 @@ ADR-0224 identified arithmetic syntax as one blocker on Willard-style formal
 confidence. This slice removes only that blocker by naming a minimal checked
 language surface:
 
-- arithmetic terms with variables, `0`, successor, and non-profile addition
-  and multiplication symbols;
+- arithmetic terms with variables, `0`, successor, non-profile addition and
+  multiplication symbols, and quotation-coding sequence constructors
+  `sequence_nil` and `sequence_cons`;
 - formulae with equality, less-than, connectives, unbounded quantifier names,
   and bounded quantifier names;
 - the `delta0` bounded formula class with examples;
@@ -22,8 +23,8 @@ language surface:
   inside the arithmetic language itself.
 
 The manifest is tagged as `Type-NS`, following the Willard 2020
-Type-NS/S/A/M pressure. It does not assert total addition or multiplication,
-and it does not implement an IS(A) system.
+Type-NS/S/A/M pressure. It does not assert total addition, multiplication, or
+sequence-constructor semantics, and it does not implement an IS(A) system.
 
 ## Run
 
@@ -44,7 +45,7 @@ The validator checks that:
 
 ## Boundary
 
-This is not a parser, evaluator, substitution engine, deduction apparatus,
-theorem prover, or self-consistency claim. ADR-0227 adds the separate first
-proof-code codebook over this syntax, while this document remains the
-vocabulary surface that codebook targets.
+This is not a parser, evaluator, substitution engine, sequence arithmetic
+axiom system, deduction apparatus, theorem prover, or self-consistency claim.
+ADR-0227 adds the separate first proof-code codebook over this syntax, while
+this document remains the vocabulary surface that codebook targets.

@@ -2,7 +2,7 @@
 
 Status: checked target boundary with arithmetic syntax, codebook, substitution,
 consistency-level target, deduction-apparatus target, fixed-point target, and
-quotation sequence dependency, 2026-05-18.
+quotation sequence/term dependencies, 2026-05-18.
 
 ADR-0224 adds `claims/formal_confidence_targets.json` and
 `autarkic_systems/formal_confidence.py`. The target records what AS would need
@@ -42,8 +42,10 @@ target. ADR-0231 adds `claims/fixed_point_targets.json`, so a first `pi1`
 fixed-point target template and checked substitution instance are selected.
 ADR-0233 adds `language/formal_quotation_sequence_examples.json`, so the
 fixed-point target now depends on a checked token-numeral sequence object
-instead of raw token tuples. The target remains blocked on constructing the
-actual fixed point.
+instead of raw token tuples. ADR-0234 adds
+`language/formal_quotation_term_examples.json`, so the fixed-point target now
+depends on a checked nested sequence term surface. The target remains blocked
+on constructing the actual fixed point.
 
 ## Current Target
 
@@ -65,8 +67,9 @@ object languages, `language/formal_arithmetic_language.json`,
 `claims/consistency_level_targets.json`, and local predicate-result proof
 certificates through `claims/deduction_apparatus_targets.json`, plus the
 fixed-point target in `claims/fixed_point_targets.json`, which now references
-`language/formal_quotation_sequence_examples.json`. It also records the
-remaining blocker: `fixed-point-construction`.
+`language/formal_quotation_sequence_examples.json` and
+`language/formal_quotation_term_examples.json`. It also records the remaining
+blocker: `fixed-point-construction`.
 
 ## Run
 
@@ -85,6 +88,8 @@ python -m autarkic_systems.deduction_apparatus
 python -m autarkic_systems.deduction_apparatus --format json
 python -m autarkic_systems.formal_quotation_sequence
 python -m autarkic_systems.formal_quotation_sequence --format json
+python -m autarkic_systems.formal_quotation_term
+python -m autarkic_systems.formal_quotation_term --format json
 python -m autarkic_systems.fixed_point
 python -m autarkic_systems.fixed_point --format json
 python -m autarkic_systems.project_status --format summary

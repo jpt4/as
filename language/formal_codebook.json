@@ -21,7 +21,9 @@
     "zero": 12,
     "successor": 13,
     "addition": 14,
-    "multiplication": 15
+    "multiplication": 15,
+    "sequence_nil": 16,
+    "sequence_cons": 17
   },
   "formula_tags": {
     "equals": 21,
@@ -124,6 +126,28 @@
         "premises": []
       },
       "expected_code": [61, 1, 1, 41, 1, 22, 11, 1, 11, 4, 0]
+    },
+    {
+      "example_id": "short-quotation-sequence-term",
+      "node": {
+        "kind": "sequence_cons",
+        "head": {
+          "kind": "successor",
+          "term": {
+            "kind": "zero"
+          }
+        },
+        "tail": {
+          "kind": "sequence_cons",
+          "head": {
+            "kind": "zero"
+          },
+          "tail": {
+            "kind": "sequence_nil"
+          }
+        }
+      },
+      "expected_code": [17, 13, 12, 17, 12, 16]
     }
   ]
 }

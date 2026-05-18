@@ -434,8 +434,8 @@ tableau, or arithmetized proof-predicate machinery. ADR-0231 adds a checked
 fixed-point target template and substitution instance, but actual quotation
 terms and fixed-point equations remain open. ADR-0232 adds unary token
 numerals for formal code tokens. ADR-0233 wraps those numerals into a checked
-token-numeral sequence object, while arithmetic-language quotation terms and
-fixed-point equations remain open.
+token-numeral sequence object. ADR-0234 adds nested sequence term encoding for
+quotation terms, while diagonal fixed-point equations remain open.
 
 ## P5: Annotate Core Willard Sources At Definition Granularity
 
@@ -463,8 +463,9 @@ capture-avoiding substitution examples over those codebook nodes. ADR-0229
 removes the consistency-level selection blocker by selecting Level-1
 consistency as the first target notion. ADR-0230 removes the
 deduction-apparatus selection blocker by selecting the AS-local
-`predicate-result` certificate checker as the current apparatus target. The
-remaining blocker is fixed-point construction.
+`predicate-result` certificate checker as the current apparatus target.
+ADR-0234 adds a checked quotation-term surface over the codebook. The remaining
+blocker is fixed-point construction.
 
 ## P6: Recover Or Replace The Active Proflog Frontier
 

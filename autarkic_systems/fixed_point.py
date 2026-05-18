@@ -4,7 +4,7 @@ This module validates the first self-reference target template over the
 existing formal codebook and capture-avoiding substitution machinery. It
 checks that a template has the intended free code variable and that the
 checked substitution instance matches the expected node and code. It does not
-prove a diagonal lemma, construct a real quotation term, or claim
+prove a diagonal lemma, prove a fixed-point equation, or claim
 self-consistency.
 """
 
@@ -44,6 +44,10 @@ from autarkic_systems.formal_quotation_sequence import (
     load_quotation_sequence_examples,
     validate_quotation_sequence_examples,
 )
+from autarkic_systems.formal_quotation_term import (
+    load_quotation_term_examples,
+    validate_quotation_term_examples,
+)
 from autarkic_systems.willard_map import load_willard_definition_map
 
 
@@ -62,7 +66,6 @@ VALID_TARGET_STATUSES = {
 }
 SUPPORTED_SENTENCE_CLASS = "pi1"
 REQUIRED_FUTURE_WORK = (
-    "quotation-term-construction",
     "diagonal-lemma-proof",
     "fixed-point-equation-proof",
 )
@@ -98,6 +101,7 @@ class FixedPointManifest:
     substitution_examples_path: str
     quotation_examples_path: str
     quotation_sequence_examples_path: str
+    quotation_term_examples_path: str
     consistency_level_targets_path: str
     deduction_apparatus_targets_path: str
     willard_anchor_ids: tuple[str, ...]
@@ -122,6 +126,7 @@ class FixedPointReport:
     substitution_examples_path: Path
     quotation_examples_path: Path
     quotation_sequence_examples_path: Path
+    quotation_term_examples_path: Path
     consistency_level_targets_path: Path
     deduction_apparatus_targets_path: Path
     formal_language_path: Path
@@ -171,6 +176,7 @@ def load_fixed_point_targets(
         substitution_examples_path=_required_text(data, "substitution_examples_path"),
         quotation_examples_path=_required_text(data, "quotation_examples_path"),
         quotation_sequence_examples_path=_required_text(data, "quotation_sequence_examples_path"),
+        quotation_term_examples_path=_required_text(data, "quotation_term_examples_path"),
         consistency_level_targets_path=_required_text(data, "consistency_level_targets_path"),
         deduction_apparatus_targets_path=_required_text(data, "deduction_apparatus_targets_path"),
         willard_anchor_ids=tuple(_required_text_list(data, "willard_anchor_ids")),
@@ -191,6 +197,7 @@ def validate_fixed_point_targets(
     checked_substitution_path = Path(manifest.substitution_examples_path)
     checked_quotation_path = Path(manifest.quotation_examples_path)
     checked_quotation_sequence_path = Path(manifest.quotation_sequence_examples_path)
+    checked_quotation_term_path = Path(manifest.quotation_term_examples_path)
     checked_consistency_path = Path(manifest.consistency_level_targets_path)
     checked_deduction_path = Path(manifest.deduction_apparatus_targets_path)
 
@@ -223,6 +230,13 @@ def validate_fixed_point_targets(
         checked_formal_language_path,
         checked_willard_map_path,
     )
+    quotation_term = load_quotation_term_examples(checked_quotation_term_path)
+    quotation_term_report = validate_quotation_term_examples(
+        quotation_term,
+        checked_codebook_path,
+        checked_formal_language_path,
+        checked_willard_map_path,
+    )
     consistency = load_consistency_level_targets(checked_consistency_path)
     consistency_report = validate_consistency_level_targets(
         consistency,
@@ -246,6 +260,7 @@ def validate_fixed_point_targets(
             substitution_report,
             quotation_report,
             quotation_sequence_report,
+            quotation_term_report,
             consistency_report,
             deduction_report,
         )
@@ -258,6 +273,7 @@ def validate_fixed_point_targets(
         substitution_examples_path=checked_substitution_path,
         quotation_examples_path=checked_quotation_path,
         quotation_sequence_examples_path=checked_quotation_sequence_path,
+        quotation_term_examples_path=checked_quotation_term_path,
         consistency_level_targets_path=checked_consistency_path,
         deduction_apparatus_targets_path=checked_deduction_path,
         formal_language_path=checked_formal_language_path,
@@ -280,6 +296,7 @@ def fixed_point_report_payload(report: FixedPointReport) -> dict[str, Any]:
         "substitution_examples_path": str(report.substitution_examples_path),
         "quotation_examples_path": str(report.quotation_examples_path),
         "quotation_sequence_examples_path": str(report.quotation_sequence_examples_path),
+        "quotation_term_examples_path": str(report.quotation_term_examples_path),
         "consistency_level_targets_path": str(report.consistency_level_targets_path),
         "deduction_apparatus_targets_path": str(report.deduction_apparatus_targets_path),
         "formal_language_path": str(report.formal_language_path),
@@ -429,6 +446,11 @@ def _validate_dependency_references(
             "language/formal_quotation_sequence_examples.json",
         ),
         (
+            "quotation_term_examples_path",
+            manifest.quotation_term_examples_path,
+            "language/formal_quotation_term_examples.json",
+        ),
+        (
             "consistency_level_targets_path",
             manifest.consistency_level_targets_path,
             "claims/consistency_level_targets.json",
@@ -455,6 +477,7 @@ def _validate_dependency_reports(
     substitution_report: Any,
     quotation_report: Any,
     quotation_sequence_report: Any,
+    quotation_term_report: Any,
     consistency_report: Any,
     deduction_report: Any,
 ) -> list[FixedPointValidation]:
@@ -463,6 +486,7 @@ def _validate_dependency_reports(
         ("substitution", substitution_report, "formal substitution"),
         ("quotation", quotation_report, "formal quotation"),
         ("quotation_sequence", quotation_sequence_report, "formal quotation sequence"),
+        ("quotation_term", quotation_term_report, "formal quotation term"),
         ("consistency", consistency_report, "consistency-level target"),
         ("deduction", deduction_report, "deduction-apparatus target"),
     )
@@ -656,6 +680,7 @@ def _failed_subject_for_result(subject: str) -> str:
         "substitution",
         "quotation",
         "quotation_sequence",
+        "quotation_term",
         "consistency",
         "deduction",
     }:
@@ -665,6 +690,7 @@ def _failed_subject_for_result(subject: str) -> str:
         "substitution_examples_path",
         "quotation_examples_path",
         "quotation_sequence_examples_path",
+        "quotation_term_examples_path",
         "consistency_level_targets_path",
         "deduction_apparatus_targets_path",
     }:
