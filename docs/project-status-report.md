@@ -36,6 +36,7 @@ The text report names:
 - transition evidence accepted or rejected state and bundle count;
 - chain evidence accepted or rejected state and bundle count;
 - transition and chain evidence bundle IDs and paths;
+- transition bundle primary positive examples and covered examples;
 - blocked command tokens;
 - blocked runtime surfaces;
 - source-status AS boundaries;
@@ -80,6 +81,8 @@ ADR-0118 renders those AS boundaries in the default text report without
 changing the JSON schema.
 ADR-0121 adds `positive_example` and `covered_positive_examples` to transition
 evidence bundle entries in JSON and bumps the schema version to `7`.
+ADR-0122 renders those transition bundle positive and covered examples in the
+default text report while preserving `schema_version: 7`.
 
 ## Boundary
 

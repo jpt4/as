@@ -2323,3 +2323,23 @@ Status: accepted in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_evidence_bundle_registry.py` and
 `tests/test_project_status_report.py`.
+
+## ADR-0122: Project Status Text Covered Examples
+
+Goal: render transition bundle positive and covered examples in the default
+project status text report.
+
+Deliverables:
+
+- `positive example:` lines for transition bundles with `positive_example`;
+- `covered examples:` lines for transition bundles with
+  `covered_positive_examples`;
+- unsupported self-mailbox and self-target command-buffer coverage visible in
+  text;
+- unchanged project status JSON at `schema_version: 7`; and
+- focused project-status text tests.
+
+Status: accepted in
+`docs/adr/0122-project-status-text-covered-examples.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

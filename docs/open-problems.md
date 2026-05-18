@@ -205,6 +205,8 @@ layer by letting the unsupported self-command bundles validate
 ADR-0121 exposes transition bundle `positive_example` and
 `covered_positive_examples` metadata in registry JSON and project-status JSON,
 bumping project status to `schema_version: 7`.
+ADR-0122 renders that transition bundle primary and covered positive-example
+coverage in default project-status text while preserving `schema_version: 7`.
 
 ## P3: Choose The First Proof Apparatus
 

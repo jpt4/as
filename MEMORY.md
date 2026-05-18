@@ -534,3 +534,6 @@
 - ADR-0121 exposes transition evidence bundle `positive_example` and
   `covered_positive_examples` in registry JSON and project-status JSON,
   bumping project status to `schema_version: 7`.
+- ADR-0122 renders transition evidence bundle `positive_example` and
+  `covered_positive_examples` in default project-status text while preserving
+  project status `schema_version: 7`.

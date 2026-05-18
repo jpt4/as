@@ -340,3 +340,6 @@
 - When a validator starts checking richer bundle metadata, carry that metadata
   into the registry JSON too. A green registry result should reveal the
   evidence coverage it just validated.
+- When JSON and text are both first-run surfaces, expose operator-critical
+  evidence in both. A human should not need to switch formats to see the
+  coverage that automation already sees.

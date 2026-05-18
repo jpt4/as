@@ -2726,3 +2726,24 @@
   registry/status/unsupported-evidence tests ran 64 tests; `py_compile`,
   `git diff --check`, transition evidence registry JSON, and project status
   text/JSON passed; and `python -m unittest discover` passed 579 tests.
+
+## 2026-05-18 - Project Status Text Covered Examples
+
+- Added ADR-0122 to render transition bundle primary and covered positive
+  examples in the default project status text report while preserving project
+  status JSON `schema_version: 7`.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed because the text report omitted the unsupported self-mailbox
+  `positive example:` line and did not yet render covered-example lines.
+- Updated `autarkic_systems.project_status` so bundle text rendering includes
+  optional `positive_example` and `covered_positive_examples` fields when
+  present. Chain bundle text stayed unchanged because chain bundle entries do
+  not expose those fields.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the text covered-example contract.
+- Verification passed: focused project-status tests ran 35 tests; focused
+  project-status and evidence-registry tests ran 52 tests; `py_compile` and
+  `git diff --check` passed; default project status text rendered the
+  self-mailbox and command-buffer covered examples; project status JSON
+  remained accepted at `schema_version: 7`; and
+  `python -m unittest discover` passed 579 tests.

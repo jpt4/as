@@ -364,6 +364,12 @@ def _registry_bundle_text_lines(label: str, summary: dict[str, Any]) -> list[str
     lines = [f"{label} bundles:"]
     for bundle in bundles:
         lines.append(f"  {bundle['bundle_id']} -> {bundle['path']}")
+        positive_example = bundle.get("positive_example")
+        if positive_example:
+            lines.append(f"    positive example: {positive_example}")
+        covered_examples = bundle.get("covered_positive_examples")
+        if covered_examples:
+            lines.append(f"    covered examples: {'; '.join(covered_examples)}")
     return lines
 
 

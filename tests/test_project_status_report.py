@@ -320,6 +320,26 @@ class ProjectStatusReportTests(unittest.TestCase):
             "evidence/neighbor_command_buffer_delivery_bundle.json",
             text,
         )
+        self.assertIn(
+            "positive example: write buffer one unsupported preserved",
+            text,
+        )
+        self.assertIn(
+            "covered examples: standard signal unsupported preserved; "
+            "write buffer zero unsupported preserved; "
+            "write buffer one unsupported preserved",
+            text,
+        )
+        self.assertIn(
+            "positive example: self write buffer command remains appended",
+            text,
+        )
+        self.assertIn(
+            "covered examples: self standard signal command remains appended; "
+            "self write buffer zero command remains appended; "
+            "self write buffer command remains appended",
+            text,
+        )
         self.assertIn("Chain evidence bundles:", text)
         self.assertIn(
             "neighbor-delivery-recipient-chain-evidence-bundle -> "
