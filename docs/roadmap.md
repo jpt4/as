@@ -3511,3 +3511,23 @@ Deliverables:
 Status: accepted in
 `docs/adr/0173-memory-rule-predicate-result-certificates.md`. Implemented in
 the proof-certificate manifest and focused proof/project-status tests.
+
+## ADR-0174: Stem-Init Predicate Result Certificates
+
+Goal: make the stem-init reset proof certificate name the predicate it
+evaluates instead of relying only on manifest-example lookup.
+
+Deliverables:
+
+- `UC-FIXED-STEM-INIT-RESET` proof-certificate steps use
+  `predicate-result`;
+- both stem-init certificate steps name `stem_init_resets_to_stem`;
+- proof-certificate text/JSON and aggregate project-status reports render the
+  stem-init certificate as two predicate-result steps; and
+- Universal Cell runtime behavior, transition claims, object-language schema,
+  evidence bundles, source-status records, and status schema versions remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0174-stem-init-predicate-result-certificates.md`. Implemented in the
+proof-certificate manifest and focused proof/project-status tests.

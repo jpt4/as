@@ -3763,3 +3763,19 @@
   certificate surface. JSON parsing for the touched certificate manifest,
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 771 tests.
+
+## 2026-05-18 - Stem-Init Predicate Result Certificates
+
+- Added ADR-0174 to migrate `UC-FIXED-STEM-INIT-RESET` from
+  `manifest-example` proof steps to explicit `predicate-result` proof steps.
+- Added red proof-certificate and project-status tests before implementation.
+  The focused red run executed 92 tests and failed because the stem-init
+  certificate still used `manifest-example`, and proof/project-status reports
+  still described it as two `manifest-example` steps.
+- Updated `claims/proof_certificates.json` so both stem-init certificate steps
+  use `predicate-result` and name `stem_init_resets_to_stem` directly.
+- Focused green verification passed 92 tests. The proof-certificate CLI JSON,
+  project-status JSON, and object-language JSON checks accepted the updated
+  certificate surface. JSON parsing for the touched certificate manifest,
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 772 tests.

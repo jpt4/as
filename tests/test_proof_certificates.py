@@ -75,6 +75,23 @@ class ProofCertificateTests(unittest.TestCase):
             {"fixed_role_memory_rule"},
         )
 
+    def test_stem_init_claim_uses_explicit_predicate_result_steps(self):
+        certificates = {
+            certificate.claim_id: certificate
+            for certificate in load_proof_certificates(CERTIFICATES)
+        }
+
+        certificate = certificates["UC-FIXED-STEM-INIT-RESET"]
+
+        self.assertEqual(len(certificate.steps), 2)
+        self.assertTrue(
+            all(step.rule == "predicate-result" for step in certificate.steps)
+        )
+        self.assertEqual(
+            {step.predicate for step in certificate.steps},
+            {"stem_init_resets_to_stem"},
+        )
+
     def test_report_formats_successful_proof_certificate_validation(self):
         report = proof_certificates.validate_proof_certificate_project(
             claims_path=MANIFEST,
@@ -87,6 +104,7 @@ class ProofCertificateTests(unittest.TestCase):
         self.assertIn("OK UC-FIXED-OUTPUT-PRESERVED:", text)
         self.assertIn("OK UC-FIXED-CONSUMED-INPUT-CLEARED:", text)
         self.assertIn("OK UC-FIXED-MEMORY-RULE:", text)
+        self.assertIn("OK UC-FIXED-STEM-INIT-RESET:", text)
         self.assertIn("predicate-result", text)
         self.assertNotIn("FAIL", text)
 
@@ -127,6 +145,16 @@ class ProofCertificateTests(unittest.TestCase):
         self.assertTrue(memory_rule["accepted"])
         self.assertEqual(
             memory_rule["detail"],
+            "verified 2 certificate steps: 2 predicate-result steps",
+        )
+        stem_init = next(
+            result
+            for result in payload["results"]
+            if result["claim_id"] == "UC-FIXED-STEM-INIT-RESET"
+        )
+        self.assertTrue(stem_init["accepted"])
+        self.assertEqual(
+            stem_init["detail"],
             "verified 2 certificate steps: 2 predicate-result steps",
         )
 

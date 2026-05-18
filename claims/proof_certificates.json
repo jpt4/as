@@ -56,14 +56,16 @@
       "claim_id": "UC-FIXED-STEM-INIT-RESET",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "stem init reset",
-          "expected": true
+          "expected": true,
+          "predicate": "stem_init_resets_to_stem"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "stem init stayed fixed",
-          "expected": false
+          "expected": false,
+          "predicate": "stem_init_resets_to_stem"
         }
       ]
     },

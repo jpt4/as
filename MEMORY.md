@@ -582,6 +582,9 @@
 - ADR-0173 migrates the fixed-role memory-rule proof certificate to
   `predicate-result`, extending explicit predicate-named proof steps across
   the first three foundational fixed-cell claims.
+- ADR-0174 migrates the stem-init reset proof certificate to
+  `predicate-result`, completing explicit predicate-named proof steps for the
+  four original fixed-cell claims.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.
