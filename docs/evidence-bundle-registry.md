@@ -81,6 +81,10 @@ ADR-0120 lets individual transition evidence bundles name
 claim predicate and expected status.
 ADR-0121 carries each bundle's `positive_example` and
 `covered_positive_examples` into the registry JSON `bundles` entries.
+ADR-0213 adds `bundle_failed_subjects`, an ordered list of rejected inner
+validation subjects from each loadable registered bundle. Missing registered
+bundle files remain registry-level path failures and leave
+`bundle_failed_subjects` empty.
 
 ## Boundary
 
@@ -101,3 +105,5 @@ The tests cover registry loading, the current ADR-0065, ADR-0068/ADR-0163,
 ADR-0069, ADR-0072, ADR-0073, ADR-0074, ADR-0075, ADR-0076, and ADR-0162
 bundle entries, whole registry validation, duplicate bundle-ID rejection,
 missing bundle-path rejection, and unregistered sibling bundle-file rejection.
+They also cover accepted-path empty `bundle_failed_subjects`, rejected existing
+bundle inner failed subjects, and unchanged missing-bundle behavior.

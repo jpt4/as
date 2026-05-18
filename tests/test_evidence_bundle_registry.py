@@ -107,6 +107,28 @@ NEIGHBOR_COMMAND_BUFFER_STATUS = "stem-command-buffer-neighbor-delivered"
 NEIGHBOR_COMMAND_BUFFER_EXAMPLE = "neighbor b proc left command delivered"
 
 
+def _write_registry_with_drifted_existing_bundle(directory: Path) -> Path:
+    bundle_path = directory / "recipient_init_command_message_bundle.json"
+    registry_path = directory / "manifest.json"
+    drifted_status = "rejected-input"
+
+    bundle_data = json.loads(BUNDLE.read_text(encoding="utf-8"))
+    bundle_data["expected_status"] = drifted_status
+    bundle_path.write_text(json.dumps(bundle_data), encoding="utf-8")
+
+    registry_data = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    registry_data["bundles"] = [
+        {
+            "bundle_id": BUNDLE_ID,
+            "path": str(bundle_path),
+            "claim_id": CLAIM_ID,
+            "expected_status": drifted_status,
+        }
+    ]
+    registry_path.write_text(json.dumps(registry_data), encoding="utf-8")
+    return registry_path
+
+
 class EvidenceBundleRegistryTests(unittest.TestCase):
     def setUp(self):
         self.registry = load_evidence_bundle_registry(REGISTRY)
@@ -231,6 +253,7 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["bundle_count"], 11)
         self.assertEqual(payload["failed_subjects"], [])
+        self.assertEqual(payload["bundle_failed_subjects"], [])
         self.assertEqual(
             payload["bundles"],
             [
@@ -338,6 +361,7 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["bundle_count"], 11)
         self.assertEqual(payload["failed_subjects"], [])
+        self.assertEqual(payload["bundle_failed_subjects"], [])
         self.assertEqual(payload["bundles"][0]["bundle_id"], BUNDLE_ID)
         self.assertEqual(payload["bundles"][0]["path"], str(BUNDLE))
         self.assertEqual(payload["bundles"][0]["positive_example"], EXAMPLE)
@@ -427,6 +451,27 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         )
         self.assertEqual(payload["bundles"][0]["positive_example"], "")
         self.assertEqual(payload["bundles"][0]["covered_positive_examples"], [])
+        self.assertEqual(payload["bundle_failed_subjects"], [])
+
+    def test_json_payload_records_inner_bundle_failed_subjects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            registry_path = _write_registry_with_drifted_existing_bundle(Path(tmp))
+            registry = load_evidence_bundle_registry(registry_path)
+            results = validate_evidence_bundle_registry(registry)
+
+            payload = registry_validation_report_payload(registry, results)
+
+        self.assertFalse(payload["accepted"])
+        self.assertIn("registry-bundle-validation", payload["failed_subjects"])
+        self.assertEqual(
+            payload["bundle_failed_subjects"],
+            [
+                {
+                    "bundle_id": BUNDLE_ID,
+                    "failed_subjects": ["claim-example", "schematic-trace"],
+                }
+            ],
+        )
 
     def test_json_cli_emits_failed_subjects_for_missing_bundle(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -463,6 +508,31 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         self.assertEqual(
             payload["failed_subjects"],
             ["registry-bundle-paths", "registry-bundle-validation"],
+        )
+        self.assertEqual(payload["bundle_failed_subjects"], [])
+
+    def test_json_cli_emits_registry_bundle_failed_subjects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            registry_path = _write_registry_with_drifted_existing_bundle(Path(tmp))
+
+            stdout = io.StringIO()
+            with contextlib.redirect_stdout(stdout):
+                exit_code = run_evidence_bundle_cli(
+                    ["--registry", str(registry_path), "--format", "json"]
+                )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 1, payload)
+        self.assertFalse(payload["accepted"])
+        self.assertIn("registry-bundle-validation", payload["failed_subjects"])
+        self.assertEqual(
+            payload["bundle_failed_subjects"],
+            [
+                {
+                    "bundle_id": BUNDLE_ID,
+                    "failed_subjects": ["claim-example", "schematic-trace"],
+                }
+            ],
         )
 
     def test_unregistered_sibling_bundle_file_is_rejected(self):

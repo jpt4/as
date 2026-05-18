@@ -195,7 +195,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json --format json`
   emits the same registry validation as machine-readable JSON, including the
   registered transition bundle IDs, paths, claim IDs, expected statuses, and
-  positive and covered examples, plus the compact failed-subject summary.
+  positive and covered examples, plus compact registry-level and per-bundle
+  failed-subject summaries.
 - `docs/self-mailbox-init-claim.md` records the named claim and
   proof-certificate surface for the self-mailbox init-command subset.
 - `docs/self-mailbox-unsupported-claim.md` records the named preservation

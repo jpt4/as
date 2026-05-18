@@ -883,3 +883,8 @@
 - ADR-0212 adds the same source-registry inner-failure detail to transition
   chain evidence via `chain_registry_validation_report_payload.bundle_failed_subjects`,
   leaving missing registered-bundle paths as registry-level failures.
+- ADR-0213 adds the same source-registry inner-failure detail to base
+  transition evidence via
+  `registry_validation_report_payload.bundle_failed_subjects`, preserving
+  inner failed subjects such as `claim-example` and `schematic-trace` while
+  leaving missing registered-bundle paths as registry-level failures.

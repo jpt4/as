@@ -4542,3 +4542,25 @@
   reported `accepted: true`, `bundle_count: 2`, and
   `bundle_failed_subjects: []`. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 900 tests.
+
+## 2026-05-18 - Transition Registry Bundle Failed Subjects
+
+- Added ADR-0213 to make base transition evidence registry JSON preserve inner
+  failed subjects for rejected existing bundles.
+- Added red transition registry tests before implementation. The focused red
+  run failed because direct and CLI registry JSON lacked
+  `bundle_failed_subjects`, including for a registry pointing at a drifted
+  existing transition bundle.
+- Updated `autarkic_systems/evidence_bundle.py` so
+  `registry_validation_report_payload` reports `bundle_failed_subjects` from
+  loadable registered bundle validation results, while missing registered
+  bundle paths keep the existing registry-level failure subjects and an empty
+  bundle-failure list.
+- Updated the transition evidence-bundle registry docs, README, roadmap, and
+  repo memory notes for the registry JSON failure-detail summary.
+- Focused transition evidence-bundle registry tests passed 22 tests. Adjacent
+  evidence/project-status tests passed 115 tests. Live transition registry JSON
+  reported `accepted: true`, `bundle_count: 11`, and
+  `bundle_failed_subjects: []`; project-status summary remained accepted.
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 902 tests.
