@@ -104,6 +104,27 @@ class NeighborDeliveryRecipientChainTests(unittest.TestCase):
         self.assertEqual(chain.recipient_result.cell.memory, "right")
         self.assertIn("recipient-init-command-message-processed", chain.detail)
 
+    def test_delivered_write_buffer_zero_remains_unconsumed_boundary(self):
+        sender = Cell(
+            role="stem",
+            memory="right",
+            input=(1, 0, 0),
+            control=(0, 1, 0),
+            buffer=(1, 1, 1, 1),
+        )
+        recipient = Cell(role="wire", memory="right")
+
+        chain = execute_neighbor_delivery_recipient_chain(sender, recipient)
+
+        self.assertFalse(chain.accepted)
+        self.assertEqual(chain.status, "recipient-not-consumed")
+        self.assertIsNotNone(chain.recipient_before)
+        self.assertEqual(chain.recipient_before.upstream, ("_", "_", "write-buf-zero"))
+        self.assertIsNotNone(chain.recipient_result)
+        self.assertEqual(chain.recipient_result.status, "rejected-input")
+        self.assertEqual(chain.recipient_result.cell.upstream, EMPTY)
+        self.assertEqual(chain.recipient_result.cell.input, EMPTY)
+
 
 if __name__ == "__main__":
     unittest.main()

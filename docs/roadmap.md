@@ -3269,3 +3269,26 @@ Status: accepted in
 `docs/adr/0163-recipient-write-buffer-rejection-coverage.md`. Implemented in
 the transition claim/proof manifests, recipient non-init evidence bundle,
 recipient source-status record, and focused claim/evidence/status tests.
+
+## ADR-0164: Neighbor Write-Buffer Zero Rejection Chain Coverage
+
+Goal: extend the transition-chain claim surface so neighbor-delivered
+`write-buf-zero` rejection is explicit alongside the existing `write-buf-one`
+rejection path.
+
+Deliverables:
+
+- a completed neighbor-c `write-buf-zero` handoff example in
+  `tests/test_neighbor_delivery_recipient_chain.py`;
+- a negative consumed-chain example for delivered `write-buf-zero`;
+- a positive rejected-chain example for delivered `write-buf-zero`;
+- proof-certificate steps for both new chain examples;
+- chain-claim CLI and project-status text updated from seven to nine evaluated
+  chain examples; and
+- unchanged Universal Cell runtime behavior, chain traces, SVGs, evidence
+  bundles, project-status schema `15`, and source-status frontier schema `2`.
+
+Status: accepted in
+`docs/adr/0164-neighbor-write-buffer-zero-rejection-chain.md`. Implemented in
+the transition-chain claim/proof manifests and focused chain helper,
+chain-claim CLI, and project-status tests.

@@ -466,7 +466,7 @@ class ProjectStatusReportTests(unittest.TestCase):
                 {
                     "subject": "chain-examples",
                     "accepted": True,
-                    "detail": "evaluated 7 examples",
+                    "detail": "evaluated 9 examples",
                 },
                 {
                     "subject": "chain-certificates",

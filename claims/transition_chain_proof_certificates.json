@@ -23,6 +23,11 @@
           "rule": "manifest-example",
           "example": "neighbor c write buffer delivery remains unconsumed",
           "expected": false
+        },
+        {
+          "rule": "manifest-example",
+          "example": "neighbor c write buffer zero delivery remains unconsumed",
+          "expected": false
         }
       ]
     },
@@ -32,6 +37,11 @@
         {
           "rule": "manifest-example",
           "example": "neighbor c write buffer delivery rejected by recipient",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "neighbor c write buffer zero delivery rejected by recipient",
           "expected": true
         },
         {

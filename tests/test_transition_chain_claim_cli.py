@@ -32,7 +32,7 @@ class TransitionChainClaimCliTests(unittest.TestCase):
 
         self.assertIn("Transition chain claims: as-transition-chain-claim-v1", text)
         self.assertIn("OK chain-language-manifest:", text)
-        self.assertIn("OK chain-examples: evaluated 7 examples", text)
+        self.assertIn("OK chain-examples: evaluated 9 examples", text)
         self.assertIn("OK chain-certificates: verified 2 certificates", text)
         self.assertIn("OK chain-surface: validated 2 chain claims", text)
         self.assertNotIn("FAIL", text)

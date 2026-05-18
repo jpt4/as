@@ -462,3 +462,7 @@
   claim/proof/evidence layer. Otherwise the status frontier can look settled
   while future agents still have to infer whether the named token was actually
   checked.
+- Once a single-transition boundary explicitly covers a command family, check
+  the composed-chain layer for the same zero/one or sibling-token symmetry.
+  A chain claim can otherwise keep proving only the first example that happened
+  to get a trace.

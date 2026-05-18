@@ -221,6 +221,9 @@ ADR-0163 extends the existing recipient non-init rejection claim/proof surface
 and evidence-bundle coverage with explicit upstream `write-buf-zero` and
 `write-buf-one` rejection examples, moving transition claim coverage to 39
 examples while preserving project status `schema_version: 15`.
+ADR-0164 extends the transition-chain claim/proof surface with delivered
+neighbor-c `write-buf-zero` rejection examples, so chain-claim validation now
+evaluates nine examples while preserving project status `schema_version: 15`.
 
 ## Boundary
 

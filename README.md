@@ -156,7 +156,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/neighbor-delivery-chain-svg.md` records the rendered SVG views of the
   consumed and rejected composed-chain traces.
 - `docs/neighbor-delivery-chain-claim.md` records the named consumed and
-  rejected claim/proof-certificate surface for that two-step handoff.
+  rejected claim/proof-certificate surface for that two-step handoff,
+  including delivered `write-buf-zero` and `write-buf-one` rejection examples.
 - `docs/transition-chain-claim-language.md` records the syntax classes and
   validator boundary for transition-chain claims.
 - `docs/neighbor-delivery-chain-evidence-bundle.md` records the first
@@ -288,7 +289,7 @@ proof certificates, object languages, evidence bundles, and status reports:
   language manifest and the checked claim/proof surface in text or JSON form.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init delivery and rejected non-init
-  delivery.
+  delivery, including both delivered write-buffer rejection tokens.
 - `claims/transition_chain_proof_certificates.json` adds matching
   manifest-example proof certificates for those chain claims.
 - `language/transition_chain_claim_language.json` names the first explicit
@@ -311,7 +312,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   evidence accepted with 10 bundles, chain evidence accepted with 2 bundles,
   transition claim examples accepted with 15 claims and 39 matched examples,
   transition proof certificates accepted with 15 claims and 15 certificates,
-  transition-chain claims accepted with 2 claims and 2 certificates,
+  transition-chain claims accepted with 2 claims, 9 examples, and 2
+  certificates,
   transition language accepted with 15 claims and 15 certificates, chain
   language accepted with 2 claims and 2 certificates, concrete transition and
   chain registry bundle entries, and the blocked

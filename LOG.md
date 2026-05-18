@@ -3531,3 +3531,25 @@
   matched examples; source-status frontier reports schema 2. JSON parsing,
   `py_compile`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 730 tests.
+
+## 2026-05-18 - Neighbor Write-Buffer Zero Rejection Chain Coverage
+
+- Added ADR-0164 to make the composed neighbor-delivery rejection chain
+  explicit for delivered `write-buf-zero` as well as the existing
+  `write-buf-one` path.
+- Added red chain-helper, chain-claim, chain-claim CLI, and project-status
+  tests before implementation. The focused red run executed 93 tests and
+  failed because the `write-buf-zero` chain examples were absent from the
+  chain claim/proof manifests and CLI/status reports still counted seven
+  examples.
+- Added a negative consumed-chain example and a positive rejected-chain example
+  for completed neighbor-c `write-buf-zero` delivery, plus matching
+  proof-certificate steps.
+- Runtime behavior, chain traces, SVGs, and chain evidence bundles remain
+  unchanged; this is a claim/proof coverage slice over existing chain helper
+  behavior.
+- Focused green verification passed 93 tests and adjacent chain/object-language
+  verification passed 105 tests. Chain-claim JSON accepted two claims and nine
+  evaluated examples; project-status JSON accepted schema 15 with the same
+  chain coverage. JSON parsing, `py_compile`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 731 tests.

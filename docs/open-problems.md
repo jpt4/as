@@ -149,6 +149,8 @@ first-run surface.
 ADR-0091 promotes the delivered non-init rejection boundary into a named
 transition-chain claim, proving the composed handoff can preserve a blocked
 recipient command path as well as consume the init path.
+ADR-0164 extends that chain claim/proof surface so delivered `write-buf-zero`
+and `write-buf-one` paths are both explicit at the composed-chain layer.
 ADR-0092 records that rejection boundary as a composed-chain trace before any
 rendered SVG or evidence-bundle promotion.
 ADR-0093 adds the renderer-locked SVG for that rejection trace and makes the

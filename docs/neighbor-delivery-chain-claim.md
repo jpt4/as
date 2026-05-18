@@ -11,7 +11,9 @@ The first claim lives in `claims/transition_chain_claims.json` as
 `autarkic_systems/transition_chain_predicates.py`.
 ADR-0091 adds `UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED`, checked by
 `neighbor_delivery_rejected_by_recipient`, for the delivered non-init
-recipient rejection boundary.
+recipient rejection boundary. ADR-0164 extends the manifest examples so the
+chain claim names delivered `write-buf-zero` as well as the existing
+`write-buf-one` rejection path.
 
 ## Claim Boundary
 
@@ -24,21 +26,21 @@ The manifest also records negative examples for:
 
 - a sender that completes a self-target non-init command instead of delivering;
 - a recipient that already has pending upstream state; and
-- a delivered non-init `write-buf-one` token.
+- delivered non-init `write-buf-one` and `write-buf-zero` tokens.
 
 Those negative examples keep the claim from becoming a hidden scheduler or
 overwrite rule.
 
-The rejection claim covers the delivered non-init `write-buf-one` token path:
-the sender performs neighbor delivery, the delivered output is installed as
-recipient upstream state, and the recipient rejects the command through the
-existing non-init boundary. It deliberately does not execute write-buffer
-semantics.
+The rejection claim covers delivered non-init `write-buf-one` and
+`write-buf-zero` token paths: the sender performs neighbor delivery, the
+delivered output is installed as recipient upstream state, and the recipient
+rejects the command through the existing non-init boundary. It deliberately
+does not execute write-buffer semantics.
 
 ## Proof Surface
 
 `claims/transition_chain_proof_certificates.json` covers both chain claims with
-`manifest-example` steps for all seven examples. The verifier in
+`manifest-example` steps for all nine examples. The verifier in
 `autarkic_systems/chain_claims.py` evaluates each manifest example by running
 the ADR-0077 chain helper and then checking the chain predicate.
 

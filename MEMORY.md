@@ -684,3 +684,8 @@
   adds matching proof-certificate steps, and expands the recipient non-init
   evidence bundle's covered examples while leaving recipient write-buffer
   command-message execution blocked.
+- ADR-0164 extends the transition-chain claim/proof surface with delivered
+  neighbor-c `write-buf-zero` examples: negative for consumed-chain behavior
+  and positive for rejected-chain behavior. Chain claim validation now
+  evaluates nine examples without changing runtime, traces, SVGs, or evidence
+  bundles.

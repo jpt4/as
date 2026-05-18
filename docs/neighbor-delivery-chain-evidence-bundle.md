@@ -32,6 +32,10 @@ into the same evidence surface:
 - the neighbor command-buffer delivery transition bundle; and
 - the recipient non-init command rejection transition bundle.
 
+ADR-0164 adds chain-claim and proof-certificate coverage for a delivered
+`write-buf-zero` rejection path. The rejection-chain bundle's primary trace and
+SVG remain the existing delivered `write-buf-one` witness.
+
 Both bundles also record the source-status files that keep full stem command
 execution, recipient non-init command execution, `standard-signal` command
 tokens, and write-buffer command tokens blocked.

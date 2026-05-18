@@ -66,6 +66,21 @@
             "role": "wire",
             "memory": "right"
           }
+        },
+        {
+          "name": "neighbor c write buffer zero delivery remains unconsumed",
+          "expected": false,
+          "sender": {
+            "role": "stem",
+            "memory": "right",
+            "input": [1, 0, 0],
+            "control": [0, 1, 0],
+            "buffer": [1, 1, 1, 1]
+          },
+          "recipient": {
+            "role": "wire",
+            "memory": "right"
+          }
         }
       ]
     },
@@ -81,6 +96,21 @@
             "role": "stem",
             "memory": "right",
             "input": [0, 1, 0],
+            "control": [0, 1, 0],
+            "buffer": [1, 1, 1, 1]
+          },
+          "recipient": {
+            "role": "wire",
+            "memory": "right"
+          }
+        },
+        {
+          "name": "neighbor c write buffer zero delivery rejected by recipient",
+          "expected": true,
+          "sender": {
+            "role": "stem",
+            "memory": "right",
+            "input": [1, 0, 0],
             "control": [0, 1, 0],
             "buffer": [1, 1, 1, 1]
           },
