@@ -4572,3 +4572,29 @@ Status: accepted in
 `autarkic_systems/source_status.py`, with tests in
 `tests/test_source_status_frontier_cli.py` and
 `tests/test_project_status_report.py`.
+
+## ADR-0224: Formal Confidence Target
+
+Goal: state the first machine-readable AS formal-confidence target and make
+its current Willard-style self-consistency blockers explicit.
+
+Deliverables:
+
+- `claims/formal_confidence_targets.json` with
+  `AS-FORMAL-CONFIDENCE-TARGET-001`;
+- required Willard anchor references for generic configuration,
+  consistency-level, self-reference, GenAC, and excluded-middle boundary
+  constraints;
+- required configuration fields for language, bounded formula class, axiom
+  basis, deduction method, proof-code encoding, consistency notion,
+  self-reference, and substrate bridge;
+- explicit blocked status and blockers for arithmetic syntax, proof-code,
+  substitution, consistency-level, and deduction-apparatus work;
+- `autarkic_systems.formal_confidence` text/JSON CLI validation; and
+- no arithmetic parser, proof-code encoding, self-reference theorem, runtime
+  behavior, command-semantics, evidence-bundle, project-status, or submission
+  changes.
+
+Status: accepted in `docs/adr/0224-formal-confidence-target.md`.
+Implemented in `autarkic_systems/formal_confidence.py`, with tests in
+`tests/test_formal_confidence_target.py`.

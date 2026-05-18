@@ -923,3 +923,8 @@
   source-status frontier entries, validates the linked review artifact, bumps
   project status to schema version `21`, and bumps the focused source-status
   frontier to schema version `3`.
+- ADR-0224 adds `claims/formal_confidence_targets.json` and
+  `autarkic_systems.formal_confidence`, recording the first Willard-anchored
+  formal-confidence target as explicitly blocked pending arithmetic syntax,
+  proof-code encoding, self-reference substitution, consistency-level
+  selection, and deduction-apparatus work.

@@ -436,7 +436,11 @@ Status: started by ADR-0013. `docs/willard-definition-map.md` and
 construction, theorem, and boundary anchors from Willard 2001, 2011, 2016, and
 2020, with local PDF witnesses and AS relevance. Remaining work is to turn one
 of those anchors into executable syntax, proof-code, or proof-apparatus
-machinery.
+machinery. ADR-0224 adds the first checked formal-confidence target that uses
+those anchors as constraints while explicitly blocking any Willard-style
+self-consistency claim until arithmetic syntax, proof-code encoding,
+self-reference substitution, consistency-level selection, and deduction
+apparatus selection are implemented.
 
 ## P6: Recover Or Replace The Active Proflog Frontier
 

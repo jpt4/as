@@ -4756,3 +4756,21 @@
   `21`, and live handoff with refreshed remotes remained ready. `compileall`,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 911 tests.
+
+## 2026-05-18 - Formal Confidence Target
+
+- Added ADR-0224 to state the first machine-readable AS formal-confidence
+  target while explicitly marking Willard-style self-consistency as blocked.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.formal_confidence`, the target manifest, and CLI surface
+  did not exist.
+- Added `claims/formal_confidence_targets.json`, documenting
+  `AS-FORMAL-CONFIDENCE-TARGET-001` as blocked pending arithmetic object
+  language, proof-code encoding, self-reference substitution,
+  consistency-level selection, and deduction-apparatus selection.
+- Added `autarkic_systems/formal_confidence.py` with text/JSON validation
+  against the Willard definition map.
+- Focused formal-confidence tests passed 11 tests. Live text and JSON CLI
+  output reported one accepted blocked target with no failed subjects.
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 922 tests.
