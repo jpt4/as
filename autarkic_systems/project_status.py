@@ -41,6 +41,10 @@ from autarkic_systems.network_sequence_evidence_bundle import (
     network_sequence_registry_validation_report_payload,
     validate_network_sequence_evidence_bundle_registry,
 )
+from autarkic_systems.network_sequence_claims import (
+    network_sequence_claim_validation_report_payload,
+    validate_network_sequence_claim_project,
+)
 from autarkic_systems.object_language import (
     transition_claim_language_report_payload,
     validate_transition_claim_language_project,
@@ -63,12 +67,14 @@ DEFAULT_TRANSITION_CERTIFICATES = Path("claims/proof_certificates.json")
 DEFAULT_CHAIN_LANGUAGE = Path("language/transition_chain_claim_language.json")
 DEFAULT_CHAIN_CLAIMS = Path("claims/transition_chain_claims.json")
 DEFAULT_CHAIN_CERTIFICATES = Path("claims/transition_chain_proof_certificates.json")
+DEFAULT_SEQUENCE_CLAIMS = Path("claims/network_sequence_claims.json")
+DEFAULT_SEQUENCE_CERTIFICATES = Path("claims/network_sequence_proof_certificates.json")
 DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/recipient_non_init_command_source_status.json"),
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 17
+PROJECT_STATUS_SCHEMA_VERSION = 18
 PROOF_RULE_TEXT_ORDER = (
     PREDICATE_RESULT_RULE,
     MANIFEST_EXAMPLE_RULE,
@@ -94,6 +100,8 @@ def build_project_status_report(
     chain_language_path: Path | str = DEFAULT_CHAIN_LANGUAGE,
     chain_claims_path: Path | str = DEFAULT_CHAIN_CLAIMS,
     chain_certificates_path: Path | str = DEFAULT_CHAIN_CERTIFICATES,
+    sequence_claims_path: Path | str = DEFAULT_SEQUENCE_CLAIMS,
+    sequence_certificates_path: Path | str = DEFAULT_SEQUENCE_CERTIFICATES,
     source_status_paths: list[Path | str] | tuple[Path | str, ...] = DEFAULT_SOURCE_STATUS_PATHS,
 ) -> dict[str, Any]:
     """Build a status report from registries and source-status records."""
@@ -111,9 +119,14 @@ def build_project_status_report(
         chain_claims_path,
         chain_certificates_path,
     )
+    sequence_claims = _sequence_claim_summary(
+        sequence_claims_path,
+        sequence_certificates_path,
+    )
     proof_rule_audit = _proof_rule_audit_summary(
         transition_certificates_path,
         chain_certificates_path,
+        sequence_certificates_path,
     )
     transition_language = _transition_language_summary(
         transition_language_path,
@@ -133,6 +146,7 @@ def build_project_status_report(
         and transition_claims["accepted"]
         and transition_proof_certificates["accepted"]
         and chain_claims["accepted"]
+        and sequence_claims["accepted"]
         and proof_rule_audit["accepted"]
         and transition_language["accepted"]
         and chain_language["accepted"]
@@ -148,6 +162,7 @@ def build_project_status_report(
         "transition_claims": transition_claims,
         "transition_proof_certificates": transition_proof_certificates,
         "chain_claims": chain_claims,
+        "sequence_claims": sequence_claims,
         "proof_rule_audit": proof_rule_audit,
         "transition_language": transition_language,
         "chain_language": chain_language,
@@ -165,6 +180,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
     transition_claims = report["transition_claims"]
     transition_proof_certificates = report["transition_proof_certificates"]
     chain_claims = report["chain_claims"]
+    sequence_claims = report["sequence_claims"]
     proof_rule_audit = report["proof_rule_audit"]
     transition_language = report["transition_language"]
     chain_language = report["chain_language"]
@@ -204,6 +220,8 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         ),
         _chain_claim_text_line(chain_claims),
         *_chain_claim_failure_text_lines(chain_claims),
+        _sequence_claim_text_line(sequence_claims),
+        *_sequence_claim_failure_text_lines(sequence_claims),
         _proof_rule_audit_text_line(proof_rule_audit),
         _language_text_line("Transition language", transition_language),
         _language_text_line("Chain language", chain_language),
@@ -242,6 +260,7 @@ def format_project_status_summary(report: dict[str, Any]) -> str:
     sequence = report["sequence_evidence"]
     transition_claims = report["transition_claims"]
     chain_claims = report["chain_claims"]
+    sequence_claims = report["sequence_claims"]
     proof_rule_audit = report["proof_rule_audit"]
     frontier = report["frontier"]
     blocked_commands = frontier["blocked_commands"] or []
@@ -257,7 +276,11 @@ def format_project_status_summary(report: dict[str, Any]) -> str:
             f"Claims: {transition_claims['claim_count']} transition claims/"
             f"{transition_claims['matched_count']} matched examples; "
             f"{chain_claims['claim_count']} chain claims/"
-            f"{chain_claims['certificate_count']} certificates"
+            f"{chain_claims['certificate_count']} certificates; "
+            f"{sequence_claims['claim_count']} sequence "
+            f"{_count_noun(sequence_claims['claim_count'], 'claim', 'claims')}/"
+            f"{sequence_claims['certificate_count']} "
+            f"{_count_noun(sequence_claims['certificate_count'], 'certificate', 'certificates')}"
         ),
         f"Proof rules: {_proof_rule_counts_text(proof_rule_audit)}",
         "Blocked commands: "
@@ -319,6 +342,16 @@ def run_project_status_cli(argv: list[str] | None = None) -> int:
         help="Path to the transition-chain proof certificate manifest.",
     )
     parser.add_argument(
+        "--sequence-claims",
+        default=str(DEFAULT_SEQUENCE_CLAIMS),
+        help="Path to the network-sequence claim manifest.",
+    )
+    parser.add_argument(
+        "--sequence-certificates",
+        default=str(DEFAULT_SEQUENCE_CERTIFICATES),
+        help="Path to the network-sequence proof certificate manifest.",
+    )
+    parser.add_argument(
         "--source-status",
         action="append",
         default=None,
@@ -347,6 +380,8 @@ def run_project_status_cli(argv: list[str] | None = None) -> int:
         chain_language_path=args.chain_language,
         chain_claims_path=args.chain_claims,
         chain_certificates_path=args.chain_certificates,
+        sequence_claims_path=args.sequence_claims,
+        sequence_certificates_path=args.sequence_certificates,
         source_status_paths=source_status_paths,
     )
     if args.format == "json":
@@ -488,9 +523,40 @@ def _chain_claim_summary(
     }
 
 
+def _sequence_claim_summary(
+    claims_path: Path | str,
+    certificates_path: Path | str,
+) -> dict[str, Any]:
+    claims = Path(claims_path)
+    certificates = Path(certificates_path)
+    try:
+        report = validate_network_sequence_claim_project(
+            claims_path=claims,
+            certificates_path=certificates,
+        )
+    except Exception as exc:
+        return _sequence_claim_failure_summary(claims, certificates, exc)
+
+    payload = network_sequence_claim_validation_report_payload(report)
+    failed_subjects = [
+        result["subject"] for result in payload["results"] if not result["accepted"]
+    ]
+    return {
+        "claims_path": str(claims),
+        "certificates_path": str(certificates),
+        "accepted": payload["accepted"],
+        "claim_count": payload["claim_count"],
+        "certificate_count": payload["certificate_count"],
+        "failed_subjects": failed_subjects,
+        "result_count": payload["result_count"],
+        "results": payload["results"],
+    }
+
+
 def _proof_rule_audit_summary(
     transition_certificates_path: Path | str,
     chain_certificates_path: Path | str,
+    sequence_certificates_path: Path | str,
 ) -> dict[str, Any]:
     transition = _proof_rule_source_summary(
         transition_certificates_path,
@@ -502,19 +568,38 @@ def _proof_rule_audit_summary(
         missing_subject="chain-certificate-file",
         invalid_subject="chain-json",
     )
+    sequence = _proof_rule_source_summary(
+        sequence_certificates_path,
+        missing_subject="sequence-certificate-file",
+        invalid_subject="sequence-json",
+    )
     combined_counts = _combine_rule_counts(
         transition["rule_counts"],
         chain["rule_counts"],
+        sequence["rule_counts"],
     )
     failed_subjects = _unique_texts(
-        [*transition["failed_subjects"], *chain["failed_subjects"]]
+        [
+            *transition["failed_subjects"],
+            *chain["failed_subjects"],
+            *sequence["failed_subjects"],
+        ]
     )
     return {
-        "accepted": transition["accepted"] and chain["accepted"],
+        "accepted": (
+            transition["accepted"]
+            and chain["accepted"]
+            and sequence["accepted"]
+        ),
         "transition": transition,
         "chain": chain,
+        "sequence": sequence,
         "combined": {
-            "step_count": transition["step_count"] + chain["step_count"],
+            "step_count": (
+                transition["step_count"]
+                + chain["step_count"]
+                + sequence["step_count"]
+            ),
             "rule_counts": combined_counts,
             "failed_subjects": failed_subjects,
         },
@@ -563,12 +648,9 @@ def _empty_proof_rule_counts() -> dict[str, int]:
     return {rule: 0 for rule in PROOF_RULE_BASELINE_ORDER}
 
 
-def _combine_rule_counts(
-    first: dict[str, int],
-    second: dict[str, int],
-) -> dict[str, int]:
+def _combine_rule_counts(*sources: dict[str, int]) -> dict[str, int]:
     combined = _empty_proof_rule_counts()
-    for counts in (first, second):
+    for counts in sources:
         for rule, count in counts.items():
             combined[rule] = combined.get(rule, 0) + count
     return combined
@@ -788,6 +870,49 @@ def _chain_claim_failure_subject(
     if not certificates_path.is_file():
         return "chain-certificate-file"
     return "chain-json"
+
+
+def _sequence_claim_failure_summary(
+    claims_path: Path,
+    certificates_path: Path,
+    exc: Exception,
+) -> dict[str, Any]:
+    subject = _sequence_claim_failure_subject(claims_path, certificates_path, exc)
+    detail = f"{type(exc).__name__}: {exc}"
+    return {
+        "claims_path": str(claims_path),
+        "certificates_path": str(certificates_path),
+        "accepted": False,
+        "claim_count": 0,
+        "certificate_count": 0,
+        "failed_subjects": [subject],
+        "result_count": 1,
+        "results": [
+            {
+                "subject": subject,
+                "accepted": False,
+                "detail": detail,
+            }
+        ],
+    }
+
+
+def _sequence_claim_failure_subject(
+    claims_path: Path,
+    certificates_path: Path,
+    exc: Exception,
+) -> str:
+    if isinstance(exc, FileNotFoundError):
+        if not claims_path.is_file():
+            return "sequence-claim-file"
+        if not certificates_path.is_file():
+            return "sequence-certificate-file"
+        return "sequence-file"
+    if not claims_path.is_file():
+        return "sequence-claim-file"
+    if not certificates_path.is_file():
+        return "sequence-certificate-file"
+    return "sequence-json"
 
 
 def _registry_summary(payload: dict[str, Any], path: Path) -> dict[str, Any]:
@@ -1090,7 +1215,11 @@ def _bundle_count_text(count: int) -> str:
 
 
 def _bundle_noun(count: int) -> str:
-    return "bundle" if count == 1 else "bundles"
+    return _count_noun(count, "bundle", "bundles")
+
+
+def _count_noun(count: int, singular: str, plural: str) -> str:
+    return singular if count == 1 else plural
 
 
 def _language_text_line(label: str, summary: dict[str, Any]) -> str:
@@ -1130,6 +1259,18 @@ def _chain_claim_text_line(summary: dict[str, Any]) -> str:
     )
 
 
+def _sequence_claim_text_line(summary: dict[str, Any]) -> str:
+    status = "accepted" if summary["accepted"] else "rejected"
+    claim_count = summary["claim_count"]
+    certificate_count = summary["certificate_count"]
+    return (
+        f"Network sequence claims: {status} "
+        f"({claim_count} {_count_noun(claim_count, 'claim', 'claims')}, "
+        f"{certificate_count} "
+        f"{_count_noun(certificate_count, 'certificate', 'certificates')})"
+    )
+
+
 def _claim_proof_failure_text_lines(
     transition_claims: dict[str, Any],
     transition_proof_certificates: dict[str, Any],
@@ -1154,6 +1295,13 @@ def _chain_claim_failure_text_lines(summary: dict[str, Any]) -> list[str]:
     if not failed_subjects:
         return ["Chain claim failures: none"]
     return [f"Chain claim failures: {', '.join(failed_subjects)}"]
+
+
+def _sequence_claim_failure_text_lines(summary: dict[str, Any]) -> list[str]:
+    failed_subjects = summary["failed_subjects"]
+    if not failed_subjects:
+        return ["Sequence claim failures: none"]
+    return [f"Sequence claim failures: {', '.join(failed_subjects)}"]
 
 
 def _proof_rule_audit_text_line(summary: dict[str, Any]) -> str:

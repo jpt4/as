@@ -36,10 +36,11 @@ PROJECT_REPORT = {
     "sequence_evidence": {"bundle_count": 1},
     "transition_claims": {"claim_count": 16, "matched_count": 40},
     "chain_claims": {"claim_count": 2, "certificate_count": 2},
+    "sequence_claims": {"claim_count": 1, "certificate_count": 1},
     "proof_rule_audit": {
         "combined": {
             "rule_counts": {
-                "predicate-result": 49,
+                "predicate-result": 52,
                 "manifest-example": 0,
             }
         }
@@ -119,6 +120,11 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertIn("Autarkic Systems summary: accepted", payload["project_summary"])
         self.assertIn(
             "Evidence: 11 transition bundles; 2 chain bundles; 1 sequence bundle",
+            payload["project_summary"],
+        )
+        self.assertIn(
+            "Claims: 16 transition claims/40 matched examples; "
+            "2 chain claims/2 certificates; 1 sequence claim/1 certificate",
             payload["project_summary"],
         )
         self.assertEqual(payload["project_status"], PROJECT_REPORT)

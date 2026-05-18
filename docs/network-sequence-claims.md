@@ -38,6 +38,8 @@ It covers:
 
 ## Boundary
 
-This is not yet an evidence bundle or project-status input. It is the first
-named claim/proof layer over the ADR-0196 witness, preserving the same boundary:
-no scheduler, topology, timing, output clearing, or new command semantics.
+ADR-0198 wraps this surface in a checked evidence bundle, and ADR-0200 makes it
+part of aggregate project status as `sequence_claims`. It remains the first
+named claim/proof layer over the ADR-0196 witness, preserving the same
+boundary: no scheduler, topology, timing, output clearing, or new command
+semantics.

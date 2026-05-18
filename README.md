@@ -296,9 +296,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/project_status.py` renders one operator-facing report over
   the transition evidence registry, chain evidence registry, network-sequence
   evidence registry, base claim/proof/language surfaces, transition-chain
-  claim/language surfaces, and the checked proof-rule audit, plus the live
-  source-status frontier for blocked command-token semantics and their
-  resolution-question IDs.
+  claim/language surfaces, network-sequence claim/proof surface, and the
+  checked proof-rule audit, plus the live source-status frontier for blocked
+  command-token semantics and their resolution-question IDs.
 - `autarkic_systems/github_submission.py` renders local git evidence for the
   current GitHub submission path: current branch, `HEAD`, origin/fork remote
   URLs, fork `main` match state, origin `main` divergence, and the upstream
@@ -384,7 +384,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   transition claim examples accepted with 16 claims and 40 matched examples,
   transition proof certificates accepted with 16 claims and 16 certificates,
   transition-chain claims accepted with 2 claims, 9 examples, and 2
-  certificates, a proof-rule audit showing 49 checked `predicate-result` steps
+  certificates, network-sequence claims accepted with 1 claim and 1
+  certificate, a proof-rule audit showing 52 checked `predicate-result` steps
   and 0 checked `manifest-example` steps,
   transition language accepted with 16 claims and 16 certificates, chain
   language accepted with 2 claims and 2 certificates, concrete transition,
@@ -435,6 +436,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   compact operator digest. Schema version `17` adds `sequence_evidence` from
   the network-sequence evidence registry, includes it in aggregate acceptance,
   renders it in text and summary output, and adds `--sequence-registry`.
+  Schema version `18` adds `sequence_claims` from the network-sequence
+  claim/proof surface, includes sequence certificates in the proof-rule audit,
+  renders sequence claim counts in text and summary output, and adds
+  `--sequence-claims` / `--sequence-certificates`.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

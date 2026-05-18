@@ -18,6 +18,8 @@ from autarkic_systems.project_status import (
 TRANSITION_REGISTRY = Path("evidence/manifest.json")
 CHAIN_REGISTRY = Path("evidence/chains/manifest.json")
 SEQUENCE_REGISTRY = Path("evidence/sequences/manifest.json")
+SEQUENCE_CLAIMS = Path("claims/network_sequence_claims.json")
+SEQUENCE_CERTIFICATES = Path("claims/network_sequence_proof_certificates.json")
 RECIPIENT_STATUS = Path("sources/recipient_non_init_command_source_status.json")
 STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.json")
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
@@ -29,7 +31,7 @@ RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
     "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle"
 )
 SAFE_NEXT_SLICE = ""
-PROJECT_STATUS_SCHEMA_VERSION = 17
+PROJECT_STATUS_SCHEMA_VERSION = 18
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
     "self-target-command-buffer",
@@ -229,6 +231,13 @@ CHAIN_CLAIMS = {
     "certificate_count": 2,
     "result_count": 4,
 }
+SEQUENCE_CLAIMS_SUMMARY = {
+    "claims_path": "claims/network_sequence_claims.json",
+    "certificates_path": "claims/network_sequence_proof_certificates.json",
+    "claim_count": 1,
+    "certificate_count": 1,
+    "result_count": 2,
+}
 PROOF_RULE_AUDIT = {
     "accepted": True,
     "transition": {
@@ -251,11 +260,21 @@ PROOF_RULE_AUDIT = {
         },
         "failed_subjects": [],
     },
-    "combined": {
-        "step_count": 49,
+    "sequence": {
+        "certificates_path": "claims/network_sequence_proof_certificates.json",
+        "accepted": True,
+        "step_count": 3,
         "rule_counts": {
             "manifest-example": 0,
-            "predicate-result": 49,
+            "predicate-result": 3,
+        },
+        "failed_subjects": [],
+    },
+    "combined": {
+        "step_count": 52,
+        "rule_counts": {
+            "manifest-example": 0,
+            "predicate-result": 52,
         },
         "failed_subjects": [],
     },
@@ -266,9 +285,9 @@ PROJECT_STATUS_SUMMARY = "\n".join(
         "Evidence: 11 transition bundles; 2 chain bundles; 1 sequence bundle",
         (
             "Claims: 16 transition claims/40 matched examples; "
-            "2 chain claims/2 certificates"
+            "2 chain claims/2 certificates; 1 sequence claim/1 certificate"
         ),
-        "Proof rules: predicate-result=49, manifest-example=0",
+        "Proof rules: predicate-result=52, manifest-example=0",
         "Blocked commands: standard-signal",
         "Safe next slice: none",
     ]
@@ -715,6 +734,25 @@ class ProjectStatusReportTests(unittest.TestCase):
                 },
             ],
         )
+        self.assertTrue(report["sequence_claims"]["accepted"])
+        for key, expected in SEQUENCE_CLAIMS_SUMMARY.items():
+            self.assertEqual(report["sequence_claims"][key], expected)
+        self.assertEqual(report["sequence_claims"]["failed_subjects"], [])
+        self.assertEqual(
+            report["sequence_claims"]["results"],
+            [
+                {
+                    "subject": "sequence-examples",
+                    "accepted": True,
+                    "detail": "evaluated 3 examples",
+                },
+                {
+                    "subject": "sequence-certificates",
+                    "accepted": True,
+                    "detail": "verified 1 certificates",
+                },
+            ],
+        )
         self.assertEqual(report["proof_rule_audit"], PROOF_RULE_AUDIT)
         self.assertTrue(report["transition_language"]["accepted"])
         for key, expected in TRANSITION_LANGUAGE.items():
@@ -857,7 +895,12 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn("Chain claim failures: none", text)
         self.assertIn(
-            "Proof rule audit: predicate-result=49, manifest-example=0",
+            "Network sequence claims: accepted (1 claim, 1 certificate)",
+            text,
+        )
+        self.assertIn("Sequence claim failures: none", text)
+        self.assertIn(
+            "Proof rule audit: predicate-result=52, manifest-example=0",
             text,
         )
         self.assertIn("Transition language: accepted (16 claims, 16 certificates)", text)
@@ -1069,6 +1112,33 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
 
+    def test_proof_rule_audit_reports_missing_sequence_certificate_source(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing = Path(tmp) / "missing_network_sequence_proof_certificates.json"
+
+            report = build_project_status_report(
+                sequence_certificates_path=missing,
+            )
+
+        text = format_project_status_report(report)
+        self.assertFalse(report["accepted"])
+        self.assertFalse(report["proof_rule_audit"]["accepted"])
+        self.assertTrue(report["proof_rule_audit"]["transition"]["accepted"])
+        self.assertTrue(report["proof_rule_audit"]["chain"]["accepted"])
+        self.assertFalse(report["proof_rule_audit"]["sequence"]["accepted"])
+        self.assertEqual(
+            report["proof_rule_audit"]["sequence"]["failed_subjects"],
+            ["sequence-certificate-file"],
+        )
+        self.assertEqual(
+            report["proof_rule_audit"]["combined"]["failed_subjects"],
+            ["sequence-certificate-file"],
+        )
+        self.assertIn(
+            "Proof rule audit: rejected (sequence-certificate-file)",
+            text,
+        )
+
     def test_text_status_names_chain_claim_failed_subjects(self):
         with tempfile.TemporaryDirectory() as tmp:
             certificates_path = Path(tmp) / "transition_chain_proof_certificates.json"
@@ -1107,6 +1177,24 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Transition chain claims: rejected", text)
         self.assertIn("Chain claim failures:", text)
         self.assertIn("chain-certificates", text)
+
+    def test_text_status_names_sequence_claim_failed_subjects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing = Path(tmp) / "missing_network_sequence_claims.json"
+
+            report = build_project_status_report(
+                sequence_claims_path=missing,
+            )
+
+        text = format_project_status_report(report)
+        self.assertFalse(report["accepted"])
+        self.assertFalse(report["sequence_claims"]["accepted"])
+        self.assertEqual(
+            report["sequence_claims"]["failed_subjects"],
+            ["sequence-claim-file"],
+        )
+        self.assertIn("Network sequence claims: rejected", text)
+        self.assertIn("Sequence claim failures: sequence-claim-file", text)
 
     def test_text_status_names_no_blocked_runtime_surfaces_when_absent(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -1499,6 +1587,14 @@ class ProjectStatusReportTests(unittest.TestCase):
             payload["chain_claims"]["results"][0]["subject"],
             "chain-language-manifest",
         )
+        self.assertTrue(payload["sequence_claims"]["accepted"])
+        for key, expected in SEQUENCE_CLAIMS_SUMMARY.items():
+            self.assertEqual(payload["sequence_claims"][key], expected)
+        self.assertEqual(payload["sequence_claims"]["failed_subjects"], [])
+        self.assertEqual(
+            payload["sequence_claims"]["results"][0]["subject"],
+            "sequence-examples",
+        )
         self.assertEqual(payload["proof_rule_audit"], PROOF_RULE_AUDIT)
         self.assertTrue(payload["transition_language"]["accepted"])
         for key, expected in TRANSITION_LANGUAGE.items():
@@ -1624,6 +1720,27 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["sequence_evidence"]["accepted"])
         self.assertEqual(payload["sequence_evidence"]["bundle_count"], 1)
+
+    def test_cli_accepts_sequence_claim_overrides(self):
+        stdout = io.StringIO()
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = run_project_status_cli(
+                [
+                    "--sequence-claims",
+                    str(SEQUENCE_CLAIMS),
+                    "--sequence-certificates",
+                    str(SEQUENCE_CERTIFICATES),
+                    "--format",
+                    "json",
+                ]
+            )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 0, payload)
+        self.assertTrue(payload["sequence_claims"]["accepted"])
+        self.assertEqual(payload["sequence_claims"]["claim_count"], 1)
+        self.assertEqual(payload["sequence_claims"]["certificate_count"], 1)
 
     def test_missing_source_status_is_structured_failure(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -40,6 +40,9 @@ The report validates:
 - `claims/transition_chain_claims.json` and
   `claims/transition_chain_proof_certificates.json`, the transition-chain
   claim and proof-certificate surface;
+- `claims/network_sequence_claims.json` and
+  `claims/network_sequence_proof_certificates.json`, the network-sequence
+  claim and proof-certificate surface;
 - `language/transition_claim_language.json`, the base transition claim
   language and checked claim/proof surface;
 - `language/transition_chain_claim_language.json`, the transition-chain claim
@@ -61,7 +64,10 @@ The text report names:
 - claim/proof failed subjects when either lower surface is rejected;
 - transition-chain claim accepted or rejected state and certificate count;
 - transition-chain claim failed subjects when that surface is rejected;
-- proof-rule audit counts for checked transition and chain proof certificates;
+- network-sequence claim accepted or rejected state and certificate count;
+- network-sequence claim failed subjects when that surface is rejected;
+- proof-rule audit counts for checked transition, chain, and sequence proof
+  certificates;
 - transition language accepted or rejected state and claim/certificate counts;
 - chain language accepted or rejected state and claim/certificate counts;
 - language failed subjects when a language summary is rejected;
@@ -83,7 +89,7 @@ digest: accepted state, evidence counts, claim counts, proof-rule counts,
 blocked commands, and safe next slice.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 17`. If a registry file is missing, the corresponding registry
+`schema_version: 18`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -272,6 +278,11 @@ while preserving project status `schema_version: 16`.
 ADR-0199 adds `sequence_evidence` from the network-sequence evidence registry,
 includes it in aggregate acceptance, renders it in text and summary modes, adds
 `--sequence-registry`, and bumps project status to `schema_version: 17`.
+ADR-0200 adds `sequence_claims` from the network-sequence claim/proof surface,
+includes it in aggregate acceptance, includes sequence certificates in the
+proof-rule audit, renders sequence claim counts in text and summary modes, adds
+`--sequence-claims` / `--sequence-certificates`, and bumps project status to
+`schema_version: 18`.
 
 ## Boundary
 

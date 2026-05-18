@@ -4060,3 +4060,21 @@ Deliverables:
 Status: accepted in `docs/adr/0199-project-status-sequence-evidence.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0200: Project Status Sequence Claims
+
+Goal: make aggregate project status account for the network-sequence
+claim/proof surface, not only the sequence evidence registry.
+
+Deliverables:
+
+- `sequence_claims` in project-status JSON;
+- aggregate acceptance that includes network-sequence claim validation;
+- default text and compact summary output naming the sequence claim count;
+- proof-rule audit counts that include sequence proof certificates;
+- `--sequence-claims` and `--sequence-certificates` overrides; and
+- project-status schema version `18`.
+
+Status: accepted in `docs/adr/0200-project-status-sequence-claims.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py` and `tests/test_handoff_status.py`.

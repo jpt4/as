@@ -830,3 +830,7 @@
   status as `sequence_evidence`, includes it in acceptance, renders it in text
   and summary modes, adds `--sequence-registry`, and bumps project status to
   `schema_version: 17`.
+- ADR-0200 folds the network-sequence claim/proof surface into aggregate
+  project status as `sequence_claims`, includes sequence certificates in the
+  proof-rule audit, adds `--sequence-claims` / `--sequence-certificates`, and
+  bumps project status to `schema_version: 18`.

@@ -4261,3 +4261,26 @@
   `git diff --check`, live project-status text/summary/JSON checks, refreshed
   handoff, and `python -m unittest discover` passed. The full suite ran 845
   tests.
+
+## 2026-05-18 - Project Status Sequence Claims
+
+- Added ADR-0200 to fold the network-sequence claim/proof surface into
+  aggregate project status after ADR-0199 added the sequence evidence registry.
+- Added red project-status tests before implementation. The focused red run
+  executed 81 tests and failed because project status still reported schema
+  version `17`, had no `sequence_claims`, omitted sequence claims from
+  text/summary output, kept the proof-rule audit at 49 predicate-result steps,
+  rejected `--sequence-claims` / `--sequence-certificates`, and did not accept
+  `sequence_claims_path` or `sequence_certificates_path` builder overrides.
+- Updated `autarkic_systems/project_status.py` to validate
+  `claims/network_sequence_claims.json` and
+  `claims/network_sequence_proof_certificates.json`, expose `sequence_claims`,
+  include that surface in aggregate acceptance, include sequence certificate
+  steps in the proof-rule audit, and report missing sequence claim/certificate
+  manifests as structured failures.
+- Focused green verification passed 81 project-status tests and 6 handoff
+  tests. Live project-status summary reported `1 sequence claim/1 certificate`
+  and proof rules `predicate-result=52, manifest-example=0`; JSON reported
+  schema version `18` and accepted sequence claims. `compileall`,
+  `git diff --check`, refreshed handoff, and `python -m unittest discover`
+  passed; the full suite ran 848 tests.
