@@ -113,9 +113,26 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
                 "recipient-vs-stem-surface",
                 "buffer-full-boundary",
                 "post-append-clearing",
-                "standard-signal-interaction",
             },
         )
+
+    def test_standard_signal_interaction_is_resolved_as_literal_bits(self):
+        resolved_questions = {
+            question["question_id"]: question
+            for question in self.status["resolved_resolution_questions"]
+        }
+
+        resolved = resolved_questions["standard-signal-interaction"]
+        self.assertEqual(
+            resolved["decision"],
+            "write-buffer-command-bits-are-literal-not-high-rail-derived",
+        )
+        self.assertEqual(
+            resolved["source_status"],
+            "sources/write_buffer_command_semantics_status.json",
+        )
+        self.assertIn("literal 0 and 1 append bits", resolved["legacy_divergence"])
+        self.assertIn("post-append clearing", resolved["legacy_divergence"])
 
     def test_existing_source_status_frontiers_point_past_write_buffer(self):
         recipient_non_init = json.loads(RECIPIENT_NON_INIT.read_text(encoding="utf-8"))

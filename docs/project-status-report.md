@@ -140,6 +140,9 @@ rejected claim/proof results, and bumps the schema version to `12`.
 ADR-0141 adds a `chain_claims` summary to project status JSON/text, includes
 failed-subject lists for rejected chain-claim results, and bumps the schema
 version to `13`.
+ADR-0142 records the write-buffer `standard-signal-interaction` question as
+resolved in the source-status frontier while preserving project status
+`schema_version: 13`.
 
 ## Boundary
 

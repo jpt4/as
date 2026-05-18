@@ -26,8 +26,10 @@ The restored legacy sketches disagree:
 ADR-0129 records one narrower agreement across those witnesses: the named
 `write-buf-zero` and `write-buf-one` commands carry literal `0` and `1` append
 bits. The bit value is not derived from the ordinary standard-signal high-rail
-comparison path. That does not resolve buffer-full behavior, post-append
-clearing, or high-rail state interaction.
+comparison path. ADR-0142 records that as the resolved
+`standard-signal-interaction` question. That does not resolve buffer-full
+behavior, post-append clearing, or any high-rail state clearing that may be
+chosen as part of post-append execution semantics.
 
 ## AS Boundary
 
@@ -49,7 +51,9 @@ rejection artifact. ADR-0062 reviews `guile-asmsim.scm`, which has binary
 and warning comments rather than named write-buffer command semantics.
 ADR-0064 records the official PRC TLA files as incomplete and missing
 write-buffer command-token semantics. ADR-0129 records the literal command
-bit-source evidence without changing runtime behavior.
+bit-source evidence without changing runtime behavior. ADR-0142 moves the
+standard-signal interaction blocker out of the unresolved queue because the bit
+source is literal rather than high-rail derived.
 
 ## Verification
 

@@ -3101,3 +3101,25 @@
   accepted at `schema_version: 13`; the direct chain-claim JSON CLI was
   accepted; `py_compile` and `git diff --check` passed; and
   `python -m unittest discover` passed 636 tests.
+
+## 2026-05-18 - Write-Buffer Standard-Signal Interaction Resolution
+
+- Added ADR-0142 to move the write-buffer `standard-signal-interaction`
+  question out of the unresolved queue because ADR-0129 already settled the
+  source-backed bit-source fact: `write-buf-zero` and `write-buf-one` carry
+  literal `0` and `1` bits rather than high-rail-derived values.
+- Updated project-status and write-buffer source-status tests before
+  implementation. The red run executed 64 tests and failed because
+  `standard-signal-interaction` was still unresolved and
+  `resolved_resolution_questions` was absent from the write-buffer artifact.
+- Updated `sources/write_buffer_command_semantics_status.json` and
+  `docs/write-buffer-command-semantics-status.md` so project status shows the
+  resolved write-buffer question while keeping recipient/stem surface,
+  buffer-full behavior, and post-append clearing unresolved.
+- Updated current-state docs to reflect that the unresolved write-buffer queue
+  shrank for a semantic reason without changing Universal Cell runtime
+  behavior.
+- Verification passed: focused project-status and write-buffer tests ran 64
+  tests; JSON formatting, `py_compile`, and `git diff --check` passed; project
+  status text and JSON remained accepted at `schema_version: 13`; and
+  `python -m unittest discover` passed 637 tests.

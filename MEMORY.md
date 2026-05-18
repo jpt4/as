@@ -598,3 +598,7 @@
   the base transition claim-example and proof-certificate validators.
 - ADR-0141 bumps `autarkic_systems.project_status` to `schema_version: 13` and
   adds a `chain_claims` summary for the transition-chain claim validator.
+- ADR-0142 resolves the write-buffer `standard-signal-interaction` blocker as
+  literal command-bit source evidence rather than high-rail-derived behavior,
+  leaving execution surface, buffer-full behavior, and post-append clearing in
+  the unresolved write-buffer queue.

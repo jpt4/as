@@ -2748,3 +2748,28 @@ Status: accepted in
 `docs/adr/0141-project-status-chain-claim-surface.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0142: Write-Buffer Standard-Signal Interaction Resolution
+
+Goal: remove the settled write-buffer bit-source/high-rail-derivation question
+from the unresolved queue without widening write-buffer runtime execution.
+
+Deliverables:
+
+- a `resolved_resolution_questions` entry for `standard-signal-interaction` in
+  `sources/write_buffer_command_semantics_status.json`;
+- removal of `standard-signal-interaction` from unresolved write-buffer
+  `required_resolution_questions`;
+- write-buffer source-status tests proving the remaining unresolved queue is
+  limited to execution surface, buffer-full behavior, and post-append clearing;
+- project-status tests proving JSON/text expose the resolved write-buffer
+  decision and preserve project status `schema_version: 13`;
+- unchanged Universal Cell runtime behavior; and
+- focused write-buffer and project-status tests.
+
+Status: accepted in
+`docs/adr/0142-write-buffer-standard-signal-interaction.md`. Implemented in
+`sources/write_buffer_command_semantics_status.json` and
+`docs/write-buffer-command-semantics-status.md`, with tests in
+`tests/test_write_buffer_command_semantics_status.py` and
+`tests/test_project_status_report.py`.

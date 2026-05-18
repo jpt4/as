@@ -84,10 +84,14 @@
     {
       "question_id": "post-append-clearing",
       "summary": "Decide whether write-buffer execution preserves the appended buffer, clears it like SEMSIM's stem wrapper, or clears only input/mail state."
-    },
+    }
+  ],
+  "resolved_resolution_questions": [
     {
       "question_id": "standard-signal-interaction",
-      "summary": "Decide how write-buffer commands interact with the high rail and standard-signal command-buffer path."
+      "decision": "write-buffer-command-bits-are-literal-not-high-rail-derived",
+      "source_status": "sources/write_buffer_command_semantics_status.json",
+      "legacy_divergence": "The formal model, RAA, SEMSIM, and FSMSIM agree that write-buf-zero and write-buf-one carry literal 0 and 1 append bits; remaining divergence concerns execution surface, buffer-full handling, and post-append clearing."
     }
   ],
   "additional_source_statuses": [

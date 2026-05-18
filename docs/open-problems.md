@@ -231,6 +231,10 @@ recipient-surface, and self-target-surface questions open.
 ADR-0129 records that `write-buf-zero` and `write-buf-one` carry literal `0`
 and `1` append bits, narrowing standard-signal interaction without resolving
 write-buffer execution.
+ADR-0142 moves that standard-signal interaction question out of the unresolved
+write-buffer queue: command bits are literal rather than high-rail-derived,
+while execution surface, buffer-full behavior, and post-append clearing remain
+open.
 ADR-0130 exposes resolved source-status questions in project status JSON/text,
 so `command-table-offset` appears as settled while the remaining command-token
 frontier stays open.

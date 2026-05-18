@@ -182,7 +182,6 @@ WRITE_BUFFER_QUESTIONS = [
     "recipient-vs-stem-surface",
     "buffer-full-boundary",
     "post-append-clearing",
-    "standard-signal-interaction",
 ]
 STANDARD_SIGNAL_RESOLUTION_QUESTIONS = [
     {
@@ -222,6 +221,19 @@ STANDARD_SIGNAL_RESOLVED_QUESTIONS = [
         ),
     },
 ]
+WRITE_BUFFER_RESOLVED_QUESTIONS = [
+    {
+        "question_id": "standard-signal-interaction",
+        "decision": "write-buffer-command-bits-are-literal-not-high-rail-derived",
+        "source_status": "sources/write_buffer_command_semantics_status.json",
+        "legacy_divergence": (
+            "The formal model, RAA, SEMSIM, and FSMSIM agree that "
+            "write-buf-zero and write-buf-one carry literal 0 and 1 "
+            "append bits; remaining divergence concerns execution "
+            "surface, buffer-full handling, and post-append clearing."
+        ),
+    },
+]
 WRITE_BUFFER_RESOLUTION_QUESTIONS = [
     {
         "question_id": "recipient-vs-stem-surface",
@@ -245,13 +257,6 @@ WRITE_BUFFER_RESOLUTION_QUESTIONS = [
             "Decide whether write-buffer execution preserves the appended "
             "buffer, clears it like SEMSIM's stem wrapper, or clears only "
             "input/mail state."
-        ),
-    },
-    {
-        "question_id": "standard-signal-interaction",
-        "summary": (
-            "Decide how write-buffer commands interact with the high rail and "
-            "standard-signal command-buffer path."
         ),
     },
 ]
@@ -478,7 +483,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             [
                 [],
                 STANDARD_SIGNAL_RESOLVED_QUESTIONS,
-                [],
+                WRITE_BUFFER_RESOLVED_QUESTIONS,
             ],
         )
         self.assertEqual(
@@ -786,6 +791,20 @@ class ProjectStatusReportTests(unittest.TestCase):
             "map from ADR-0026.",
             text,
         )
+        self.assertIn("write-buf-zero, write-buf-one:", text)
+        self.assertIn(
+            "standard-signal-interaction: "
+            "write-buffer-command-bits-are-literal-not-high-rail-derived "
+            "(sources/write_buffer_command_semantics_status.json)",
+            text,
+        )
+        self.assertIn(
+            "legacy divergence: The formal model, RAA, SEMSIM, and FSMSIM "
+            "agree that write-buf-zero and write-buf-one carry literal 0 "
+            "and 1 append bits; remaining divergence concerns execution "
+            "surface, buffer-full handling, and post-append clearing.",
+            text,
+        )
 
     def test_text_status_names_additional_source_statuses(self):
         report = build_project_status_report()
@@ -976,7 +995,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             [
                 [],
                 STANDARD_SIGNAL_RESOLVED_QUESTIONS,
-                [],
+                WRITE_BUFFER_RESOLVED_QUESTIONS,
             ],
         )
         self.assertEqual(

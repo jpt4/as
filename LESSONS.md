@@ -397,3 +397,6 @@
 - Once the base diagnostic path exposes claim/proof semantics, carry the same
   discipline to composed-chain claim surfaces. Otherwise a chain evidence
   failure can hide whether the semantic chain claim layer was already broken.
+- Split write-buffer bit-source decisions from post-append state decisions.
+  Literal `write-buf-zero` / `write-buf-one` bits can be settled while
+  buffer-full and clearing semantics remain blocked.
