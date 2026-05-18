@@ -136,14 +136,16 @@
       "claim_id": "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "standard signal unsupported preserved",
-          "expected": true
+          "expected": true,
+          "predicate": "self_mailbox_preserves_unsupported_command"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "unsupported command cleared",
-          "expected": false
+          "expected": false,
+          "predicate": "self_mailbox_preserves_unsupported_command"
         }
       ]
     },

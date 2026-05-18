@@ -143,6 +143,23 @@ class ProofCertificateTests(unittest.TestCase):
             {"self_mailbox_executes_init_command"},
         )
 
+    def test_self_mailbox_unsupported_claim_uses_explicit_predicate_result_steps(self):
+        certificates = {
+            certificate.claim_id: certificate
+            for certificate in load_proof_certificates(CERTIFICATES)
+        }
+
+        certificate = certificates["UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED"]
+
+        self.assertEqual(len(certificate.steps), 2)
+        self.assertTrue(
+            all(step.rule == "predicate-result" for step in certificate.steps)
+        )
+        self.assertEqual(
+            {step.predicate for step in certificate.steps},
+            {"self_mailbox_preserves_unsupported_command"},
+        )
+
     def test_report_formats_successful_proof_certificate_validation(self):
         report = proof_certificates.validate_proof_certificate_project(
             claims_path=MANIFEST,
@@ -159,6 +176,7 @@ class ProofCertificateTests(unittest.TestCase):
         self.assertIn("OK UC-STEM-AUTOMAIL-RECONFIGURES:", text)
         self.assertIn("OK UC-STEM-BUFFER-ACCUMULATES:", text)
         self.assertIn("OK UC-STEM-SELF-MAILBOX-INIT-COMMAND:", text)
+        self.assertIn("OK UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED:", text)
         self.assertIn("predicate-result", text)
         self.assertNotIn("FAIL", text)
 
@@ -239,6 +257,16 @@ class ProofCertificateTests(unittest.TestCase):
         self.assertTrue(self_mailbox_init["accepted"])
         self.assertEqual(
             self_mailbox_init["detail"],
+            "verified 2 certificate steps: 2 predicate-result steps",
+        )
+        self_mailbox_unsupported = next(
+            result
+            for result in payload["results"]
+            if result["claim_id"] == "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED"
+        )
+        self.assertTrue(self_mailbox_unsupported["accepted"])
+        self.assertEqual(
+            self_mailbox_unsupported["detail"],
             "verified 2 certificate steps: 2 predicate-result steps",
         )
 

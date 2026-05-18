@@ -3593,3 +3593,26 @@ Status: accepted in
 `docs/adr/0177-self-mailbox-init-predicate-result-certificates.md`.
 Implemented in the proof-certificate manifest and focused proof/project-status
 tests.
+
+## ADR-0178: Self-Mailbox Unsupported Predicate Result Certificates
+
+Goal: make the self-mailbox unsupported-command preservation proof certificate
+name the predicate it evaluates instead of relying only on manifest-example
+lookup.
+
+Deliverables:
+
+- `UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED` proof-certificate steps use
+  `predicate-result`;
+- both self-mailbox unsupported certificate steps name
+  `self_mailbox_preserves_unsupported_command`;
+- proof-certificate text/JSON and aggregate project-status reports render the
+  self-mailbox unsupported certificate as two predicate-result steps; and
+- Universal Cell runtime behavior, transition claims, object-language schema,
+  evidence bundles, source-status records, and status schema versions remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0178-self-mailbox-unsupported-predicate-result-certificates.md`.
+Implemented in the proof-certificate manifest, focused proof/project-status
+tests, and the self-mailbox unsupported claim note.

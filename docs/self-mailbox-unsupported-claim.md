@@ -32,7 +32,8 @@ and `write-buf-one`. It also keeps a negative example proving that clearing an
 unsupported mailbox command would violate the boundary.
 
 `claims/proof_certificates.json` covers every manifest example with
-`manifest-example` steps.
+`predicate-result` steps that name
+`self_mailbox_preserves_unsupported_command` directly.
 
 ## Verification
 

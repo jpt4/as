@@ -3828,3 +3828,24 @@
   certificate surface. JSON parsing for the touched certificate manifest,
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 775 tests.
+
+## 2026-05-18 - Self-Mailbox Unsupported Predicate Result Certificates
+
+- Added ADR-0178 to migrate
+  `UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED` from `manifest-example` proof
+  steps to explicit `predicate-result` proof steps.
+- Added red proof-certificate and project-status tests before implementation.
+  The focused red run executed 96 tests and failed because the self-mailbox
+  unsupported certificate still used `manifest-example`, and
+  proof/project-status reports still described it as two `manifest-example`
+  steps.
+- Updated `claims/proof_certificates.json` so both self-mailbox unsupported
+  certificate steps use `predicate-result` and name
+  `self_mailbox_preserves_unsupported_command` directly.
+- Updated the self-mailbox unsupported claim note and summary docs so they
+  describe the new predicate-result proof surface.
+- Focused green verification passed 96 tests. The proof-certificate CLI JSON,
+  project-status JSON, and object-language JSON checks accepted the updated
+  certificate surface. JSON parsing for the touched certificate manifest,
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 776 tests.
