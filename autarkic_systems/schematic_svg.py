@@ -17,6 +17,7 @@ from autarkic_systems.schematic_trace import (
     NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID,
     RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID,
     RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID,
+    RECIPIENT_WRITE_BUFFER_COMMAND_MESSAGE_TRACE_ARTIFACT_ID,
     SELF_COMMAND_BUFFER_WRITE_BUFFER_TRACE_ARTIFACT_ID,
     SELF_MAILBOX_WRITE_BUFFER_TRACE_ARTIFACT_ID,
     SchematicPort,
@@ -51,6 +52,9 @@ NEIGHBOR_COMMAND_BUFFER_DELIVERY_SVG_ARTIFACT = Path(
 )
 RECIPIENT_INIT_COMMAND_MESSAGE_SVG_ARTIFACT = Path(
     "schematics/recipient_init_command_message_trace.svg"
+)
+RECIPIENT_WRITE_BUFFER_COMMAND_MESSAGE_SVG_ARTIFACT = Path(
+    "schematics/recipient_write_buffer_command_message_trace.svg"
 )
 RECIPIENT_NON_INIT_COMMAND_REJECTION_SVG_ARTIFACT = Path(
     "schematics/recipient_non_init_command_rejection_trace.svg"
@@ -166,7 +170,9 @@ def render_schematic_svg(trace: SingleNodeSchematicTrace) -> str:
         ]
     )
     next_y = 232
-    if _shows_recipient_non_init_command_rejection(trace):
+    if _shows_recipient_write_buffer_command_message(
+        trace
+    ) or _shows_recipient_non_init_command_rejection(trace):
         lines.extend(
             [
                 f"    <text class=\"small\" x=\"52\" y=\"220\">role after: {_text(after['role'])}</text>",
@@ -484,6 +490,14 @@ def _shows_recipient_init_command_message(trace: SingleNodeSchematicTrace) -> bo
     """Return true for traces that consume a recipient init command message."""
 
     return trace.artifact_id == RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID
+
+
+def _shows_recipient_write_buffer_command_message(
+    trace: SingleNodeSchematicTrace,
+) -> bool:
+    """Return true for traces that execute recipient write-buffer input."""
+
+    return trace.artifact_id == RECIPIENT_WRITE_BUFFER_COMMAND_MESSAGE_TRACE_ARTIFACT_ID
 
 
 def _shows_recipient_non_init_command_rejection(

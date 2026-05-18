@@ -247,6 +247,10 @@ write-buffer neighbor handoffs to the consumed-chain examples, keeps delivered
 `standard-signal` as the rejection-chain witness, and changes the blocked
 command frontier to `standard-signal` only while preserving project status
 `schema_version: 15`.
+ADR-0170 registers the recipient write-buffer command-message evidence bundle,
+raising transition evidence to 11 bundles and leaving standard-signal source
+review as the only active safe-next frontier while preserving project status
+`schema_version: 15`.
 
 ## Boundary
 

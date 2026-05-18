@@ -53,6 +53,21 @@ SELF_MAILBOX_WRITE_BUFFER_COVERED_EXAMPLES = [
     "self mailbox write buffer zero appended",
     "self mailbox write buffer one appended",
 ]
+RECIPIENT_WRITE_BUFFER_BUNDLE = Path(
+    "evidence/recipient_write_buffer_command_message_bundle.json"
+)
+RECIPIENT_WRITE_BUFFER_BUNDLE_ID = (
+    "recipient-write-buffer-command-message-evidence-bundle"
+)
+RECIPIENT_WRITE_BUFFER_CLAIM_ID = (
+    "UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED"
+)
+RECIPIENT_WRITE_BUFFER_STATUS = "recipient-write-buffer-command-message-appended"
+RECIPIENT_WRITE_BUFFER_EXAMPLE = "fixed upstream write-buf-zero command appended"
+RECIPIENT_WRITE_BUFFER_COVERED_EXAMPLES = [
+    "fixed upstream write-buf-zero command appended",
+    "stem recipient write-buf-one command appended",
+]
 SELF_COMMAND_BUFFER_BUNDLE = Path("evidence/self_command_buffer_init_bundle.json")
 SELF_COMMAND_BUFFER_BUNDLE_ID = "self-command-buffer-init-evidence-bundle"
 SELF_COMMAND_BUFFER_CLAIM_ID = "UC-STEM-COMMAND-BUFFER-SELF-INIT"
@@ -123,7 +138,7 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         entries = {entry.bundle_id: entry for entry in self.registry.bundles}
         entry = entries[MULTI_COMMAND_BUNDLE_ID]
 
-        self.assertEqual(len(self.registry.bundles), 10)
+        self.assertEqual(len(self.registry.bundles), 11)
         self.assertEqual(entry.path, MULTI_COMMAND_BUNDLE)
         self.assertEqual(entry.claim_id, REJECTION_CLAIM_ID)
         self.assertEqual(entry.expected_status, REJECTION_STATUS)
@@ -151,6 +166,14 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         self.assertEqual(entry.path, SELF_MAILBOX_WRITE_BUFFER_BUNDLE)
         self.assertEqual(entry.claim_id, SELF_MAILBOX_WRITE_BUFFER_CLAIM_ID)
         self.assertEqual(entry.expected_status, SELF_MAILBOX_WRITE_BUFFER_STATUS)
+
+    def test_registry_records_the_recipient_write_buffer_bundle(self):
+        entries = {entry.bundle_id: entry for entry in self.registry.bundles}
+        entry = entries[RECIPIENT_WRITE_BUFFER_BUNDLE_ID]
+
+        self.assertEqual(entry.path, RECIPIENT_WRITE_BUFFER_BUNDLE)
+        self.assertEqual(entry.claim_id, RECIPIENT_WRITE_BUFFER_CLAIM_ID)
+        self.assertEqual(entry.expected_status, RECIPIENT_WRITE_BUFFER_STATUS)
 
     def test_registry_records_the_self_command_buffer_init_bundle(self):
         entries = {entry.bundle_id: entry for entry in self.registry.bundles}
@@ -206,7 +229,7 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         payload = registry_validation_report_payload(self.registry, results)
 
         self.assertTrue(payload["accepted"])
-        self.assertEqual(payload["bundle_count"], 10)
+        self.assertEqual(payload["bundle_count"], 11)
         self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(
             payload["bundles"],
@@ -260,6 +283,14 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
                     "covered_positive_examples": SELF_MAILBOX_WRITE_BUFFER_COVERED_EXAMPLES,
                 },
                 {
+                    "bundle_id": RECIPIENT_WRITE_BUFFER_BUNDLE_ID,
+                    "path": str(RECIPIENT_WRITE_BUFFER_BUNDLE),
+                    "claim_id": RECIPIENT_WRITE_BUFFER_CLAIM_ID,
+                    "expected_status": RECIPIENT_WRITE_BUFFER_STATUS,
+                    "positive_example": RECIPIENT_WRITE_BUFFER_EXAMPLE,
+                    "covered_positive_examples": RECIPIENT_WRITE_BUFFER_COVERED_EXAMPLES,
+                },
+                {
                     "bundle_id": SELF_COMMAND_BUFFER_BUNDLE_ID,
                     "path": str(SELF_COMMAND_BUFFER_BUNDLE),
                     "claim_id": SELF_COMMAND_BUFFER_CLAIM_ID,
@@ -305,7 +336,7 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         payload = json.loads(stdout.getvalue())
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["accepted"])
-        self.assertEqual(payload["bundle_count"], 10)
+        self.assertEqual(payload["bundle_count"], 11)
         self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(payload["bundles"][0]["bundle_id"], BUNDLE_ID)
         self.assertEqual(payload["bundles"][0]["path"], str(BUNDLE))
@@ -324,11 +355,15 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
             SELF_MAILBOX_WRITE_BUFFER_COVERED_EXAMPLES,
         )
         self.assertEqual(
-            payload["bundles"][7]["covered_positive_examples"],
-            UNSUPPORTED_COMMAND_BUFFER_COVERED_EXAMPLES,
+            payload["bundles"][6]["covered_positive_examples"],
+            RECIPIENT_WRITE_BUFFER_COVERED_EXAMPLES,
         )
         self.assertEqual(
             payload["bundles"][8]["covered_positive_examples"],
+            UNSUPPORTED_COMMAND_BUFFER_COVERED_EXAMPLES,
+        )
+        self.assertEqual(
+            payload["bundles"][9]["covered_positive_examples"],
             SELF_COMMAND_BUFFER_WRITE_BUFFER_COVERED_EXAMPLES,
         )
         self.assertEqual(

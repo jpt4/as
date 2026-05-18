@@ -25,7 +25,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "recipient-write-buffer-implemented")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "add-recipient-write-buffer-command-message-evidence-bundle",
+            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
         )
         claim = self.status["implemented_claims"][0]
         self.assertEqual(
@@ -184,7 +184,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
                 for item in recipient_status["allowed_next_slices"]
             )
         )
-        self.assertTrue(
+        self.assertFalse(
             any(
                 "recipient write-buffer command-message evidence bundle" in item
                 for item in recipient_status["allowed_next_slices"]

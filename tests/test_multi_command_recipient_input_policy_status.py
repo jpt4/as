@@ -39,7 +39,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             self.status["safe_next_slice"],
-            "add-recipient-write-buffer-command-message-evidence-bundle",
+            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
         )
         self.assertEqual(
             self.status["covered_runtime_surfaces"],
@@ -118,11 +118,11 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "add-recipient-write-buffer-command-message-evidence-bundle",
+            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
         )
         self.assertEqual(
             write_buffer_status["safe_next_slice"],
-            "add-recipient-write-buffer-command-message-evidence-bundle",
+            "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle",
         )
         self.assertEqual(
             standard_signal_status["safe_next_slice"],

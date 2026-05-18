@@ -3675,3 +3675,32 @@
   JSON accepted schema 2; transition and chain evidence registries accepted 10
   and 2 bundles respectively. JSON parsing, `compileall`, `git diff --check`,
   and `python -m unittest discover` passed; the full suite ran 744 tests.
+
+## 2026-05-18 - Recipient Write-Buffer Command Evidence Bundle
+
+- Added ADR-0170 to promote ADR-0169 recipient write-buffer command-message
+  append behavior into the transition evidence registry.
+- Added red trace, SVG, evidence-bundle, registry, and status tests before
+  implementation. The focused red run executed 149 tests and failed because
+  the recipient write-buffer trace/SVG constants and files were absent, the
+  bundle was unregistered, and source-status records still advertised the
+  pending write-buffer evidence-bundle promotion.
+- Added `schematics/recipient_write_buffer_command_message_trace.json` for an
+  upstream `write-buf-zero` recipient append, plus the matching renderer-locked
+  SVG.
+- Added
+  `evidence/recipient_write_buffer_command_message_bundle.json`, covering both
+  positive recipient write-buffer command-message examples while tracing the
+  upstream zero append case.
+- Updated the transition evidence registry from 10 to 11 bundles and taught
+  the schematic trace/SVG validators the new recipient write-buffer trace
+  artifact.
+- Updated write-buffer, recipient non-init, recipient command-consumption,
+  multi-command, and stem source-status records so the completed write-buffer
+  evidence promotion no longer appears as an active safe-next frontier.
+- Focused green verification passed 183 tests. Transition evidence accepted 11
+  bundles, chain evidence accepted 2 bundles, project-status JSON accepted
+  schema 15 with 16 transition claims and 40 evaluated examples, and
+  source-status JSON accepted schema 2 with only `standard-signal` blocked.
+  JSON parsing, `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 763 tests.

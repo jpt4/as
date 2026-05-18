@@ -15,6 +15,9 @@ COMMAND_BUFFER_UNSUPPORTED_BUNDLE = Path(
 SELF_COMMAND_BUFFER_WRITE_BUFFER_BUNDLE = Path(
     "evidence/self_command_buffer_write_buffer_bundle.json"
 )
+RECIPIENT_WRITE_BUFFER_BUNDLE = Path(
+    "evidence/recipient_write_buffer_command_message_bundle.json"
+)
 FORMAL_MODEL = Path("/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt")
 LEGACY_RAA = Path("/home/sean/Projects/_upstream/prc/practice/legacy/raa.scm")
 LEGACY_SEMSIM = Path("/home/sean/Projects/_upstream/prc/practice/legacy/semsim.scm")
@@ -37,7 +40,7 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             self.status["safe_next_slice"],
-            "add-recipient-write-buffer-command-message-evidence-bundle",
+            "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle",
         )
         self.assertEqual(
             self.status["blocked_runtime_surfaces"],
@@ -160,7 +163,11 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             surface["evidence_bundle_status"],
-            "pending",
+            "implemented",
+        )
+        self.assertEqual(
+            surface["evidence_bundle"],
+            str(RECIPIENT_WRITE_BUFFER_BUNDLE),
         )
         self.assertIn("implemented", surface["summary"])
         self.assertIn("evidence bundle", surface["summary"])
@@ -362,7 +369,7 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "add-recipient-write-buffer-command-message-evidence-bundle",
+            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
         )
         self.assertFalse(
             any(
@@ -389,6 +396,12 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
             )
         )
         self.assertTrue(
+            any(
+                "standard-signal" in item
+                for item in recipient_status["allowed_next_slices"]
+            )
+        )
+        self.assertFalse(
             any(
                 "recipient write-buffer command-message evidence bundle" in item
                 for item in recipient_status["allowed_next_slices"]

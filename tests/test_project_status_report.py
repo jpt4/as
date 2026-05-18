@@ -24,12 +24,9 @@ STANDARD_SIGNAL_SAFE_NEXT_SLICE = (
     "review-new-standard-signal-command-token-source-evidence-before-execution-change"
 )
 RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
-    "add-recipient-write-buffer-command-message-evidence-bundle"
+    "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle"
 )
-SAFE_NEXT_SLICE = (
-    f"{RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE}, "
-    f"{STANDARD_SIGNAL_SAFE_NEXT_SLICE}"
-)
+SAFE_NEXT_SLICE = STANDARD_SIGNAL_SAFE_NEXT_SLICE
 PROJECT_STATUS_SCHEMA_VERSION = 15
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
@@ -114,6 +111,17 @@ TRANSITION_BUNDLES = [
         "covered_positive_examples": [
             "self mailbox write buffer zero appended",
             "self mailbox write buffer one appended",
+        ],
+    },
+    {
+        "bundle_id": "recipient-write-buffer-command-message-evidence-bundle",
+        "path": "evidence/recipient_write_buffer_command_message_bundle.json",
+        "claim_id": "UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED",
+        "expected_status": "recipient-write-buffer-command-message-appended",
+        "positive_example": "fixed upstream write-buf-zero command appended",
+        "covered_positive_examples": [
+            "fixed upstream write-buf-zero command appended",
+            "stem recipient write-buf-one command appended",
         ],
     },
     {
@@ -440,7 +448,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             "transition-evidence-bundle-registry",
         )
         self.assertTrue(report["transition_evidence"]["accepted"])
-        self.assertEqual(report["transition_evidence"]["bundle_count"], 10)
+        self.assertEqual(report["transition_evidence"]["bundle_count"], 11)
         self.assertEqual(
             report["transition_evidence"]["bundles"],
             TRANSITION_BUNDLES,
@@ -634,7 +642,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         text = format_project_status_report(report)
 
         self.assertIn("Autarkic Systems project status: accepted", text)
-        self.assertIn("Transition evidence: accepted (10 bundles)", text)
+        self.assertIn("Transition evidence: accepted (11 bundles)", text)
         self.assertIn("Chain evidence: accepted (2 bundles)", text)
         self.assertIn(
             "Transition claims: accepted (16 claims, 40 examples, 40 matched)",
@@ -1205,7 +1213,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["schema_version"], PROJECT_STATUS_SCHEMA_VERSION)
-        self.assertEqual(payload["transition_evidence"]["bundle_count"], 10)
+        self.assertEqual(payload["transition_evidence"]["bundle_count"], 11)
         self.assertEqual(
             payload["transition_evidence"]["bundles"],
             TRANSITION_BUNDLES,
@@ -3073,7 +3081,7 @@ class ProjectStatusReportTests(unittest.TestCase):
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertIn("Autarkic Systems project status: accepted", completed.stdout)
-        self.assertIn("Transition evidence: accepted (10 bundles)", completed.stdout)
+        self.assertIn("Transition evidence: accepted (11 bundles)", completed.stdout)
         self.assertIn("Chain evidence: accepted (2 bundles)", completed.stdout)
 
 

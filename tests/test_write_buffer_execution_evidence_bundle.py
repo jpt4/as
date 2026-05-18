@@ -159,7 +159,7 @@ class WriteBufferExecutionEvidenceBundleTests(unittest.TestCase):
         registry = load_evidence_bundle_registry(REGISTRY)
         entries = {entry.bundle_id: entry for entry in registry.bundles}
 
-        self.assertEqual(len(entries), 10)
+        self.assertEqual(len(entries), 11)
         self.assertIn(SELF_MAILBOX_BUNDLE_ID, entries)
         self.assertIn(SELF_COMMAND_BUFFER_BUNDLE_ID, entries)
         self.assertEqual(entries[SELF_MAILBOX_BUNDLE_ID].path, SELF_MAILBOX_BUNDLE)

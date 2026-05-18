@@ -65,8 +65,7 @@ recipient init-family consumption without widening stem command execution.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority for
 standard-signal command tokens. Recipient write-buffer command-message inputs
-now execute at runtime; the next write-buffer work is evidence-bundle
-promotion rather than behavior implementation.
+now execute at runtime and have a dedicated ADR-0170 evidence bundle.
 
 ## Evidence
 
@@ -106,8 +105,6 @@ command behavior honestly, AS still needs to choose:
 
 - how `standard-signal` behaves when selected as a self-mailbox or self-target
   command-buffer command;
-- how to promote ADR-0169 recipient write-buffer command-message append
-  execution into an integrated evidence bundle; and
 - how standard-signal command-message inputs behave on recipient cells after
   the implemented init-family recipient slice.
 

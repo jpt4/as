@@ -229,7 +229,7 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "add-recipient-write-buffer-command-message-evidence-bundle",
+            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
         )
         self.assertFalse(
             any(

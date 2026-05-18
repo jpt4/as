@@ -60,6 +60,9 @@ NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID = (
 RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID = (
     "recipient-init-command-message-schematic-and-uc-transition-trace"
 )
+RECIPIENT_WRITE_BUFFER_COMMAND_MESSAGE_TRACE_ARTIFACT_ID = (
+    "recipient-write-buffer-command-message-schematic-and-uc-transition-trace"
+)
 RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID = (
     "recipient-non-init-command-rejection-schematic-and-uc-transition-trace"
 )
@@ -79,6 +82,7 @@ VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     SELF_COMMAND_BUFFER_WRITE_BUFFER_TRACE_ARTIFACT_ID,
     NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID,
     RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID,
+    RECIPIENT_WRITE_BUFFER_COMMAND_MESSAGE_TRACE_ARTIFACT_ID,
     RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID,
     MULTI_COMMAND_RECIPIENT_REJECTION_TRACE_ARTIFACT_ID,
 )
@@ -435,6 +439,17 @@ def _validate_schematic_trace_alignment(
     schematic_trace: SingleNodeSchematicTrace,
 ) -> list[SchematicTraceValidation]:
     results: list[SchematicTraceValidation] = []
+
+    if (
+        schematic_trace.artifact_id
+        == RECIPIENT_WRITE_BUFFER_COMMAND_MESSAGE_TRACE_ARTIFACT_ID
+    ):
+        results.extend(
+            _validate_recipient_write_buffer_command_message_trace_alignment(
+                schematic_trace
+            )
+        )
+        return results
 
     if (
         schematic_trace.artifact_id
@@ -1474,6 +1489,107 @@ def _validate_recipient_init_command_message_trace_alignment(
     return results
 
 
+def _validate_recipient_write_buffer_command_message_trace_alignment(
+    schematic_trace: SingleNodeSchematicTrace,
+) -> list[SchematicTraceValidation]:
+    results: list[SchematicTraceValidation] = []
+
+    if schematic_trace.schematic.geometry != "triangular-rlem-node":
+        results.append(_rejected("geometry", "schematic geometry is not triangular"))
+    else:
+        results.append(_accepted("geometry", "schematic geometry is triangular"))
+
+    before = schematic_trace.trace.before_cell
+    after = schematic_trace.trace.expected_after_cell
+    source = _recipient_write_buffer_command_source(before)
+    if source is None:
+        results.append(
+            _rejected(
+                "recipient-write-buffer-command-message",
+                "trace does not contain one recipient write-buffer command message",
+            )
+        )
+        return results
+
+    command, source_kind, source_index = source
+    bit = {"write-buf-zero": 0, "write-buf-one": 1}[command]
+    if schematic_trace.schematic.memory_direction != before.get("memory"):
+        results.append(
+            _rejected(
+                "memory_direction",
+                "schematic memory does not match preserved recipient memory",
+            )
+        )
+    else:
+        results.append(
+            _accepted("memory_direction", "schematic memory matches recipient")
+        )
+
+    expected_buffer = list(before.get("buffer", [])) + [bit]
+    expected_flow = (
+        (
+            f"{source_kind}[{command}] -> input[{source_index}]"
+            if source_kind == "upstream"
+            else f"input[{source_index}] carries command[{command}]"
+        ),
+        f"command[{command}] -> append {bit}",
+        f"buffer{_compact_list(before.get('buffer'))} -> buffer{_compact_list(expected_buffer)}",
+        f"command[{command}] consumed -> _",
+        (
+            "upstream cleared; command state cleared"
+            if source_kind == "upstream"
+            else "input consumed; command state cleared"
+        ),
+    )
+    if schematic_trace.trace.routed_signal_flow != expected_flow:
+        results.append(
+            _rejected(
+                "routed_signal_flow",
+                "recipient write-buffer command-message flow mismatch",
+            )
+        )
+    else:
+        results.append(
+            _accepted(
+                "routed_signal_flow",
+                "recipient write-buffer command-message flow explicit",
+            )
+        )
+
+    expected_upstream = (
+        ["_", "_", "_"] if source_kind == "upstream" else before.get("upstream")
+    )
+    if (
+        schematic_trace.trace.expected_status
+        != "recipient-write-buffer-command-message-appended"
+        or before.get("output") != ["_", "_", "_"]
+        or after.get("role") != before.get("role")
+        or after.get("memory") != before.get("memory")
+        or after.get("upstream") != expected_upstream
+        or after.get("input") != ["_", "_", "_"]
+        or after.get("output") != ["_", "_", "_"]
+        or after.get("automail") != before.get("automail")
+        or after.get("self_mailbox") != before.get("self_mailbox")
+        or after.get("control") != before.get("control")
+        or after.get("buffer") != expected_buffer
+    ):
+        results.append(
+            _rejected(
+                "recipient-write-buffer-command-message",
+                "recipient write-buffer command-message append state mismatch",
+            )
+        )
+    else:
+        results.append(
+            _accepted(
+                "recipient-write-buffer-command-message",
+                "recipient write-buffer command-message append and clearing match",
+            )
+        )
+
+    return results
+
+
 def _validate_recipient_non_init_command_rejection_trace_alignment(
     schematic_trace: SingleNodeSchematicTrace,
 ) -> list[SchematicTraceValidation]:
@@ -1828,6 +1944,31 @@ def _recipient_non_init_command_source(
     return None
 
 
+def _recipient_write_buffer_command_source(
+    before: dict[str, Any],
+) -> tuple[str, str, int] | None:
+    if before.get("output") != ["_", "_", "_"]:
+        return None
+
+    role = before.get("role")
+    direct = _single_write_buffer_command_message(before.get("input"))
+    if role in {"wire", "proc"}:
+        if direct is not None:
+            command, index = direct
+            return command, "input", index
+        if before.get("input") == ["_", "_", "_"]:
+            upstream = _single_write_buffer_command_message(before.get("upstream"))
+            if upstream is not None:
+                command, index = upstream
+                return command, "upstream", index
+        return None
+
+    if role == "stem" and before.get("automail") == "_" and direct is not None:
+        command, index = direct
+        return command, "input", index
+    return None
+
+
 def _single_init_command_message(value: object) -> tuple[str, int] | None:
     init_commands = {
         "stem-init",
@@ -1842,6 +1983,20 @@ def _single_init_command_message(value: object) -> tuple[str, int] | None:
         (item, index)
         for index, item in enumerate(value)
         if isinstance(item, str) and item in init_commands
+    ]
+    if len(commands) != 1:
+        return None
+    return commands[0]
+
+
+def _single_write_buffer_command_message(value: object) -> tuple[str, int] | None:
+    write_buffer_commands = {"write-buf-zero", "write-buf-one"}
+    if not isinstance(value, list) or len(value) != 3 or value.count("_") != 2:
+        return None
+    commands = [
+        (item, index)
+        for index, item in enumerate(value)
+        if isinstance(item, str) and item in write_buffer_commands
     ]
     if len(commands) != 1:
         return None

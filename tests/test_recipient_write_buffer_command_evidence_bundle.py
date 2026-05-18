@@ -10,35 +10,36 @@ from autarkic_systems.evidence_bundle import (
 )
 
 
-BUNDLE = Path("evidence/command_buffer_unsupported_bundle.json")
+BUNDLE = Path("evidence/recipient_write_buffer_command_message_bundle.json")
 REGISTRY = Path("evidence/manifest.json")
-BUNDLE_ID = "command-buffer-unsupported-evidence-bundle"
-CLAIM_ID = "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED"
-EXAMPLE = "self standard signal command remains appended"
-STATUS = "stem-buffer-appended"
+BUNDLE_ID = "recipient-write-buffer-command-message-evidence-bundle"
+CLAIM_ID = "UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED"
+EXAMPLE = "fixed upstream write-buf-zero command appended"
 COVERED_EXAMPLES = (
-    "self standard signal command remains appended",
+    "fixed upstream write-buf-zero command appended",
+    "stem recipient write-buf-one command appended",
 )
+STATUS = "recipient-write-buffer-command-message-appended"
 
 
-class CommandBufferUnsupportedEvidenceBundleTests(unittest.TestCase):
+class RecipientWriteBufferCommandEvidenceBundleTests(unittest.TestCase):
     def setUp(self):
         self.bundle = load_transition_evidence_bundle(BUNDLE)
 
-    def test_bundle_names_the_existing_command_buffer_unsupported_boundary(self):
+    def test_bundle_names_recipient_write_buffer_execution(self):
         self.assertEqual(self.bundle.schema_version, 1)
         self.assertEqual(self.bundle.bundle_id, BUNDLE_ID)
         self.assertEqual(self.bundle.claim_id, CLAIM_ID)
         self.assertEqual(
             self.bundle.predicate,
-            "stem_command_buffer_preserves_unsupported_completion",
+            "recipient_write_buffer_command_message_appends_literal",
         )
         self.assertEqual(self.bundle.positive_example, EXAMPLE)
         self.assertEqual(self.bundle.covered_positive_examples, COVERED_EXAMPLES)
-        self.assertEqual(self.bundle.transition_function, "step_stem_cell")
+        self.assertEqual(self.bundle.transition_function, "step_fixed_cell")
         self.assertEqual(self.bundle.expected_status, STATUS)
 
-    def test_bundle_records_command_buffer_unsupported_artifact_paths(self):
+    def test_bundle_records_artifact_paths(self):
         self.assertEqual(self.bundle.claim_manifest_path, Path("claims/transition_claims.json"))
         self.assertEqual(
             self.bundle.proof_certificate_path,
@@ -46,11 +47,11 @@ class CommandBufferUnsupportedEvidenceBundleTests(unittest.TestCase):
         )
         self.assertEqual(
             self.bundle.schematic_trace_path,
-            Path("schematics/command_buffer_unsupported_trace.json"),
+            Path("schematics/recipient_write_buffer_command_message_trace.json"),
         )
         self.assertEqual(
             self.bundle.schematic_svg_path,
-            Path("schematics/command_buffer_unsupported_trace.svg"),
+            Path("schematics/recipient_write_buffer_command_message_trace.svg"),
         )
         self.assertEqual(
             self.bundle.hardware_witness_map_path,
@@ -59,10 +60,10 @@ class CommandBufferUnsupportedEvidenceBundleTests(unittest.TestCase):
         self.assertEqual(
             self.bundle.source_status_paths,
             (
-                Path("sources/stem_command_execution_source_status.json"),
+                Path("sources/recipient_command_consumption_source_status.json"),
                 Path("sources/recipient_non_init_command_source_status.json"),
-                Path("sources/standard_signal_command_semantics_status.json"),
                 Path("sources/write_buffer_command_semantics_status.json"),
+                Path("sources/standard_signal_command_semantics_status.json"),
             ),
         )
 
@@ -84,12 +85,11 @@ class CommandBufferUnsupportedEvidenceBundleTests(unittest.TestCase):
             },
         )
 
-    def test_registry_includes_command_buffer_unsupported_bundle(self):
+    def test_registry_includes_recipient_write_buffer_bundle(self):
         registry = load_evidence_bundle_registry(REGISTRY)
         entries = {entry.bundle_id: entry for entry in registry.bundles}
 
         self.assertEqual(len(entries), 11)
-        self.assertIn("self-command-buffer-init-evidence-bundle", entries)
         self.assertIn(BUNDLE_ID, entries)
         self.assertEqual(entries[BUNDLE_ID].path, BUNDLE)
         self.assertEqual(entries[BUNDLE_ID].claim_id, CLAIM_ID)
@@ -98,11 +98,8 @@ class CommandBufferUnsupportedEvidenceBundleTests(unittest.TestCase):
         results = validate_evidence_bundle_registry(registry)
         self.assertTrue(all(result.accepted for result in results), results)
 
-    def test_drifted_unsupported_status_is_rejected(self):
-        drifted = replace(
-            self.bundle,
-            expected_status="stem-command-buffer-self-processed",
-        )
+    def test_drifted_bundle_status_is_rejected(self):
+        drifted = replace(self.bundle, expected_status="rejected-input")
 
         results = validate_transition_evidence_bundle(drifted)
 
@@ -111,27 +108,6 @@ class CommandBufferUnsupportedEvidenceBundleTests(unittest.TestCase):
                 not result.accepted
                 and result.subject in {"claim-example", "schematic-trace"}
                 and "status mismatch" in result.detail
-                for result in results
-            ),
-            results,
-        )
-
-    def test_drifted_covered_example_name_is_rejected(self):
-        drifted = replace(
-            self.bundle,
-            covered_positive_examples=(
-                "self standard signal command remains appended",
-                "not a manifest example",
-            ),
-        )
-
-        results = validate_transition_evidence_bundle(drifted)
-
-        self.assertTrue(
-            any(
-                not result.accepted
-                and result.subject == "claim-example"
-                and "missing covered example" in result.detail
                 for result in results
             ),
             results,

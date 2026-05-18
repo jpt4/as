@@ -3419,3 +3419,29 @@ Status: accepted in
 `docs/adr/0169-recipient-write-buffer-command-execution.md`. Implemented in
 runtime, claim/proof/language, chain, source-status, and project-status
 surfaces.
+
+## ADR-0170: Recipient Write-Buffer Command Evidence Bundle
+
+Goal: promote ADR-0169 recipient write-buffer command-message append behavior
+into the transition evidence registry.
+
+Deliverables:
+
+- `schematics/recipient_write_buffer_command_message_trace.json` records one
+  upstream `write-buf-zero` recipient append trace;
+- `schematics/recipient_write_buffer_command_message_trace.svg` is generated
+  from that trace and checked against renderer output;
+- `evidence/recipient_write_buffer_command_message_bundle.json` ties the
+  recipient write-buffer claim, proof certificate, trace, SVG, hardware map,
+  and source-status boundaries together;
+- `evidence/manifest.json` now registers 11 transition evidence bundles;
+- write-buffer source status marks the recipient evidence bundle implemented;
+- project/source status keep `standard-signal` as the only blocked command and
+  active safe-next frontier; and
+- project-status schema `15` and source-status frontier schema `2` remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0170-recipient-write-buffer-command-evidence-bundle.md`. Implemented
+in trace, SVG, evidence-bundle, registry, source-status, and project-status
+surfaces.

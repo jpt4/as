@@ -124,6 +124,9 @@ ADR-0169 implements recipient write-buffer command-message append execution,
 changes write-buffer readiness to `implemented`, removes write-buffer from the
 blocked command frontier, and moves write-buffer safe-next guidance to
 evidence-bundle promotion. The focused frontier schema remains `2`.
+ADR-0170 registers that recipient write-buffer command-message evidence bundle
+and removes the completed write-buffer promotion from the active safe-next
+frontier. The focused frontier schema remains `2`.
 
 ## Boundary
 

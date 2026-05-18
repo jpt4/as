@@ -678,7 +678,7 @@ def _frontier_summary(
             continue
 
         safe_next_slice = _optional_text(data, "safe_next_slice")
-        if safe_next_slice:
+        if safe_next_slice and not safe_next_slice.startswith("no-"):
             safe_next_slices.append(safe_next_slice)
         source_commands = _source_commands_from_status(data)
         blocked_commands.update(_blocked_commands_from_status(data))

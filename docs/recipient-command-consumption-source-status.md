@@ -97,8 +97,8 @@ ADR-0057 records the write-buffer command semantics source-status decision in
 direct self-mailbox and completed self-target command-buffer write-buffer
 surfaces, ADR-0168 marks delivered recipient write-buffer command messages
 source-ready for append execution, and ADR-0169 implements that recipient
-append execution. The remaining next step is evidence-bundle promotion for the
-recipient write-buffer command-message surface.
+append execution. ADR-0170 promotes that recipient write-buffer
+command-message surface into the transition evidence registry.
 
 ADR-0058 records the `standard-signal` command-token semantics source-status
 decision in `sources/standard_signal_command_semantics_status.json` while

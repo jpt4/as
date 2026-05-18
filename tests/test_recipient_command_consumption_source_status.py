@@ -155,7 +155,7 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
 
         self.assertFalse(any("multiple command-message" in item for item in allowed))
         self.assertTrue(any("standard-signal" in item for item in allowed))
-        self.assertTrue(
+        self.assertFalse(
             any("recipient write-buffer command-message evidence bundle" in item for item in allowed)
         )
         self.assertFalse(

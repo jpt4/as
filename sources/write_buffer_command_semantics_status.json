@@ -3,7 +3,7 @@
   "reviewed_at": "2026-05-18",
   "decision": "write-buffer-command-execution-implemented",
   "runtime_change": "implemented-by-adr-0169",
-  "safe_next_slice": "add-recipient-write-buffer-command-message-evidence-bundle",
+  "safe_next_slice": "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle",
   "commands": [
     "write-buf-zero",
     "write-buf-one"
@@ -88,12 +88,13 @@
     "decision": "execute-recipient-write-buffer-command-message-append",
     "source_status": "sources/write_buffer_command_semantics_status.json",
     "claim_id": "UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED",
-    "evidence_bundle_status": "pending",
+    "evidence_bundle_status": "implemented",
+    "evidence_bundle": "evidence/recipient_write_buffer_command_message_bundle.json",
     "covered_positive_examples": [
       "fixed upstream write-buf-zero command appended",
       "stem recipient write-buf-one command appended"
     ],
-    "summary": "Delivered recipient write-buffer command messages are implemented as append execution by ADR-0169, with a dedicated evidence bundle still pending as the next promotion slice."
+    "summary": "Delivered recipient write-buffer command messages are implemented as append execution by ADR-0169 and promoted into an integrated evidence bundle by ADR-0170."
   },
   "self_target_surface_resolution": {
     "decision": "execute-self-target-write-buffer-append",

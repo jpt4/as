@@ -154,7 +154,6 @@
     }
   ],
   "allowed_next_slices": [
-    "Review new standard-signal command-token source evidence before changing the ADR-0165 preserved unsupported boundary.",
-    "Add recipient write-buffer command-message evidence bundle after ADR-0169 implementation."
+    "Review new standard-signal command-token source evidence before changing the ADR-0165 preserved unsupported boundary."
   ]
 }

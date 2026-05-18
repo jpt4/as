@@ -215,8 +215,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
 
         self.assertTrue(allowed)
         self.assertTrue(any("standard-signal" in item for item in allowed))
-        self.assertTrue(any("write-buffer" in item for item in allowed))
-        self.assertTrue(
+        self.assertFalse(
             any(
                 "recipient write-buffer command-message evidence bundle" in item
                 for item in allowed
@@ -236,7 +235,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
             )
         )
         self.assertFalse(any("schematic-linked trace" in item for item in allowed))
-        self.assertTrue(any("evidence bundle" in item for item in allowed))
+        self.assertFalse(any("evidence bundle" in item for item in allowed))
         self.assertFalse(any("rendered SVG" in item for item in allowed))
         self.assertTrue(
             all("full stem command execution" not in item for item in allowed)

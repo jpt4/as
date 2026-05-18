@@ -22,12 +22,9 @@ STANDARD_SIGNAL_SAFE_NEXT_SLICE = (
     "review-new-standard-signal-command-token-source-evidence-before-execution-change"
 )
 RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
-    "add-recipient-write-buffer-command-message-evidence-bundle"
+    "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle"
 )
-SAFE_NEXT_SLICE = (
-    f"{RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE}, "
-    f"{STANDARD_SIGNAL_SAFE_NEXT_SLICE}"
-)
+SAFE_NEXT_SLICE = STANDARD_SIGNAL_SAFE_NEXT_SLICE
 BLOCKED_COMMANDS = ["standard-signal"]
 
 

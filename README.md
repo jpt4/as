@@ -134,6 +134,15 @@ proof certificates, object languages, evidence bundles, and status reports:
   evidence bundle for direct self-mailbox write-buffer append execution,
   covering both positive write-buffer command examples while tracing
   `write-buf-one`.
+- `docs/recipient-write-buffer-command-message-trace.md` records the
+  schematic-linked trace for one recipient write-buffer command-message append
+  transition.
+- `docs/recipient-write-buffer-command-message-svg.md` records the rendered
+  view of that recipient write-buffer command-message trace.
+- `docs/recipient-write-buffer-command-evidence-bundle.md` records the
+  integrated evidence bundle for recipient write-buffer command-message append
+  execution, covering both positive recipient write-buffer command examples
+  while tracing upstream `write-buf-zero`.
 - `docs/self-command-buffer-init-evidence-bundle.md` records the integrated
   evidence bundle tying one completed self-target command-buffer
   init dispatch to that evidence surface.
@@ -241,9 +250,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `step_stem_cell` now executes direct self-mailbox and completed self-target
   command-buffer write-buffer commands, and recipient cells now execute single
   delivered write-buffer command messages. The transition evidence registry
-  includes the two ADR-0162 self-target write-buffer execution bundles, while
-  ADR-0169 adds the recipient runtime/claim/proof surface and moves its next
-  step to evidence-bundle promotion.
+  includes the two ADR-0162 self-target write-buffer execution bundles and
+  the ADR-0170 recipient write-buffer command-message evidence bundle.
 - `autarkic_systems/transition_chains.py` composes one neighbor delivery step
   with one recipient step, proving the delivered init-family token can be
   consumed without adding a general multi-cell simulator.

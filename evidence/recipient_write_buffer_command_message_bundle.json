@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "bundle_id": "recipient-write-buffer-command-message-evidence-bundle",
+  "reviewed_at": "2026-05-18",
+  "purpose": "Tie one recipient write-buffer command-message append transition to its claim, proof certificate, schematic trace, rendered SVG, and source-status boundaries.",
+  "claim_id": "UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED",
+  "predicate": "recipient_write_buffer_command_message_appends_literal",
+  "positive_example": "fixed upstream write-buf-zero command appended",
+  "covered_positive_examples": [
+    "fixed upstream write-buf-zero command appended",
+    "stem recipient write-buf-one command appended"
+  ],
+  "transition_function": "step_fixed_cell",
+  "expected_status": "recipient-write-buffer-command-message-appended",
+  "artifacts": {
+    "claim_manifest": "claims/transition_claims.json",
+    "proof_certificates": "claims/proof_certificates.json",
+    "schematic_trace": "schematics/recipient_write_buffer_command_message_trace.json",
+    "schematic_svg": "schematics/recipient_write_buffer_command_message_trace.svg",
+    "hardware_witness_map": "sources/prc_hardware_witness_map.json",
+    "source_statuses": [
+      "sources/recipient_command_consumption_source_status.json",
+      "sources/recipient_non_init_command_source_status.json",
+      "sources/write_buffer_command_semantics_status.json",
+      "sources/standard_signal_command_semantics_status.json"
+    ]
+  },
+  "boundaries": [
+    "This bundle covers only single recipient write-buffer command-message append execution, not init-family command consumption.",
+    "Direct self-mailbox and completed self-target command-buffer write-buffer execution remain covered by their ADR-0162 evidence bundles.",
+    "standard-signal recipient non-init command messages and multi-command recipient conflicts remain rejection boundaries.",
+    "The full-buffer boundary remains covered by the recipient write-buffer runtime and claim tests rather than this non-full trace."
+  ]
+}

@@ -74,6 +74,9 @@ append rule was source-resolved while direct self-mailbox and completed
 self-target surfaces remained implemented. ADR-0169 implements that recipient
 surface and changes readiness to `implemented`; no write-buffer runtime
 surface remains blocked.
+ADR-0170 promotes that recipient runtime/claim/proof surface into an
+integrated evidence bundle, so there is no remaining active write-buffer
+follow-up slice in the command-token frontier.
 
 ADR-0159 resolves `buffer-full-boundary` as
 `preserve-existing-full-buffer-boundary-before-write-buffer-append`. The formal
@@ -128,9 +131,9 @@ tokens explicitly. ADR-0167 restores a live write-buffer question for the
 recipient command-message surface, with matching evidence and readiness
 blocker metadata. ADR-0168 resolves that question, clears the live
 write-buffer question queue, and moves the safe-next slice to recipient
-write-buffer command-message execution. ADR-0169 implements that slice and
-moves the safe-next slice to a dedicated recipient write-buffer
-command-message evidence-bundle promotion.
+write-buffer command-message execution. ADR-0169 implements that slice, and
+ADR-0170 registers the dedicated recipient write-buffer command-message
+evidence bundle.
 
 ## Verification
 

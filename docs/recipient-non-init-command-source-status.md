@@ -96,10 +96,11 @@ inputs rather than executed.
 
 The rejection evidence ladder is complete again for `standard-signal` and
 multi-command conflicts. ADR-0169 implements recipient write-buffer
-command-message append execution, so the active safe next slice is a dedicated
-recipient write-buffer command-message evidence bundle. Standard-signal
-command-token execution should be changed only if later source evidence
-replaces the ADR-0165 preserved unsupported boundary.
+command-message append execution, and ADR-0170 adds the dedicated recipient
+write-buffer command-message evidence bundle. The active safe next slice is
+now standard-signal source review: standard-signal command-token execution
+should be changed only if later source evidence replaces the ADR-0165
+preserved unsupported boundary.
 
 ADR-0117 keeps this boundary visible to project-status automation: accepted
 source-status records must now carry non-empty top-level `as_boundary` text.

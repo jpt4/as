@@ -715,3 +715,8 @@
   conflicts only; delivered write-buffer neighbor handoffs are consumed-chain
   examples, delivered `standard-signal` is the rejection-chain witness, and
   the blocked command frontier is `standard-signal` only.
+- ADR-0170 registers the recipient write-buffer command-message evidence
+  bundle. Transition evidence now has 11 bundles, write-buffer evidence-bundle
+  status is implemented for direct self-mailbox, completed self-target, and
+  recipient command-message surfaces, and the active safe-next frontier is
+  standard-signal source review only.

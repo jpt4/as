@@ -176,7 +176,6 @@
     }
   ],
   "allowed_next_slices": [
-    "Add recipient write-buffer command-message evidence bundle after ADR-0169 implementation.",
     "Add more source-status tests if another PRC source resolves the target, command-order, standard-signal command-token, or recipient write-buffer command-message divergence."
   ]
 }
