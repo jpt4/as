@@ -25,6 +25,11 @@ REJECTION_BUNDLE_ID = "recipient-non-init-command-rejection-evidence-bundle"
 REJECTION_CLAIM_ID = "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED"
 REJECTION_STATUS = "rejected-input"
 REJECTION_EXAMPLE = "fixed upstream standard-signal command rejected"
+REJECTION_COVERED_EXAMPLES = [
+    "fixed upstream standard-signal command rejected",
+    "fixed upstream write-buf-zero command rejected",
+    "fixed upstream write-buf-one command rejected",
+]
 MULTI_COMMAND_BUNDLE = Path("evidence/multi_command_recipient_rejection_bundle.json")
 MULTI_COMMAND_BUNDLE_ID = "multi-command-recipient-rejection-evidence-bundle"
 MULTI_COMMAND_EXAMPLE = "fixed all-init command conflict rejected"
@@ -222,7 +227,7 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
                     "claim_id": REJECTION_CLAIM_ID,
                     "expected_status": REJECTION_STATUS,
                     "positive_example": REJECTION_EXAMPLE,
-                    "covered_positive_examples": [REJECTION_EXAMPLE],
+                    "covered_positive_examples": REJECTION_COVERED_EXAMPLES,
                 },
                 {
                     "bundle_id": MULTI_COMMAND_BUNDLE_ID,
@@ -308,6 +313,10 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         self.assertEqual(payload["bundles"][0]["path"], str(BUNDLE))
         self.assertEqual(payload["bundles"][0]["positive_example"], EXAMPLE)
         self.assertEqual(payload["bundles"][0]["covered_positive_examples"], [EXAMPLE])
+        self.assertEqual(
+            payload["bundles"][1]["covered_positive_examples"],
+            REJECTION_COVERED_EXAMPLES,
+        )
         self.assertEqual(
             payload["bundles"][4]["covered_positive_examples"],
             UNSUPPORTED_MAILBOX_COVERED_EXAMPLES,

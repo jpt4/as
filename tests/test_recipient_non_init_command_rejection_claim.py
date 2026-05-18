@@ -24,6 +24,10 @@ CERTIFICATES = Path("claims/proof_certificates.json")
 LANGUAGE = Path("language/transition_claim_language.json")
 CLAIM_ID = "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED"
 EMPTY = ("_", "_", "_")
+WRITE_BUFFER_REJECTION_EXAMPLES = {
+    "fixed upstream write-buf-zero command rejected": "write-buf-zero",
+    "fixed upstream write-buf-one command rejected": "write-buf-one",
+}
 
 
 class RecipientNonInitCommandMessageRejectionClaimTests(unittest.TestCase):
@@ -144,6 +148,25 @@ class RecipientNonInitCommandMessageRejectionClaimTests(unittest.TestCase):
         self.assertTrue(evaluations)
         self.assertTrue(all(evaluation.matched for evaluation in evaluations), evaluations)
 
+    def test_manifest_examples_name_single_write_buffer_rejections(self):
+        claims = load_transition_claims(CLAIMS)
+        claim = next(claim for claim in claims if claim.claim_id == CLAIM_ID)
+        examples = {example.name: example for example in claim.examples}
+
+        evaluations = evaluate_claim_examples([claim])
+        by_name = {evaluation.example_name: evaluation for evaluation in evaluations}
+
+        for example_name, command in WRITE_BUFFER_REJECTION_EXAMPLES.items():
+            with self.subTest(example_name=example_name):
+                example = examples[example_name]
+                self.assertTrue(example.expected)
+                self.assertEqual(example.before.upstream.count(command), 1)
+                self.assertEqual(example.before.input, EMPTY)
+                self.assertEqual(example.result.status, "rejected-input")
+                self.assertEqual(example.result.cell.upstream, EMPTY)
+                self.assertEqual(example.result.cell.input, EMPTY)
+                self.assertTrue(by_name[example_name].matched, by_name[example_name])
+
     def test_proof_certificates_cover_recipient_non_init_rejection_claim(self):
         claims = load_transition_claims(CLAIMS)
         certificates = load_proof_certificates(CERTIFICATES)
@@ -153,6 +176,23 @@ class RecipientNonInitCommandMessageRejectionClaimTests(unittest.TestCase):
 
         self.assertIn(CLAIM_ID, certificate_ids)
         self.assertTrue(all(result.accepted for result in results), results)
+
+    def test_proof_certificate_names_single_write_buffer_rejections(self):
+        certificates = load_proof_certificates(CERTIFICATES)
+        certificate = next(
+            certificate
+            for certificate in certificates
+            if certificate.claim_id == CLAIM_ID
+        )
+        covered = {
+            step.example
+            for step in certificate.steps
+            if step.expected is True
+        }
+
+        for example_name in WRITE_BUFFER_REJECTION_EXAMPLES:
+            with self.subTest(example_name=example_name):
+                self.assertIn(example_name, covered)
 
     def test_object_language_names_recipient_non_init_rejection_predicate(self):
         language = load_transition_claim_language(LANGUAGE)

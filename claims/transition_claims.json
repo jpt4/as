@@ -833,6 +833,52 @@
           }
         },
         {
+          "name": "fixed upstream write-buf-zero command rejected",
+          "expected": true,
+          "before": {
+            "role": "wire",
+            "memory": "right",
+            "upstream": ["write-buf-zero", "_", "_"]
+          },
+          "result": {
+            "status": "rejected-input",
+            "cell": {
+              "role": "wire",
+              "memory": "right",
+              "upstream": ["_", "_", "_"],
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        },
+        {
+          "name": "fixed upstream write-buf-one command rejected",
+          "expected": true,
+          "before": {
+            "role": "wire",
+            "memory": "right",
+            "upstream": ["_", "_", "write-buf-one"]
+          },
+          "result": {
+            "status": "rejected-input",
+            "cell": {
+              "role": "wire",
+              "memory": "right",
+              "upstream": ["_", "_", "_"],
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        },
+        {
           "name": "stem multi command conflict rejected",
           "expected": true,
           "before": {

@@ -217,6 +217,10 @@ of the old preservation bundles, and keeps project status
 ADR-0162 registers those two write-buffer execution surfaces as transition
 evidence bundles, moves transition evidence to ten bundles, and keeps project
 status `schema_version: 15`.
+ADR-0163 extends the existing recipient non-init rejection claim/proof surface
+and evidence-bundle coverage with explicit upstream `write-buf-zero` and
+`write-buf-one` rejection examples, moving transition claim coverage to 39
+examples while preserving project status `schema_version: 15`.
 
 ## Boundary
 

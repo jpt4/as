@@ -457,3 +457,8 @@
   bundle quickly enough that the operator frontier does not keep pointing at a
   solved documentation/evidence task. The next safe slice should name the
   remaining semantic frontier.
+- When a broad rejection boundary stands in for several concrete blocked
+  command tokens, list each token as a covered positive example in the
+  claim/proof/evidence layer. Otherwise the status frontier can look settled
+  while future agents still have to infer whether the named token was actually
+  checked.

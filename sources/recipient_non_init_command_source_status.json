@@ -11,7 +11,7 @@
       "adr": "ADR-0054",
       "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
       "predicate": "recipient_non_init_command_message_rejected",
-      "summary": "AS now has a named transition claim and proof-certificate entry for the recipient non-init command-message rejection boundary."
+      "summary": "AS now has a named transition claim and proof-certificate entry for the recipient non-init command-message rejection boundary, including explicit standard-signal and write-buffer positive rejection examples."
     }
   ],
   "implemented_traces": [
@@ -46,7 +46,12 @@
       "path": "evidence/recipient_non_init_command_rejection_bundle.json",
       "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
       "positive_example": "fixed upstream standard-signal command rejected",
-      "summary": "AS now has an integrated evidence bundle validating one recipient non-init rejection boundary across claim, proof, trace, render, and source-status layers."
+      "covered_positive_examples": [
+        "fixed upstream standard-signal command rejected",
+        "fixed upstream write-buf-zero command rejected",
+        "fixed upstream write-buf-one command rejected"
+      ],
+      "summary": "AS now has an integrated evidence bundle validating one recipient non-init rejection boundary across claim, proof, trace, render, and source-status layers while explicitly covering both delivered write-buffer rejection examples at the claim/proof layer."
     }
   ],
   "implemented_source_statuses": [

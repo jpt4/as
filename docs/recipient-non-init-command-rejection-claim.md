@@ -1,6 +1,6 @@
 # Recipient Non-Init Command Rejection Claim
 
-Status: named claim and proof-certificate surface, 2026-05-17.
+Status: named claim and proof-certificate surface, updated 2026-05-18.
 
 ADR-0054 promotes the current recipient non-init command-message rejection
 boundary into the transition-claim surface. The claim is
@@ -30,8 +30,14 @@ reference point.
 ## Proof Surface
 
 `claims/proof_certificates.json` covers the claim with `manifest-example`
-steps for a fixed upstream `standard-signal` rejection, a stem multi-command
-conflict rejection, and a negative changed-role example.
+steps for fixed upstream `standard-signal`, `write-buf-zero`, and
+`write-buf-one` rejections, a stem multi-command conflict rejection, an
+all-init conflict rejection, and a negative changed-role example.
+
+ADR-0163 adds the explicit upstream write-buffer positive examples. This keeps
+recipient write-buffer command-message behavior inside the rejection boundary
+while making the claim/proof coverage as explicit as the already implemented
+self-target write-buffer surfaces.
 
 ## Verification
 

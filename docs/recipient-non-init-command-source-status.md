@@ -73,6 +73,10 @@ integrated evidence bundle in
 proof certificate, schematic trace, SVG render, hardware witness map, and
 source-status boundaries together.
 
+ADR-0163 keeps that same trace-aligned primary example but extends the
+recipient non-init claim, proof certificate, and evidence-bundle coverage with
+explicit upstream `write-buf-zero` and `write-buf-one` rejection examples.
+
 ADR-0148 reuses this completed rejection evidence ladder to resolve the
 standard-signal `recipient-surface` question: delivered recipient
 `standard-signal` command messages are rejected as non-init command-message

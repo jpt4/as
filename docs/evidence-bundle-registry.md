@@ -8,7 +8,9 @@ The registry currently lists:
 - `evidence/recipient_init_command_message_bundle.json`, the ADR-0065 bundle
   for the positive fixed-upstream recipient init command-message transition;
 - `evidence/recipient_non_init_command_rejection_bundle.json`, the ADR-0068
-  bundle for the positive upstream `standard-signal` rejection boundary;
+  bundle for the positive upstream `standard-signal` rejection boundary, with
+  ADR-0163 covered examples for upstream `write-buf-zero` and `write-buf-one`
+  rejection;
 - `evidence/multi_command_recipient_rejection_bundle.json`, the ADR-0069
   bundle for the positive direct simultaneous-command rejection boundary;
 - `evidence/self_mailbox_init_bundle.json`, the ADR-0072 bundle for the
@@ -95,7 +97,7 @@ python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json
 python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json --format json
 ```
 
-The tests cover registry loading, the current ADR-0065, ADR-0068, ADR-0069,
-ADR-0072, ADR-0073, ADR-0074, ADR-0075, ADR-0076, and ADR-0162 bundle entries,
-whole registry validation, duplicate bundle-ID rejection, missing bundle-path
-rejection, and unregistered sibling bundle-file rejection.
+The tests cover registry loading, the current ADR-0065, ADR-0068/ADR-0163,
+ADR-0069, ADR-0072, ADR-0073, ADR-0074, ADR-0075, ADR-0076, and ADR-0162
+bundle entries, whole registry validation, duplicate bundle-ID rejection,
+missing bundle-path rejection, and unregistered sibling bundle-file rejection.

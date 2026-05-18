@@ -99,6 +99,10 @@ command-message inputs under the recipient non-init rejection boundary.
 ADR-0162 registers both implemented write-buffer self-target surfaces as
 evidence bundles and moves the write-buffer safe next slice to recipient
 write-buffer command-message source resolution.
+ADR-0163 adds explicit upstream `write-buf-zero` and `write-buf-one` rejection
+examples to the recipient non-init claim/proof/evidence coverage without
+changing the focused frontier schema or implementing recipient write-buffer
+command-message execution.
 
 ## Boundary
 

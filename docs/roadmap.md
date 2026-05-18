@@ -3246,3 +3246,26 @@ Status: accepted in
 schematic trace/SVG validators, the new trace and SVG artifacts, the transition
 evidence registry, write-buffer and stem source-status records, and focused
 trace/SVG/evidence/status tests.
+
+## ADR-0163: Recipient Write-Buffer Rejection Coverage
+
+Goal: make delivered recipient write-buffer rejection explicit in the existing
+recipient non-init claim/proof/evidence surface.
+
+Deliverables:
+
+- positive upstream `write-buf-zero` and `write-buf-one` rejection examples in
+  `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`;
+- proof-certificate steps for both new positive examples;
+- recipient non-init evidence-bundle `covered_positive_examples` listing the
+  standard-signal primary example plus both write-buffer rejection examples;
+- project-status transition claim coverage updated from 37 to 39 matched
+  examples;
+- updated recipient/write-buffer source-status documentation; and
+- unchanged Universal Cell runtime behavior, trace artifacts, SVG artifacts,
+  project-status schema `15`, and source-status frontier schema `2`.
+
+Status: accepted in
+`docs/adr/0163-recipient-write-buffer-rejection-coverage.md`. Implemented in
+the transition claim/proof manifests, recipient non-init evidence bundle,
+recipient source-status record, and focused claim/evidence/status tests.

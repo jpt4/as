@@ -91,7 +91,11 @@
     "source_status": "sources/recipient_non_init_command_source_status.json",
     "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
     "evidence_bundle": "evidence/recipient_non_init_command_rejection_bundle.json",
-    "summary": "Delivered recipient write-buffer command messages stay in the existing recipient non-init rejection boundary. Direct self-mailbox and completed self-target command-buffer write-buffer tokens now execute under ADR-0161."
+    "covered_positive_examples": [
+      "fixed upstream write-buf-zero command rejected",
+      "fixed upstream write-buf-one command rejected"
+    ],
+    "summary": "Delivered recipient write-buffer command messages stay in the existing recipient non-init rejection boundary. ADR-0163 makes both write-buffer rejection examples explicit in the claim/proof and evidence-bundle coverage. Direct self-mailbox and completed self-target command-buffer write-buffer tokens now execute under ADR-0161."
   },
   "self_target_surface_resolution": {
     "decision": "execute-self-target-write-buffer-append",
@@ -163,5 +167,5 @@
       "summary": "The official PRC TLA files are partial/stub/empty and do not define write-buf-zero or write-buf-one command-token semantics."
     }
   ],
-  "as_boundary": "Direct self-mailbox and completed self-target command-buffer write-buffer execution are implemented through ADR-0161 append behavior and bundled as integrated evidence by ADR-0162; delivered recipient write-buffer command-message inputs remain rejected by the recipient non-init boundary."
+  "as_boundary": "Direct self-mailbox and completed self-target command-buffer write-buffer execution are implemented through ADR-0161 append behavior and bundled as integrated evidence by ADR-0162; delivered recipient write-buffer command-message inputs remain rejected by the recipient non-init boundary with explicit ADR-0163 claim/proof and evidence-bundle coverage."
 }

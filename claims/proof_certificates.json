@@ -248,6 +248,16 @@
         },
         {
           "rule": "manifest-example",
+          "example": "fixed upstream write-buf-zero command rejected",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "fixed upstream write-buf-one command rejected",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
           "example": "stem multi command conflict rejected",
           "expected": true
         },

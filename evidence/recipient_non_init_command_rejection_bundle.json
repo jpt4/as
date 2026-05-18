@@ -6,6 +6,11 @@
   "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
   "predicate": "recipient_non_init_command_message_rejected",
   "positive_example": "fixed upstream standard-signal command rejected",
+  "covered_positive_examples": [
+    "fixed upstream standard-signal command rejected",
+    "fixed upstream write-buf-zero command rejected",
+    "fixed upstream write-buf-one command rejected"
+  ],
   "transition_function": "step_fixed_cell",
   "expected_status": "rejected-input",
   "artifacts": {
@@ -24,6 +29,6 @@
   "boundaries": [
     "This bundle covers the non-init recipient command-message rejection boundary.",
     "It preserves the init-family recipient command-message transition as the only executable recipient command-message slice.",
-    "standard-signal command-token execution and write-buffer command-token execution remain source-blocked."
+    "standard-signal command-token execution remains source-blocked, while recipient write-buffer command-message execution remains rejected at this boundary."
   ]
 }

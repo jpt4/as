@@ -239,7 +239,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   remain open.
 - `step_stem_cell` now executes direct self-mailbox and completed self-target
   command-buffer write-buffer commands, and the transition evidence registry
-  includes the two ADR-0162 write-buffer execution bundles.
+  includes the two ADR-0162 write-buffer execution bundles. The existing
+  recipient non-init evidence bundle now explicitly covers delivered
+  `write-buf-zero` and `write-buf-one` rejection examples while preserving
+  recipient write-buffer command-message execution as blocked.
 - `autarkic_systems/transition_chains.py` composes one neighbor delivery step
   with one recipient step, proving the delivered init-family token can be
   consumed without adding a general multi-cell simulator.
@@ -306,7 +309,7 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.project_status --format json` emits the current
   project status as schema-versioned machine-readable JSON: transition
   evidence accepted with 10 bundles, chain evidence accepted with 2 bundles,
-  transition claim examples accepted with 15 claims and 37 matched examples,
+  transition claim examples accepted with 15 claims and 39 matched examples,
   transition proof certificates accepted with 15 claims and 15 certificates,
   transition-chain claims accepted with 2 claims and 2 certificates,
   transition language accepted with 15 claims and 15 certificates, chain

@@ -3505,3 +3505,29 @@
   accepted 10 transition bundles, source/project status JSON passed,
   `py_compile`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 728 tests.
+
+## 2026-05-18 - Recipient Write-Buffer Rejection Coverage
+
+- Added ADR-0163 to make delivered recipient write-buffer rejection explicit
+  in the existing recipient non-init claim/proof/evidence surface without
+  changing runtime behavior.
+- Added red claim, evidence-bundle, registry, and project-status tests before
+  implementation. The focused red run executed 107 tests and failed because
+  upstream `write-buf-zero` / `write-buf-one` rejection examples were absent
+  from the claim manifest, proof certificate, and recipient non-init bundle
+  coverage.
+- Added positive upstream write-buffer rejection examples to
+  `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`, added matching
+  proof-certificate steps, and expanded
+  `evidence/recipient_non_init_command_rejection_bundle.json` covered examples
+  while keeping the primary trace/SVG as the upstream `standard-signal`
+  rejection witness.
+- Updated recipient and write-buffer source-status artifacts and docs so the
+  remaining recipient write-buffer frontier is source semantics, not missing
+  claim/proof coverage.
+- Focused green verification passed 107 tests and adjacent source-status
+  verification passed 138 tests. The evidence registry accepted 10 transition
+  bundles; project status reports schema 15 with 15 transition claims and 39
+  matched examples; source-status frontier reports schema 2. JSON parsing,
+  `py_compile`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 730 tests.

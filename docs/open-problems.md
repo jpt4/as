@@ -88,6 +88,10 @@ ADR-0057 records write-buffer command execution as a separate source-status
 frontier, and ADR-0161 implements its direct self-mailbox and completed
 self-target command-buffer append surfaces. ADR-0162 registers both
 implemented write-buffer surfaces as integrated transition evidence bundles.
+ADR-0163 extends the recipient non-init rejection claim, proof certificate,
+and evidence-bundle coverage so delivered `write-buf-zero` and
+`write-buf-one` command messages are explicitly covered by the rejection
+boundary without adding recipient write-buffer execution.
 ADR-0058 records `standard-signal` command-token execution as still
 source-blocked while preserving ordinary binary-input standard-signal behavior.
 ADR-0059 selects reject-and-clear for multiple simultaneous recipient
@@ -302,7 +306,10 @@ command-buffer surfaces, while delivered recipient write-buffer command
 messages remain under the recipient non-init rejection boundary. ADR-0162 adds
 the integrated write-buffer execution evidence bundles and moves the
 write-buffer safe-next frontier to recipient command-message source
-resolution.
+resolution. ADR-0163 adds explicit delivered `write-buf-zero` and
+`write-buf-one` rejection coverage to the recipient non-init claim/proof and
+evidence bundle, keeping the remaining frontier source-semantic rather than
+coverage-semantic.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

@@ -679,3 +679,8 @@
   evidence bundles. Transition evidence now has ten bundles, and the
   write-buffer safe next slice is recipient write-buffer command-message source
   resolution rather than another self-target evidence artifact.
+- ADR-0163 extends `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED` with
+  explicit upstream `write-buf-zero` and `write-buf-one` rejection examples,
+  adds matching proof-certificate steps, and expands the recipient non-init
+  evidence bundle's covered examples while leaving recipient write-buffer
+  command-message execution blocked.

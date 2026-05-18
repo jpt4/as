@@ -54,6 +54,10 @@ ADR-0162 adds integrated evidence bundles for both implemented self-target
 surfaces, so the remaining safe next write-buffer work is recipient
 write-buffer command-message source resolution rather than another evidence
 artifact for the self-target append behavior.
+ADR-0163 makes the current recipient-side rejection boundary explicit for both
+delivered write-buffer command tokens by adding upstream `write-buf-zero` and
+`write-buf-one` positive examples to the recipient non-init claim/proof
+surface and to the covered examples of the recipient non-init evidence bundle.
 
 ADR-0159 resolves `buffer-full-boundary` as
 `preserve-existing-full-buffer-boundary-before-write-buffer-append`. The formal
@@ -101,8 +105,10 @@ question queue, and marks write-buffer append execution as source-ready for a
 later implementation ADR. ADR-0161 implements that self-target append slice,
 narrows the old unsupported boundaries to `standard-signal`, and ADR-0162
 registers the direct self-mailbox plus completed self-target command-buffer
-write-buffer execution paths as evidence bundles. The next write-buffer
-frontier is recipient write-buffer command-message semantics.
+write-buffer execution paths as evidence bundles. ADR-0163 then widens the
+existing recipient rejection coverage to name both delivered write-buffer
+tokens explicitly. The next write-buffer frontier is recipient write-buffer
+command-message semantics.
 
 ## Verification
 

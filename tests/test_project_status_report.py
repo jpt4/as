@@ -52,7 +52,8 @@ WRITE_BUFFER_AS_BOUNDARY = (
     "write-buffer execution are implemented through ADR-0161 append behavior "
     "and bundled as integrated evidence by ADR-0162; delivered recipient "
     "write-buffer command-message inputs remain rejected by the recipient "
-    "non-init boundary."
+    "non-init boundary with explicit ADR-0163 claim/proof and evidence-bundle "
+    "coverage."
 )
 TRANSITION_BUNDLES = [
     {
@@ -69,7 +70,11 @@ TRANSITION_BUNDLES = [
         "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
         "expected_status": "rejected-input",
         "positive_example": "fixed upstream standard-signal command rejected",
-        "covered_positive_examples": ["fixed upstream standard-signal command rejected"],
+        "covered_positive_examples": [
+            "fixed upstream standard-signal command rejected",
+            "fixed upstream write-buf-zero command rejected",
+            "fixed upstream write-buf-one command rejected",
+        ],
     },
     {
         "bundle_id": "multi-command-recipient-rejection-evidence-bundle",
@@ -181,9 +186,9 @@ CHAIN_LANGUAGE = {
 TRANSITION_CLAIMS = {
     "claims_path": "claims/transition_claims.json",
     "claim_count": 15,
-    "example_count": 37,
-    "matched_count": 37,
-    "result_count": 37,
+    "example_count": 39,
+    "matched_count": 39,
+    "result_count": 39,
 }
 TRANSITION_PROOF_CERTIFICATES = {
     "claims_path": "claims/transition_claims.json",
@@ -601,7 +606,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Transition evidence: accepted (10 bundles)", text)
         self.assertIn("Chain evidence: accepted (2 bundles)", text)
         self.assertIn(
-            "Transition claims: accepted (15 claims, 37 examples, 37 matched)",
+            "Transition claims: accepted (15 claims, 39 examples, 39 matched)",
             text,
         )
         self.assertIn(
