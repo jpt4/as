@@ -314,8 +314,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   the transition evidence registry, chain evidence registry, network-sequence
   evidence registry, base claim/proof/language surfaces, transition-chain
   claim/language surfaces, network-sequence claim/proof surface, and the
-  checked proof-rule audit, plus the live source-status frontier for blocked
-  command-token semantics and their resolution-question IDs.
+  checked proof-rule audit, plus the checked formal-confidence target boundary
+  and live source-status frontier for blocked command-token semantics and their
+  resolution-question IDs.
 - `autarkic_systems/vertical_demo.py` renders a first-run vertical demo digest
   over the accepted stack: current demonstration, evidence counts,
   claim/proof counts, proof-rule mix, blocked command frontier, canonical
@@ -414,8 +415,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   machine-readable JSON, including per-bundle failed subjects when a registered
   existing bundle rejects.
 - `python -m autarkic_systems.project_status --format summary` emits a compact
-  six-line operator digest over the accepted state, evidence counts, claim
-  counts, proof-rule audit, blocked commands, and safe next slice.
+  operator digest over the accepted state, evidence counts, claim
+  counts, proof-rule audit, formal-confidence target status mix, blocked
+  commands, and safe next slice.
 - `python -m autarkic_systems.github_submission` emits a local text/JSON
   submission-status report showing whether the current `HEAD` is visible on
   fork `main`, the fork commit URL for that `HEAD`, the fork `main` browser
@@ -445,6 +447,7 @@ proof certificates, object languages, evidence bundles, and status reports:
   certificates, network-sequence claims accepted with 1 claim and 1
   certificate, a proof-rule audit showing 52 checked `predicate-result` steps
   and 0 checked `manifest-example` steps,
+  formal-confidence targets accepted with 1 blocked target,
   transition language accepted with 16 claims and 16 certificates, chain
   language accepted with 2 claims and 2 certificates, network-sequence language
   accepted with 1 claim and 1 certificate, concrete transition, chain, and
@@ -509,7 +512,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   or `sequence-svg` when a registry bundle rejects. Schema version `21` adds
   `latest_source_review` to accepted source-status frontier entries, validates
   the linked review artifact, and renders a `Latest source reviews:` text
-  section.
+  section. Schema version `22` adds `formal_confidence` from the checked
+  formal-confidence target manifest, includes it in aggregate acceptance,
+  renders formal-confidence status and failures in text and summary output,
+  and adds `--formal-confidence-targets` / `--willard-map`.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

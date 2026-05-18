@@ -22,6 +22,8 @@ SEQUENCE_BUNDLE = Path("evidence/sequences/post_handoff_signal_bundle.json")
 SEQUENCE_LANGUAGE = Path("language/network_sequence_claim_language.json")
 SEQUENCE_CLAIMS = Path("claims/network_sequence_claims.json")
 SEQUENCE_CERTIFICATES = Path("claims/network_sequence_proof_certificates.json")
+FORMAL_CONFIDENCE_TARGETS = Path("claims/formal_confidence_targets.json")
+WILLARD_MAP = Path("sources/willard_definition_map.json")
 RECIPIENT_STATUS = Path("sources/recipient_non_init_command_source_status.json")
 STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.json")
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
@@ -34,7 +36,7 @@ RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
     "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle"
 )
 SAFE_NEXT_SLICE = ""
-PROJECT_STATUS_SCHEMA_VERSION = 21
+PROJECT_STATUS_SCHEMA_VERSION = 22
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
     "self-target-command-buffer",
@@ -291,6 +293,16 @@ PROOF_RULE_AUDIT = {
         "failed_subjects": [],
     },
 }
+FORMAL_CONFIDENCE_SUMMARY = {
+    "accepted": True,
+    "schema_version": 1,
+    "reviewed_at": "2026-05-18",
+    "target_manifest": "claims/formal_confidence_targets.json",
+    "willard_map": "sources/willard_definition_map.json",
+    "target_count": 1,
+    "failed_subjects": [],
+    "status_counts": {"blocked": 1},
+}
 PROJECT_STATUS_SUMMARY = "\n".join(
     [
         "Autarkic Systems summary: accepted",
@@ -300,6 +312,7 @@ PROJECT_STATUS_SUMMARY = "\n".join(
             "2 chain claims/2 certificates; 1 sequence claim/1 certificate"
         ),
         "Proof rules: predicate-result=52, manifest-example=0",
+        "Formal confidence: 1 target; blocked=1",
         "Blocked commands: standard-signal",
         "Safe next slice: none",
     ]
@@ -790,6 +803,16 @@ class ProjectStatusReportTests(unittest.TestCase):
             ],
         )
         self.assertEqual(report["proof_rule_audit"], PROOF_RULE_AUDIT)
+        for key, expected in FORMAL_CONFIDENCE_SUMMARY.items():
+            self.assertEqual(report["formal_confidence"][key], expected)
+        self.assertEqual(
+            report["formal_confidence"]["targets"][0]["target_id"],
+            "AS-FORMAL-CONFIDENCE-TARGET-001",
+        )
+        self.assertEqual(
+            report["formal_confidence"]["targets"][0]["status"],
+            "blocked",
+        )
         self.assertTrue(report["transition_language"]["accepted"])
         for key, expected in TRANSITION_LANGUAGE.items():
             self.assertEqual(report["transition_language"][key], expected)
@@ -960,6 +983,8 @@ class ProjectStatusReportTests(unittest.TestCase):
             "Network sequence language: accepted (1 claim, 1 certificate)",
             text,
         )
+        self.assertIn("Formal confidence: accepted (1 target; blocked=1)", text)
+        self.assertIn("Formal confidence failures: none", text)
         self.assertIn("Language failures: none", text)
         self.assertIn("Transition evidence bundles:", text)
         self.assertIn(
@@ -1678,6 +1703,12 @@ class ProjectStatusReportTests(unittest.TestCase):
             "sequence-examples",
         )
         self.assertEqual(payload["proof_rule_audit"], PROOF_RULE_AUDIT)
+        for key, expected in FORMAL_CONFIDENCE_SUMMARY.items():
+            self.assertEqual(payload["formal_confidence"][key], expected)
+        self.assertEqual(
+            payload["formal_confidence"]["targets"][0]["target_id"],
+            "AS-FORMAL-CONFIDENCE-TARGET-001",
+        )
         self.assertTrue(payload["transition_language"]["accepted"])
         for key, expected in TRANSITION_LANGUAGE.items():
             self.assertEqual(payload["transition_language"][key], expected)
@@ -1910,6 +1941,49 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertEqual(
             payload["sequence_language"]["language_id"],
             "as-network-sequence-claim-v1",
+        )
+
+    def test_cli_accepts_formal_confidence_overrides(self):
+        stdout = io.StringIO()
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = run_project_status_cli(
+                [
+                    "--formal-confidence-targets",
+                    str(FORMAL_CONFIDENCE_TARGETS),
+                    "--willard-map",
+                    str(WILLARD_MAP),
+                    "--format",
+                    "json",
+                ]
+            )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 0, payload)
+        self.assertTrue(payload["formal_confidence"]["accepted"])
+        self.assertEqual(payload["formal_confidence"]["target_count"], 1)
+        self.assertEqual(payload["formal_confidence"]["status_counts"], {"blocked": 1})
+
+    def test_missing_formal_confidence_target_is_structured_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing_targets = Path(tmp) / "missing-formal-confidence.json"
+
+            report = build_project_status_report(
+                formal_confidence_targets_path=missing_targets,
+            )
+
+        text = format_project_status_report(report)
+        self.assertFalse(report["accepted"])
+        self.assertFalse(report["formal_confidence"]["accepted"])
+        self.assertEqual(
+            report["formal_confidence"]["failed_subjects"],
+            ["formal-confidence-target"],
+        )
+        self.assertEqual(report["formal_confidence"]["target_count"], 0)
+        self.assertIn("Formal confidence: rejected (0 targets; none)", text)
+        self.assertIn(
+            "Formal confidence failures: formal-confidence-target",
+            text,
         )
 
     def test_missing_source_status_is_structured_failure(self):

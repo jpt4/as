@@ -928,3 +928,6 @@
   formal-confidence target as explicitly blocked pending arithmetic syntax,
   proof-code encoding, self-reference substitution, consistency-level
   selection, and deduction-apparatus work.
+- ADR-0225 folds that formal-confidence target validation into aggregate
+  project status and inherited handoff readiness, bumping project status to
+  schema version `22` and making missing/drifted target manifests fail closed.

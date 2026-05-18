@@ -50,6 +50,7 @@ apparatus selection.
 ```sh
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.formal_confidence --format json
+python -m autarkic_systems.project_status --format summary
 ```
 
 The validator checks that:
@@ -60,6 +61,10 @@ The validator checks that:
 - every required configuration field is present and non-blank;
 - blocked targets name blockers; and
 - each target names a next AS action.
+
+ADR-0225 folds this validator into aggregate project status, so missing or
+drifted formal-confidence targets now make the main status and inherited
+handoff path reject instead of remaining invisible.
 
 ## Boundary
 

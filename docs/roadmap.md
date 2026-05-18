@@ -4598,3 +4598,25 @@ Deliverables:
 Status: accepted in `docs/adr/0224-formal-confidence-target.md`.
 Implemented in `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0225: Project Status Formal Confidence
+
+Goal: make aggregate project status fail closed on the checked
+formal-confidence target boundary.
+
+Deliverables:
+
+- `formal_confidence` in project-status JSON;
+- project status schema version `22`;
+- aggregate acceptance requiring formal-confidence target validation;
+- text output rendering formal-confidence accepted/rejected state, target
+  count, status mix, and failures;
+- summary output rendering the formal-confidence target status mix;
+- CLI overrides `--formal-confidence-targets` and `--willard-map`; and
+- no change to the formal-confidence target, arithmetic syntax, proof-code,
+  self-reference, runtime behavior, command semantics, evidence bundles,
+  GitHub submission, or handoff submission logic.
+
+Status: accepted in `docs/adr/0225-project-status-formal-confidence.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py` and `tests/test_handoff_status.py`.

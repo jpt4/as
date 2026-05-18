@@ -36,6 +36,13 @@ from autarkic_systems.evidence_bundle import (
     registry_validation_report_payload,
     validate_evidence_bundle_registry,
 )
+from autarkic_systems.formal_confidence import (
+    DEFAULT_TARGETS as DEFAULT_FORMAL_CONFIDENCE_TARGETS,
+    DEFAULT_WILLARD_MAP,
+    formal_confidence_report_payload,
+    load_formal_confidence_targets,
+    validate_formal_confidence_targets,
+)
 from autarkic_systems.network_sequence_evidence_bundle import (
     load_network_sequence_evidence_bundle_registry,
     network_sequence_registry_validation_report_payload,
@@ -74,12 +81,14 @@ DEFAULT_CHAIN_CERTIFICATES = Path("claims/transition_chain_proof_certificates.js
 DEFAULT_SEQUENCE_LANGUAGE = Path("language/network_sequence_claim_language.json")
 DEFAULT_SEQUENCE_CLAIMS = Path("claims/network_sequence_claims.json")
 DEFAULT_SEQUENCE_CERTIFICATES = Path("claims/network_sequence_proof_certificates.json")
+DEFAULT_FORMAL_CONFIDENCE_TARGETS_PATH = DEFAULT_FORMAL_CONFIDENCE_TARGETS
+DEFAULT_WILLARD_MAP_PATH = DEFAULT_WILLARD_MAP
 DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/recipient_non_init_command_source_status.json"),
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 21
+PROJECT_STATUS_SCHEMA_VERSION = 22
 PROOF_RULE_TEXT_ORDER = (
     PREDICATE_RESULT_RULE,
     MANIFEST_EXAMPLE_RULE,
@@ -108,6 +117,8 @@ def build_project_status_report(
     sequence_language_path: Path | str = DEFAULT_SEQUENCE_LANGUAGE,
     sequence_claims_path: Path | str = DEFAULT_SEQUENCE_CLAIMS,
     sequence_certificates_path: Path | str = DEFAULT_SEQUENCE_CERTIFICATES,
+    formal_confidence_targets_path: Path | str = DEFAULT_FORMAL_CONFIDENCE_TARGETS_PATH,
+    willard_map_path: Path | str = DEFAULT_WILLARD_MAP_PATH,
     source_status_paths: list[Path | str] | tuple[Path | str, ...] = DEFAULT_SOURCE_STATUS_PATHS,
 ) -> dict[str, Any]:
     """Build a status report from registries and source-status records."""
@@ -149,6 +160,10 @@ def build_project_status_report(
         sequence_claims_path,
         sequence_certificates_path,
     )
+    formal_confidence = _formal_confidence_summary(
+        formal_confidence_targets_path,
+        willard_map_path,
+    )
     frontier = _frontier_summary(source_status_paths)
     accepted = (
         transition_summary["accepted"]
@@ -162,6 +177,7 @@ def build_project_status_report(
         and transition_language["accepted"]
         and chain_language["accepted"]
         and sequence_language["accepted"]
+        and formal_confidence["accepted"]
         and not frontier["missing_source_statuses"]
         and not frontier["invalid_source_statuses"]
     )
@@ -179,6 +195,7 @@ def build_project_status_report(
         "transition_language": transition_language,
         "chain_language": chain_language,
         "sequence_language": sequence_language,
+        "formal_confidence": formal_confidence,
         "frontier": frontier,
     }
 
@@ -198,6 +215,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
     transition_language = report["transition_language"]
     chain_language = report["chain_language"]
     sequence_language = report["sequence_language"]
+    formal_confidence = report["formal_confidence"]
     frontier = report["frontier"]
     transition_status = "accepted" if transition["accepted"] else "rejected"
     chain_status = "accepted" if chain["accepted"] else "rejected"
@@ -241,6 +259,8 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         _language_text_line("Transition language", transition_language),
         _language_text_line("Chain language", chain_language),
         _language_text_line("Network sequence language", sequence_language),
+        _formal_confidence_text_line(formal_confidence),
+        *_formal_confidence_failure_text_lines(formal_confidence),
         *_language_failure_text_lines(
             transition_language,
             chain_language,
@@ -283,6 +303,7 @@ def format_project_status_summary(report: dict[str, Any]) -> str:
     chain_claims = report["chain_claims"]
     sequence_claims = report["sequence_claims"]
     proof_rule_audit = report["proof_rule_audit"]
+    formal_confidence = report["formal_confidence"]
     frontier = report["frontier"]
     blocked_commands = frontier["blocked_commands"] or []
     return "\n".join([
@@ -304,6 +325,7 @@ def format_project_status_summary(report: dict[str, Any]) -> str:
             f"{_count_noun(sequence_claims['certificate_count'], 'certificate', 'certificates')}"
         ),
         f"Proof rules: {_proof_rule_counts_text(proof_rule_audit)}",
+        f"Formal confidence: {_formal_confidence_summary_text(formal_confidence)}",
         "Blocked commands: "
         + (", ".join(blocked_commands) if blocked_commands else "none"),
         f"Safe next slice: {frontier['safe_next_slice'] or 'none'}",
@@ -378,6 +400,16 @@ def run_project_status_cli(argv: list[str] | None = None) -> int:
         help="Path to the network-sequence proof certificate manifest.",
     )
     parser.add_argument(
+        "--formal-confidence-targets",
+        default=str(DEFAULT_FORMAL_CONFIDENCE_TARGETS_PATH),
+        help="Path to the formal-confidence target manifest.",
+    )
+    parser.add_argument(
+        "--willard-map",
+        default=str(DEFAULT_WILLARD_MAP_PATH),
+        help="Path to the Willard definition map.",
+    )
+    parser.add_argument(
         "--source-status",
         action="append",
         default=None,
@@ -409,6 +441,8 @@ def run_project_status_cli(argv: list[str] | None = None) -> int:
         sequence_language_path=args.sequence_language,
         sequence_claims_path=args.sequence_claims,
         sequence_certificates_path=args.sequence_certificates,
+        formal_confidence_targets_path=args.formal_confidence_targets,
+        willard_map_path=args.willard_map,
         source_status_paths=source_status_paths,
     )
     if args.format == "json":
@@ -809,6 +843,76 @@ def _language_failure_summary(
             }
         ],
     }
+
+
+def _formal_confidence_summary(
+    targets_path: Path | str,
+    willard_map_path: Path | str,
+) -> dict[str, Any]:
+    targets = Path(targets_path)
+    willard_map = Path(willard_map_path)
+    try:
+        manifest = load_formal_confidence_targets(targets)
+        report = validate_formal_confidence_targets(manifest, willard_map)
+    except Exception as exc:
+        return _formal_confidence_failure_summary(targets, willard_map, exc)
+
+    payload = formal_confidence_report_payload(report)
+    return {
+        **payload,
+        "status_counts": _formal_confidence_status_counts(payload["targets"]),
+    }
+
+
+def _formal_confidence_failure_summary(
+    targets_path: Path,
+    willard_map_path: Path,
+    exc: Exception,
+) -> dict[str, Any]:
+    subject = _formal_confidence_failure_subject(targets_path, willard_map_path, exc)
+    detail = f"{type(exc).__name__}: {exc}"
+    return {
+        "accepted": False,
+        "schema_version": 0,
+        "reviewed_at": "",
+        "target_manifest": str(targets_path),
+        "willard_map": str(willard_map_path),
+        "target_count": 0,
+        "failed_subjects": [subject],
+        "status_counts": {},
+        "targets": [],
+        "result_count": 1,
+        "results": [
+            {
+                "subject": subject,
+                "accepted": False,
+                "detail": detail,
+            }
+        ],
+    }
+
+
+def _formal_confidence_failure_subject(
+    targets_path: Path,
+    willard_map_path: Path,
+    exc: Exception,
+) -> str:
+    if isinstance(exc, FileNotFoundError):
+        if not targets_path.is_file():
+            return "formal-confidence-target"
+        if not willard_map_path.is_file():
+            return "formal-confidence-willard-map"
+    return "formal-confidence-validation"
+
+
+def _formal_confidence_status_counts(
+    targets: list[dict[str, Any]],
+) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for target in targets:
+        status = target["status"]
+        counts[status] = counts.get(status, 0) + 1
+    return {status: counts[status] for status in sorted(counts)}
 
 
 def _transition_claim_failure_summary(path: Path, exc: Exception) -> dict[str, Any]:
@@ -1309,6 +1413,33 @@ def _language_text_line(label: str, summary: dict[str, Any]) -> str:
     )
 
 
+def _formal_confidence_text_line(summary: dict[str, Any]) -> str:
+    status = "accepted" if summary["accepted"] else "rejected"
+    target_count = summary["target_count"]
+    return (
+        f"Formal confidence: {status} "
+        f"({target_count} {_count_noun(target_count, 'target', 'targets')}; "
+        f"{_formal_confidence_status_text(summary)})"
+    )
+
+
+def _formal_confidence_summary_text(summary: dict[str, Any]) -> str:
+    target_count = summary["target_count"]
+    return (
+        f"{target_count} {_count_noun(target_count, 'target', 'targets')}; "
+        f"{_formal_confidence_status_text(summary)}"
+    )
+
+
+def _formal_confidence_status_text(summary: dict[str, Any]) -> str:
+    status_counts = summary["status_counts"]
+    if not status_counts:
+        return "none"
+    return ", ".join(
+        f"{status}={count}" for status, count in status_counts.items()
+    )
+
+
 def _transition_claim_text_line(summary: dict[str, Any]) -> str:
     status = "accepted" if summary["accepted"] else "rejected"
     return (
@@ -1422,6 +1553,13 @@ def _language_failure_text_lines(
     if len(lines) == 1:
         return ["Language failures: none"]
     return lines
+
+
+def _formal_confidence_failure_text_lines(summary: dict[str, Any]) -> list[str]:
+    failed_subjects = summary["failed_subjects"]
+    if not failed_subjects:
+        return ["Formal confidence failures: none"]
+    return [f"Formal confidence failures: {', '.join(failed_subjects)}"]
 
 
 def _as_boundary_text_lines(frontier: dict[str, Any]) -> list[str]:

@@ -4774,3 +4774,25 @@
   output reported one accepted blocked target with no failed subjects.
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 922 tests.
+
+## 2026-05-18 - Project Status Formal Confidence
+
+- Added ADR-0225 to fold the checked formal-confidence target into aggregate
+  project status and inherited handoff readiness.
+- Added red project-status tests before implementation. The red run failed
+  because project status remained schema version `21`, lacked
+  `formal_confidence`, text/summary output omitted the formal-confidence line,
+  CLI overrides were absent, and missing target manifests were not structured
+  failures.
+- Updated `autarkic_systems/project_status.py` to validate
+  `claims/formal_confidence_targets.json` against the Willard map, include a
+  `formal_confidence` JSON section with target status counts, require it for
+  aggregate acceptance, render formal-confidence status/failures in text and
+  summary modes, expose `--formal-confidence-targets` / `--willard-map`, and
+  bump project status to schema version `22`.
+- Focused project-status and handoff tests passed 94 tests. Live
+  project-status text output rendered `Formal confidence: accepted (1 target;
+  blocked=1)`, live summary and refreshed handoff inherited `Formal
+  confidence: 1 target; blocked=1`, and live project-status JSON reported
+  schema version `22`. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 924 tests.

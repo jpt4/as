@@ -45,6 +45,10 @@ PROJECT_REPORT = {
             }
         }
     },
+    "formal_confidence": {
+        "target_count": 1,
+        "status_counts": {"blocked": 1},
+    },
     "frontier": {
         "blocked_commands": ["standard-signal"],
         "safe_next_slice": "",
@@ -251,6 +255,10 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertIn(
             "Claims: 16 transition claims/40 matched examples; "
             "2 chain claims/2 certificates; 1 sequence claim/1 certificate",
+            payload["project_summary"],
+        )
+        self.assertIn(
+            "Formal confidence: 1 target; blocked=1",
             payload["project_summary"],
         )
         self.assertEqual(payload["project_status"], PROJECT_REPORT)

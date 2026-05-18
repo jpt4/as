@@ -79,6 +79,8 @@ The text report names:
 - language failed subjects when a language summary is rejected;
 - transition, chain, and network-sequence evidence bundle IDs and paths;
 - transition bundle primary positive examples and covered examples;
+- formal-confidence target accepted or rejected state, target count, target
+  status mix, and failed subjects;
 - blocked command tokens;
 - blocked runtime surfaces;
 - source-status AS boundaries;
@@ -91,12 +93,12 @@ The text report names:
 - source-status cross-links behind the current blocker trail; and
 - the safe next slice from the source-status records.
 
-Summary mode renders the same project-status payload as a six-line operator
+Summary mode renders the same project-status payload as a compact operator
 digest: accepted state, evidence counts, claim counts, proof-rule counts,
-blocked commands, and safe next slice.
+formal-confidence target status mix, blocked commands, and safe next slice.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 21`. If a registry file is missing, the corresponding registry
+`schema_version: 22`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -300,6 +302,10 @@ on the rejected path, and bumps project status to `schema_version: 20`.
 ADR-0223 adds `latest_source_review` to accepted source-status frontier
 entries, validates the linked review artifact, renders `Latest source
 reviews:` in text output, and bumps project status to `schema_version: 21`.
+ADR-0225 adds `formal_confidence` from the checked formal-confidence target
+manifest, includes it in aggregate acceptance, renders formal-confidence status
+and failures in text and summary output, adds `--formal-confidence-targets`
+and `--willard-map`, and bumps project status to `schema_version: 22`.
 
 ## Boundary
 
