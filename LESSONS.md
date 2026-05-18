@@ -301,3 +301,6 @@
 - A frontier report should carry the unresolved question IDs, not only the
   blocked terms. Otherwise automation can detect a block without seeing the
   decision work needed to remove it.
+- Once a report exposes blocker question IDs, validate the optional question
+  metadata when present. Treating malformed question lists as absent loses the
+  work queue that explains the frontier.

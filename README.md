@@ -256,7 +256,8 @@ the project legible:
   command-token frontier. Schema version `2` also attributes those commands to
   each accepted source-status entry, while schema version `3` also carries the
   source-status resolution-question IDs that still block command-token
-  execution. Missing registries report
+  execution and rejects malformed resolution-question metadata. Missing
+  registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as
   `source-status-file`, `source-status-json`, or `source-status-schema`;

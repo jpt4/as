@@ -2418,3 +2418,25 @@
   IDs, and `frontier.failed_subjects: []`. `py_compile`, `git diff --check`,
   and `python -m unittest discover` passed, with the full suite running 560
   tests.
+
+## 2026-05-18 - Project Status Resolution Question Shape
+
+- Added ADR-0109 to reject malformed source-status
+  `required_resolution_questions` metadata in the project status command.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed because scalar `required_resolution_questions`, non-object
+  entries, and blank `question_id` values were accepted and silently dropped
+  from the report.
+- Updated `autarkic_systems.project_status` so malformed resolution-question
+  metadata reports `source-status-schema`.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the resolution-question shape contract.
+- Verified the focused project status test passed 27 tests; adjacent project
+  status, transition registry, and chain registry tests passed 52 tests. The
+  checked-in JSON status reported `schema_version: 3`, `accepted: true`,
+  transition `bundle_count: 8`, chain `bundle_count: 2`, aggregate blocked
+  commands `standard-signal`, `write-buf-zero`, and `write-buf-one`, per-source
+  command attribution, standard-signal and write-buffer resolution question
+  IDs, and `frontier.failed_subjects: []`. `py_compile`, `git diff --check`,
+  and `python -m unittest discover` passed, with the full suite running 563
+  tests.

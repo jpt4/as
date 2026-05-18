@@ -170,6 +170,8 @@ ADR-0107 rejects malformed command-token field container shapes so recognized
 source-status command fields cannot be silently ignored.
 ADR-0108 adds the blocked source-status resolution question IDs to project
 status and bumps the schema version to `3`.
+ADR-0109 rejects malformed resolution-question metadata so blocker question IDs
+cannot be silently dropped from project status.
 
 ## P3: Choose The First Proof Apparatus
 

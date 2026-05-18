@@ -2056,3 +2056,23 @@ Status: accepted in
 `docs/adr/0108-project-status-resolution-questions.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0109: Project Status Resolution Question Shape
+
+Goal: reject malformed `required_resolution_questions` metadata in
+source-status records consumed by project status.
+
+Deliverables:
+
+- `source-status-schema` failure for non-list
+  `required_resolution_questions`;
+- `source-status-schema` failure for non-object resolution-question entries;
+- `source-status-schema` failure for blank or missing `question_id` values;
+- unchanged `schema_version: 3` project status JSON shape;
+- focused tests covering malformed resolution-question metadata; and
+- documentation update for the resolution-question shape contract.
+
+Status: accepted in
+`docs/adr/0109-project-status-resolution-question-shape.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

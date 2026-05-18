@@ -496,3 +496,6 @@
 - ADR-0108 bumps `autarkic_systems.project_status` to `schema_version: 3` and
   adds per-source `required_resolution_questions` IDs to accepted
   `frontier.source_statuses` entries.
+- ADR-0109 makes `autarkic_systems.project_status` reject malformed
+  source-status `required_resolution_questions` metadata as
+  `source-status-schema`, preserving `schema_version: 3`.

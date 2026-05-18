@@ -328,6 +328,9 @@ def _source_status_schema_error(data: Any) -> str:
         return command_error
     if not _blocked_commands_from_status(data):
         return "source-status command fields must include at least one command token"
+    question_error = _resolution_question_shape_error(data)
+    if question_error:
+        return question_error
     return ""
 
 
@@ -366,6 +369,20 @@ def _blank_command_token_error(data: dict[str, Any]) -> str:
             for item in value:
                 if isinstance(item, str) and not item.strip():
                     return "source-status command tokens must be non-empty text"
+    return ""
+
+
+def _resolution_question_shape_error(data: dict[str, Any]) -> str:
+    if "required_resolution_questions" not in data:
+        return ""
+    questions = data.get("required_resolution_questions")
+    if not isinstance(questions, list):
+        return "source-status required_resolution_questions field must be a list"
+    for question in questions:
+        if not isinstance(question, dict):
+            return "source-status resolution question entries must be objects"
+        if not _is_nonempty_text(question.get("question_id")):
+            return "source-status resolution question_id must be non-empty text"
     return ""
 
 

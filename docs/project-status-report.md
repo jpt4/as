@@ -56,7 +56,9 @@ failures. ADR-0105 rejects whitespace-only `decision` and `safe_next_slice`
 text as source-status schema failures. ADR-0106 rejects non-text command-list
 entries as source-status schema failures. ADR-0107 rejects malformed
 command-token field container shapes. ADR-0108 adds per-source
-`required_resolution_questions` and bumps the schema version to `3`.
+`required_resolution_questions` and bumps the schema version to `3`. ADR-0109
+rejects malformed resolution-question metadata when that optional field is
+present.
 
 ## Boundary
 
