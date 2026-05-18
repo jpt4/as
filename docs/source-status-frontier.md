@@ -111,6 +111,10 @@ ADR-0166 narrows the safe-next queue: recipient/write-buffer records point to
 recipient write-buffer command-message semantics, while standard-signal points
 to review of new command-token source evidence before any execution change.
 The focused frontier schema remains `2`.
+ADR-0167 makes that recipient write-buffer frontier a live source-status
+question. The focused report now renders
+`recipient-command-message-surface` and blocks write-buffer readiness on that
+question while preserving source-status frontier schema `2`.
 
 ## Boundary
 

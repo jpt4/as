@@ -111,7 +111,16 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
             for question in self.status["required_resolution_questions"]
         }
 
-        self.assertEqual(question_ids, set())
+        self.assertEqual(question_ids, {"recipient-command-message-surface"})
+        question = self.status["required_resolution_questions"][0]
+        self.assertIn("recipient write-buffer", question["summary"])
+        evidence = self.status["resolution_question_evidence"][0]
+        self.assertEqual(
+            evidence["question_id"],
+            "recipient-command-message-surface",
+        )
+        self.assertIn("RAA/FSMSIM", evidence["evidence"])
+        self.assertIn("SEMSIM", evidence["evidence"])
 
     def test_recipient_surface_is_resolved_to_existing_rejection_boundary(self):
         resolved_questions = {
@@ -282,17 +291,20 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertIn("FSMSIM", resolved["legacy_divergence"])
         self.assertIn("SEMSIM", resolved["legacy_divergence"])
 
-    def test_execution_readiness_allows_write_buffer_implementation(self):
+    def test_execution_readiness_blocks_recipient_boundary_changes(self):
         readiness = self.status["execution_readiness"]
 
-        self.assertEqual(readiness["decision"], "implemented")
-        self.assertTrue(readiness["execution_change_allowed"])
+        self.assertEqual(
+            readiness["decision"],
+            "self-target-implemented-recipient-blocked",
+        )
+        self.assertFalse(readiness["execution_change_allowed"])
         self.assertEqual(
             readiness["blocked_by_resolution_questions"],
-            [],
+            ["recipient-command-message-surface"],
         )
-        self.assertIn("source-resolved", readiness["summary"])
-        self.assertIn("implemented", readiness["summary"])
+        self.assertIn("self-target", readiness["summary"])
+        self.assertIn("recipient command-message", readiness["summary"])
 
     def test_existing_source_status_frontiers_point_past_write_buffer(self):
         recipient_non_init = json.loads(RECIPIENT_NON_INIT.read_text(encoding="utf-8"))

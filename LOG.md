@@ -3591,3 +3591,29 @@
 - Runtime behavior, claims, proof certificates, traces, SVGs, evidence
   bundles, and schema versions remain unchanged.
 - Focused green verification passed 120 tests.
+
+## 2026-05-18 - Recipient Write-Buffer Readiness Question
+
+- Added ADR-0167 to make the remaining recipient write-buffer
+  command-message surface a live source-status question instead of letting
+  write-buffer readiness look broadly implemented.
+- Added red write-buffer, project-status, and source-status frontier tests
+  before implementation. The focused red run executed 99 tests and failed
+  because write-buffer source status had no
+  `recipient-command-message-surface` question and still reported readiness
+  as `implemented`.
+- Added `recipient-command-message-surface` with matching evidence to
+  `sources/write_buffer_command_semantics_status.json`. The evidence records
+  formal-model and RAA/FSMSIM pressure toward input-channel append behavior,
+  the existing AS recipient rejection boundary, and the remaining SEMSIM
+  post-append clearing divergence.
+- Changed write-buffer execution readiness to
+  `self-target-implemented-recipient-blocked`, with execution changes
+  disallowed until that recipient question is resolved.
+- Runtime behavior, claims, proof certificates, traces, SVGs, evidence
+  bundles, and schema versions remain unchanged.
+- Focused green verification passed 99 tests. Project-status JSON accepted
+  schema 15 with the new recipient question; source-status JSON accepted
+  schema 2 with the same question. JSON parsing, `compileall`,
+  `git diff --check`, and `python -m unittest discover` passed; the full
+  suite ran 732 tests.

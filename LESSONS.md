@@ -472,3 +472,6 @@
 - After closing a blocker as a preserved boundary, update the safe-next queue
   too. Otherwise future operators can keep reopening work that is no longer
   the active frontier.
+- Avoid using a single broad readiness word for partially implemented command
+  surfaces. If one runtime surface is implemented and another is still live,
+  the readiness gate should name the remaining surface explicitly.

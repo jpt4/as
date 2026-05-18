@@ -697,3 +697,8 @@
   to new command-token source evidence before execution changes, while
   recipient non-init and multi-command status records point to recipient
   write-buffer command-message semantics.
+- ADR-0167 makes `recipient-command-message-surface` a live write-buffer
+  source-status question. Write-buffer readiness is now
+  `self-target-implemented-recipient-blocked`: self-target append execution is
+  implemented, but delivered recipient write-buffer command-message execution
+  remains blocked pending that question.

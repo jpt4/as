@@ -94,6 +94,21 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
             "(sources/write_buffer_command_semantics_status.json)",
             text,
         )
+        self.assertIn(
+            "recipient-command-message-surface: Decide whether delivered "
+            "recipient write-buffer command messages execute append semantics "
+            "or remain rejected by the recipient non-init boundary.",
+            text,
+        )
+        self.assertIn(
+            "recipient-command-message-surface: The formal model and legacy "
+            "RAA/FSMSIM witnesses route input-channel write-buffer special "
+            "messages to append behavior, while the checked AS recipient "
+            "boundary currently rejects delivered write-buffer command "
+            "messages and SEMSIM still diverges on post-append buffer "
+            "clearing.",
+            text,
+        )
         self.assertIn("Execution readiness:", text)
         self.assertIn(
             "standard-signal: preserved-unsupported; execution changes "
@@ -108,8 +123,9 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
             text,
         )
         self.assertIn(
-            "write-buf-zero, write-buf-one: implemented; execution changes "
-            "allowed: yes; blockers: none",
+            "write-buf-zero, write-buf-one: "
+            "self-target-implemented-recipient-blocked; execution changes "
+            "allowed: no; blockers: recipient-command-message-surface",
             text,
         )
         self.assertNotIn("recipient-vs-stem-surface", text)

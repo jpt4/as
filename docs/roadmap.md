@@ -3336,3 +3336,26 @@ Deliverables:
 Status: accepted in
 `docs/adr/0166-standard-signal-safe-next-boundary.md`. Implemented in the
 source-status records and focused source-status/project-status tests.
+
+## ADR-0167: Recipient Write-Buffer Readiness Question
+
+Goal: make the remaining recipient write-buffer command-message surface an
+explicit live source-status question.
+
+Deliverables:
+
+- `sources/write_buffer_command_semantics_status.json` lists
+  `recipient-command-message-surface` as a live resolution question with
+  matching source evidence;
+- write-buffer execution readiness changes from broad `implemented` to
+  `self-target-implemented-recipient-blocked`;
+- project-status JSON/text and source-status frontier JSON/text render the
+  recipient write-buffer question, evidence, and readiness blocker; and
+- unchanged Universal Cell runtime behavior, claims, proof certificates,
+  traces, SVGs, evidence bundles, project-status schema `15`, and
+  source-status frontier schema `2`.
+
+Status: accepted in
+`docs/adr/0167-recipient-write-buffer-readiness-question.md`. Implemented in
+the write-buffer source-status record and focused write-buffer/source-status/
+project-status tests.

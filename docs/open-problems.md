@@ -101,6 +101,9 @@ evidence replacing the unsupported self-target boundaries.
 ADR-0166 updates safe-next wording to match: standard-signal work is now
 evidence-gated, while the active recipient command-message frontier is
 write-buffer-specific.
+ADR-0167 turns that write-buffer-specific frontier into a live
+`recipient-command-message-surface` source-status question with evidence and a
+readiness blocker.
 ADR-0059 selects reject-and-clear for multiple simultaneous recipient
 command-message inputs.
 ADR-0060 adds a schematic-linked trace for that multi-command rejection policy.
@@ -294,6 +297,9 @@ ADR-0166 removes the stale combined standard-signal/write-buffer safe-next
 wording from the frontier, leaving standard-signal behind a new-source-evidence
 gate and recipient write-buffer command-message semantics as the active
 recipient frontier.
+ADR-0167 makes that active recipient frontier machine-checkable: write-buffer
+readiness is self-target implemented but recipient blocked until
+`recipient-command-message-surface` is resolved.
 ADR-0152 resolves the write-buffer recipient surface through the existing
 recipient non-init rejection boundary and narrows the remaining write-buffer
 surface question to self-mailbox / self-target command-buffer behavior.

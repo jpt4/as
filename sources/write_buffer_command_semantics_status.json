@@ -110,13 +110,25 @@
     ],
     "summary": "AS executes direct self-mailbox write-buffer commands and completed self-target command-buffer write-buffer commands by appending the command's literal bit and clearing the active command source. ADR-0162 records both implemented self-target surfaces as integrated evidence bundles."
   },
-  "required_resolution_questions": [],
-  "resolution_question_evidence": [],
+  "required_resolution_questions": [
+    {
+      "question_id": "recipient-command-message-surface",
+      "summary": "Decide whether delivered recipient write-buffer command messages execute append semantics or remain rejected by the recipient non-init boundary."
+    }
+  ],
+  "resolution_question_evidence": [
+    {
+      "question_id": "recipient-command-message-surface",
+      "evidence": "The formal model and legacy RAA/FSMSIM witnesses route input-channel write-buffer special messages to append behavior, while the checked AS recipient boundary currently rejects delivered write-buffer command messages and SEMSIM still diverges on post-append buffer clearing."
+    }
+  ],
   "execution_readiness": {
-    "decision": "implemented",
-    "execution_change_allowed": true,
-    "blocked_by_resolution_questions": [],
-    "summary": "Write-buffer append execution is source-resolved and implemented for direct self-mailbox and completed self-target command-buffer surfaces."
+    "decision": "self-target-implemented-recipient-blocked",
+    "execution_change_allowed": false,
+    "blocked_by_resolution_questions": [
+      "recipient-command-message-surface"
+    ],
+    "summary": "Write-buffer append execution is implemented for direct self-mailbox and completed self-target command-buffer surfaces; delivered recipient command-message execution remains blocked pending recipient-command-message-surface resolution."
   },
   "resolved_resolution_questions": [
     {
@@ -167,5 +179,5 @@
       "summary": "The official PRC TLA files are partial/stub/empty and do not define write-buf-zero or write-buf-one command-token semantics."
     }
   ],
-  "as_boundary": "Direct self-mailbox and completed self-target command-buffer write-buffer execution are implemented through ADR-0161 append behavior and bundled as integrated evidence by ADR-0162; delivered recipient write-buffer command-message inputs remain rejected by the recipient non-init boundary with explicit ADR-0163 claim/proof and evidence-bundle coverage."
+  "as_boundary": "Direct self-mailbox and completed self-target command-buffer write-buffer execution are implemented through ADR-0161 append behavior and bundled as integrated evidence by ADR-0162; delivered recipient write-buffer command-message inputs remain rejected by the recipient non-init boundary with explicit ADR-0163 claim/proof and evidence-bundle coverage until the recipient-command-message-surface question is resolved."
 }

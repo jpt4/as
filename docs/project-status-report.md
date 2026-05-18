@@ -232,6 +232,10 @@ generic standard-signal/write-buffer revisit. Recipient/write-buffer records
 point to recipient write-buffer command-message semantics, while
 standard-signal points to new source evidence before any execution change.
 Project status remains `schema_version: 15`.
+ADR-0167 adds the live write-buffer `recipient-command-message-surface`
+question and matching evidence to project-status JSON/text, and changes
+write-buffer readiness to `self-target-implemented-recipient-blocked` while
+preserving project status `schema_version: 15`.
 
 ## Boundary
 

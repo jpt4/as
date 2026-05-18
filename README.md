@@ -415,8 +415,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   interaction, recipient-surface, and self-target-surface questions, plus the
   resolved full-buffer and post-append clearing boundaries. Its
   execution-readiness gate now marks direct self-mailbox and completed
-  self-target command-buffer append execution implemented while keeping
-  delivered recipient write-buffer command messages rejected.
+  self-target command-buffer append execution implemented while blocking
+  delivered recipient write-buffer command-message changes on the live
+  recipient surface question.
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
   machine-checkable, including the formal-model self-mailbox exception and the

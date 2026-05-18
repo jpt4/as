@@ -47,9 +47,9 @@ command-buffer write-buffer tokens now append the command's literal bit and
 clear the active command source.
 
 ADR-0154 initially recorded that unresolved execution state as an explicit
-`execution_readiness` gate. ADR-0159 and ADR-0160 later cleared the remaining
-blockers, and ADR-0161 updates the readiness state from source-ready to
-implemented for the self-target append surfaces.
+`execution_readiness` gate. ADR-0159 and ADR-0160 later cleared the then-live
+self-target blockers, and ADR-0161 updates the self-target readiness state
+from source-ready to implemented for the self-target append surfaces.
 ADR-0162 adds integrated evidence bundles for both implemented self-target
 surfaces, so the remaining safe next write-buffer work is recipient
 write-buffer command-message source resolution rather than another evidence
@@ -58,6 +58,11 @@ ADR-0163 makes the current recipient-side rejection boundary explicit for both
 delivered write-buffer command tokens by adding upstream `write-buf-zero` and
 `write-buf-one` positive examples to the recipient non-init claim/proof
 surface and to the covered examples of the recipient non-init evidence bundle.
+ADR-0167 makes that remaining recipient surface explicit again as a live
+resolution question. Write-buffer readiness is now
+`self-target-implemented-recipient-blocked`: self-target append behavior is
+implemented, but delivered recipient write-buffer command-message execution
+remains blocked until `recipient-command-message-surface` is resolved.
 
 ADR-0159 resolves `buffer-full-boundary` as
 `preserve-existing-full-buffer-boundary-before-write-buffer-append`. The formal
@@ -70,7 +75,7 @@ appended literal bit while clearing command-source/input state; SEMSIM's stem
 wrapper clears the buffer after append, so AS records SEMSIM as divergent
 legacy behavior instead of selecting the buffer-erasing wrapper.
 
-ADR-0161 implements the source-resolved append behavior for:
+ADR-0161 implements the source-resolved self-target append behavior for:
 
 - direct self-mailbox command execution;
 - completed self-target command-buffer dispatch.
@@ -81,10 +86,14 @@ surface. AS rejects delivered recipient write-buffer command messages through
 
 The current recipient rejection claim remains the correct executable boundary
 until a later source-backed ADR moves recipient write-buffer command-message
-input out of the non-init rejection surface. ADR-0061 completes the current
-multi-command rejection render frontier, so future
-write-buffer work should start from source resolution rather than another
-rejection artifact. ADR-0062 reviews `guile-asmsim.scm`, which has binary
+input out of the non-init rejection surface. ADR-0167 records the live source
+question and the evidence pressure behind it: the formal model plus RAA and
+FSMSIM support input-channel write-buffer append behavior, while the checked AS
+recipient boundary still rejects those messages and SEMSIM diverges on
+post-append clearing. ADR-0061 completes the current multi-command rejection
+render frontier, so future write-buffer work should start from source
+resolution rather than another rejection artifact. ADR-0062 reviews
+`guile-asmsim.scm`, which has binary
 `write-buf` and self-mailbox numeric append behavior but omits named
 `write-buf-zero` and `write-buf-one` command tokens. ADR-0063 reviews
 `practice/asmsim.scm`, whose process-buffer code uses code-shape predicates
@@ -107,8 +116,9 @@ narrows the old unsupported boundaries to `standard-signal`, and ADR-0162
 registers the direct self-mailbox plus completed self-target command-buffer
 write-buffer execution paths as evidence bundles. ADR-0163 then widens the
 existing recipient rejection coverage to name both delivered write-buffer
-tokens explicitly. The next write-buffer frontier is recipient write-buffer
-command-message semantics.
+tokens explicitly. ADR-0167 restores a live write-buffer question for the
+recipient command-message surface, with matching evidence and readiness
+blocker metadata.
 
 ## Verification
 
@@ -119,6 +129,7 @@ python -m unittest tests.test_write_buffer_command_semantics_status
 ```
 
 The tests check the decision, formal-model gap, legacy witness divergence,
-resolved recipient, self-target, buffer-full, and post-append surfaces, empty
-required resolution questions, implemented execution-readiness, and
-source-status frontier updates.
+resolved recipient, self-target, buffer-full, and post-append surfaces, the
+live recipient command-message question and evidence, the split
+self-target/recipient execution-readiness gate, and source-status frontier
+updates.
