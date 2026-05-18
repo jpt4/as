@@ -21,7 +21,7 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
-PROJECT_STATUS_SCHEMA_VERSION = 12
+PROJECT_STATUS_SCHEMA_VERSION = 13
 BLOCKED_RUNTIME_SURFACES = [
     "recipient-command-message",
     "self-mailbox-command",
@@ -163,6 +163,15 @@ TRANSITION_PROOF_CERTIFICATES = {
     "claim_count": 13,
     "certificate_count": 13,
     "result_count": 13,
+}
+CHAIN_CLAIMS = {
+    "language_id": "as-transition-chain-claim-v1",
+    "language_path": "language/transition_chain_claim_language.json",
+    "claims_path": "claims/transition_chain_claims.json",
+    "certificates_path": "claims/transition_chain_proof_certificates.json",
+    "claim_count": 2,
+    "certificate_count": 2,
+    "result_count": 4,
 }
 STANDARD_SIGNAL_QUESTIONS = [
     "command-token-vs-binary-input",
@@ -360,6 +369,35 @@ class ProjectStatusReportTests(unittest.TestCase):
                 "detail": "verified 2 certificate steps: 2 predicate-result steps",
             },
         )
+        self.assertTrue(report["chain_claims"]["accepted"])
+        for key, expected in CHAIN_CLAIMS.items():
+            self.assertEqual(report["chain_claims"][key], expected)
+        self.assertEqual(report["chain_claims"]["failed_subjects"], [])
+        self.assertEqual(
+            report["chain_claims"]["results"],
+            [
+                {
+                    "subject": "chain-language-manifest",
+                    "accepted": True,
+                    "detail": "validated 28 language clauses",
+                },
+                {
+                    "subject": "chain-examples",
+                    "accepted": True,
+                    "detail": "evaluated 7 examples",
+                },
+                {
+                    "subject": "chain-certificates",
+                    "accepted": True,
+                    "detail": "verified 2 certificates",
+                },
+                {
+                    "subject": "chain-surface",
+                    "accepted": True,
+                    "detail": "validated 2 chain claims",
+                },
+            ],
+        )
         self.assertTrue(report["transition_language"]["accepted"])
         for key, expected in TRANSITION_LANGUAGE.items():
             self.assertEqual(report["transition_language"][key], expected)
@@ -472,6 +510,11 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn("Claim/proof failures: none", text)
+        self.assertIn(
+            "Transition chain claims: accepted (2 claims, 2 certificates)",
+            text,
+        )
+        self.assertIn("Chain claim failures: none", text)
         self.assertIn("Transition language: accepted (13 claims, 13 certificates)", text)
         self.assertIn("Chain language: accepted (2 claims, 2 certificates)", text)
         self.assertIn("Language failures: none", text)
@@ -643,6 +686,45 @@ class ProjectStatusReportTests(unittest.TestCase):
             "Transition proof certificate failures: UC-FIXED-OUTPUT-PRESERVED",
             text,
         )
+
+    def test_text_status_names_chain_claim_failed_subjects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            certificates_path = Path(tmp) / "transition_chain_proof_certificates.json"
+            certificates_path.write_text(
+                json.dumps({
+                    "schema_version": 1,
+                    "certificates": [
+                        {
+                            "claim_id": (
+                                "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-CONSUMED"
+                            ),
+                            "steps": [
+                                {
+                                    "rule": "manifest-example",
+                                    "example": (
+                                        "neighbor b proc left delivery consumed "
+                                        "by empty recipient"
+                                    ),
+                                    "expected": True,
+                                }
+                            ],
+                        }
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                chain_certificates_path=certificates_path,
+            )
+
+        text = format_project_status_report(report)
+        self.assertFalse(report["accepted"])
+        self.assertFalse(report["chain_claims"]["accepted"])
+        self.assertIn("chain-certificates", report["chain_claims"]["failed_subjects"])
+        self.assertIn("Transition chain claims: rejected", text)
+        self.assertIn("Chain claim failures:", text)
+        self.assertIn("chain-certificates", text)
 
     def test_text_status_names_no_blocked_runtime_surfaces_when_absent(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -826,6 +908,14 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertEqual(
             payload["transition_proof_certificates"]["results"][0]["claim_id"],
             "UC-FIXED-OUTPUT-PRESERVED",
+        )
+        self.assertTrue(payload["chain_claims"]["accepted"])
+        for key, expected in CHAIN_CLAIMS.items():
+            self.assertEqual(payload["chain_claims"][key], expected)
+        self.assertEqual(payload["chain_claims"]["failed_subjects"], [])
+        self.assertEqual(
+            payload["chain_claims"]["results"][0]["subject"],
+            "chain-language-manifest",
         )
         self.assertTrue(payload["transition_language"]["accepted"])
         for key, expected in TRANSITION_LANGUAGE.items():

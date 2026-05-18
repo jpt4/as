@@ -3081,3 +3081,23 @@
   accepted at `schema_version: 12`; direct claim/proof JSON CLIs were
   accepted; `py_compile` passed; and `python -m unittest discover` passed 635
   tests.
+
+## 2026-05-18 - Project Status Chain Claim Surface
+
+- Added ADR-0141 to include the transition-chain claim validator in
+  `python -m autarkic_systems.project_status`.
+- Updated project-status tests before implementation. The red run executed 57
+  tests and failed because project status still reported `schema_version: 12`,
+  omitted `chain_claims`, omitted compact accepted chain-claim text lines, and
+  accepted an incomplete chain proof-certificate fixture.
+- Updated `autarkic_systems.project_status` so project status JSON includes a
+  `chain_claims` summary with accepted state, language ID, paths, counts,
+  failed subjects, result count, and the existing chain validator results.
+- Added compact default text for transition-chain claims and
+  `Chain claim failures:` failed-subject summaries, and bumped project status
+  JSON to `schema_version: 13`.
+- Verification passed: focused project-status tests ran 57 tests; project
+  status text rendered accepted chain-claim summaries; project status JSON was
+  accepted at `schema_version: 13`; the direct chain-claim JSON CLI was
+  accepted; `py_compile` and `git diff --check` passed; and
+  `python -m unittest discover` passed 636 tests.

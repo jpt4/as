@@ -28,6 +28,9 @@ The report validates:
 - `evidence/chains/manifest.json`, the transition-chain evidence registry;
 - `claims/transition_claims.json`, the base transition claim examples;
 - `claims/proof_certificates.json`, the base transition proof certificates;
+- `claims/transition_chain_claims.json` and
+  `claims/transition_chain_proof_certificates.json`, the transition-chain
+  claim and proof-certificate surface;
 - `language/transition_claim_language.json`, the base transition claim
   language and checked claim/proof surface;
 - `language/transition_chain_claim_language.json`, the transition-chain claim
@@ -46,6 +49,8 @@ The text report names:
 - transition proof-certificate accepted or rejected state and certificate
   count;
 - claim/proof failed subjects when either lower surface is rejected;
+- transition-chain claim accepted or rejected state and certificate count;
+- transition-chain claim failed subjects when that surface is rejected;
 - transition language accepted or rejected state and claim/certificate counts;
 - chain language accepted or rejected state and claim/certificate counts;
 - language failed subjects when a language summary is rejected;
@@ -60,7 +65,7 @@ The text report names:
 - the safe next slice from the source-status records.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 12`. If a registry file is missing, the corresponding registry
+`schema_version: 13`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -132,6 +137,9 @@ as a compact `Language failures:` section while preserving `schema_version: 11`.
 ADR-0140 adds `transition_claims` and `transition_proof_certificates`
 summaries to project status JSON/text, includes failed-subject lists for
 rejected claim/proof results, and bumps the schema version to `12`.
+ADR-0141 adds a `chain_claims` summary to project status JSON/text, includes
+failed-subject lists for rejected chain-claim results, and bumps the schema
+version to `13`.
 
 ## Boundary
 

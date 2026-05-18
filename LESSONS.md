@@ -394,3 +394,6 @@
   report says a claim/proof surface is green, it should expose both the
   object-language check and the lower claim-example/proof-certificate
   evaluator results.
+- Once the base diagnostic path exposes claim/proof semantics, carry the same
+  discipline to composed-chain claim surfaces. Otherwise a chain evidence
+  failure can hide whether the semantic chain claim layer was already broken.

@@ -2727,3 +2727,24 @@ Status: accepted in
 `docs/adr/0140-project-status-claim-proof-surfaces.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0141: Project Status Chain Claim Surface
+
+Goal: include the transition-chain claim validator in the first project
+diagnostic command.
+
+Deliverables:
+
+- project status JSON `schema_version: 13`;
+- `chain_claims` summary with accepted state, language ID, paths, claim count,
+  certificate count, failed subjects, result count, and chain validation
+  results;
+- compact transition-chain claim line in default text output;
+- compact chain-claim failed-subject text when the surface is rejected; and
+- focused project-status tests covering JSON, text, CLI output, and a rejected
+  chain proof-certificate fixture.
+
+Status: accepted in
+`docs/adr/0141-project-status-chain-claim-surface.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

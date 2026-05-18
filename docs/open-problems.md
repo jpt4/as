@@ -242,6 +242,9 @@ longer reduced to a label.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.
+ADR-0141 carries the transition-chain claim validator summary into project
+status, so chain claim/proof failures are visible before evidence-bundle
+debugging.
 
 ## P3: Choose The First Proof Apparatus
 

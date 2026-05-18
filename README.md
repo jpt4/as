@@ -237,9 +237,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   summary, and validation result.
 - `autarkic_systems/project_status.py` renders one operator-facing report over
   the transition evidence registry, chain evidence registry, base
-  claim/proof/language surfaces, chain language surface, and the live
-  source-status frontier for blocked command-token semantics and their
-  resolution-question IDs.
+  claim/proof/language surfaces, transition-chain claim/language surfaces, and
+  the live source-status frontier for blocked command-token semantics and
+  their resolution-question IDs.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -280,6 +280,7 @@ proof certificates, object languages, evidence bundles, and status reports:
   evidence accepted with 8 bundles, chain evidence accepted with 2 bundles,
   transition claim examples accepted with 13 claims and 35 matched examples,
   transition proof certificates accepted with 13 claims and 13 certificates,
+  transition-chain claims accepted with 2 claims and 2 certificates,
   transition language accepted with 13 claims and 13 certificates, chain
   language accepted with 2 claims and 2 certificates, concrete transition and
   chain registry bundle entries, and the blocked
@@ -311,7 +312,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   such as formal command offset and legacy divergence into JSON/text. Schema
   version `11` adds transition and chain language summaries to JSON/text.
   Schema version `12` adds base transition claim and proof-certificate
-  summaries to JSON/text.
+  summaries to JSON/text. Schema version `13` adds the transition-chain claim
+  summary to JSON/text.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

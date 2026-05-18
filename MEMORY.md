@@ -596,3 +596,5 @@
 - ADR-0140 bumps `autarkic_systems.project_status` to `schema_version: 12` and
   adds `transition_claims` and `transition_proof_certificates` summaries for
   the base transition claim-example and proof-certificate validators.
+- ADR-0141 bumps `autarkic_systems.project_status` to `schema_version: 13` and
+  adds a `chain_claims` summary for the transition-chain claim validator.
