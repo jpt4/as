@@ -3805,3 +3805,27 @@ Status: accepted in
 `docs/adr/0186-recipient-non-init-command-message-predicate-result-certificates.md`.
 Implemented in the proof-certificate manifest, focused proof/project-status
 tests, and the recipient non-init rejection claim/evidence notes.
+
+## ADR-0187: Chain Predicate Result Certificates
+
+Goal: extend predicate-named proof steps from base transition claims to the
+transition-chain claim surface.
+
+Deliverables:
+
+- chain proof-certificate verifier support for `predicate-result` steps;
+- chain object-language support for the `predicate-result` proof-object rule;
+- `UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-CONSUMED` proof-certificate steps use
+  `predicate-result` and name `neighbor_delivery_consumed_by_recipient`;
+- `UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED` proof-certificate steps use
+  `predicate-result` and name `neighbor_delivery_rejected_by_recipient`;
+- verifier rejection tests for missing or mismatched chain predicate metadata;
+- the checked chain proof-certificate manifest no longer contains
+  `manifest-example` rules; and
+- Universal Cell runtime behavior, transition-chain claims, evidence bundles,
+  source-status records, and status schema versions remain unchanged.
+
+Status: accepted in `docs/adr/0187-chain-predicate-result-certificates.md`.
+Implemented in the chain proof-certificate verifier, chain object language,
+chain proof-certificate manifest, focused chain/project-status tests, and chain
+claim/language summary docs.

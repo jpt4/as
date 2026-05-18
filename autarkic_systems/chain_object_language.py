@@ -13,6 +13,7 @@ from autarkic_systems.chain_claims import ChainClaim, load_transition_chain_clai
 from autarkic_systems.proof_certificates import (
     ClaimCertificate,
     MANIFEST_EXAMPLE_RULE,
+    PREDICATE_RESULT_RULE,
     load_proof_certificates,
 )
 from autarkic_systems.transition_chains import (
@@ -420,9 +421,16 @@ def _validate_proof_object_class(
     proof_objects: dict[str, Any],
 ) -> list[ChainLanguageValidation]:
     rules = proof_objects.get("rules")
-    if not isinstance(rules, list) or MANIFEST_EXAMPLE_RULE not in rules:
-        return [_rejected("proof_objects.rules", "missing manifest-example rule")]
-    return [_accepted("proof_objects.rules", "manifest-example rule present")]
+    if not isinstance(rules, list):
+        return [_rejected("proof_objects.rules", "rules must be a list")]
+
+    results: list[ChainLanguageValidation] = []
+    for rule in (MANIFEST_EXAMPLE_RULE, PREDICATE_RESULT_RULE):
+        if rule not in rules:
+            results.append(_rejected("proof_objects.rules", f"missing {rule} rule"))
+        else:
+            results.append(_accepted("proof_objects.rules", f"{rule} rule present"))
+    return results
 
 
 def _validate_substrate_claim_class(

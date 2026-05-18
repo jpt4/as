@@ -13,6 +13,7 @@ from autarkic_systems.proof_certificates import (
     ClaimCertificate,
     CertificateVerification,
     MANIFEST_EXAMPLE_RULE,
+    PREDICATE_RESULT_RULE,
 )
 from autarkic_systems.transition_chains import (
     execute_neighbor_delivery_recipient_chain,
@@ -246,7 +247,7 @@ def verify_chain_claim_certificates(
     claims: Iterable[ChainClaim],
     certificates: Iterable[ClaimCertificate],
 ) -> list[CertificateVerification]:
-    """Verify manifest-example certificates against transition-chain claims."""
+    """Verify proof certificates against transition-chain claims."""
 
     claim_list = list(claims)
     certificate_list = list(certificates)
@@ -314,9 +315,23 @@ def _verify_certificate(
             f"unknown chain predicate checker: {claim.predicate}",
         )
 
+    rule_counts: dict[str, int] = {}
     for step in certificate.steps:
-        if step.rule != MANIFEST_EXAMPLE_RULE:
+        if step.rule not in {MANIFEST_EXAMPLE_RULE, PREDICATE_RESULT_RULE}:
             return _rejected(claim.claim_id, f"unknown certificate rule: {step.rule}")
+        if step.rule == PREDICATE_RESULT_RULE:
+            if not step.predicate:
+                return _rejected(
+                    claim.claim_id,
+                    f"predicate-result step for {step.example} lacks predicate",
+                )
+            if step.predicate != claim.predicate:
+                return _rejected(
+                    claim.claim_id,
+                    "predicate mismatch for "
+                    f"{step.example}: certificate named {step.predicate}, "
+                    f"claim uses {claim.predicate}",
+                )
         example = example_by_name[step.example]
         if step.expected != example.expected:
             return _rejected(
@@ -331,6 +346,16 @@ def _verify_certificate(
             example.recipient,
         )
         predicate_result = checker(chain)
+        if (
+            step.rule == PREDICATE_RESULT_RULE
+            and predicate_result.name != step.predicate
+        ):
+            return _rejected(
+                claim.claim_id,
+                "predicate result name mismatch for "
+                f"{step.example}: observed {predicate_result.name}, "
+                f"certificate named {step.predicate}",
+            )
         observed = bool(predicate_result.holds)
         if observed != example.expected:
             return _rejected(
@@ -339,11 +364,15 @@ def _verify_certificate(
                 f"{step.example}: observed {observed}, "
                 f"expected {example.expected}",
             )
+        rule_counts[step.rule] = rule_counts.get(step.rule, 0) + 1
 
+    rule_summary = ", ".join(
+        f"{count} {rule} steps" for rule, count in sorted(rule_counts.items())
+    )
     return CertificateVerification(
         claim_id=claim.claim_id,
         accepted=True,
-        detail=f"verified {len(certificate.steps)} manifest-example steps",
+        detail=f"verified {len(certificate.steps)} certificate steps: {rule_summary}",
     )
 
 

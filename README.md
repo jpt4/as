@@ -264,7 +264,7 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/chain_svg.py` renders and validates transition-chain SVG
   views for consumed and rejected neighbor-delivery handoffs.
 - `autarkic_systems/chain_claims.py` validates the transition-chain claim
-  manifest and manifest-example proof certificates, and exposes
+  manifest and predicate-result proof certificates, and exposes
   `python -m autarkic_systems.chain_claims` for direct chain-claim validation.
 - `autarkic_systems/chain_object_language.py` validates the first
   transition-chain claim language and checked chain claim surface, and exposes
@@ -293,9 +293,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.claim_manifest` validates those transition claim
   examples in text or JSON form.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
-  those transition claims, including `manifest-example` steps and explicit
-  `predicate-result` steps for fixed-output preservation, consumed-input
-  clearing, fixed-role memory behavior, stem-init reset behavior, and stem
+  those transition claims, using explicit `predicate-result` steps for
+  fixed-output preservation, consumed-input clearing, fixed-role memory
+  behavior, stem-init reset behavior, and stem
   automail reconfiguration, buffer accumulation, and self-mailbox init command
   execution, unsupported-command preservation, and direct self-mailbox
   write-buffer append execution, plus completed self-target command-buffer init
@@ -312,9 +312,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   transition-chain claims for consumed init/write-buffer delivery and rejected
   standard-signal delivery.
 - `claims/transition_chain_proof_certificates.json` adds matching
-  manifest-example proof certificates for those chain claims.
+  predicate-result proof certificates for those chain claims.
 - `language/transition_chain_claim_language.json` names the first explicit
-  syntax classes for transition-chain claims.
+  syntax classes for transition-chain claims, including chain proof-object
+  `manifest-example` and `predicate-result` rules.
 - `python -m autarkic_systems.chain_claims --format json` emits the
   transition-chain claim validation report as machine-readable JSON.
 - `python -m autarkic_systems.chain_evidence_bundle --format json` emits the

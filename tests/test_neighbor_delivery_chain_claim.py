@@ -6,7 +6,7 @@ from autarkic_systems.chain_claims import (
     load_transition_chain_claims,
     verify_chain_claim_certificates,
 )
-from autarkic_systems.proof_certificates import load_proof_certificates
+from autarkic_systems.proof_certificates import CertificateStep, load_proof_certificates
 from autarkic_systems.transition_chain_predicates import (
     neighbor_delivery_consumed_by_recipient,
     neighbor_delivery_rejected_by_recipient,
@@ -140,13 +140,85 @@ class NeighborDeliveryChainClaimTests(unittest.TestCase):
         self.assertTrue(all(result.accepted for result in results), results)
         detail_by_claim = {result.claim_id: result.detail for result in results}
         self.assertIn(
-            "verified 6 manifest-example steps",
+            "verified 6 certificate steps: 6 predicate-result steps",
             detail_by_claim[CONSUMED_CLAIM_ID],
         )
         self.assertIn(
-            "verified 3 manifest-example steps",
+            "verified 3 certificate steps: 3 predicate-result steps",
             detail_by_claim[REJECTED_CLAIM_ID],
         )
+        self.assertFalse(
+            any(
+                step.rule == "manifest-example"
+                for certificate in certificates
+                for step in certificate.steps
+            )
+        )
+
+    def test_consumed_chain_certificate_uses_explicit_predicate_result_steps(self):
+        certificates = {
+            certificate.claim_id: certificate
+            for certificate in load_proof_certificates(CERTIFICATES)
+        }
+
+        certificate = certificates[CONSUMED_CLAIM_ID]
+
+        self.assertEqual(len(certificate.steps), 6)
+        self.assertTrue(
+            all(step.rule == "predicate-result" for step in certificate.steps)
+        )
+        self.assertEqual(
+            {step.predicate for step in certificate.steps},
+            {"neighbor_delivery_consumed_by_recipient"},
+        )
+
+    def test_rejected_chain_certificate_uses_explicit_predicate_result_steps(self):
+        certificates = {
+            certificate.claim_id: certificate
+            for certificate in load_proof_certificates(CERTIFICATES)
+        }
+
+        certificate = certificates[REJECTED_CLAIM_ID]
+
+        self.assertEqual(len(certificate.steps), 3)
+        self.assertTrue(
+            all(step.rule == "predicate-result" for step in certificate.steps)
+        )
+        self.assertEqual(
+            {step.predicate for step in certificate.steps},
+            {"neighbor_delivery_rejected_by_recipient"},
+        )
+
+    def test_chain_predicate_result_steps_require_predicate_metadata(self):
+        certificates = load_proof_certificates(CERTIFICATES)
+        first = certificates[0]
+        bad_step = CertificateStep(
+            rule="predicate-result",
+            example=first.steps[0].example,
+            expected=first.steps[0].expected,
+        )
+        bad = first.with_steps((bad_step, *first.steps[1:]))
+
+        results = verify_chain_claim_certificates(self.claims, [bad, *certificates[1:]])
+
+        self.assertFalse(results[0].accepted)
+        self.assertIn("lacks predicate", results[0].detail)
+
+    def test_chain_predicate_result_steps_reject_mismatched_predicate_metadata(self):
+        certificates = load_proof_certificates(CERTIFICATES)
+        first = certificates[0]
+        bad_step = CertificateStep(
+            rule="predicate-result",
+            example=first.steps[0].example,
+            expected=first.steps[0].expected,
+            predicate="not_the_chain_predicate",
+        )
+        bad = first.with_steps((bad_step, *first.steps[1:]))
+
+        results = verify_chain_claim_certificates(self.claims, [bad, *certificates[1:]])
+
+        self.assertFalse(results[0].accepted)
+        self.assertIn("predicate mismatch", results[0].detail)
 
     def test_predicate_accepts_consumed_neighbor_delivery_chain(self):
         sender = Cell(

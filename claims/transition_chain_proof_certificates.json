@@ -5,34 +5,40 @@
       "claim_id": "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-CONSUMED",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "neighbor b proc left delivery consumed by empty recipient",
-          "expected": true
+          "expected": true,
+          "predicate": "neighbor_delivery_consumed_by_recipient"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "self write buffer completion is not neighbor delivery",
-          "expected": false
+          "expected": false,
+          "predicate": "neighbor_delivery_consumed_by_recipient"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "recipient pending upstream blocks delivered command",
-          "expected": false
+          "expected": false,
+          "predicate": "neighbor_delivery_consumed_by_recipient"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "neighbor c write buffer delivery consumed by recipient append",
-          "expected": true
+          "expected": true,
+          "predicate": "neighbor_delivery_consumed_by_recipient"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "neighbor c write buffer zero delivery consumed by recipient append",
-          "expected": true
+          "expected": true,
+          "predicate": "neighbor_delivery_consumed_by_recipient"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "neighbor c standard signal delivery remains unconsumed",
-          "expected": false
+          "expected": false,
+          "predicate": "neighbor_delivery_consumed_by_recipient"
         }
       ]
     },
@@ -40,19 +46,22 @@
       "claim_id": "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "neighbor c standard signal delivery rejected by recipient",
-          "expected": true
+          "expected": true,
+          "predicate": "neighbor_delivery_rejected_by_recipient"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "neighbor b proc left delivery is consumed not rejected",
-          "expected": false
+          "expected": false,
+          "predicate": "neighbor_delivery_rejected_by_recipient"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "self write buffer completion is not neighbor rejection",
-          "expected": false
+          "expected": false,
+          "predicate": "neighbor_delivery_rejected_by_recipient"
         }
       ]
     }

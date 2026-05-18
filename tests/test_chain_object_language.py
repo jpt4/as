@@ -54,6 +54,10 @@ class ChainObjectLanguageTests(unittest.TestCase):
 
         self.assertTrue(results)
         self.assertTrue(all(result.accepted for result in results), results)
+        self.assertIn(
+            "predicate-result",
+            self.language.syntax_classes["proof_objects"]["rules"],
+        )
 
     def test_report_formats_successful_chain_language_validation(self):
         report = chain_object_language.validate_transition_chain_claim_language_project(
@@ -93,6 +97,7 @@ class ChainObjectLanguageTests(unittest.TestCase):
         self.assertTrue(
             any(
                 result["subject"] == "proof_objects.rules" and result["accepted"]
+                and "predicate-result" in result["detail"]
                 for result in payload["results"]
             )
         )

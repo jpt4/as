@@ -46,9 +46,10 @@ remaining non-init boundary.
 ## Proof Surface
 
 `claims/transition_chain_proof_certificates.json` covers both chain claims with
-`manifest-example` steps for all nine examples. The verifier in
-`autarkic_systems/chain_claims.py` evaluates each manifest example by running
-the ADR-0077 chain helper and then checking the chain predicate.
+`predicate-result` steps for all nine examples. Each step names the chain
+predicate it evaluates. The verifier in `autarkic_systems/chain_claims.py`
+evaluates each manifest example by running the ADR-0077 chain helper and then
+checking the chain predicate.
 
 ## Verification
 

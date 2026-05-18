@@ -624,6 +624,9 @@
 - ADR-0186 migrates the recipient non-init command-message rejection proof
   certificate to `predicate-result`, completing the checked transition
   proof-certificate manifest's migration away from `manifest-example`.
+- ADR-0187 adds `predicate-result` support to the transition-chain
+  proof-certificate verifier and object language, then migrates both checked
+  transition-chain proof certificates to predicate-named steps.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.

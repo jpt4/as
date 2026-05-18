@@ -81,7 +81,7 @@
       "claim_id_prefixes": ["UC-CHAIN-"]
     },
     "proof_objects": {
-      "rules": ["manifest-example"]
+      "rules": ["manifest-example", "predicate-result"]
     },
     "substrate_chain_claims": {
       "claim_manifest": "claims/transition_chain_claims.json",

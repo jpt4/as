@@ -194,7 +194,7 @@ CHAIN_LANGUAGE = {
     "certificates_path": "claims/transition_chain_proof_certificates.json",
     "claim_count": 2,
     "certificate_count": 2,
-    "result_count": 32,
+    "result_count": 33,
 }
 TRANSITION_CLAIMS = {
     "claims_path": "claims/transition_claims.json",
@@ -635,7 +635,7 @@ class ProjectStatusReportTests(unittest.TestCase):
                 {
                     "subject": "chain-language-manifest",
                     "accepted": True,
-                    "detail": "validated 28 language clauses",
+                    "detail": "validated 29 language clauses",
                 },
                 {
                     "subject": "chain-examples",

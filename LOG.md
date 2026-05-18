@@ -4016,3 +4016,31 @@
   proof-certificate manifest no longer contains `manifest-example` rules. JSON
   parsing for the touched certificate manifest, `compileall`, `git diff --check`,
   and `python -m unittest discover` passed; the full suite ran 784 tests.
+
+## 2026-05-18 - Chain Predicate Result Certificates
+
+- Added ADR-0187 to extend `predicate-result` proof steps to the transition-chain
+  claim surface.
+- Added red chain-claim, chain-CLI, chain-object-language, and project-status
+  tests before implementation. The focused red run executed 104 tests and failed
+  because the chain verifier rejected `predicate-result`, the chain language only
+  admitted `manifest-example`, the checked chain certificates still used
+  `manifest-example`, and project status still reported 28 chain language
+  clauses.
+- Updated `autarkic_systems/chain_claims.py` so chain certificates accept
+  `predicate-result` steps, require predicate metadata, reject mismatched
+  predicate names, verify predicate result names, and report per-rule step
+  counts.
+- Updated `autarkic_systems/chain_object_language.py` and
+  `language/transition_chain_claim_language.json` so the chain proof-object
+  language admits both `manifest-example` and `predicate-result`.
+- Updated `claims/transition_chain_proof_certificates.json` so both checked
+  chain certificates use `predicate-result` steps that name
+  `neighbor_delivery_consumed_by_recipient` or
+  `neighbor_delivery_rejected_by_recipient` directly.
+- Focused green verification passed 104 tests. The chain-claim CLI JSON,
+  chain object-language CLI JSON, and project-status JSON checks accepted the
+  updated surface. JSON parsing for the touched chain proof-certificate and
+  language manifests, `compileall`, `git diff --check`, a direct no
+  `manifest-example` chain-certificate guard, and `python -m unittest discover`
+  passed; the full suite ran 788 tests.
