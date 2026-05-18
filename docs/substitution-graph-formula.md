@@ -8,7 +8,8 @@ syntactic formula candidate for the ADR-0246 substitution graph target:
 `substitution_code(x,y) = z`. ADR-0249 makes this candidate a structured
 dependency of the aggregate formal-confidence target, so formal-confidence
 validation fails closed if this surface drifts. ADR-0250 adds a concrete
-witness evaluator for the checked formula instance.
+witness evaluator for the checked formula instance. ADR-0251 adds finite
+evaluation examples around the same substitution graph path.
 
 ## Purpose
 

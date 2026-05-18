@@ -5256,3 +5256,29 @@ Deliverables:
 Status: accepted in `docs/adr/0250-substitution-graph-witness-evaluator.md`.
 Implemented in `autarkic_systems/substitution_graph_formula.py`, with tests in
 `tests/test_substitution_graph_formula.py`.
+
+## ADR-0251: Substitution Graph Evaluation Examples
+
+Goal: add finite substitution graph evaluation examples beyond the diagonal
+witness without claiming general formula correctness.
+
+Deliverables:
+
+- `claims/substitution_graph_evaluation_examples.json` with three finite
+  examples;
+- `autarkic_systems.substitution_graph_evaluation` validation that checks
+  formal-language, codebook, and formula-candidate dependencies;
+- evaluation coverage for direct substitution, nested `substitution_code`, and
+  no-occurrence preservation;
+- text/JSON report output for relation truth and evaluated output facts;
+- fail-closed rejection for stale formula facts, stale output facts, false
+  relation expectations, and proved-status overclaims; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma, fixed-point equation proof, arithmetized proof predicate, theorem
+  prover, runtime behavior, command semantics, evidence bundle, or GitHub
+  submission logic changes.
+
+Status: accepted in
+`docs/adr/0251-substitution-graph-evaluation-examples.md`. Implemented in
+`autarkic_systems/substitution_graph_evaluation.py`, with tests in
+`tests/test_substitution_graph_evaluation.py`.

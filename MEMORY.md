@@ -184,6 +184,11 @@
   checked witness relation evaluates true, with evaluated output code length
   `296` and prefix `[41, 1, 22, 11, 1, 18, 17, 13, 13, 13, 13, 13]`; this is
   still not a formula correctness proof or substitution representability proof.
+- ADR-0251 adds `claims/substitution_graph_evaluation_examples.json` and
+  `autarkic_systems.substitution_graph_evaluation`, covering three finite
+  substitution graph examples for direct substitution, nested
+  `substitution_code`, and no-occurrence preservation; these examples are
+  finite evaluator coverage, not a formula correctness proof.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

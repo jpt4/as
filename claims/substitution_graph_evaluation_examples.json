@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "evaluation_set_id": "as-substitution-graph-evaluation-examples-v1",
+  "reviewed_at": "2026-05-18",
+  "purpose": "Finite executable examples for the substitution_code graph evaluator. These examples check concrete substitution-code graph points over the current codebook without proving formula correctness or substitution representability.",
+  "formal_language_path": "language/formal_arithmetic_language.json",
+  "codebook_path": "language/formal_codebook.json",
+  "formula_candidates_path": "claims/substitution_graph_formula_candidates.json",
+  "examples": [
+    {
+      "example_id": "AS-SUBST-GRAPH-EVAL-N-EQ-ZERO",
+      "status": "finite-evaluation-not-proof",
+      "variable": "n",
+      "formula_node": {
+        "kind": "equals",
+        "left": {"kind": "variable", "name": "n"},
+        "right": {"kind": "zero"}
+      },
+      "argument_code": [11, 1],
+      "expected_formula_code": [21, 11, 4, 12],
+      "expected_formula_free_variables": ["n"],
+      "expected_relation_holds": true,
+      "expected_output_code_length": 19,
+      "expected_output_code_prefix": [21, 17, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13],
+      "expected_output_free_variables": [],
+      "required_future_work": [
+        "formula-correctness-proof",
+        "substitution-representability-proof",
+        "diagonal-lemma-proof",
+        "fixed-point-equation-proof",
+        "self-consistency-theorem"
+      ],
+      "non_claims": [
+        "no formula correctness proof",
+        "no substitution representability proof",
+        "no diagonal lemma proof",
+        "no fixed-point equation proof",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Prove the general substitution_code graph formula rather than relying on finite examples."
+    },
+    {
+      "example_id": "AS-SUBST-GRAPH-EVAL-NESTED-SUBST-CODE",
+      "status": "finite-evaluation-not-proof",
+      "variable": "n",
+      "formula_node": {
+        "kind": "equals",
+        "left": {
+          "kind": "substitution_code",
+          "left": {"kind": "variable", "name": "n"},
+          "right": {"kind": "variable", "name": "n"}
+        },
+        "right": {"kind": "variable", "name": "n"}
+      },
+      "argument_code": [11, 2],
+      "expected_formula_code": [21, 18, 11, 4, 11, 4, 11, 4],
+      "expected_formula_free_variables": ["n"],
+      "expected_relation_holds": true,
+      "expected_output_code_length": 56,
+      "expected_output_code_prefix": [21, 18, 17, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 17, 13, 13, 12, 16, 17, 13, 13, 13],
+      "expected_output_free_variables": [],
+      "required_future_work": [
+        "formula-correctness-proof",
+        "substitution-representability-proof",
+        "diagonal-lemma-proof",
+        "fixed-point-equation-proof",
+        "self-consistency-theorem"
+      ],
+      "non_claims": [
+        "no formula correctness proof",
+        "no substitution representability proof",
+        "no diagonal lemma proof",
+        "no fixed-point equation proof",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Prove the general substitution_code graph formula rather than relying on finite examples."
+    },
+    {
+      "example_id": "AS-SUBST-GRAPH-EVAL-NOT-FREE",
+      "status": "finite-evaluation-not-proof",
+      "variable": "n",
+      "formula_node": {
+        "kind": "equals",
+        "left": {"kind": "variable", "name": "x"},
+        "right": {"kind": "zero"}
+      },
+      "argument_code": [11, 1],
+      "expected_formula_code": [21, 11, 1, 12],
+      "expected_formula_free_variables": ["x"],
+      "expected_relation_holds": true,
+      "expected_output_code_length": 4,
+      "expected_output_code_prefix": [21, 11, 1, 12],
+      "expected_output_free_variables": ["x"],
+      "required_future_work": [
+        "formula-correctness-proof",
+        "substitution-representability-proof",
+        "diagonal-lemma-proof",
+        "fixed-point-equation-proof",
+        "self-consistency-theorem"
+      ],
+      "non_claims": [
+        "no formula correctness proof",
+        "no substitution representability proof",
+        "no diagonal lemma proof",
+        "no fixed-point equation proof",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Prove the general substitution_code graph formula rather than relying on finite examples."
+    }
+  ]
+}

@@ -5409,3 +5409,21 @@
   fixed-point blocker: no formula correctness proof, substitution
   representability proof, diagonal lemma, fixed-point equation proof, or
   self-consistency theorem is claimed.
+
+## 2026-05-18 - Substitution Graph Evaluation Examples
+
+- Added ADR-0251 to record finite substitution graph evaluation examples beyond
+  the diagonal witness without claiming formula correctness.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.substitution_graph_evaluation` and
+  `claims/substitution_graph_evaluation_examples.json` did not exist.
+- Added `claims/substitution_graph_evaluation_examples.json` with examples for
+  direct substitution into `n = 0`, nested `substitution_code(n,n) = n`, and a
+  no-occurrence case where `n` is not free.
+- Added `autarkic_systems/substitution_graph_evaluation.py`, validating the
+  formal arithmetic language, formal codebook, substitution graph formula
+  dependency, finite relation truth, formula facts, and output facts.
+- Focused substitution-graph evaluation tests passed 12 tests. This preserves
+  the fixed-point blocker: no formula correctness proof, substitution
+  representability proof, diagonal lemma, fixed-point equation proof, or
+  self-consistency theorem is claimed.
