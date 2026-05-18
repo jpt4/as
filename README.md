@@ -32,10 +32,12 @@ proof certificates, object languages, evidence bundles, and status reports:
   direction decision.
 - `docs/formal-confidence-target.md` records the first checked
   formal-confidence target boundary, explicitly marking current AS
-  self-consistency claims as blocked pending proof-code, self-reference,
-  consistency-level, and deduction-apparatus work.
+  self-consistency claims as blocked pending self-reference, consistency-level,
+  and deduction-apparatus work.
 - `docs/formal-arithmetic-language.md` records the first checked syntax-only
   Type-NS arithmetic language surface for the formal-confidence path.
+- `docs/formal-codebook.md` records the first checked proof-code encoding
+  surface over that arithmetic language.
 - `docs/transition-claim-language.md` explains the first explicit object
   language for transition claims.
 - `docs/transition-chain-claim-language.md` explains the first explicit object
@@ -341,11 +343,15 @@ proof certificates, object languages, evidence bundles, and status reports:
   formal arithmetic language manifest against the Willard definition map,
   checking the Type-NS profile, `delta0` bounded formula class, `pi1`/`sigma1`
   sentence classes, and placeholder-only proof-object boundary.
+- `autarkic_systems/formal_code.py` validates and runs the first formal
+  proof-code codebook, encoding and decoding tagged natural-number prefix
+  sequences for terms, formulae, `pi1`/`sigma1` sentence wrappers, and
+  placeholder proof-line shells.
 - `autarkic_systems/formal_confidence.py` validates the first
   formal-confidence target manifest against the Willard definition map, keeping
-  the current AS self-consistency claim explicitly blocked until proof-code
-  encoding, self-reference/substitution, consistency-level, and
-  deduction-apparatus choices exist.
+  the current AS self-consistency claim explicitly blocked until
+  self-reference/substitution, consistency-level, and deduction-apparatus
+  choices exist.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -373,11 +379,14 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `claims/formal_confidence_targets.json` records
   `AS-FORMAL-CONFIDENCE-TARGET-001`, a blocked Willard-style
   formal-confidence target over the current AS proof/evidence surface and the
-  first checked syntax-only arithmetic language artifact.
+  first checked syntax-only arithmetic language and proof-code artifacts.
 - `python -m autarkic_systems.formal_arithmetic --format json` validates
   `language/formal_arithmetic_language.json`, including required Willard
   anchors, the Type-NS profile, `delta0`, `pi1`, `sigma1`, and the
   placeholder-only proof-object boundary.
+- `python -m autarkic_systems.formal_code --format json` validates
+  `language/formal_codebook.json`, including required Willard anchors, unique
+  tag codes, manifest examples, and encode/decode round trips.
 - `python -m autarkic_systems.formal_confidence --format json` validates that
   target against `sources/willard_definition_map.json`, including required
   Willard anchors, required configuration fields, explicit blockers, and the

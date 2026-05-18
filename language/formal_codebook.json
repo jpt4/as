@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "codebook_id": "as-formal-codebook-v1",
+  "reviewed_at": "2026-05-18",
+  "purpose": "First deterministic proof-code encoding surface for the AS formal arithmetic language. The codebook uses tagged natural-number prefix sequences for terms, formulae, sentence wrappers, and placeholder proof-line shells; it is not a parser, evaluator, deduction apparatus, substitution engine, or self-consistency claim.",
+  "language_id": "as-formal-arithmetic-v1",
+  "encoding_kind": "tagged-prefix-natural-sequence",
+  "willard_anchor_ids": [
+    "W2011-D3.4-GENERIC-CONFIGURATION",
+    "W2011-D5.7-SELFCONSK",
+    "W2020-D3.4-TYPE-NS-A-S-M"
+  ],
+  "variable_codes": {
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "n": 4
+  },
+  "term_tags": {
+    "variable": 11,
+    "zero": 12,
+    "successor": 13,
+    "addition": 14,
+    "multiplication": 15
+  },
+  "formula_tags": {
+    "equals": 21,
+    "less_than": 22,
+    "not": 23,
+    "and": 24,
+    "or": 25,
+    "implies": 26,
+    "forall": 27,
+    "exists": 28,
+    "bounded_forall": 29,
+    "bounded_exists": 30
+  },
+  "sentence_tags": {
+    "pi1": 41,
+    "sigma1": 42
+  },
+  "proof_line_tags": {
+    "proof_line": 61
+  },
+  "proof_rule_codes": {
+    "assumption": 1,
+    "placeholder": 2
+  },
+  "examples": [
+    {
+      "example_id": "successor-variable",
+      "node": {
+        "kind": "successor",
+        "term": {
+          "kind": "variable",
+          "name": "x"
+        }
+      },
+      "expected_code": [13, 11, 1]
+    },
+    {
+      "example_id": "bounded-exists-equality",
+      "node": {
+        "kind": "bounded_exists",
+        "variable": "y",
+        "bound": {
+          "kind": "variable",
+          "name": "n"
+        },
+        "body": {
+          "kind": "equals",
+          "left": {
+            "kind": "variable",
+            "name": "y"
+          },
+          "right": {
+            "kind": "variable",
+            "name": "x"
+          }
+        }
+      },
+      "expected_code": [30, 2, 11, 4, 21, 11, 2, 11, 1]
+    },
+    {
+      "example_id": "pi1-sentence",
+      "node": {
+        "kind": "pi1",
+        "variable": "x",
+        "body": {
+          "kind": "less_than",
+          "left": {
+            "kind": "variable",
+            "name": "x"
+          },
+          "right": {
+            "kind": "variable",
+            "name": "n"
+          }
+        }
+      },
+      "expected_code": [41, 1, 22, 11, 1, 11, 4]
+    },
+    {
+      "example_id": "proof-line-placeholder",
+      "node": {
+        "kind": "proof_line",
+        "line": 1,
+        "rule": "assumption",
+        "formula": {
+          "kind": "pi1",
+          "variable": "x",
+          "body": {
+            "kind": "less_than",
+            "left": {
+              "kind": "variable",
+              "name": "x"
+            },
+            "right": {
+              "kind": "variable",
+              "name": "n"
+            }
+          }
+        },
+        "premises": []
+      },
+      "expected_code": [61, 1, 1, 41, 1, 22, 11, 1, 11, 4, 0]
+    }
+  ]
+}

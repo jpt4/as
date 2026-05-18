@@ -423,8 +423,10 @@ check through direct text and JSON CLI validation. ADR-0137 gives the
 transition-chain object language the same direct CLI surface. ADR-0226 adds
 `language/formal_arithmetic_language.json`, a checked syntax-only Type-NS
 surface with `delta0`, `pi1`, `sigma1`, and placeholder-only proof objects.
-IS(A), parser/evaluator semantics, tableaux syntax, and arithmetized proof-code
-syntax remain open.
+ADR-0227 adds `language/formal_codebook.json`, a first tagged natural-number
+codebook over that syntax and placeholder proof-line shells. IS(A),
+parser/evaluator semantics, tableaux syntax, substitution, and deduction syntax
+remain open.
 
 ## P5: Annotate Core Willard Sources At Definition Granularity
 
@@ -443,9 +445,11 @@ machinery. ADR-0224 adds the first checked formal-confidence target that uses
 those anchors as constraints while explicitly blocking any Willard-style
 self-consistency claim until arithmetic syntax, proof-code encoding,
 self-reference substitution, consistency-level selection, and deduction
-apparatus selection are implemented. ADR-0226 removes only the arithmetic
-syntax blocker by adding a checked Type-NS `delta0` language artifact; the
-remaining blockers are proof-code encoding, self-reference substitution,
+apparatus selection are implemented. ADR-0226 removes the arithmetic syntax
+blocker by adding a checked Type-NS `delta0` language artifact. ADR-0227
+removes the first proof-code blocker by adding a checked codebook and
+round-trip encoder/decoder for terms, formulae, sentences, and placeholder
+proof-line shells. The remaining blockers are self-reference substitution,
 consistency-level selection, and deduction-apparatus selection.
 
 ## P6: Recover Or Replace The Active Proflog Frontier

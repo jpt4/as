@@ -4644,3 +4644,30 @@ Deliverables:
 Status: accepted in `docs/adr/0226-bounded-arithmetic-language.md`.
 Implemented in `autarkic_systems/formal_arithmetic.py`, with tests in
 `tests/test_formal_arithmetic_language.py`.
+
+## ADR-0227: Formal Proof-Code Encoding
+
+Goal: remove the first proof-code encoding blocker from the
+formal-confidence target without overclaiming substitution, deduction, or
+self-consistency.
+
+Deliverables:
+
+- `language/formal_codebook.json` with tagged natural-number prefix codes;
+- term, formula, sentence, proof-line, variable, and proof-rule code maps;
+- manifest examples for successor terms, bounded formulae, `pi1` sentences,
+  and placeholder proof-line shells;
+- `autarkic_systems.formal_code` encode/decode functions and text/JSON CLI
+  validation;
+- rejection for duplicate tag codes, unknown variables, mismatched example
+  codes, and trailing decode tokens;
+- formal-confidence target narrowed to the new codebook artifact while still
+  blocked on self-reference/substitution, consistency-level, and
+  deduction-apparatus choices; and
+- no parser, evaluator, substitution engine, proof checker, theorem prover,
+  runtime behavior, command semantics, evidence bundle, or GitHub submission
+  logic changes.
+
+Status: accepted in `docs/adr/0227-formal-proof-code-encoding.md`.
+Implemented in `autarkic_systems/formal_code.py`, with tests in
+`tests/test_formal_code_encoding.py`.

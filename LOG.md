@@ -4824,3 +4824,30 @@
   live project-status summary and refreshed handoff remained accepted.
   `compileall`, JSON checks, `git diff --check`, and `python -m unittest
   discover` passed; the full suite ran 935 tests.
+
+## 2026-05-18 - Formal Proof-Code Encoding
+
+- Added ADR-0227 to remove the first proof-code encoding blocker from the
+  formal-confidence target without claiming substitution, deduction, or
+  self-consistency machinery.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.formal_code` and `language/formal_codebook.json` did not
+  exist, and the formal-confidence target still listed `proof-code-encoding`
+  as a blocker.
+- Added `language/formal_codebook.json`, a tagged natural-number prefix
+  codebook for variables, terms, formulae, `pi1`/`sigma1` sentence wrappers,
+  and placeholder proof-line shells.
+- Added `autarkic_systems/formal_code.py` with encode/decode functions,
+  text/JSON validation, example round trips, duplicate-tag rejection,
+  unknown-variable rejection, expected-code mismatch rejection, and trailing
+  token rejection.
+- Narrowed `claims/formal_confidence_targets.json` so
+  `AS-FORMAL-CONFIDENCE-TARGET-001` points at the formal codebook, removes the
+  proof-code-encoding blocker, and remains blocked on self-reference
+  substitution, consistency-level selection, and deduction-apparatus selection.
+- Focused formal-code, formal-confidence, and project-status tests passed 113
+  tests. Live formal-code text/JSON output reported four accepted round-trip
+  examples with no failed subjects; live formal-confidence output reported the
+  remaining blockers without `proof-code-encoding`; live project-status summary
+  remained accepted. `compileall`, JSON checks, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 950 tests.

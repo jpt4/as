@@ -61,7 +61,14 @@
   self-consistency claim.
 - `AS-FORMAL-CONFIDENCE-TARGET-001` now points at the formal arithmetic
   language artifact and no longer lists `arithmetic-object-language` as a
-  blocker. It remains blocked on proof-code encoding,
+  blocker.
+- ADR-0227 adds `language/formal_codebook.json` and
+  `autarkic_systems/formal_code.py` as the first checked proof-code encoding
+  surface. It round-trips tagged natural-number prefix sequences for terms,
+  formulae, `pi1`/`sigma1` sentence wrappers, and placeholder proof-line
+  shells, but does not implement substitution, deduction, or self-consistency.
+- `AS-FORMAL-CONFIDENCE-TARGET-001` now also points at the formal codebook and
+  no longer lists `proof-code-encoding` as a blocker. It remains blocked on
   self-reference-substitution, consistency-level selection, and
   deduction-apparatus selection.
 - Direct pushes to `jpt4/as` are blocked for `Sean-Kenneth-Doherty`; current AS

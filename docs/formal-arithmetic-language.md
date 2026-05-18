@@ -18,8 +18,8 @@ language surface:
   and bounded quantifier names;
 - the `delta0` bounded formula class with examples;
 - `pi1` and `sigma1` sentence classes with examples; and
-- placeholder-only proof objects that keep proof-code and deduction-apparatus
-  work blocked.
+- placeholder-only proof objects that keep deduction-apparatus work blocked
+  inside the arithmetic language itself.
 
 The manifest is tagged as `Type-NS`, following the Willard 2020
 Type-NS/S/A/M pressure. It does not assert total addition or multiplication,
@@ -44,7 +44,7 @@ The validator checks that:
 
 ## Boundary
 
-This is not a parser, evaluator, proof-code encoding, substitution engine,
-deduction apparatus, theorem prover, or self-consistency claim. It is a small
-checked vocabulary surface so later proof-code and self-reference ADRs have a
-concrete language artifact to target.
+This is not a parser, evaluator, substitution engine, deduction apparatus,
+theorem prover, or self-consistency claim. ADR-0227 adds the separate first
+proof-code codebook over this syntax, while this document remains the
+vocabulary surface that codebook targets.

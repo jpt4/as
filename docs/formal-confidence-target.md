@@ -1,6 +1,6 @@
 # Formal Confidence Target
 
-Status: checked target boundary with first arithmetic syntax artifact,
+Status: checked target boundary with arithmetic syntax and first codebook,
 2026-05-18.
 
 ADR-0224 adds `claims/formal_confidence_targets.json` and
@@ -27,9 +27,11 @@ claim needs at least:
 
 The formal-confidence target keeps those obligations explicit. ADR-0226 adds
 `language/formal_arithmetic_language.json`, so the target now has a checked
-syntax-only Type-NS arithmetic language and `delta0` bounded formula class, but
-the target remains blocked on proof-code, substitution, consistency-level, and
-deduction-apparatus work.
+syntax-only Type-NS arithmetic language and `delta0` bounded formula class.
+ADR-0227 adds `language/formal_codebook.json`, so the target also has a first
+round-trippable proof-code shell for terms, formulae, sentences, and
+placeholder proof lines. The target remains blocked on self-reference
+substitution, consistency-level, and deduction-apparatus work.
 
 ## Current Target
 
@@ -45,10 +47,10 @@ It names these Willard anchors as constraints:
 - `W2020-T4.4-T4.5-LEM-BOUNDARY`.
 
 It records the current configuration as local AS transition/chain/sequence
-object languages, `language/formal_arithmetic_language.json`, and local
-predicate-result proof certificates. It also records the remaining blockers:
-proof-code encoding, self-reference substitution, consistency-level selection,
-and deduction-apparatus selection.
+object languages, `language/formal_arithmetic_language.json`,
+`language/formal_codebook.json`, and local predicate-result proof certificates.
+It also records the remaining blockers: self-reference substitution,
+consistency-level selection, and deduction-apparatus selection.
 
 ## Run
 
@@ -57,6 +59,8 @@ python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.formal_confidence --format json
 python -m autarkic_systems.formal_arithmetic
 python -m autarkic_systems.formal_arithmetic --format json
+python -m autarkic_systems.formal_code
+python -m autarkic_systems.formal_code --format json
 python -m autarkic_systems.project_status --format summary
 ```
 
