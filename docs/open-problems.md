@@ -168,6 +168,8 @@ ADR-0106 rejects non-text command-list entries so malformed source-status
 commands cannot disappear from the project report.
 ADR-0107 rejects malformed command-token field container shapes so recognized
 source-status command fields cannot be silently ignored.
+ADR-0108 adds the blocked source-status resolution question IDs to project
+status and bumps the schema version to `3`.
 
 ## P3: Choose The First Proof Apparatus
 

@@ -2037,3 +2037,22 @@ Status: accepted in
 `docs/adr/0107-project-status-command-field-shapes.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0108: Project Status Resolution Questions
+
+Goal: expose source-status resolution question IDs from the project status
+frontier.
+
+Deliverables:
+
+- `required_resolution_questions` list on each accepted
+  `frontier.source_statuses` entry;
+- schema bump from project status `schema_version: 2` to `schema_version: 3`;
+- focused in-process and JSON CLI tests for resolution-question attribution;
+  and
+- documentation update for the project status schema change.
+
+Status: accepted in
+`docs/adr/0108-project-status-resolution-questions.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

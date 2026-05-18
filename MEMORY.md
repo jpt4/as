@@ -493,3 +493,6 @@
 - ADR-0107 makes `autarkic_systems.project_status` reject malformed
   source-status command-token field containers as `source-status-schema`,
   preserving `schema_version: 2`.
+- ADR-0108 bumps `autarkic_systems.project_status` to `schema_version: 3` and
+  adds per-source `required_resolution_questions` IDs to accepted
+  `frontier.source_statuses` entries.

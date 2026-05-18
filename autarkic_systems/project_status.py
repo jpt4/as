@@ -32,7 +32,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 2
+PROJECT_STATUS_SCHEMA_VERSION = 3
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -261,6 +261,7 @@ def _frontier_summary(
                 "safe_next_slice": safe_next_slice,
                 "as_boundary": _optional_text(data, "as_boundary"),
                 "commands": _ordered_blocked_commands(source_commands),
+                "required_resolution_questions": _resolution_question_ids(data),
             }
         )
 
@@ -294,6 +295,19 @@ def _blocked_commands_from_status(data: dict[str, Any]) -> set[str]:
     if isinstance(command_list, list):
         commands.update(item for item in command_list if isinstance(item, str))
     return commands
+
+
+def _resolution_question_ids(data: dict[str, Any]) -> list[str]:
+    questions = data.get("required_resolution_questions")
+    if not isinstance(questions, list):
+        return []
+    question_ids: list[str] = []
+    for question in questions:
+        if isinstance(question, dict):
+            question_id = question.get("question_id")
+            if isinstance(question_id, str) and question_id:
+                question_ids.append(question_id)
+    return question_ids
 
 
 def _source_status_schema_error(data: Any) -> str:

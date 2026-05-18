@@ -21,7 +21,19 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
-PROJECT_STATUS_SCHEMA_VERSION = 2
+PROJECT_STATUS_SCHEMA_VERSION = 3
+STANDARD_SIGNAL_QUESTIONS = [
+    "command-token-vs-binary-input",
+    "command-table-offset",
+    "recipient-surface",
+    "self-target-surface",
+]
+WRITE_BUFFER_QUESTIONS = [
+    "recipient-vs-stem-surface",
+    "buffer-full-boundary",
+    "post-append-clearing",
+    "standard-signal-interaction",
+]
 
 
 class ProjectStatusReportTests(unittest.TestCase):
@@ -60,6 +72,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 BLOCKED_COMMANDS,
                 ["standard-signal"],
                 ["write-buf-zero", "write-buf-one"],
+            ],
+        )
+        self.assertEqual(
+            [
+                item["required_resolution_questions"]
+                for item in report["frontier"]["source_statuses"]
+            ],
+            [
+                [],
+                STANDARD_SIGNAL_QUESTIONS,
+                WRITE_BUFFER_QUESTIONS,
             ],
         )
 
@@ -101,6 +124,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 BLOCKED_COMMANDS,
                 ["standard-signal"],
                 ["write-buf-zero", "write-buf-one"],
+            ],
+        )
+        self.assertEqual(
+            [
+                item["required_resolution_questions"]
+                for item in payload["frontier"]["source_statuses"]
+            ],
+            [
+                [],
+                STANDARD_SIGNAL_QUESTIONS,
+                WRITE_BUFFER_QUESTIONS,
             ],
         )
 

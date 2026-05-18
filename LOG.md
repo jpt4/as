@@ -2395,3 +2395,26 @@
   command attribution, and `frontier.failed_subjects: []`. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed, with the full
   suite running 560 tests.
+
+## 2026-05-18 - Project Status Resolution Questions
+
+- Added ADR-0108 to expose source-status `required_resolution_questions` IDs
+  from the project status JSON report.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed because the project status report still emitted
+  `schema_version: 2` and did not yet expose per-source resolution question
+  IDs.
+- Updated `autarkic_systems.project_status` so accepted
+  `frontier.source_statuses` entries include `required_resolution_questions`,
+  and bumped `PROJECT_STATUS_SCHEMA_VERSION` to `3`.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the resolution-question attribution contract.
+- Verified the focused project status test passed 24 tests; adjacent project
+  status, transition registry, and chain registry tests passed 49 tests. The
+  checked-in JSON status reported `schema_version: 3`, `accepted: true`,
+  transition `bundle_count: 8`, chain `bundle_count: 2`, aggregate blocked
+  commands `standard-signal`, `write-buf-zero`, and `write-buf-one`, per-source
+  command attribution, standard-signal and write-buffer resolution question
+  IDs, and `frontier.failed_subjects: []`. `py_compile`, `git diff --check`,
+  and `python -m unittest discover` passed, with the full suite running 560
+  tests.

@@ -254,7 +254,9 @@ the project legible:
   evidence accepted with 8 bundles, chain evidence accepted with 2 bundles,
   and the blocked `standard-signal`, `write-buf-zero`, and `write-buf-one`
   command-token frontier. Schema version `2` also attributes those commands to
-  each accepted source-status entry. Missing registries report
+  each accepted source-status entry, while schema version `3` also carries the
+  source-status resolution-question IDs that still block command-token
+  execution. Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as
   `source-status-file`, `source-status-json`, or `source-status-schema`;

@@ -298,3 +298,6 @@
 - If a status schema recognizes a field name, validate that field even when
   another sibling field is sufficient to build a partial report. Ignoring the
   malformed field hides drift.
+- A frontier report should carry the unresolved question IDs, not only the
+  blocked terms. Otherwise automation can detect a block without seeing the
+  decision work needed to remove it.

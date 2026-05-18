@@ -39,7 +39,7 @@ The text report names:
 - the safe next slice from the source-status records.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 2`. If a registry file is missing, the corresponding registry
+`schema_version: 3`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -55,7 +55,8 @@ ADR-0104 rejects blank command-token strings as `source-status-schema`
 failures. ADR-0105 rejects whitespace-only `decision` and `safe_next_slice`
 text as source-status schema failures. ADR-0106 rejects non-text command-list
 entries as source-status schema failures. ADR-0107 rejects malformed
-command-token field container shapes.
+command-token field container shapes. ADR-0108 adds per-source
+`required_resolution_questions` and bumps the schema version to `3`.
 
 ## Boundary
 
