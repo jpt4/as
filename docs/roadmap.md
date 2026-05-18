@@ -2643,3 +2643,22 @@ Deliverables:
 Status: accepted in `docs/adr/0136-transition-object-language-cli.md`.
 Implemented in `autarkic_systems/object_language.py`, with tests in
 `tests/test_object_language.py`.
+
+## ADR-0137: Chain Object Language CLI
+
+Goal: make the transition-chain object-language layer directly inspectable
+from the command line.
+
+Deliverables:
+
+- `python -m autarkic_systems.chain_object_language` text output;
+- `--format json` output with accepted state, language ID, claim count,
+  certificate count, result count, and per-result validation details;
+- `--language`, `--claims`, and `--certificates` path overrides;
+- exit code `0` for accepted chain language surfaces and `1` for rejected
+  language or chain claim/proof surfaces; and
+- focused CLI tests covering successful and failing chain language manifests.
+
+Status: accepted in `docs/adr/0137-chain-object-language-cli.md`. Implemented
+in `autarkic_systems/chain_object_language.py`, with tests in
+`tests/test_chain_object_language.py`.

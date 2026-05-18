@@ -2,16 +2,18 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Iterable, get_args
 
 from autarkic_systems import transition_chain_predicates
-from autarkic_systems.chain_claims import ChainClaim
+from autarkic_systems.chain_claims import ChainClaim, load_transition_chain_claims
 from autarkic_systems.proof_certificates import (
     ClaimCertificate,
     MANIFEST_EXAMPLE_RULE,
+    load_proof_certificates,
 )
 from autarkic_systems.transition_chains import (
     ChainStatus,
@@ -95,6 +97,19 @@ class ChainLanguageValidation:
     detail: str
 
 
+@dataclass(frozen=True)
+class TransitionChainClaimLanguageProjectReport:
+    """Operator-facing validation report for the chain claim language."""
+
+    language_path: Path
+    claims_path: Path
+    certificates_path: Path
+    language_id: str
+    claim_count: int
+    certificate_count: int
+    results: tuple[ChainLanguageValidation, ...]
+
+
 def load_transition_chain_claim_language(
     path: Path | str,
 ) -> TransitionChainClaimLanguage:
@@ -106,6 +121,120 @@ def load_transition_chain_claim_language(
         language_id=_required_text(data, "language_id"),
         syntax_classes=_required_mapping(data, "syntax_classes"),
     )
+
+
+def validate_transition_chain_claim_language_project(
+    language_path: Path | str = "language/transition_chain_claim_language.json",
+    claims_path: Path | str = "claims/transition_chain_claims.json",
+    certificates_path: Path | str = "claims/transition_chain_proof_certificates.json",
+) -> TransitionChainClaimLanguageProjectReport:
+    """Validate the chain claim language and its checked-in surface."""
+
+    language_manifest = Path(language_path)
+    claim_manifest = Path(claims_path)
+    certificate_manifest = Path(certificates_path)
+    language = load_transition_chain_claim_language(language_manifest)
+    claims = load_transition_chain_claims(claim_manifest)
+    certificates = load_proof_certificates(certificate_manifest)
+    results = tuple(
+        [
+            *validate_chain_language_manifest(language),
+            *validate_chain_claim_surface(language, claims, certificates),
+        ]
+    )
+    return TransitionChainClaimLanguageProjectReport(
+        language_path=language_manifest,
+        claims_path=claim_manifest,
+        certificates_path=certificate_manifest,
+        language_id=language.language_id,
+        claim_count=len(claims),
+        certificate_count=len(certificates),
+        results=results,
+    )
+
+
+def format_transition_chain_claim_language_report(
+    report: TransitionChainClaimLanguageProjectReport,
+) -> str:
+    """Format a concise operator report for the chain claim language."""
+
+    lines = [f"Transition chain claim language: {report.language_id}"]
+    for result in report.results:
+        prefix = "OK" if result.accepted else "FAIL"
+        lines.append(f"{prefix} {result.subject}: {result.detail}")
+    return "\n".join(lines)
+
+
+def transition_chain_claim_language_report_payload(
+    report: TransitionChainClaimLanguageProjectReport,
+) -> dict[str, Any]:
+    """Return a structured chain claim language validation payload."""
+
+    return {
+        "accepted": all(result.accepted for result in report.results),
+        "language_id": report.language_id,
+        "language_path": str(report.language_path),
+        "claims_path": str(report.claims_path),
+        "certificates_path": str(report.certificates_path),
+        "claim_count": report.claim_count,
+        "certificate_count": report.certificate_count,
+        "result_count": len(report.results),
+        "results": [
+            {
+                "subject": result.subject,
+                "accepted": result.accepted,
+                "detail": result.detail,
+            }
+            for result in report.results
+        ],
+    }
+
+
+def run_transition_chain_claim_language_cli(argv: list[str] | None = None) -> int:
+    """Run the transition-chain claim object-language validation command."""
+
+    parser = argparse.ArgumentParser(
+        prog="python -m autarkic_systems.chain_object_language",
+        description="Validate the AS transition-chain claim language surface.",
+    )
+    parser.add_argument(
+        "--language",
+        default="language/transition_chain_claim_language.json",
+        help="Path to the transition-chain claim language manifest.",
+    )
+    parser.add_argument(
+        "--claims",
+        default="claims/transition_chain_claims.json",
+        help="Path to the transition-chain claim manifest.",
+    )
+    parser.add_argument(
+        "--certificates",
+        default="claims/transition_chain_proof_certificates.json",
+        help="Path to the transition-chain proof certificate manifest.",
+    )
+    parser.add_argument(
+        "--format",
+        choices=("text", "json"),
+        default="text",
+        help="Output format for the validation report.",
+    )
+    args = parser.parse_args(argv)
+
+    report = validate_transition_chain_claim_language_project(
+        language_path=args.language,
+        claims_path=args.claims,
+        certificates_path=args.certificates,
+    )
+    if args.format == "json":
+        print(
+            json.dumps(
+                transition_chain_claim_language_report_payload(report),
+                sort_keys=True,
+            )
+        )
+    else:
+        print(format_transition_chain_claim_language_report(report))
+    return 0 if all(result.accepted for result in report.results) else 1
 
 
 def validate_chain_language_manifest(
@@ -440,3 +569,7 @@ def _required_mapping(item: dict[str, Any], key: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"required object field missing: {key}")
     return value
+
+
+if __name__ == "__main__":  # pragma: no cover - exercised by subprocess tests.
+    raise SystemExit(run_transition_chain_claim_language_cli())

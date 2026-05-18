@@ -585,3 +585,6 @@
 - ADR-0136 adds `python -m autarkic_systems.object_language` with text/JSON
   validation of the transition claim language and checked claim/proof surface,
   including failing exit codes for rejected language surfaces.
+- ADR-0137 adds `python -m autarkic_systems.chain_object_language` with
+  text/JSON validation of the transition-chain claim language and checked chain
+  claim/proof surface.

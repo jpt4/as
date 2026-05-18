@@ -31,6 +31,8 @@ Run:
 
 ```sh
 python -m unittest tests.test_chain_object_language
+python -m autarkic_systems.chain_object_language
+python -m autarkic_systems.chain_object_language --format json
 python -m autarkic_systems.chain_claims
 python -m autarkic_systems.chain_claims --format json
 ```
@@ -42,6 +44,9 @@ vocabularies.
 
 ADR-0080 exposes the same chain language, example, certificate, and surface
 validation through the `python -m autarkic_systems.chain_claims` command.
+ADR-0137 exposes the chain object-language layer itself through
+`python -m autarkic_systems.chain_object_language`, including per-clause text
+and JSON output.
 
 ADR-0081 validates this language as part of the first composed-chain evidence
 bundle:

@@ -383,3 +383,5 @@
 - An object language is more useful when operators can validate both the
   language manifest and the live surfaces that claim to inhabit it from one
   command.
+- When base and chain language layers serve parallel diagnostic roles, keep
+  their first-run surfaces parallel too.

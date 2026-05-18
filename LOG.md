@@ -3006,3 +3006,21 @@
   formatting, `py_compile`, and `git diff --check` passed; object-language
   text and JSON CLI output were accepted; and
   `python -m unittest discover` passed 624 tests.
+
+## 2026-05-18 - Chain Object Language CLI
+
+- Added ADR-0137 to expose the transition-chain object-language layer through
+  `python -m autarkic_systems.chain_object_language`.
+- Updated chain object-language tests before implementation. The red run
+  executed 12 tests and failed because the report builder, CLI runner, and
+  module execution output did not exist.
+- Updated `autarkic_systems.chain_object_language` with a project report, text
+  and JSON formatting, `--language`, `--claims`, and `--certificates` path
+  overrides, `--format` selection, and accepted/rejected exit codes.
+- The default text command now reports the `as-transition-chain-claim-v1`
+  language surface; JSON mode reports `accepted: true`, `claim_count: 2`,
+  `certificate_count: 2`, and `result_count: 32`.
+- Verification passed: focused chain object-language tests ran 12 tests; JSON
+  formatting, `py_compile`, and `git diff --check` passed; chain
+  object-language text and JSON CLI output were accepted; and
+  `python -m unittest discover` passed 631 tests.

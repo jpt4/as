@@ -221,7 +221,9 @@ the project legible:
   manifest and manifest-example proof certificates, and exposes
   `python -m autarkic_systems.chain_claims` for direct chain-claim validation.
 - `autarkic_systems/chain_object_language.py` validates the first
-  transition-chain claim language and checked chain claim surface.
+  transition-chain claim language and checked chain claim surface, and exposes
+  `python -m autarkic_systems.chain_object_language` for direct chain
+  object-language validation.
 - `autarkic_systems/chain_evidence_bundle.py` validates the first
   transition-chain evidence bundle and exposes
   `python -m autarkic_systems.chain_evidence_bundle` for direct text/JSON
