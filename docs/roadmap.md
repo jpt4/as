@@ -4458,3 +4458,27 @@ Deliverables:
 Status: accepted in `docs/adr/0218-submission-commit-url.md`.
 Implemented in `autarkic_systems/github_submission.py`, with tests in
 `tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.
+
+## ADR-0219: GitHub Remote Web URL Normalization
+
+Goal: make fork commit URLs robust across common GitHub HTTPS and SSH remote
+forms.
+
+Deliverables:
+
+- GitHub remote web URL normalization for HTTPS remotes;
+- GitHub remote web URL normalization for SCP-like
+  `git@github.com:owner/repo.git` remotes;
+- GitHub remote web URL normalization for
+  `ssh://git@github.com/owner/repo.git` remotes;
+- unchanged best-effort fallback for unrecognized remote forms;
+- handoff output inheriting the normalized fork commit URL; and
+- no GitHub API dependency, submission-acceptance change, remote-refresh
+  behavior change, handoff-readiness change, project-status change,
+  vertical-demo change, evidence/claim/proof/source-status change, or runtime
+  semantics change.
+
+Status: accepted in
+`docs/adr/0219-github-remote-web-url-normalization.md`.
+Implemented in `autarkic_systems/github_submission.py`, with tests in
+`tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.

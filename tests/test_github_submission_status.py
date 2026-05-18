@@ -147,6 +147,47 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         self.assertIn("Fork: https://github.com/Sean-Kenneth-Doherty/as.git", text)
         self.assertIn(f"Tracking issue: {DEFAULT_TRACKING_ISSUE_URL}", text)
 
+    def test_commit_url_normalizes_scp_like_ssh_fork_remote(self):
+        outputs = dict(GIT_OUTPUTS)
+        outputs[("remote", "get-url", "fork")] = (
+            "git@github.com:Sean-Kenneth-Doherty/as.git"
+        )
+
+        report = build_github_submission_status(
+            runner=FakeGitRunner(outputs),
+            clock=lambda: 1779110300,
+        )
+        payload = github_submission_status_payload(report)
+
+        self.assertEqual(
+            payload["head"]["fork_commit_url"],
+            "https://github.com/Sean-Kenneth-Doherty/as/commit/"
+            "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
+        )
+        self.assertIn(
+            "Fork commit: https://github.com/Sean-Kenneth-Doherty/as/commit/"
+            "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
+            format_github_submission_status(report),
+        )
+
+    def test_commit_url_normalizes_ssh_url_fork_remote(self):
+        outputs = dict(GIT_OUTPUTS)
+        outputs[("remote", "get-url", "fork")] = (
+            "ssh://git@github.com/Sean-Kenneth-Doherty/as.git"
+        )
+
+        report = build_github_submission_status(
+            runner=FakeGitRunner(outputs),
+            clock=lambda: 1779110300,
+        )
+        payload = github_submission_status_payload(report)
+
+        self.assertEqual(
+            payload["head"]["fork_commit_url"],
+            "https://github.com/Sean-Kenneth-Doherty/as/commit/"
+            "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
+        )
+
     def test_refresh_remotes_runs_fetch_before_status_and_reports_result(self):
         runner = FakeGitRunner(GIT_OUTPUTS)
 

@@ -14,6 +14,7 @@ import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable
+from urllib.parse import urlparse
 
 
 DEFAULT_TRACKING_ISSUE_URL = "https://github.com/jpt4/as/issues/1"
@@ -64,7 +65,7 @@ class GitHubSubmissionStatus:
     def fork_commit_url(self) -> str:
         """Return the GitHub web URL for the submitted fork commit."""
 
-        return f"{self.fork_url.removesuffix('.git')}/commit/{self.head_commit}"
+        return f"{_github_remote_web_url(self.fork_url)}/commit/{self.head_commit}"
 
     @property
     def origin_main_matches_head(self) -> bool:
@@ -264,6 +265,25 @@ def _parse_divergence(value: str) -> tuple[int, int]:
     if len(parts) != 2:
         raise ValueError(f"malformed git divergence count: {value!r}")
     return int(parts[0]), int(parts[1])
+
+
+def _github_remote_web_url(remote_url: str) -> str:
+    stripped = remote_url.strip()
+
+    scp_prefix = "git@github.com:"
+    if stripped.startswith(scp_prefix):
+        return _github_web_url_from_path(stripped[len(scp_prefix):])
+
+    parsed = urlparse(stripped)
+    if parsed.hostname == "github.com" and parsed.path:
+        return _github_web_url_from_path(parsed.path)
+
+    return stripped.removesuffix(".git")
+
+
+def _github_web_url_from_path(path: str) -> str:
+    normalized_path = path.strip("/").removesuffix(".git")
+    return f"https://github.com/{normalized_path}"
 
 
 def _remote_ref_freshness(

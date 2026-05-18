@@ -4663,3 +4663,22 @@
   GitHub-submission text/JSON and handoff commands reported accepted status
   and displayed the fork commit URL. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 907 tests.
+
+## 2026-05-18 - GitHub Remote Web URL Normalization
+
+- Added ADR-0219 to make the fork commit URL robust across common GitHub HTTPS
+  and SSH fork remote configurations.
+- Added red GitHub-submission tests before implementation. The focused red run
+  failed because SCP-like `git@github.com:owner/repo.git` and
+  `ssh://git@github.com/owner/repo.git` fork remotes produced non-web
+  `fork_commit_url` values.
+- Updated `autarkic_systems/github_submission.py` with GitHub remote web URL
+  normalization for HTTPS, SCP-like SSH, and `ssh://` remotes, while retaining
+  the existing best-effort `.git` stripping fallback for unrecognized forms.
+- Updated README, roadmap, and repo memory notes for the remote-normalized
+  fork commit URL.
+- Focused GitHub-submission tests passed 10 tests. Adjacent GitHub-submission
+  and handoff tests passed 17 tests. Live GitHub-submission text/JSON and
+  handoff commands reported accepted status and retained the web fork commit
+  URL. `compileall`, `git diff --check`, and `python -m unittest discover`
+  passed; the full suite ran 909 tests.
