@@ -343,3 +343,6 @@
 - When JSON and text are both first-run surfaces, expose operator-critical
   evidence in both. A human should not need to switch formats to see the
   coverage that automation already sees.
+- When a blocker survives later source reviews, carry those source-status
+  cross-links into the aggregate JSON report. The safe next slice is stronger
+  when automation can see the trail of reviews that kept it blocked.

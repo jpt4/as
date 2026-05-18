@@ -32,7 +32,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 7
+PROJECT_STATUS_SCHEMA_VERSION = 8
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -271,6 +271,7 @@ def _frontier_summary(
                 "blocked_runtime_surfaces": _blocked_runtime_surfaces(data),
                 "required_resolution_questions": _resolution_question_ids(data),
                 "resolution_questions": _resolution_questions(data),
+                "additional_source_statuses": _additional_source_statuses(data),
             }
         )
 
@@ -335,6 +336,20 @@ def _resolution_questions(data: dict[str, Any]) -> list[dict[str, str]]:
             "summary": _optional_text(question, "summary"),
         })
     return resolution_questions
+
+
+def _additional_source_statuses(data: dict[str, Any]) -> list[dict[str, str]]:
+    source_statuses = data.get("additional_source_statuses")
+    if not isinstance(source_statuses, list):
+        return []
+    return [
+        {
+            "adr": source_status["adr"],
+            "path": source_status["path"],
+            "summary": source_status["summary"],
+        }
+        for source_status in source_statuses
+    ]
 
 
 def _blocked_runtime_surfaces(data: dict[str, Any]) -> list[str]:
@@ -429,6 +444,9 @@ def _source_status_schema_error(data: Any) -> str:
     question_error = _resolution_question_shape_error(data)
     if question_error:
         return question_error
+    additional_source_status_error = _additional_source_status_shape_error(data)
+    if additional_source_status_error:
+        return additional_source_status_error
     if not _is_nonempty_text(data.get("as_boundary")):
         return "source-status as_boundary must be non-empty text"
     return ""
@@ -497,6 +515,24 @@ def _resolution_question_shape_error(data: dict[str, Any]) -> str:
             return "source-status resolution question entries must be objects"
         if not _is_nonempty_text(question.get("question_id")):
             return "source-status resolution question_id must be non-empty text"
+    return ""
+
+
+def _additional_source_status_shape_error(data: dict[str, Any]) -> str:
+    if "additional_source_statuses" not in data:
+        return ""
+    source_statuses = data.get("additional_source_statuses")
+    if not isinstance(source_statuses, list):
+        return "source-status additional_source_statuses field must be a list"
+    for source_status in source_statuses:
+        if not isinstance(source_status, dict):
+            return "source-status additional source-status entries must be objects"
+        for key in ("adr", "path", "summary"):
+            if not _is_nonempty_text(source_status.get(key)):
+                return (
+                    "source-status additional source-status "
+                    f"{key} must be non-empty text"
+                )
     return ""
 
 

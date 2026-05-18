@@ -537,3 +537,6 @@
 - ADR-0122 renders transition evidence bundle `positive_example` and
   `covered_positive_examples` in default project-status text while preserving
   project status `schema_version: 7`.
+- ADR-0123 exposes source-status `additional_source_statuses` cross-links in
+  project-status JSON and bumps project status to `schema_version: 8`, with
+  schema failures for malformed cross-link metadata.

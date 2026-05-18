@@ -21,7 +21,7 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
-PROJECT_STATUS_SCHEMA_VERSION = 7
+PROJECT_STATUS_SCHEMA_VERSION = 8
 BLOCKED_RUNTIME_SURFACES = [
     "recipient-command-message",
     "self-mailbox-command",
@@ -211,6 +211,65 @@ WRITE_BUFFER_RESOLUTION_QUESTIONS = [
         ),
     },
 ]
+STANDARD_SIGNAL_ADDITIONAL_SOURCE_STATUSES = [
+    {
+        "adr": "ADR-0062",
+        "path": "sources/guile_asmsim_command_semantics_status.json",
+        "summary": (
+            "guile-asmsim.scm keeps standard signals as ordinary binary input "
+            "while process-buffer appends numeric standard-signals to its "
+            "command list; this strengthens the command-token blocker rather "
+            "than resolving it."
+        ),
+    },
+    {
+        "adr": "ADR-0063",
+        "path": "sources/asmsim_process_buffer_status.json",
+        "summary": (
+            "practice/asmsim.scm uses process-buffer code-shape predicates and "
+            "a tar+sic? helper rather than the formal standard-signal command "
+            "token, with comments warning that message codes need "
+            "documentation and confirmation."
+        ),
+    },
+    {
+        "adr": "ADR-0064",
+        "path": "sources/official_tla_universal_cell_status.json",
+        "summary": (
+            "The official PRC TLA files are partial/stub/empty and do not "
+            "define standard-signal command-token semantics."
+        ),
+    },
+]
+WRITE_BUFFER_ADDITIONAL_SOURCE_STATUSES = [
+    {
+        "adr": "ADR-0062",
+        "path": "sources/guile_asmsim_command_semantics_status.json",
+        "summary": (
+            "guile-asmsim.scm exposes binary write-buf and self-mailbox "
+            "numeric append behavior, but omits named "
+            "write-buf-zero/write-buf-one command tokens from its "
+            "special-message list."
+        ),
+    },
+    {
+        "adr": "ADR-0063",
+        "path": "sources/asmsim_process_buffer_status.json",
+        "summary": (
+            "practice/asmsim.scm process-buffer code has id+10b5?/id+11b5? "
+            "branches and explicit message-code uncertainty, but no named "
+            "write-buf-zero/write-buf-one command-token surface."
+        ),
+    },
+    {
+        "adr": "ADR-0064",
+        "path": "sources/official_tla_universal_cell_status.json",
+        "summary": (
+            "The official PRC TLA files are partial/stub/empty and do not "
+            "define write-buf-zero or write-buf-one command-token semantics."
+        ),
+    },
+]
 
 
 class ProjectStatusReportTests(unittest.TestCase):
@@ -298,6 +357,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 [],
                 STANDARD_SIGNAL_RESOLUTION_QUESTIONS,
                 WRITE_BUFFER_RESOLUTION_QUESTIONS,
+            ],
+        )
+        self.assertEqual(
+            [
+                item["additional_source_statuses"]
+                for item in report["frontier"]["source_statuses"]
+            ],
+            [
+                [],
+                STANDARD_SIGNAL_ADDITIONAL_SOURCE_STATUSES,
+                WRITE_BUFFER_ADDITIONAL_SOURCE_STATUSES,
             ],
         )
 
@@ -500,6 +570,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 [],
                 STANDARD_SIGNAL_RESOLUTION_QUESTIONS,
                 WRITE_BUFFER_RESOLUTION_QUESTIONS,
+            ],
+        )
+        self.assertEqual(
+            [
+                item["additional_source_statuses"]
+                for item in payload["frontier"]["source_statuses"]
+            ],
+            [
+                [],
+                STANDARD_SIGNAL_ADDITIONAL_SOURCE_STATUSES,
+                WRITE_BUFFER_ADDITIONAL_SOURCE_STATUSES,
             ],
         )
 
@@ -1052,6 +1133,96 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn(
             "question_id",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_scalar_additional_source_statuses_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "scalar_additional_source_statuses.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "additional_source_statuses": "sources/other_status.json",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "additional_source_statuses",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_non_object_additional_source_status_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "non_object_additional_source_status.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "additional_source_statuses": ["sources/other_status.json"],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "additional source-status entries",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_blank_additional_source_status_path_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "blank_additional_source_status_path.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "additional_source_statuses": [
+                        {
+                            "adr": "ADR-0000",
+                            "path": " ",
+                            "summary": "Other source status remains relevant.",
+                        }
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "path",
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 

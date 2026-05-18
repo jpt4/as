@@ -276,7 +276,10 @@ the project legible:
   registry `bundles` arrays to the transition and chain evidence summaries.
   Schema version `7` adds `positive_example` and
   `covered_positive_examples` to transition evidence bundle entries; the
-  default text report renders those fields when present.
+  default text report renders those fields when present. Schema version `8`
+  adds `additional_source_statuses` cross-links to accepted source-status
+  entries so automation can inspect the source-review trail behind the
+  blocked frontier.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as
@@ -285,7 +288,8 @@ the project legible:
   through `command`, `commands`, or `blocked_runtime_commands`, and blank
   command-token strings are rejected as schema failures. Source-status
   `decision` and `safe_next_slice` text must also be non-whitespace, and
-  recognized command-token fields must have the expected text/list shapes.
+  recognized command-token fields and source-status cross-links must have the
+  expected text/list/object shapes.
   Accepted source-status records must also provide non-empty top-level
   `as_boundary` text so the JSON frontier explains the AS boundary it is
   enforcing.

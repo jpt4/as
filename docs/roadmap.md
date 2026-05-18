@@ -2343,3 +2343,24 @@ Status: accepted in
 `docs/adr/0122-project-status-text-covered-examples.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0123: Project Status Source-Status Cross-Links
+
+Goal: expose source-status cross-links in project status JSON so automation can
+inspect the source-review trail behind the blocked command-token frontier.
+
+Deliverables:
+
+- `additional_source_statuses` arrays on accepted
+  `frontier.source_statuses` entries;
+- `adr`, `path`, and `summary` fields for each cross-link;
+- empty arrays for source-status records without cross-links;
+- `source-status-schema` failures for malformed cross-link containers,
+  entries, or required text fields;
+- project status JSON `schema_version: 8`; and
+- focused project-status JSON and schema tests.
+
+Status: accepted in
+`docs/adr/0123-source-status-cross-links-json.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

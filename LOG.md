@@ -2747,3 +2747,27 @@
   self-mailbox and command-buffer covered examples; project status JSON
   remained accepted at `schema_version: 7`; and
   `python -m unittest discover` passed 579 tests.
+
+## 2026-05-18 - Project Status Source-Status Cross-Links
+
+- Added ADR-0123 to expose source-status `additional_source_statuses`
+  cross-links in project status JSON while keeping the default text report
+  unchanged.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run executed 38 tests and failed because project status still reported
+  `schema_version: 7`, did not expose the cross-links, and accepted malformed
+  `additional_source_statuses` metadata.
+- Updated `autarkic_systems.project_status` so each accepted
+  `frontier.source_statuses` entry carries `additional_source_statuses`, with
+  omitted cross-links reported as `[]` and malformed cross-links rejected as
+  `source-status-schema`.
+- Bumped project status JSON to `schema_version: 8`, carrying the Guile
+  ASMSIM, ASMSIM process-buffer, and official TLA source-status cross-links
+  behind the standard-signal and write-buffer blockers.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the source-status cross-link JSON contract.
+- Verification passed: focused project-status tests ran 38 tests; focused
+  project-status plus referenced source-status tests ran 63 tests;
+  `py_compile` and `git diff --check` passed; project status JSON was accepted
+  at `schema_version: 8` with the cross-links; default project status text
+  remained accepted; and `python -m unittest discover` passed 582 tests.

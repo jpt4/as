@@ -207,6 +207,9 @@ ADR-0121 exposes transition bundle `positive_example` and
 bumping project status to `schema_version: 7`.
 ADR-0122 renders that transition bundle primary and covered positive-example
 coverage in default project-status text while preserving `schema_version: 7`.
+ADR-0123 exposes source-status `additional_source_statuses` cross-links in
+project-status JSON and bumps the schema version to `8`, preserving the
+source-review trail behind the blocked command-token frontier.
 
 ## P3: Choose The First Proof Apparatus
 

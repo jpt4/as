@@ -44,7 +44,7 @@ The text report names:
 - the safe next slice from the source-status records.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 7`. If a registry file is missing, the corresponding registry
+`schema_version: 8`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -83,6 +83,9 @@ ADR-0121 adds `positive_example` and `covered_positive_examples` to transition
 evidence bundle entries in JSON and bumps the schema version to `7`.
 ADR-0122 renders those transition bundle positive and covered examples in the
 default text report while preserving `schema_version: 7`.
+ADR-0123 adds per-source `additional_source_statuses` cross-links to project
+status JSON, rejects malformed cross-link metadata, and bumps the schema
+version to `8`.
 
 ## Boundary
 
