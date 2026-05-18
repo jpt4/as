@@ -39,14 +39,16 @@
       "claim_id": "UC-FIXED-MEMORY-RULE",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "processor toggled",
-          "expected": true
+          "expected": true,
+          "predicate": "fixed_role_memory_rule"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "processor did not toggle",
-          "expected": false
+          "expected": false,
+          "predicate": "fixed_role_memory_rule"
         }
       ]
     },

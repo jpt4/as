@@ -3492,3 +3492,22 @@ Deliverables:
 Status: accepted in
 `docs/adr/0172-consumed-input-predicate-result-certificates.md`. Implemented in
 the proof-certificate manifest and focused proof/project-status tests.
+
+## ADR-0173: Memory Rule Predicate Result Certificates
+
+Goal: make the fixed-role memory-rule proof certificate name the predicate it
+evaluates instead of relying only on manifest-example lookup.
+
+Deliverables:
+
+- `UC-FIXED-MEMORY-RULE` proof-certificate steps use `predicate-result`;
+- both memory-rule certificate steps name `fixed_role_memory_rule`;
+- proof-certificate text/JSON and aggregate project-status reports render the
+  memory-rule certificate as two predicate-result steps; and
+- Universal Cell runtime behavior, transition claims, object-language schema,
+  evidence bundles, source-status records, and status schema versions remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0173-memory-rule-predicate-result-certificates.md`. Implemented in
+the proof-certificate manifest and focused proof/project-status tests.

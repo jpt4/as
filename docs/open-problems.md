@@ -21,10 +21,11 @@ proof clauses remain open. ADR-0133 adds the first `predicate-result`
 certificate steps for the fixed-output preservation claim, making the proof
 object name the predicate it evaluates instead of relying only on the claim
 manifest lookup. ADR-0172 applies the same explicit predicate-result shape to
-the consumed-input clearing claim. ADR-0135 exposes the base transition claim
-examples through direct text and JSON CLI validation. ADR-0140 carries the
-base claim-example and proof-certificate validator summaries into the
-aggregate project status report.
+the consumed-input clearing claim. ADR-0173 applies it to the fixed-role
+memory-rule claim. ADR-0135 exposes the base transition claim examples through
+direct text and JSON CLI validation. ADR-0140 carries the base claim-example
+and proof-certificate validator summaries into the aggregate project status
+report.
 
 Status update: ADR-0031 promotes the self-mailbox init-command execution subset
 into a named transition claim with manifest examples and proof-certificate
@@ -365,8 +366,9 @@ Status update: ADR-0011 added the first local proof-certificate checker for the
 current transition claims. ADR-0133 adds the first explicit `predicate-result`
 certificate rule while keeping AS below the bar for a general theorem prover.
 ADR-0172 extends that explicit rule from fixed-output preservation to
-consumed-input clearing. ADR-0134 exposes the transition proof-certificate
-surface through direct text and JSON CLI validation.
+consumed-input clearing. ADR-0173 extends it to the fixed-role memory rule.
+ADR-0134 exposes the transition proof-certificate surface through direct text
+and JSON CLI validation.
 
 ## P4: Define The First Object Language
 

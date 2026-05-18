@@ -3747,3 +3747,19 @@
   certificate surface. JSON parsing for the touched certificate manifest,
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 770 tests.
+
+## 2026-05-18 - Memory Rule Predicate Result Certificates
+
+- Added ADR-0173 to migrate `UC-FIXED-MEMORY-RULE` from `manifest-example`
+  proof steps to explicit `predicate-result` proof steps.
+- Added red proof-certificate and project-status tests before implementation.
+  The focused red run executed 91 tests and failed because the memory-rule
+  certificate still used `manifest-example`, and proof/project-status reports
+  still described it as two `manifest-example` steps.
+- Updated `claims/proof_certificates.json` so both memory-rule certificate
+  steps use `predicate-result` and name `fixed_role_memory_rule` directly.
+- Focused green verification passed 91 tests. The proof-certificate CLI JSON,
+  project-status JSON, and object-language JSON checks accepted the updated
+  certificate surface. JSON parsing for the touched certificate manifest,
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 771 tests.
