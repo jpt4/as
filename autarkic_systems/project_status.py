@@ -101,6 +101,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         *_blocked_runtime_surface_text_lines(frontier),
         *_as_boundary_text_lines(frontier),
         *_resolution_question_text_lines(frontier),
+        *_additional_source_status_text_lines(frontier),
         f"Safe next slice: {frontier['safe_next_slice'] or 'none'}",
         "Missing registry files: "
         + (", ".join(missing_registries) if missing_registries else "none"),
@@ -417,6 +418,25 @@ def _resolution_question_text_lines(frontier: dict[str, Any]) -> list[str]:
                 lines.append(f"    {question['question_id']}")
     if len(lines) == 1:
         return ["Resolution questions: none"]
+    return lines
+
+
+def _additional_source_status_text_lines(frontier: dict[str, Any]) -> list[str]:
+    lines = ["Additional source statuses:"]
+    for source_status in frontier["source_statuses"]:
+        additional_statuses = source_status["additional_source_statuses"]
+        if not additional_statuses:
+            continue
+        command_label = ", ".join(source_status["commands"]) or source_status["path"]
+        lines.append(f"  {command_label}:")
+        for additional_status in additional_statuses:
+            lines.append(
+                "    "
+                f"{additional_status['adr']} -> {additional_status['path']}: "
+                f"{additional_status['summary']}"
+            )
+    if len(lines) == 1:
+        return ["Additional source statuses: none"]
     return lines
 
 

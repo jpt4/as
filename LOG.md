@@ -2771,3 +2771,23 @@
   `py_compile` and `git diff --check` passed; project status JSON was accepted
   at `schema_version: 8` with the cross-links; default project status text
   remained accepted; and `python -m unittest discover` passed 582 tests.
+
+## 2026-05-18 - Project Status Text Source-Status Cross-Links
+
+- Added ADR-0124 to render source-status `additional_source_statuses`
+  cross-links in the default project status text report while preserving
+  project status JSON `schema_version: 8`.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run executed 40 tests and failed because the text report omitted the
+  `Additional source statuses:` section and the no-cross-link fallback.
+- Updated `autarkic_systems.project_status` so default text groups
+  source-status cross-links by blocked command label and renders each as
+  `ADR -> path: summary`.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the text source-status cross-link contract.
+- Verification passed: focused project-status tests ran 40 tests; focused
+  project-status plus referenced source-status tests ran 65 tests;
+  `py_compile` and `git diff --check` passed; default project status text
+  rendered the standard-signal and write-buffer source-status cross-links;
+  project status JSON remained accepted at `schema_version: 8`; and
+  `python -m unittest discover` passed 584 tests.

@@ -346,3 +346,6 @@
 - When a blocker survives later source reviews, carry those source-status
   cross-links into the aggregate JSON report. The safe next slice is stronger
   when automation can see the trail of reviews that kept it blocked.
+- Source-review trails are operator-critical once they explain why a blocker
+  remains. If JSON exposes them, the default text report should expose them
+  too.

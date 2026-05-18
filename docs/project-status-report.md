@@ -40,7 +40,8 @@ The text report names:
 - blocked command tokens;
 - blocked runtime surfaces;
 - source-status AS boundaries;
-- blocker resolution question IDs and summaries; and
+- blocker resolution question IDs and summaries;
+- source-status cross-links behind the current blocker trail; and
 - the safe next slice from the source-status records.
 
 JSON mode emits the same surface for automation and includes top-level
@@ -86,6 +87,8 @@ default text report while preserving `schema_version: 7`.
 ADR-0123 adds per-source `additional_source_statuses` cross-links to project
 status JSON, rejects malformed cross-link metadata, and bumps the schema
 version to `8`.
+ADR-0124 renders those source-status cross-links in the default text report
+while preserving `schema_version: 8`.
 
 ## Boundary
 

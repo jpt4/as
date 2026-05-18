@@ -540,3 +540,6 @@
 - ADR-0123 exposes source-status `additional_source_statuses` cross-links in
   project-status JSON and bumps project status to `schema_version: 8`, with
   schema failures for malformed cross-link metadata.
+- ADR-0124 renders source-status `additional_source_statuses` cross-links in
+  default project-status text while preserving project status
+  `schema_version: 8`.

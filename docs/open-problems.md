@@ -210,6 +210,8 @@ coverage in default project-status text while preserving `schema_version: 7`.
 ADR-0123 exposes source-status `additional_source_statuses` cross-links in
 project-status JSON and bumps the schema version to `8`, preserving the
 source-review trail behind the blocked command-token frontier.
+ADR-0124 renders those source-status cross-links in default project-status text
+while preserving `schema_version: 8`.
 
 ## P3: Choose The First Proof Apparatus
 

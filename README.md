@@ -266,8 +266,9 @@ the project legible:
   chain evidence bundle IDs and paths, transition bundle positive and covered
   examples, the standard-signal and write-buffer blocked runtime surfaces,
   source-status AS boundaries, and the resolution-question IDs and summaries
-  that define the next source-backed decision work. Schema version `2`
-  attributes blocked commands to each
+  that define the next source-backed decision work, plus the source-status
+  cross-links behind the blocked frontier. Schema version `2` attributes
+  blocked commands to each
   accepted source-status entry, schema version `3` carries the source-status
   resolution-question IDs that still block command-token execution and rejects
   malformed resolution-question metadata, schema version `4` adds
@@ -279,7 +280,8 @@ the project legible:
   default text report renders those fields when present. Schema version `8`
   adds `additional_source_statuses` cross-links to accepted source-status
   entries so automation can inspect the source-review trail behind the
-  blocked frontier.
+  blocked frontier; the default text report renders those cross-links when
+  present.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

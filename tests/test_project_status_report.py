@@ -492,6 +492,71 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
 
+    def test_text_status_names_additional_source_statuses(self):
+        report = build_project_status_report()
+
+        text = format_project_status_report(report)
+
+        self.assertIn("Additional source statuses:", text)
+        self.assertIn("standard-signal:", text)
+        self.assertIn(
+            "ADR-0062 -> sources/guile_asmsim_command_semantics_status.json: "
+            "guile-asmsim.scm keeps standard signals as ordinary binary input "
+            "while process-buffer appends numeric standard-signals to its "
+            "command list; this strengthens the command-token blocker rather "
+            "than resolving it.",
+            text,
+        )
+        self.assertIn(
+            "ADR-0063 -> sources/asmsim_process_buffer_status.json: "
+            "practice/asmsim.scm uses process-buffer code-shape predicates and "
+            "a tar+sic? helper rather than the formal standard-signal command "
+            "token, with comments warning that message codes need "
+            "documentation and confirmation.",
+            text,
+        )
+        self.assertIn(
+            "ADR-0064 -> sources/official_tla_universal_cell_status.json: "
+            "The official PRC TLA files are partial/stub/empty and do not "
+            "define standard-signal command-token semantics.",
+            text,
+        )
+        self.assertIn("write-buf-zero, write-buf-one:", text)
+        self.assertIn(
+            "ADR-0062 -> sources/guile_asmsim_command_semantics_status.json: "
+            "guile-asmsim.scm exposes binary write-buf and self-mailbox "
+            "numeric append behavior, but omits named "
+            "write-buf-zero/write-buf-one command tokens from its "
+            "special-message list.",
+            text,
+        )
+        self.assertIn(
+            "ADR-0064 -> sources/official_tla_universal_cell_status.json: "
+            "The official PRC TLA files are partial/stub/empty and do not "
+            "define write-buf-zero or write-buf-one command-token semantics.",
+            text,
+        )
+
+    def test_text_status_names_no_additional_source_statuses_when_absent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            no_additional_status = Path(tmp) / "no_additional_status.json"
+            no_additional_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[no_additional_status],
+            )
+
+        text = format_project_status_report(report)
+        self.assertIn("Additional source statuses: none", text)
+
     def test_text_status_names_no_resolution_questions_when_absent(self):
         with tempfile.TemporaryDirectory() as tmp:
             no_question_status = Path(tmp) / "no_question_status.json"

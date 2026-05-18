@@ -2364,3 +2364,25 @@ Status: accepted in
 `docs/adr/0123-source-status-cross-links-json.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0124: Project Status Text Source-Status Cross-Links
+
+Goal: render source-status cross-links in the default project status text
+report so human operators can inspect the source-review trail behind the
+blocked command-token frontier.
+
+Deliverables:
+
+- an `Additional source statuses:` text section;
+- command-grouped source-status cross-links rendered as `ADR -> path: summary`;
+- Guile ASMSIM, ASMSIM process-buffer, and official TLA cross-links visible
+  for the standard-signal and write-buffer blockers;
+- `Additional source statuses: none` when accepted source-status records have
+  no cross-links;
+- unchanged project status JSON at `schema_version: 8`; and
+- focused project-status text tests.
+
+Status: accepted in
+`docs/adr/0124-source-status-cross-links-text.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.
