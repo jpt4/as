@@ -96,6 +96,9 @@ command-buffer write-buffer append execution, changes write-buffer readiness
 from source-ready to implemented, narrows the old unsupported self-target
 boundaries to `standard-signal`, and leaves delivered recipient write-buffer
 command-message inputs under the recipient non-init rejection boundary.
+ADR-0162 registers both implemented write-buffer self-target surfaces as
+evidence bundles and moves the write-buffer safe next slice to recipient
+write-buffer command-message source resolution.
 
 ## Boundary
 

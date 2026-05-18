@@ -86,7 +86,8 @@ ADR-0055 adds a schematic-linked trace for one fixed recipient upstream
 ADR-0056 adds the rendered SVG view of that rejection trace.
 ADR-0057 records write-buffer command execution as a separate source-status
 frontier, and ADR-0161 implements its direct self-mailbox and completed
-self-target command-buffer append surfaces.
+self-target command-buffer append surfaces. ADR-0162 registers both
+implemented write-buffer surfaces as integrated transition evidence bundles.
 ADR-0058 records `standard-signal` command-token execution as still
 source-blocked while preserving ordinary binary-input standard-signal behavior.
 ADR-0059 selects reject-and-clear for multiple simultaneous recipient
@@ -298,7 +299,10 @@ RAA/FSMSIM buffer-preservation behavior and recording SEMSIM's buffer-clearing
 wrapper as divergent legacy behavior. ADR-0161 implements the source-ready
 write-buffer append slice for direct self-mailbox and completed self-target
 command-buffer surfaces, while delivered recipient write-buffer command
-messages remain under the recipient non-init rejection boundary.
+messages remain under the recipient non-init rejection boundary. ADR-0162 adds
+the integrated write-buffer execution evidence bundles and moves the
+write-buffer safe-next frontier to recipient command-message source
+resolution.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

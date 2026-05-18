@@ -42,11 +42,17 @@ SELF_MAILBOX_INIT_TRACE_ARTIFACT_ID = (
 SELF_MAILBOX_UNSUPPORTED_TRACE_ARTIFACT_ID = (
     "self-mailbox-unsupported-schematic-and-uc-transition-trace"
 )
+SELF_MAILBOX_WRITE_BUFFER_TRACE_ARTIFACT_ID = (
+    "self-mailbox-write-buffer-schematic-and-uc-transition-trace"
+)
 SELF_COMMAND_BUFFER_INIT_TRACE_ARTIFACT_ID = (
     "self-command-buffer-init-schematic-and-uc-transition-trace"
 )
 COMMAND_BUFFER_UNSUPPORTED_TRACE_ARTIFACT_ID = (
     "command-buffer-unsupported-schematic-and-uc-transition-trace"
+)
+SELF_COMMAND_BUFFER_WRITE_BUFFER_TRACE_ARTIFACT_ID = (
+    "self-command-buffer-write-buffer-schematic-and-uc-transition-trace"
 )
 NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID = (
     "neighbor-command-buffer-delivery-schematic-and-uc-transition-trace"
@@ -67,8 +73,10 @@ VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     STEM_BUFFER_ACCUMULATION_TRACE_ARTIFACT_ID,
     SELF_MAILBOX_INIT_TRACE_ARTIFACT_ID,
     SELF_MAILBOX_UNSUPPORTED_TRACE_ARTIFACT_ID,
+    SELF_MAILBOX_WRITE_BUFFER_TRACE_ARTIFACT_ID,
     SELF_COMMAND_BUFFER_INIT_TRACE_ARTIFACT_ID,
     COMMAND_BUFFER_UNSUPPORTED_TRACE_ARTIFACT_ID,
+    SELF_COMMAND_BUFFER_WRITE_BUFFER_TRACE_ARTIFACT_ID,
     NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID,
     RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID,
     RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID,
@@ -456,7 +464,16 @@ def _validate_schematic_trace_alignment(
         if schematic_trace.trace.before_cell.get("automail") != "_":
             results.extend(_validate_stem_automail_trace_alignment(schematic_trace))
         elif schematic_trace.trace.before_cell.get("self_mailbox") != "_":
-            if schematic_trace.trace.expected_status == "self-mailbox-unsupported":
+            if (
+                schematic_trace.trace.expected_status
+                == "self-mailbox-write-buffer-appended"
+            ):
+                results.extend(
+                    _validate_self_mailbox_write_buffer_trace_alignment(
+                        schematic_trace
+                    )
+                )
+            elif schematic_trace.trace.expected_status == "self-mailbox-unsupported":
                 results.extend(
                     _validate_self_mailbox_unsupported_trace_alignment(schematic_trace)
                 )
@@ -468,6 +485,15 @@ def _validate_schematic_trace_alignment(
         ):
             results.extend(
                 _validate_self_command_buffer_init_trace_alignment(schematic_trace)
+            )
+        elif (
+            schematic_trace.trace.expected_status
+            == "stem-command-buffer-self-write-buffer-appended"
+        ):
+            results.extend(
+                _validate_self_command_buffer_write_buffer_trace_alignment(
+                    schematic_trace
+                )
             )
         elif (
             schematic_trace.artifact_id
@@ -822,6 +848,92 @@ def _validate_self_mailbox_unsupported_trace_alignment(
     return results
 
 
+def _validate_self_mailbox_write_buffer_trace_alignment(
+    schematic_trace: SingleNodeSchematicTrace,
+) -> list[SchematicTraceValidation]:
+    results: list[SchematicTraceValidation] = []
+
+    if schematic_trace.schematic.geometry != "triangular-rlem-node":
+        results.append(_rejected("geometry", "schematic geometry is not triangular"))
+    else:
+        results.append(_accepted("geometry", "schematic geometry is triangular"))
+
+    before = schematic_trace.trace.before_cell
+    after = schematic_trace.trace.expected_after_cell
+    write_buffer_bits = {
+        "write-buf-zero": 0,
+        "write-buf-one": 1,
+    }
+    command = before.get("self_mailbox")
+    bit = write_buffer_bits.get(command)
+    if bit is None:
+        results.append(
+            _rejected(
+                "self-mailbox-write-buffer",
+                "mailbox command is not a write-buffer command",
+            )
+        )
+        return results
+
+    if schematic_trace.schematic.memory_direction != before.get("memory"):
+        results.append(
+            _rejected(
+                "memory_direction",
+                "schematic memory does not match write-buffer stem memory",
+            )
+        )
+    else:
+        results.append(_accepted("memory_direction", "schematic memory matches stem"))
+
+    expected_buffer = list(before.get("buffer", [])) + [bit]
+    expected_flow = (
+        f"self_mailbox[{command}] -> append {bit}",
+        f"buffer{_compact_list(before.get('buffer'))} -> buffer{_compact_list(expected_buffer)}",
+        f"self_mailbox[{command}] consumed -> _",
+        "control preserved",
+    )
+    if schematic_trace.trace.routed_signal_flow != expected_flow:
+        results.append(
+            _rejected("routed_signal_flow", "self-mailbox write-buffer flow mismatch")
+        )
+    else:
+        results.append(
+            _accepted("routed_signal_flow", "self-mailbox write-buffer flow explicit")
+        )
+
+    if (
+        schematic_trace.trace.expected_status
+        != "self-mailbox-write-buffer-appended"
+        or before.get("automail") != "_"
+        or before.get("input") != ["_", "_", "_"]
+        or before.get("output") != ["_", "_", "_"]
+        or after.get("role") != before.get("role")
+        or after.get("memory") != before.get("memory")
+        or after.get("upstream") != before.get("upstream")
+        or after.get("input") != ["_", "_", "_"]
+        or after.get("output") != ["_", "_", "_"]
+        or after.get("automail") != "_"
+        or after.get("self_mailbox") != "_"
+        or after.get("control") != before.get("control")
+        or after.get("buffer") != expected_buffer
+    ):
+        results.append(
+            _rejected(
+                "self-mailbox-write-buffer",
+                "self-mailbox write-buffer append state mismatch",
+            )
+        )
+    else:
+        results.append(
+            _accepted(
+                "self-mailbox-write-buffer",
+                "self-mailbox write-buffer append and clearing match",
+            )
+        )
+
+    return results
+
+
 def _validate_self_command_buffer_init_trace_alignment(
     schematic_trace: SingleNodeSchematicTrace,
 ) -> list[SchematicTraceValidation]:
@@ -921,6 +1033,112 @@ def _validate_self_command_buffer_init_trace_alignment(
             _accepted(
                 "self-command-buffer-init",
                 "self command-buffer init target and clearing match",
+            )
+        )
+
+    return results
+
+
+def _validate_self_command_buffer_write_buffer_trace_alignment(
+    schematic_trace: SingleNodeSchematicTrace,
+) -> list[SchematicTraceValidation]:
+    results: list[SchematicTraceValidation] = []
+
+    if schematic_trace.schematic.geometry != "triangular-rlem-node":
+        results.append(_rejected("geometry", "schematic geometry is not triangular"))
+    else:
+        results.append(_accepted("geometry", "schematic geometry is triangular"))
+
+    before = schematic_trace.trace.before_cell
+    after = schematic_trace.trace.expected_after_cell
+    decode = _completed_command_buffer_decode(before)
+    if decode is None:
+        results.append(
+            _rejected(
+                "self-command-buffer-write-buffer",
+                "trace does not complete a decodable five-bit command buffer",
+            )
+        )
+        return results
+
+    value, completed_buffer, target_id, command_id = decode
+    write_buffer_bits = {
+        "write-buf-zero": 0,
+        "write-buf-one": 1,
+    }
+    literal_bit = write_buffer_bits.get(command_id)
+    if target_id != "self" or literal_bit is None:
+        results.append(
+            _rejected(
+                "self-command-buffer-write-buffer",
+                "command buffer is not a self-target write-buffer command",
+            )
+        )
+        return results
+
+    if schematic_trace.schematic.memory_direction != before.get("memory"):
+        results.append(
+            _rejected(
+                "memory_direction",
+                "schematic memory does not match write-buffer stem memory",
+            )
+        )
+    else:
+        results.append(_accepted("memory_direction", "schematic memory matches stem"))
+
+    bit = completed_buffer[-1]
+    match_text = "matches" if bit == 1 else "differs from"
+    expected_flow = (
+        f"control{_compact_list(before.get('control'))} active",
+        (
+            f"input{_compact_list(before.get('input'))} {match_text} control "
+            f"-> append {bit}"
+        ),
+        (
+            f"buffer{_compact_list(before.get('buffer'))} -> "
+            f"buffer{_compact_list(completed_buffer)}"
+        ),
+        f"decode value {value} -> {target_id}/{command_id}",
+        f"self command[{command_id}] -> append {literal_bit}",
+        "command buffer consumed; buffer reset to literal append",
+        "control preserved",
+    )
+    if schematic_trace.trace.routed_signal_flow != expected_flow:
+        results.append(
+            _rejected("routed_signal_flow", "self write-buffer command flow mismatch")
+        )
+    else:
+        results.append(
+            _accepted("routed_signal_flow", "self write-buffer command flow explicit")
+        )
+
+    if (
+        schematic_trace.trace.expected_status
+        != "stem-command-buffer-self-write-buffer-appended"
+        or before.get("automail") != "_"
+        or before.get("self_mailbox") != "_"
+        or before.get("output") != ["_", "_", "_"]
+        or after.get("role") != before.get("role")
+        or after.get("memory") != before.get("memory")
+        or after.get("upstream") != before.get("upstream")
+        or after.get("input") != ["_", "_", "_"]
+        or after.get("output") != ["_", "_", "_"]
+        or after.get("automail") != "_"
+        or after.get("self_mailbox") != "_"
+        or after.get("control") != before.get("control")
+        or after.get("buffer") != [literal_bit]
+    ):
+        results.append(
+            _rejected(
+                "self-command-buffer-write-buffer",
+                "self write-buffer command append state mismatch",
+            )
+        )
+    else:
+        results.append(
+            _accepted(
+                "self-command-buffer-write-buffer",
+                "self write-buffer command append and clearing match",
             )
         )
 

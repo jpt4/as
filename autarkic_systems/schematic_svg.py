@@ -17,6 +17,8 @@ from autarkic_systems.schematic_trace import (
     NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID,
     RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID,
     RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID,
+    SELF_COMMAND_BUFFER_WRITE_BUFFER_TRACE_ARTIFACT_ID,
+    SELF_MAILBOX_WRITE_BUFFER_TRACE_ARTIFACT_ID,
     SchematicPort,
     SingleNodeSchematicTrace,
 )
@@ -32,11 +34,17 @@ SELF_MAILBOX_INIT_SVG_ARTIFACT = Path("schematics/self_mailbox_init_trace.svg")
 SELF_MAILBOX_UNSUPPORTED_SVG_ARTIFACT = Path(
     "schematics/self_mailbox_unsupported_trace.svg"
 )
+SELF_MAILBOX_WRITE_BUFFER_SVG_ARTIFACT = Path(
+    "schematics/self_mailbox_write_buffer_trace.svg"
+)
 SELF_COMMAND_BUFFER_INIT_SVG_ARTIFACT = Path(
     "schematics/self_command_buffer_init_trace.svg"
 )
 COMMAND_BUFFER_UNSUPPORTED_SVG_ARTIFACT = Path(
     "schematics/command_buffer_unsupported_trace.svg"
+)
+SELF_COMMAND_BUFFER_WRITE_BUFFER_SVG_ARTIFACT = Path(
+    "schematics/self_command_buffer_write_buffer_trace.svg"
 )
 NEIGHBOR_COMMAND_BUFFER_DELIVERY_SVG_ARTIFACT = Path(
     "schematics/neighbor_command_buffer_delivery_trace.svg"
@@ -205,6 +213,20 @@ def render_schematic_svg(trace: SingleNodeSchematicTrace) -> str:
             ]
         )
         next_y = 448
+    elif _shows_self_command_buffer_write_buffer(trace):
+        lines.extend(
+            [
+                f"    <text class=\"small\" x=\"52\" y=\"220\">role after: {_text(after['role'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"244\">self_mailbox before: {_text(before['self_mailbox'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"268\">self_mailbox after: {_text(after['self_mailbox'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"292\">control before: {_text(_cell_field(before, 'control'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"316\">buffer before: {_text(_cell_field(before, 'buffer'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"340\">input after: {_text(_cell_field(after, 'input'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"364\">control after: {_text(_cell_field(after, 'control'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"388\">buffer after: {_text(_cell_field(after, 'buffer'))}</text>",
+            ]
+        )
+        next_y = 424
     elif _shows_command_buffer_unsupported(trace):
         lines.extend(
             [
@@ -245,7 +267,9 @@ def render_schematic_svg(trace: SingleNodeSchematicTrace) -> str:
             ]
         )
         next_y = 376
-    elif _shows_self_mailbox_init(before, after):
+    elif _shows_self_mailbox_write_buffer(trace) or _shows_self_mailbox_init(
+        before, after
+    ):
         lines.extend(
             [
                 f"    <text class=\"small\" x=\"52\" y=\"220\">role after: {_text(after['role'])}</text>",
@@ -424,10 +448,24 @@ def _shows_self_mailbox_unsupported(trace: SingleNodeSchematicTrace) -> bool:
     )
 
 
+def _shows_self_mailbox_write_buffer(trace: SingleNodeSchematicTrace) -> bool:
+    """Return true for traces that consume a write-buffer mailbox command."""
+
+    return trace.artifact_id == SELF_MAILBOX_WRITE_BUFFER_TRACE_ARTIFACT_ID
+
+
 def _shows_self_command_buffer_init(trace: SingleNodeSchematicTrace) -> bool:
     """Return true for traces that consume a completed self-init buffer."""
 
     return trace.trace.expected_status == "stem-command-buffer-self-processed"
+
+
+def _shows_self_command_buffer_write_buffer(
+    trace: SingleNodeSchematicTrace,
+) -> bool:
+    """Return true for traces that execute a self write-buffer command."""
+
+    return trace.artifact_id == SELF_COMMAND_BUFFER_WRITE_BUFFER_TRACE_ARTIFACT_ID
 
 
 def _shows_command_buffer_unsupported(trace: SingleNodeSchematicTrace) -> bool:

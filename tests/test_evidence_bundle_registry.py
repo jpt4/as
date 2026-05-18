@@ -41,6 +41,15 @@ UNSUPPORTED_MAILBOX_EXAMPLE = "standard signal unsupported preserved"
 UNSUPPORTED_MAILBOX_COVERED_EXAMPLES = [
     "standard signal unsupported preserved",
 ]
+SELF_MAILBOX_WRITE_BUFFER_BUNDLE = Path("evidence/self_mailbox_write_buffer_bundle.json")
+SELF_MAILBOX_WRITE_BUFFER_BUNDLE_ID = "self-mailbox-write-buffer-evidence-bundle"
+SELF_MAILBOX_WRITE_BUFFER_CLAIM_ID = "UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED"
+SELF_MAILBOX_WRITE_BUFFER_STATUS = "self-mailbox-write-buffer-appended"
+SELF_MAILBOX_WRITE_BUFFER_EXAMPLE = "self mailbox write buffer one appended"
+SELF_MAILBOX_WRITE_BUFFER_COVERED_EXAMPLES = [
+    "self mailbox write buffer zero appended",
+    "self mailbox write buffer one appended",
+]
 SELF_COMMAND_BUFFER_BUNDLE = Path("evidence/self_command_buffer_init_bundle.json")
 SELF_COMMAND_BUFFER_BUNDLE_ID = "self-command-buffer-init-evidence-bundle"
 SELF_COMMAND_BUFFER_CLAIM_ID = "UC-STEM-COMMAND-BUFFER-SELF-INIT"
@@ -53,6 +62,25 @@ UNSUPPORTED_COMMAND_BUFFER_STATUS = "stem-buffer-appended"
 UNSUPPORTED_COMMAND_BUFFER_EXAMPLE = "self standard signal command remains appended"
 UNSUPPORTED_COMMAND_BUFFER_COVERED_EXAMPLES = [
     "self standard signal command remains appended",
+]
+SELF_COMMAND_BUFFER_WRITE_BUFFER_BUNDLE = Path(
+    "evidence/self_command_buffer_write_buffer_bundle.json"
+)
+SELF_COMMAND_BUFFER_WRITE_BUFFER_BUNDLE_ID = (
+    "self-command-buffer-write-buffer-evidence-bundle"
+)
+SELF_COMMAND_BUFFER_WRITE_BUFFER_CLAIM_ID = (
+    "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED"
+)
+SELF_COMMAND_BUFFER_WRITE_BUFFER_STATUS = (
+    "stem-command-buffer-self-write-buffer-appended"
+)
+SELF_COMMAND_BUFFER_WRITE_BUFFER_EXAMPLE = (
+    "self command buffer write buffer one appended"
+)
+SELF_COMMAND_BUFFER_WRITE_BUFFER_COVERED_EXAMPLES = [
+    "self command buffer write buffer zero appended",
+    "self command buffer write buffer one appended",
 ]
 NEIGHBOR_COMMAND_BUFFER_BUNDLE = Path("evidence/neighbor_command_buffer_delivery_bundle.json")
 NEIGHBOR_COMMAND_BUFFER_BUNDLE_ID = "neighbor-command-buffer-delivery-evidence-bundle"
@@ -92,7 +120,7 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         entries = {entry.bundle_id: entry for entry in self.registry.bundles}
         entry = entries[MULTI_COMMAND_BUNDLE_ID]
 
-        self.assertEqual(len(self.registry.bundles), 8)
+        self.assertEqual(len(self.registry.bundles), 10)
         self.assertEqual(entry.path, MULTI_COMMAND_BUNDLE)
         self.assertEqual(entry.claim_id, REJECTION_CLAIM_ID)
         self.assertEqual(entry.expected_status, REJECTION_STATUS)
@@ -113,6 +141,14 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         self.assertEqual(entry.claim_id, UNSUPPORTED_MAILBOX_CLAIM_ID)
         self.assertEqual(entry.expected_status, UNSUPPORTED_MAILBOX_STATUS)
 
+    def test_registry_records_the_self_mailbox_write_buffer_bundle(self):
+        entries = {entry.bundle_id: entry for entry in self.registry.bundles}
+        entry = entries[SELF_MAILBOX_WRITE_BUFFER_BUNDLE_ID]
+
+        self.assertEqual(entry.path, SELF_MAILBOX_WRITE_BUFFER_BUNDLE)
+        self.assertEqual(entry.claim_id, SELF_MAILBOX_WRITE_BUFFER_CLAIM_ID)
+        self.assertEqual(entry.expected_status, SELF_MAILBOX_WRITE_BUFFER_STATUS)
+
     def test_registry_records_the_self_command_buffer_init_bundle(self):
         entries = {entry.bundle_id: entry for entry in self.registry.bundles}
         entry = entries[SELF_COMMAND_BUFFER_BUNDLE_ID]
@@ -128,6 +164,14 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         self.assertEqual(entry.path, UNSUPPORTED_COMMAND_BUFFER_BUNDLE)
         self.assertEqual(entry.claim_id, UNSUPPORTED_COMMAND_BUFFER_CLAIM_ID)
         self.assertEqual(entry.expected_status, UNSUPPORTED_COMMAND_BUFFER_STATUS)
+
+    def test_registry_records_the_self_command_buffer_write_buffer_bundle(self):
+        entries = {entry.bundle_id: entry for entry in self.registry.bundles}
+        entry = entries[SELF_COMMAND_BUFFER_WRITE_BUFFER_BUNDLE_ID]
+
+        self.assertEqual(entry.path, SELF_COMMAND_BUFFER_WRITE_BUFFER_BUNDLE)
+        self.assertEqual(entry.claim_id, SELF_COMMAND_BUFFER_WRITE_BUFFER_CLAIM_ID)
+        self.assertEqual(entry.expected_status, SELF_COMMAND_BUFFER_WRITE_BUFFER_STATUS)
 
     def test_registry_records_the_neighbor_command_buffer_delivery_bundle(self):
         entries = {entry.bundle_id: entry for entry in self.registry.bundles}
@@ -159,7 +203,7 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         payload = registry_validation_report_payload(self.registry, results)
 
         self.assertTrue(payload["accepted"])
-        self.assertEqual(payload["bundle_count"], 8)
+        self.assertEqual(payload["bundle_count"], 10)
         self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(
             payload["bundles"],
@@ -205,6 +249,14 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
                     "covered_positive_examples": UNSUPPORTED_MAILBOX_COVERED_EXAMPLES,
                 },
                 {
+                    "bundle_id": SELF_MAILBOX_WRITE_BUFFER_BUNDLE_ID,
+                    "path": str(SELF_MAILBOX_WRITE_BUFFER_BUNDLE),
+                    "claim_id": SELF_MAILBOX_WRITE_BUFFER_CLAIM_ID,
+                    "expected_status": SELF_MAILBOX_WRITE_BUFFER_STATUS,
+                    "positive_example": SELF_MAILBOX_WRITE_BUFFER_EXAMPLE,
+                    "covered_positive_examples": SELF_MAILBOX_WRITE_BUFFER_COVERED_EXAMPLES,
+                },
+                {
                     "bundle_id": SELF_COMMAND_BUFFER_BUNDLE_ID,
                     "path": str(SELF_COMMAND_BUFFER_BUNDLE),
                     "claim_id": SELF_COMMAND_BUFFER_CLAIM_ID,
@@ -219,6 +271,14 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
                     "expected_status": UNSUPPORTED_COMMAND_BUFFER_STATUS,
                     "positive_example": UNSUPPORTED_COMMAND_BUFFER_EXAMPLE,
                     "covered_positive_examples": UNSUPPORTED_COMMAND_BUFFER_COVERED_EXAMPLES,
+                },
+                {
+                    "bundle_id": SELF_COMMAND_BUFFER_WRITE_BUFFER_BUNDLE_ID,
+                    "path": str(SELF_COMMAND_BUFFER_WRITE_BUFFER_BUNDLE),
+                    "claim_id": SELF_COMMAND_BUFFER_WRITE_BUFFER_CLAIM_ID,
+                    "expected_status": SELF_COMMAND_BUFFER_WRITE_BUFFER_STATUS,
+                    "positive_example": SELF_COMMAND_BUFFER_WRITE_BUFFER_EXAMPLE,
+                    "covered_positive_examples": SELF_COMMAND_BUFFER_WRITE_BUFFER_COVERED_EXAMPLES,
                 },
                 {
                     "bundle_id": NEIGHBOR_COMMAND_BUFFER_BUNDLE_ID,
@@ -242,7 +302,7 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         payload = json.loads(stdout.getvalue())
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["accepted"])
-        self.assertEqual(payload["bundle_count"], 8)
+        self.assertEqual(payload["bundle_count"], 10)
         self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(payload["bundles"][0]["bundle_id"], BUNDLE_ID)
         self.assertEqual(payload["bundles"][0]["path"], str(BUNDLE))
@@ -253,8 +313,16 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
             UNSUPPORTED_MAILBOX_COVERED_EXAMPLES,
         )
         self.assertEqual(
-            payload["bundles"][6]["covered_positive_examples"],
+            payload["bundles"][5]["covered_positive_examples"],
+            SELF_MAILBOX_WRITE_BUFFER_COVERED_EXAMPLES,
+        )
+        self.assertEqual(
+            payload["bundles"][7]["covered_positive_examples"],
             UNSUPPORTED_COMMAND_BUFFER_COVERED_EXAMPLES,
+        )
+        self.assertEqual(
+            payload["bundles"][8]["covered_positive_examples"],
+            SELF_COMMAND_BUFFER_WRITE_BUFFER_COVERED_EXAMPLES,
         )
         self.assertEqual(
             payload["bundles"][-1]["bundle_id"],

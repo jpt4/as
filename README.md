@@ -130,15 +130,23 @@ proof certificates, object languages, evidence bundles, and status reports:
   integrated evidence bundle, tying one direct unsupported self-mailbox
   preservation boundary to that evidence surface while naming all covered
   positive unsupported self-mailbox examples.
-- `docs/self-command-buffer-init-evidence-bundle.md` records the sixth
-  integrated evidence bundle, tying one completed self-target command-buffer
+- `docs/self-mailbox-write-buffer-evidence-bundle.md` records the integrated
+  evidence bundle for direct self-mailbox write-buffer append execution,
+  covering both positive write-buffer command examples while tracing
+  `write-buf-one`.
+- `docs/self-command-buffer-init-evidence-bundle.md` records the integrated
+  evidence bundle tying one completed self-target command-buffer
   init dispatch to that evidence surface.
-- `docs/command-buffer-unsupported-evidence-bundle.md` records the seventh
-  integrated evidence bundle, tying one completed self-target non-init
+- `docs/command-buffer-unsupported-evidence-bundle.md` records the integrated
+  evidence bundle tying one completed self-target non-init
   command-buffer append boundary to that evidence surface while naming all
   covered positive self-target non-init command-buffer examples.
-- `docs/neighbor-command-buffer-delivery-evidence-bundle.md` records the
-  eighth integrated evidence bundle, tying one completed neighbor-target
+- `docs/self-command-buffer-write-buffer-evidence-bundle.md` records the
+  integrated evidence bundle for completed self-target command-buffer
+  write-buffer append execution, covering both positive self-target
+  write-buffer command examples while tracing `write-buf-one`.
+- `docs/neighbor-command-buffer-delivery-evidence-bundle.md` records an
+  integrated evidence bundle, tying one completed neighbor-target
   command-buffer delivery to that evidence surface.
 - `docs/neighbor-delivery-recipient-chain.md` records the first executable
   two-step handoff from neighbor command-buffer delivery into recipient
@@ -183,10 +191,14 @@ proof certificates, object languages, evidence bundles, and status reports:
   self-mailbox init command.
 - `docs/self-mailbox-unsupported-trace.md` records the schematic-linked trace
   for one unsupported self-mailbox command.
+- `docs/self-mailbox-write-buffer-trace.md` records the schematic-linked trace
+  for one direct self-mailbox write-buffer append command.
 - `docs/self-mailbox-init-svg.md` records the rendered view of that
   self-mailbox init trace.
 - `docs/self-mailbox-unsupported-svg.md` records the rendered view of the
   unsupported self-mailbox trace.
+- `docs/self-mailbox-write-buffer-svg.md` records the rendered view of the
+  direct self-mailbox write-buffer trace.
 - `docs/self-command-buffer-init-dispatch.md` records the first narrow
   command-buffer-to-behavior slice for self-target init commands.
 - `docs/self-command-buffer-init-claim.md` records the named claim and
@@ -205,10 +217,15 @@ proof certificates, object languages, evidence bundles, and status reports:
   that neighbor command-buffer delivery trace.
 - `docs/command-buffer-unsupported-trace.md` records the schematic-linked trace
   for one unsupported completed command buffer.
+- `docs/self-command-buffer-write-buffer-trace.md` records the
+  schematic-linked trace for one completed self-target command-buffer
+  write-buffer command.
 - `docs/command-buffer-unsupported-svg.md` records the rendered view of that
   unsupported command-buffer trace.
 - `docs/self-command-buffer-init-svg.md` records the rendered view of that
   self command-buffer trace.
+- `docs/self-command-buffer-write-buffer-svg.md` records the rendered view of
+  that self command-buffer write-buffer trace.
 - `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
   state for future self-target command execution.
 - Universal Cell channel tuples can represent command-message tokens, and
@@ -220,6 +237,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   output channels. Recipient cells now consume init-family command-message
   inputs, while non-init recipient commands and self non-init command semantics
   remain open.
+- `step_stem_cell` now executes direct self-mailbox and completed self-target
+  command-buffer write-buffer commands, and the transition evidence registry
+  includes the two ADR-0162 write-buffer execution bundles.
 - `autarkic_systems/transition_chains.py` composes one neighbor delivery step
   with one recipient step, proving the delivered init-family token can be
   consumed without adding a general multi-cell simulator.
@@ -285,7 +305,7 @@ proof certificates, object languages, evidence bundles, and status reports:
   and missing-path summaries.
 - `python -m autarkic_systems.project_status --format json` emits the current
   project status as schema-versioned machine-readable JSON: transition
-  evidence accepted with 8 bundles, chain evidence accepted with 2 bundles,
+  evidence accepted with 10 bundles, chain evidence accepted with 2 bundles,
   transition claim examples accepted with 15 claims and 37 matched examples,
   transition proof certificates accepted with 15 claims and 15 certificates,
   transition-chain claims accepted with 2 claims and 2 certificates,

@@ -3,7 +3,7 @@
   "reviewed_at": "2026-05-17",
   "decision": "write-buffer-self-target-execution-implemented",
   "runtime_change": "implemented-by-adr-0161",
-  "safe_next_slice": "add-write-buffer-command-execution-evidence-bundle",
+  "safe_next_slice": "revisit-recipient-write-buffer-command-message-semantics",
   "commands": [
     "write-buf-zero",
     "write-buf-one"
@@ -101,10 +101,10 @@
       "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED"
     ],
     "evidence_bundles": [
-      "claims/transition_claims.json",
-      "claims/proof_certificates.json"
+      "evidence/self_mailbox_write_buffer_bundle.json",
+      "evidence/self_command_buffer_write_buffer_bundle.json"
     ],
-    "summary": "AS executes direct self-mailbox write-buffer commands and completed self-target command-buffer write-buffer commands by appending the command's literal bit and clearing the active command source."
+    "summary": "AS executes direct self-mailbox write-buffer commands and completed self-target command-buffer write-buffer commands by appending the command's literal bit and clearing the active command source. ADR-0162 records both implemented self-target surfaces as integrated evidence bundles."
   },
   "required_resolution_questions": [],
   "resolution_question_evidence": [],
@@ -163,5 +163,5 @@
       "summary": "The official PRC TLA files are partial/stub/empty and do not define write-buf-zero or write-buf-one command-token semantics."
     }
   ],
-  "as_boundary": "Direct self-mailbox and completed self-target command-buffer write-buffer execution are implemented through ADR-0161 append behavior; delivered recipient write-buffer command-message inputs remain rejected by the recipient non-init boundary."
+  "as_boundary": "Direct self-mailbox and completed self-target command-buffer write-buffer execution are implemented through ADR-0161 append behavior and bundled as integrated evidence by ADR-0162; delivered recipient write-buffer command-message inputs remain rejected by the recipient non-init boundary."
 }

@@ -674,3 +674,8 @@
   status reports 15 transition claims / 37 matched examples / 15 certificates,
   and recipient write-buffer command-message input remains rejected by the
   recipient non-init boundary.
+- ADR-0162 registers direct self-mailbox and completed self-target
+  command-buffer write-buffer append execution as integrated transition
+  evidence bundles. Transition evidence now has ten bundles, and the
+  write-buffer safe next slice is recipient write-buffer command-message source
+  resolution rather than another self-target evidence artifact.

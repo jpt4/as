@@ -50,6 +50,10 @@ ADR-0154 initially recorded that unresolved execution state as an explicit
 `execution_readiness` gate. ADR-0159 and ADR-0160 later cleared the remaining
 blockers, and ADR-0161 updates the readiness state from source-ready to
 implemented for the self-target append surfaces.
+ADR-0162 adds integrated evidence bundles for both implemented self-target
+surfaces, so the remaining safe next write-buffer work is recipient
+write-buffer command-message source resolution rather than another evidence
+artifact for the self-target append behavior.
 
 ADR-0159 resolves `buffer-full-boundary` as
 `preserve-existing-full-buffer-boundary-before-write-buffer-append`. The formal
@@ -95,8 +99,10 @@ moves `buffer-full-boundary` into resolved questions and leaves
 `post-append-clearing` into resolved questions, clears the live write-buffer
 question queue, and marks write-buffer append execution as source-ready for a
 later implementation ADR. ADR-0161 implements that self-target append slice,
-narrows the old unsupported boundaries to `standard-signal`, and leaves the
-next evidence task as a dedicated write-buffer execution evidence bundle.
+narrows the old unsupported boundaries to `standard-signal`, and ADR-0162
+registers the direct self-mailbox plus completed self-target command-buffer
+write-buffer execution paths as evidence bundles. The next write-buffer
+frontier is recipient write-buffer command-message semantics.
 
 ## Verification
 

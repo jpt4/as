@@ -22,7 +22,7 @@ WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = (
     "revisit-standard-signal-or-write-buffer-command-semantics, "
-    "add-write-buffer-command-execution-evidence-bundle"
+    "revisit-recipient-write-buffer-command-message-semantics"
 )
 PROJECT_STATUS_SCHEMA_VERSION = 15
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
@@ -49,9 +49,10 @@ STANDARD_SIGNAL_AS_BOUNDARY = (
 )
 WRITE_BUFFER_AS_BOUNDARY = (
     "Direct self-mailbox and completed self-target command-buffer "
-    "write-buffer execution are implemented through ADR-0161 append behavior; "
-    "delivered recipient write-buffer command-message inputs remain rejected "
-    "by the recipient non-init boundary."
+    "write-buffer execution are implemented through ADR-0161 append behavior "
+    "and bundled as integrated evidence by ADR-0162; delivered recipient "
+    "write-buffer command-message inputs remain rejected by the recipient "
+    "non-init boundary."
 )
 TRANSITION_BUNDLES = [
     {
@@ -97,6 +98,17 @@ TRANSITION_BUNDLES = [
         ],
     },
     {
+        "bundle_id": "self-mailbox-write-buffer-evidence-bundle",
+        "path": "evidence/self_mailbox_write_buffer_bundle.json",
+        "claim_id": "UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED",
+        "expected_status": "self-mailbox-write-buffer-appended",
+        "positive_example": "self mailbox write buffer one appended",
+        "covered_positive_examples": [
+            "self mailbox write buffer zero appended",
+            "self mailbox write buffer one appended",
+        ],
+    },
+    {
         "bundle_id": "self-command-buffer-init-evidence-bundle",
         "path": "evidence/self_command_buffer_init_bundle.json",
         "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-INIT",
@@ -112,6 +124,17 @@ TRANSITION_BUNDLES = [
         "positive_example": "self standard signal command remains appended",
         "covered_positive_examples": [
             "self standard signal command remains appended",
+        ],
+    },
+    {
+        "bundle_id": "self-command-buffer-write-buffer-evidence-bundle",
+        "path": "evidence/self_command_buffer_write_buffer_bundle.json",
+        "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED",
+        "expected_status": "stem-command-buffer-self-write-buffer-appended",
+        "positive_example": "self command buffer write buffer one appended",
+        "covered_positive_examples": [
+            "self command buffer write buffer zero appended",
+            "self command buffer write buffer one appended",
         ],
     },
     {
@@ -381,7 +404,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             "transition-evidence-bundle-registry",
         )
         self.assertTrue(report["transition_evidence"]["accepted"])
-        self.assertEqual(report["transition_evidence"]["bundle_count"], 8)
+        self.assertEqual(report["transition_evidence"]["bundle_count"], 10)
         self.assertEqual(
             report["transition_evidence"]["bundles"],
             TRANSITION_BUNDLES,
@@ -575,7 +598,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         text = format_project_status_report(report)
 
         self.assertIn("Autarkic Systems project status: accepted", text)
-        self.assertIn("Transition evidence: accepted (8 bundles)", text)
+        self.assertIn("Transition evidence: accepted (10 bundles)", text)
         self.assertIn("Chain evidence: accepted (2 bundles)", text)
         self.assertIn(
             "Transition claims: accepted (15 claims, 37 examples, 37 matched)",
@@ -663,7 +686,11 @@ class ProjectStatusReportTests(unittest.TestCase):
             "Safe next slice: revisit-standard-signal-or-write-buffer-command-semantics",
             text,
         )
-        self.assertIn("add-write-buffer-command-execution-evidence-bundle", text)
+        self.assertIn(
+            "revisit-recipient-write-buffer-command-message-semantics",
+            text,
+        )
+        self.assertNotIn("add-write-buffer-command-execution-evidence-bundle", text)
         self.assertIn("Missing source-status files: none", text)
 
     def test_text_status_names_transition_language_failed_subjects(self):
@@ -1120,7 +1147,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["schema_version"], PROJECT_STATUS_SCHEMA_VERSION)
-        self.assertEqual(payload["transition_evidence"]["bundle_count"], 8)
+        self.assertEqual(payload["transition_evidence"]["bundle_count"], 10)
         self.assertEqual(
             payload["transition_evidence"]["bundles"],
             TRANSITION_BUNDLES,
@@ -2988,7 +3015,7 @@ class ProjectStatusReportTests(unittest.TestCase):
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertIn("Autarkic Systems project status: accepted", completed.stdout)
-        self.assertIn("Transition evidence: accepted (8 bundles)", completed.stdout)
+        self.assertIn("Transition evidence: accepted (10 bundles)", completed.stdout)
         self.assertIn("Chain evidence: accepted (2 bundles)", completed.stdout)
 
 

@@ -90,6 +90,24 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         )
         self.assertIn("unsupported-command preservation", bundle["summary"])
 
+    def test_self_mailbox_write_buffer_evidence_bundle_is_recorded(self):
+        bundles = {
+            bundle["path"]: bundle
+            for bundle in self.status["implemented_evidence_bundles"]
+        }
+        bundle = bundles["evidence/self_mailbox_write_buffer_bundle.json"]
+
+        self.assertEqual(bundle["adr"], "ADR-0162")
+        self.assertEqual(
+            bundle["claim_id"],
+            "UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED",
+        )
+        self.assertEqual(
+            bundle["positive_example"],
+            "self mailbox write buffer one appended",
+        )
+        self.assertIn("direct self-mailbox write-buffer", bundle["summary"])
+
     def test_self_command_buffer_init_evidence_bundle_is_recorded(self):
         bundles = {
             bundle["path"]: bundle
@@ -122,6 +140,24 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
             "self standard signal command remains appended",
         )
         self.assertIn("non-init command-buffer append boundary", bundle["summary"])
+
+    def test_self_command_buffer_write_buffer_evidence_bundle_is_recorded(self):
+        bundles = {
+            bundle["path"]: bundle
+            for bundle in self.status["implemented_evidence_bundles"]
+        }
+        bundle = bundles["evidence/self_command_buffer_write_buffer_bundle.json"]
+
+        self.assertEqual(bundle["adr"], "ADR-0162")
+        self.assertEqual(
+            bundle["claim_id"],
+            "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED",
+        )
+        self.assertEqual(
+            bundle["positive_example"],
+            "self command buffer write buffer one appended",
+        )
+        self.assertIn("self-target command-buffer write-buffer", bundle["summary"])
 
     def test_neighbor_command_buffer_delivery_evidence_bundle_is_recorded(self):
         bundles = {
@@ -178,6 +214,9 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertTrue(allowed)
         self.assertTrue(any("standard-signal" in item for item in allowed))
         self.assertTrue(any("write-buffer" in item for item in allowed))
+        self.assertTrue(
+            any("recipient write-buffer command-message" in item for item in allowed)
+        )
         self.assertFalse(any("multiple command-message" in item for item in allowed))
         self.assertFalse(
             any(
@@ -192,6 +231,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
             )
         )
         self.assertFalse(any("schematic-linked trace" in item for item in allowed))
+        self.assertFalse(any("evidence bundle" in item for item in allowed))
         self.assertFalse(any("rendered SVG" in item for item in allowed))
         self.assertTrue(
             all("full stem command execution" not in item for item in allowed)

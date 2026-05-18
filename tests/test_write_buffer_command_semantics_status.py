@@ -8,8 +8,12 @@ RECIPIENT_NON_INIT = Path("sources/recipient_non_init_command_source_status.json
 RECIPIENT_STATUS = Path("sources/recipient_command_consumption_source_status.json")
 STEM_STATUS = Path("sources/stem_command_execution_source_status.json")
 SELF_MAILBOX_UNSUPPORTED_BUNDLE = Path("evidence/self_mailbox_unsupported_bundle.json")
+SELF_MAILBOX_WRITE_BUFFER_BUNDLE = Path("evidence/self_mailbox_write_buffer_bundle.json")
 COMMAND_BUFFER_UNSUPPORTED_BUNDLE = Path(
     "evidence/command_buffer_unsupported_bundle.json"
+)
+SELF_COMMAND_BUFFER_WRITE_BUFFER_BUNDLE = Path(
+    "evidence/self_command_buffer_write_buffer_bundle.json"
 )
 FORMAL_MODEL = Path("/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt")
 LEGACY_RAA = Path("/home/sean/Projects/_upstream/prc/practice/legacy/raa.scm")
@@ -30,7 +34,7 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "implemented-by-adr-0161")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "add-write-buffer-command-execution-evidence-bundle",
+            "revisit-recipient-write-buffer-command-message-semantics",
         )
         self.assertEqual(
             self.status["blocked_runtime_surfaces"],
@@ -144,6 +148,12 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         command_buffer_bundle = json.loads(
             COMMAND_BUFFER_UNSUPPORTED_BUNDLE.read_text(encoding="utf-8")
         )
+        self_mailbox_write_bundle = json.loads(
+            SELF_MAILBOX_WRITE_BUFFER_BUNDLE.read_text(encoding="utf-8")
+        )
+        command_buffer_write_bundle = json.loads(
+            SELF_COMMAND_BUFFER_WRITE_BUFFER_BUNDLE.read_text(encoding="utf-8")
+        )
 
         resolved = resolved_questions["self-target-surface"]
         self.assertEqual(
@@ -174,6 +184,22 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertIn(
             "self standard signal command remains appended",
             command_buffer_bundle["covered_positive_examples"],
+        )
+        self.assertEqual(
+            self_mailbox_write_bundle["claim_id"],
+            "UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED",
+        )
+        self.assertEqual(
+            command_buffer_write_bundle["claim_id"],
+            "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED",
+        )
+        self.assertIn(
+            str(SELF_MAILBOX_WRITE_BUFFER_BUNDLE),
+            self.status["self_target_surface_resolution"]["evidence_bundles"],
+        )
+        self.assertIn(
+            str(SELF_COMMAND_BUFFER_WRITE_BUFFER_BUNDLE),
+            self.status["self_target_surface_resolution"]["evidence_bundles"],
         )
 
     def test_standard_signal_interaction_is_resolved_as_literal_bits(self):

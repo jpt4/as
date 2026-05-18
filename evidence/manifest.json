@@ -35,6 +35,12 @@
       "expected_status": "self-mailbox-unsupported"
     },
     {
+      "bundle_id": "self-mailbox-write-buffer-evidence-bundle",
+      "path": "evidence/self_mailbox_write_buffer_bundle.json",
+      "claim_id": "UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED",
+      "expected_status": "self-mailbox-write-buffer-appended"
+    },
+    {
       "bundle_id": "self-command-buffer-init-evidence-bundle",
       "path": "evidence/self_command_buffer_init_bundle.json",
       "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-INIT",
@@ -45,6 +51,12 @@
       "path": "evidence/command_buffer_unsupported_bundle.json",
       "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
       "expected_status": "stem-buffer-appended"
+    },
+    {
+      "bundle_id": "self-command-buffer-write-buffer-evidence-bundle",
+      "path": "evidence/self_command_buffer_write_buffer_bundle.json",
+      "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED",
+      "expected_status": "stem-command-buffer-self-write-buffer-appended"
     },
     {
       "bundle_id": "neighbor-command-buffer-delivery-evidence-bundle",

@@ -85,7 +85,7 @@ class NeighborCommandBufferDeliveryEvidenceBundleTests(unittest.TestCase):
         registry = load_evidence_bundle_registry(REGISTRY)
         entries = {entry.bundle_id: entry for entry in registry.bundles}
 
-        self.assertEqual(len(entries), 8)
+        self.assertEqual(len(entries), 10)
         self.assertIn("command-buffer-unsupported-evidence-bundle", entries)
         self.assertIn(BUNDLE_ID, entries)
         self.assertEqual(entries[BUNDLE_ID].path, BUNDLE)

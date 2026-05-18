@@ -3220,3 +3220,29 @@ Status: accepted in
 `autarkic_systems/transition_predicates.py`, the transition claim/proof
 manifests, the transition object languages, write-buffer source-status
 artifacts, and focused runtime/claim/status tests.
+
+## ADR-0162: Write-Buffer Execution Evidence Bundles
+
+Goal: register the ADR-0161 write-buffer execution surfaces as integrated
+transition evidence bundles without changing runtime behavior.
+
+Deliverables:
+
+- a schematic-linked trace and renderer-locked SVG for direct self-mailbox
+  `write-buf-one` execution;
+- a schematic-linked trace and renderer-locked SVG for completed self-target
+  command-buffer `write-buf-one` execution;
+- `evidence/self_mailbox_write_buffer_bundle.json` covering
+  `UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED`;
+- `evidence/self_command_buffer_write_buffer_bundle.json` covering
+  `UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED`;
+- evidence registry expansion from eight to ten transition bundles;
+- source-status safe-next movement from the completed evidence task to
+  recipient write-buffer command-message source resolution; and
+- unchanged project-status schema `15` and source-status frontier schema `2`.
+
+Status: accepted in
+`docs/adr/0162-write-buffer-execution-evidence-bundle.md`. Implemented in the
+schematic trace/SVG validators, the new trace and SVG artifacts, the transition
+evidence registry, write-buffer and stem source-status records, and focused
+trace/SVG/evidence/status tests.

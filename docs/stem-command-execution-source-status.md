@@ -38,7 +38,8 @@ surface. ADR-0055 adds a schematic-linked trace for one fixed-recipient
 upstream `standard-signal` rejection, and ADR-0056 adds the rendered SVG view.
 ADR-0057 records write-buffer command semantics as a separate source-status
 surface, and ADR-0161 implements its direct self-mailbox and completed
-self-target command-buffer append behavior.
+self-target command-buffer append behavior. ADR-0162 registers both
+implemented write-buffer self-target surfaces as integrated evidence bundles.
 ADR-0058 records `standard-signal` command-token semantics as still
 source-blocked while preserving ordinary binary-input standard-signal
 behavior. ADR-0059 selects reject-and-clear for multiple simultaneous
@@ -102,9 +103,7 @@ command behavior honestly, AS still needs to choose:
 - how `standard-signal` behaves when selected as a self-mailbox or self-target
   command-buffer command;
 - how write-buffer and standard-signal command-message inputs behave on
-  recipient cells after the implemented init-family recipient slice;
-- an integrated evidence bundle for the ADR-0161 write-buffer execution
-  surface.
+  recipient cells after the implemented init-family recipient slice.
 
 ## Verification
 

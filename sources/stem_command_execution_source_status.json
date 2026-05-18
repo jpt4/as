@@ -48,6 +48,13 @@
       "summary": "AS now has an integrated evidence bundle validating one direct self-mailbox unsupported-command preservation boundary across runtime, claim, proof, trace, render, and source-status boundaries."
     },
     {
+      "adr": "ADR-0162",
+      "path": "evidence/self_mailbox_write_buffer_bundle.json",
+      "claim_id": "UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED",
+      "positive_example": "self mailbox write buffer one appended",
+      "summary": "AS now has an integrated evidence bundle validating one direct self-mailbox write-buffer append across runtime, claim, proof, trace, render, and source-status boundaries."
+    },
+    {
       "adr": "ADR-0074",
       "path": "evidence/self_command_buffer_init_bundle.json",
       "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-INIT",
@@ -60,6 +67,13 @@
       "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
       "positive_example": "self standard signal command remains appended",
       "summary": "AS now has an integrated evidence bundle validating one completed self-target non-init command-buffer append boundary across runtime, claim, proof, trace, render, and source-status boundaries."
+    },
+    {
+      "adr": "ADR-0162",
+      "path": "evidence/self_command_buffer_write_buffer_bundle.json",
+      "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED",
+      "positive_example": "self command buffer write buffer one appended",
+      "summary": "AS now has an integrated evidence bundle validating one completed self-target command-buffer write-buffer append across runtime, claim, proof, trace, render, and source-status boundaries."
     },
     {
       "adr": "ADR-0076",
@@ -166,7 +180,7 @@
     }
   ],
   "allowed_next_slices": [
-    "Add a write-buffer execution evidence bundle for the ADR-0161 self-target append behavior.",
+    "Revisit recipient write-buffer command-message semantics if a source-backed rule moves that input out of the recipient non-init rejection boundary.",
     "Add more source-status tests if another PRC source resolves the target, command-order, standard-signal command-token, or recipient write-buffer command-message divergence."
   ]
 }

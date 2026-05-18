@@ -15,10 +15,15 @@ The registry currently lists:
   positive direct self-mailbox init transition;
 - `evidence/self_mailbox_unsupported_bundle.json`, the ADR-0073 bundle for the
   positive direct unsupported self-mailbox preservation boundary;
+- `evidence/self_mailbox_write_buffer_bundle.json`, the ADR-0162 bundle for
+  the positive direct self-mailbox write-buffer append transition;
 - `evidence/self_command_buffer_init_bundle.json`, the ADR-0074 bundle for the
   positive completed self-target command-buffer init dispatch;
 - `evidence/command_buffer_unsupported_bundle.json`, the ADR-0075 bundle for
   the positive completed self-target non-init command-buffer append boundary;
+- `evidence/self_command_buffer_write_buffer_bundle.json`, the ADR-0162 bundle
+  for the positive completed self-target command-buffer write-buffer append
+  transition;
 - `evidence/neighbor_command_buffer_delivery_bundle.json`, the ADR-0076 bundle
   for the positive completed neighbor-target command-buffer delivery path.
 
@@ -91,6 +96,6 @@ python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json --f
 ```
 
 The tests cover registry loading, the current ADR-0065, ADR-0068, ADR-0069,
-ADR-0072, ADR-0073, ADR-0074, ADR-0075, and ADR-0076 bundle entries, whole
-registry validation, duplicate bundle-ID rejection, missing bundle-path
+ADR-0072, ADR-0073, ADR-0074, ADR-0075, ADR-0076, and ADR-0162 bundle entries,
+whole registry validation, duplicate bundle-ID rejection, missing bundle-path
 rejection, and unregistered sibling bundle-file rejection.

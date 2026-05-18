@@ -453,3 +453,7 @@
   negative evidence bundles in the same slice. Otherwise the runtime can be
   correct while status reports still teach future work to preserve behavior
   that has become executable.
+- After implementing a newly supported command, add the integrated evidence
+  bundle quickly enough that the operator frontier does not keep pointing at a
+  solved documentation/evidence task. The next safe slice should name the
+  remaining semantic frontier.

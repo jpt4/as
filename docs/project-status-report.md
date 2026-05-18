@@ -214,6 +214,9 @@ command-buffer write-buffer append execution, adds two transition claims and
 certificates for those surfaces, narrows unsupported write-buffer examples out
 of the old preservation bundles, and keeps project status
 `schema_version: 15`.
+ADR-0162 registers those two write-buffer execution surfaces as transition
+evidence bundles, moves transition evidence to ten bundles, and keeps project
+status `schema_version: 15`.
 
 ## Boundary
 

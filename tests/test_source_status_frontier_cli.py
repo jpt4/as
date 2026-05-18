@@ -20,7 +20,7 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 SAFE_NEXT_SLICE = (
     "revisit-standard-signal-or-write-buffer-command-semantics, "
-    "add-write-buffer-command-execution-evidence-bundle"
+    "revisit-recipient-write-buffer-command-message-semantics"
 )
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 

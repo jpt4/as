@@ -3478,3 +3478,30 @@
   registries, source-status and project-status CLIs, `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 687 tests.
+
+## 2026-05-18 - Write-Buffer Execution Evidence Bundles
+
+- Added ADR-0162 to register the ADR-0161 write-buffer execution surfaces as
+  integrated evidence bundles without changing runtime behavior.
+- Added red trace, SVG, evidence-bundle, registry, source-status, and
+  project-status tests before implementation. The focused red run executed
+  152 tests and failed because the new trace IDs, SVG constants, bundle files,
+  registry entries, and updated write-buffer safe-next slice were absent.
+- Added schematic trace validation and SVG rendering support for direct
+  self-mailbox write-buffer append and completed self-target command-buffer
+  write-buffer append.
+- Added `schematics/self_mailbox_write_buffer_trace.json`,
+  `schematics/self_command_buffer_write_buffer_trace.json`, and the matching
+  renderer-generated SVG artifacts.
+- Added `evidence/self_mailbox_write_buffer_bundle.json` and
+  `evidence/self_command_buffer_write_buffer_bundle.json`, registered both in
+  `evidence/manifest.json`, and updated status/docs so transition evidence now
+  contains ten bundles.
+- Updated write-buffer source-status safe-next from the completed evidence
+  task to recipient write-buffer command-message source resolution.
+- Focused verification passed 178 tests. Project status remains schema 15 and
+  source-status frontier remains schema 2; this is an evidence/documentation
+  slice with no Universal Cell runtime behavior change. The evidence registry
+  accepted 10 transition bundles, source/project status JSON passed,
+  `py_compile`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 728 tests.
