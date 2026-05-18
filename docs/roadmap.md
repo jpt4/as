@@ -4117,3 +4117,24 @@ Deliverables:
 Status: accepted in `docs/adr/0202-project-status-sequence-language.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0203: Sequence Evidence Language Link
+
+Goal: make the network-sequence evidence bundle fail closed over the checked
+network-sequence object language.
+
+Deliverables:
+
+- `sequence_language` artifact path in
+  `evidence/sequences/post_handoff_signal_bundle.json`;
+- `sequence_language_path` loaded by `NetworkSequenceEvidenceBundle`;
+- schema path validation for the sequence-language artifact;
+- `sequence-language` validation result using the existing object-language
+  validator; and
+- no runtime behavior, proof-rule, project-status, scheduler, topology, timing,
+  or command-semantics changes.
+
+Status: accepted in `docs/adr/0203-sequence-evidence-language-link.md`.
+Implemented in `autarkic_systems/network_sequence_evidence_bundle.py`, with
+tests in `tests/test_network_sequence_evidence_bundle.py` and operator notes in
+`docs/network-sequence-evidence-bundles.md`.

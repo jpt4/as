@@ -4325,3 +4325,23 @@
   accepted (1 claim, 1 certificate)` and `Language failures: none`.
   `compileall`, `git diff --check`, refreshed handoff, and
   `python -m unittest discover` passed; the full suite ran 862 tests.
+
+## 2026-05-18 - Sequence Evidence Language Link
+
+- Added ADR-0203 to make the post-handoff sequence evidence bundle cite and
+  validate the checked network-sequence object language.
+- Added red evidence-bundle tests before implementation. The focused red run
+  failed because loaded bundles had no `sequence_language_path`, the validation
+  result set lacked `sequence-language`, missing language paths were not
+  rejected by bundle validation, and reports lacked `OK sequence-language:`.
+- Updated `autarkic_systems/network_sequence_evidence_bundle.py` to load a
+  `sequence_language` artifact, include it in schema path validation, validate
+  it through the existing network-sequence object-language validator, and
+  report a dedicated `sequence-language` result.
+- Updated `evidence/sequences/post_handoff_signal_bundle.json` to cite
+  `language/network_sequence_claim_language.json`.
+- Focused green verification passed 11 sequence evidence-bundle tests.
+  Adjacent evidence-bundle/object-language/claim tests passed 33 tests. Live
+  bundle JSON reported 8 accepted results including `sequence-language`;
+  registry JSON accepted 1 bundle. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 863 tests.

@@ -841,3 +841,8 @@
 - ADR-0202 folds the network-sequence object-language surface into aggregate
   project status as `sequence_language`, adds `--sequence-language`, and bumps
   project status to `schema_version: 19`.
+- ADR-0203 adds the network-sequence object language as an explicit
+  `sequence_language` artifact in the post-handoff sequence evidence bundle.
+  Bundle validation now fails closed over that language and reports a
+  `sequence-language` result without changing runtime behavior or aggregate
+  project-status shape.

@@ -33,6 +33,7 @@ The validator checks:
 - bundle schema and artifact paths;
 - the named network-sequence claim example;
 - network-sequence proof certificates;
+- the network-sequence claim object language;
 - the executable post-handoff witness status;
 - underlying transition-chain evidence bundles;
 - referenced source-status JSON files; and

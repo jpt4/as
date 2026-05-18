@@ -57,6 +57,10 @@ class NetworkSequenceEvidenceBundleTests(unittest.TestCase):
             Path("claims/network_sequence_proof_certificates.json"),
         )
         self.assertEqual(
+            self.bundle.sequence_language_path,
+            Path("language/network_sequence_claim_language.json"),
+        )
+        self.assertEqual(
             self.bundle.sequence_claim_validator_path,
             Path("autarkic_systems/network_sequence_claims.py"),
         )
@@ -84,6 +88,7 @@ class NetworkSequenceEvidenceBundleTests(unittest.TestCase):
                 "schema",
                 "sequence-claim-example",
                 "sequence-proof-certificate",
+                "sequence-language",
                 "sequence-witness",
                 "underlying-chain-bundles",
                 "source-statuses",
@@ -106,6 +111,31 @@ class NetworkSequenceEvidenceBundleTests(unittest.TestCase):
             results,
         )
 
+    def test_missing_sequence_language_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing = Path(tmp) / "missing_network_sequence_claim_language.json"
+            drifted = replace(self.bundle, sequence_language_path=missing)
+
+            results = validate_network_sequence_evidence_bundle(drifted)
+
+        self.assertTrue(
+            any(
+                not result.accepted
+                and result.subject == "schema"
+                and str(missing) in result.detail
+                for result in results
+            ),
+            results,
+        )
+        self.assertTrue(
+            any(
+                not result.accepted
+                and result.subject == "sequence-language"
+                for result in results
+            ),
+            results,
+        )
+
     def test_report_and_json_payload_record_bundle_validation(self):
         results = validate_network_sequence_evidence_bundle(self.bundle)
 
@@ -113,6 +143,7 @@ class NetworkSequenceEvidenceBundleTests(unittest.TestCase):
         payload = network_sequence_evidence_bundle_report_payload(self.bundle, results)
 
         self.assertIn("Network sequence evidence bundle:", report)
+        self.assertIn("OK sequence-language:", report)
         self.assertIn("OK sequence-witness:", report)
         self.assertNotIn("FAIL", report)
         self.assertTrue(payload["accepted"])

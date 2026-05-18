@@ -11,6 +11,7 @@
   "artifacts": {
     "sequence_claims": "claims/network_sequence_claims.json",
     "sequence_proof_certificates": "claims/network_sequence_proof_certificates.json",
+    "sequence_language": "language/network_sequence_claim_language.json",
     "sequence_claim_validator": "autarkic_systems/network_sequence_claims.py",
     "sequence_witness": "autarkic_systems/network_sequence.py",
     "chain_bundles": [

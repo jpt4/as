@@ -27,6 +27,9 @@ from autarkic_systems.network_sequence_claims import (
     load_network_sequence_claims,
     validate_network_sequence_claim_project,
 )
+from autarkic_systems.network_sequence_object_language import (
+    validate_network_sequence_claim_language_project,
+)
 
 
 @dataclass(frozen=True)
@@ -44,6 +47,7 @@ class NetworkSequenceEvidenceBundle:
     expected_status: str
     sequence_claim_manifest_path: Path
     sequence_proof_certificate_path: Path
+    sequence_language_path: Path
     sequence_claim_validator_path: Path
     sequence_witness_path: Path
     chain_bundle_paths: tuple[Path, ...]
@@ -105,6 +109,7 @@ def load_network_sequence_evidence_bundle(
         sequence_proof_certificate_path=Path(
             _required_text(artifacts, "sequence_proof_certificates")
         ),
+        sequence_language_path=Path(_required_text(artifacts, "sequence_language")),
         sequence_claim_validator_path=Path(
             _required_text(artifacts, "sequence_claim_validator")
         ),
@@ -150,6 +155,7 @@ def validate_network_sequence_evidence_bundle(
     _claim, _example, claim_result = _validate_sequence_claim_example(bundle)
     results.append(claim_result)
     results.append(_validate_sequence_proof_certificate(bundle))
+    results.append(_validate_sequence_language(bundle))
     results.append(_validate_sequence_witness(bundle))
     results.append(_validate_underlying_chain_bundles(bundle))
     results.append(_validate_source_statuses(bundle))
@@ -314,6 +320,7 @@ def _validate_schema(
     required_paths = (
         bundle.sequence_claim_manifest_path,
         bundle.sequence_proof_certificate_path,
+        bundle.sequence_language_path,
         bundle.sequence_claim_validator_path,
         bundle.sequence_witness_path,
         *bundle.chain_bundle_paths,
@@ -398,6 +405,29 @@ def _validate_sequence_proof_certificate(
     return _accepted(
         "sequence-proof-certificate",
         f"verified {report.certificate_count} sequence certificates",
+    )
+
+
+def _validate_sequence_language(
+    bundle: NetworkSequenceEvidenceBundle,
+) -> NetworkSequenceEvidenceBundleValidation:
+    try:
+        report = validate_network_sequence_claim_language_project(
+            language_path=bundle.sequence_language_path,
+            claims_path=bundle.sequence_claim_manifest_path,
+            certificates_path=bundle.sequence_proof_certificate_path,
+        )
+    except Exception as exc:
+        return _rejected("sequence-language", f"{type(exc).__name__}: {exc}")
+
+    failures = [
+        result.detail for result in report.results if not result.accepted
+    ]
+    if failures:
+        return _rejected("sequence-language", " | ".join(failures))
+    return _accepted(
+        "sequence-language",
+        f"validated {report.claim_count} sequence language claims",
     )
 
 
