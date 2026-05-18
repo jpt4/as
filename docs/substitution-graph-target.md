@@ -6,7 +6,9 @@ Status: checked delta0 graph-formula target, not a constructed formula,
 ADR-0246 adds `claims/substitution_graph_targets.json` and
 `autarkic_systems/substitution_graph_target.py`. It records the first checked
 target boundary for a future formula representing the `substitution_code`
-graph.
+graph. ADR-0247 makes this target a structured dependency of the aggregate
+formal-confidence target, so formal-confidence validation fails closed if this
+surface drifts.
 
 ## Purpose
 

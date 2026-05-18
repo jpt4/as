@@ -5326,3 +5326,23 @@
   fixed-point blocker: no delta0 graph formula, formula correctness proof,
   substitution representability proof, diagonal lemma, fixed-point equation
   proof, or self-consistency theorem is claimed.
+
+## 2026-05-18 - Formal Confidence Substitution Graph Dependency
+
+- Added ADR-0247 to make the checked substitution graph target a structured
+  dependency of the aggregate formal-confidence target.
+- Added red tests before implementation. The red run failed because
+  `substitution_graph` was not a required configuration field, the aggregate
+  report did not expose an accepted substitution graph target result, and
+  missing substitution graph manifests did not reject formal-confidence
+  validation.
+- Added `substitution_graph` to `claims/formal_confidence_targets.json` and
+  required configuration fields.
+- Updated `autarkic_systems.formal_confidence` to load and validate the
+  referenced substitution graph target, report `substitution graph target
+  accepted` on the healthy path, and fail closed as
+  `target-substitution-graph` when the dependency is missing or invalid.
+- Focused formal-confidence and project-status tests passed 104 tests. Live
+  formal-confidence text/JSON output reported the substitution graph target
+  dependency accepted, while the formal-confidence target remained blocked on
+  `fixed-point-construction`.

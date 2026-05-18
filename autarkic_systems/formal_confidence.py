@@ -35,6 +35,10 @@ from autarkic_systems.substitution_representability import (
     load_substitution_representability_targets,
     validate_substitution_representability_targets,
 )
+from autarkic_systems.substitution_graph_target import (
+    load_substitution_graph_targets,
+    validate_substitution_graph_targets,
+)
 from autarkic_systems.willard_map import load_willard_definition_map
 
 
@@ -52,6 +56,7 @@ REQUIRED_CONFIGURATION_FIELDS = (
     "self_reference",
     "diagonal_construction",
     "substitution_representability",
+    "substitution_graph",
     "fixed_point_equation_candidate",
     "fixed_point_obstruction",
     "substrate_bridge",
@@ -384,6 +389,9 @@ def _validate_target(
     if "substitution_representability" in target.configuration:
         results.extend(_validate_substitution_representability(target))
 
+    if "substitution_graph" in target.configuration:
+        results.extend(_validate_substitution_graph(target))
+
     if "fixed_point_equation_candidate" in target.configuration:
         results.extend(_validate_fixed_point_equation_candidate(target))
 
@@ -492,6 +500,32 @@ def _validate_substitution_representability(
     ]
 
 
+def _validate_substitution_graph(
+    target: FormalConfidenceTarget,
+) -> list[FormalConfidenceValidation]:
+    subject = f"{target.target_id}.substitution_graph"
+    target_path = target.configuration["substitution_graph"]
+    try:
+        graph_targets = load_substitution_graph_targets(target_path)
+        report = validate_substitution_graph_targets(graph_targets)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return [
+            _rejected(
+                subject,
+                "substitution graph target rejected: " + str(exc),
+            )
+        ]
+    if report.accepted:
+        return [_accepted(subject, "substitution graph target accepted")]
+    return [
+        _rejected(
+            subject,
+            "substitution graph target rejected: "
+            + _joined_or_none(report.failed_subjects),
+        )
+    ]
+
+
 def _validate_fixed_point_equation_candidate(
     target: FormalConfidenceTarget,
 ) -> list[FormalConfidenceValidation]:
@@ -555,6 +589,8 @@ def _failed_subject_for_result(subject: str) -> str:
         return "target-diagonal-construction"
     if subject.endswith(".substitution_representability"):
         return "target-substitution-representability"
+    if subject.endswith(".substitution_graph"):
+        return "target-substitution-graph"
     if subject.endswith(".fixed_point_equation_candidate"):
         return "target-fixed-point-equation-candidate"
     if subject.endswith(".fixed_point_obstruction"):
