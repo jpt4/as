@@ -2140,3 +2140,29 @@
   Demo registry text named both registered chain bundles. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed, with the full
   suite running 536 tests.
+
+## 2026-05-17 - Project Status Report
+
+- Added ADR-0096 to make the current evidence state and blocked command-token
+  frontier visible from one command.
+- Added `tests/test_project_status_report.py` before implementation. The red
+  run failed because `autarkic_systems.project_status` did not exist.
+- Added `autarkic_systems/project_status.py`, which reuses the transition
+  evidence registry validator, the chain evidence registry validator, and the
+  current recipient non-init, `standard-signal`, and write-buffer source-status
+  JSON files.
+- The status report now emits text and JSON, reports 8 accepted transition
+  evidence bundles and 2 accepted chain evidence bundles on the checked-in
+  path, names `standard-signal`, `write-buf-zero`, and `write-buf-one` as the
+  blocked command-token frontier, and returns structured failure output for
+  missing source-status files.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the new status command.
+- Verified the focused project status test passed 5 tests; adjacent project
+  status, transition registry, chain registry, and chain demo tests passed 43
+  tests. Text CLI reported accepted status, both bundle counts, the blocked
+  command list, and no missing source-status files. JSON CLI reported
+  `accepted: true`, transition `bundle_count: 8`, chain `bundle_count: 2`, and
+  the same blocked command list. `py_compile` passed for the touched module and
+  focused test. `git diff --check` and `python -m unittest discover` passed,
+  with the full suite running 541 tests.

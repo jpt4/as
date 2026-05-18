@@ -144,6 +144,9 @@ ADR-0094 adds the integrated evidence bundle for that rejection path and
 registers it alongside the consumed chain bundle.
 ADR-0095 extends the vertical chain demo report to the whole chain registry, so
 both current composed paths can be inspected from one command.
+ADR-0096 adds a project status command that validates the transition and chain
+evidence registries and reports the blocked command-token frontier from the
+current source-status records.
 
 ## P3: Choose The First Proof Apparatus
 

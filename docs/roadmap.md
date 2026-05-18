@@ -1818,3 +1818,25 @@ Deliverables:
 Status: accepted in `docs/adr/0095-chain-demo-registry-report.md`.
 Implemented in `autarkic_systems/chain_demo.py`, with tests in
 `tests/test_chain_demo_report.py`.
+
+## ADR-0096: Project Status Report
+
+Goal: provide one operator-facing status report over the current evidence
+surface and blocked command-token frontier.
+
+Deliverables:
+
+- `autarkic_systems/project_status.py`;
+- `tests/test_project_status_report.py`;
+- text and JSON CLI output through
+  `python -m autarkic_systems.project_status`;
+- transition evidence registry summary with 8 bundles;
+- transition-chain evidence registry summary with 2 bundles;
+- blocked command-token summary for `standard-signal`, `write-buf-zero`, and
+  `write-buf-one`;
+- structured failure output for missing source-status files;
+- human-facing status report documentation and public navigation updates.
+
+Status: accepted in `docs/adr/0096-project-status-report.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

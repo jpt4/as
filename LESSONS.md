@@ -263,3 +263,6 @@
   If a registered bundle path is missing, return structured failure output that
   names the missing path and preserves the remaining registry validation
   details.
+- Once the evidence surface spans several commands, add a project-level status
+  report that composes existing validators. A useful status command should
+  reveal both what is accepted and which frontier remains blocked.

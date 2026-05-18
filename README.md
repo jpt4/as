@@ -144,6 +144,9 @@ the project legible:
 - `docs/vertical-chain-demo-report.md` records the compact first-run report
   over one checked transition-chain evidence path or the whole chain evidence
   registry.
+- `docs/project-status-report.md` records the operator-facing status report
+  over transition evidence, chain evidence, and the blocked command-token
+  frontier.
 - `docs/evidence-bundle-registry.md` records the registry for discovering and
   batch-validating transition evidence bundles.
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
@@ -215,6 +218,9 @@ the project legible:
   registered chain bundle with its claim, executable chain, trace, SVG,
   lower-level evidence bundles, source-status boundaries, artifact-presence
   summary, and validation result.
+- `autarkic_systems/project_status.py` renders one operator-facing report over
+  the transition evidence registry, chain evidence registry, and the live
+  source-status frontier for blocked command-token semantics.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -243,6 +249,11 @@ the project legible:
   one report over every registered chain bundle, and `--format json` emits the
   same claim-to-evidence surfaces for automation, including artifact presence
   and missing-path summaries.
+- `python -m autarkic_systems.project_status --format json` emits the current
+  project status as machine-readable JSON: transition evidence accepted with 8
+  bundles, chain evidence accepted with 2 bundles, and the blocked
+  `standard-signal`, `write-buf-zero`, and `write-buf-one` command-token
+  frontier.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

@@ -452,3 +452,8 @@
   vertical demo report can summarize every registered transition-chain
   evidence bundle, including accepted/failed counts, missing paths, and
   structured failure output for missing registered bundle files.
+- ADR-0096 adds `autarkic_systems.project_status`, a text/JSON status command
+  that validates the transition evidence registry and chain evidence registry,
+  reports 8 transition bundles and 2 chain bundles on the checked-in path, and
+  summarizes the blocked `standard-signal`, `write-buf-zero`, and
+  `write-buf-one` command-token frontier from source-status JSON.
