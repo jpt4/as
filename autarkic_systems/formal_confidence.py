@@ -19,6 +19,10 @@ from autarkic_systems.fixed_point_equation import (
     load_fixed_point_equation_candidates,
     validate_fixed_point_equation_candidates,
 )
+from autarkic_systems.fixed_point_obstruction import (
+    load_fixed_point_obstructions,
+    validate_fixed_point_obstructions,
+)
 from autarkic_systems.willard_map import load_willard_definition_map
 
 
@@ -34,6 +38,7 @@ REQUIRED_CONFIGURATION_FIELDS = (
     "consistency_notion",
     "self_reference",
     "fixed_point_equation_candidate",
+    "fixed_point_obstruction",
     "substrate_bridge",
 )
 
@@ -358,6 +363,9 @@ def _validate_target(
     if "fixed_point_equation_candidate" in target.configuration:
         results.extend(_validate_fixed_point_equation_candidate(target))
 
+    if "fixed_point_obstruction" in target.configuration:
+        results.extend(_validate_fixed_point_obstruction(target))
+
     if target.status == "blocked" and not target.blocked_by:
         results.append(
             _rejected(
@@ -408,6 +416,32 @@ def _validate_fixed_point_equation_candidate(
     ]
 
 
+def _validate_fixed_point_obstruction(
+    target: FormalConfidenceTarget,
+) -> list[FormalConfidenceValidation]:
+    subject = f"{target.target_id}.fixed_point_obstruction"
+    obstruction_path = target.configuration["fixed_point_obstruction"]
+    try:
+        obstructions = load_fixed_point_obstructions(obstruction_path)
+        report = validate_fixed_point_obstructions(obstructions)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return [
+            _rejected(
+                subject,
+                "fixed-point obstruction rejected: " + str(exc),
+            )
+        ]
+    if report.accepted:
+        return [_accepted(subject, "fixed-point obstruction accepted")]
+    return [
+        _rejected(
+            subject,
+            "fixed-point obstruction rejected: "
+            + _joined_or_none(report.failed_subjects),
+        )
+    ]
+
+
 def _failed_subject_for_result(subject: str) -> str:
     if subject.endswith(".willard_anchors"):
         return "target-willard-anchor"
@@ -415,6 +449,8 @@ def _failed_subject_for_result(subject: str) -> str:
         return "target-configuration"
     if subject.endswith(".fixed_point_equation_candidate"):
         return "target-fixed-point-equation-candidate"
+    if subject.endswith(".fixed_point_obstruction"):
+        return "target-fixed-point-obstruction"
     if subject.endswith(".blockers"):
         return "target-blockers"
     if subject.endswith(".status"):

@@ -16,6 +16,8 @@ overclaims.
 ADR-0237 adds `claims/fixed_point_obstructions.json`, recording that this
 naive direct quotation-substitution scheme is length-obstructed: for the
 current template, quoted-sequence embedding strictly increases encoded length.
+ADR-0238 makes that obstruction a checked aggregate formal-confidence
+dependency alongside the candidate itself.
 
 ## Purpose
 

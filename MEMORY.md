@@ -137,6 +137,10 @@
   checked formula is `candidate_length = context_length + 1 + 2*input_length +
   token_sum`, with context length `5` and minimum growth delta `6`, so this
   direct embedding route cannot satisfy the fixed-point equation.
+- ADR-0238 makes `claims/fixed_point_obstructions.json` a structured
+  fail-closed dependency of `autarkic_systems.formal_confidence`; missing or
+  invalid obstruction references now reject formal-confidence validation as
+  `target-fixed-point-obstruction`.
 - `AS-FORMAL-CONFIDENCE-TARGET-001` now points at the fixed-point target and no
   longer uses the broad `self-reference-fixed-point` blocker. It remains
   blocked on `fixed-point-construction`.

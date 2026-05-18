@@ -8,6 +8,11 @@ ADR-0237 adds `claims/fixed_point_obstructions.json` and
 ADR-0235 direct quotation-substitution candidate cannot close the fixed-point
 equation for the current template.
 
+ADR-0238 makes this surface a structured dependency of
+`autarkic_systems.formal_confidence`, so the aggregate formal-confidence
+target now fails closed if the obstruction manifest is missing, invalid, or
+overclaims.
+
 ## Purpose
 
 ADR-0235 showed that the naive candidate is not fixed. ADR-0237 records the
@@ -52,6 +57,7 @@ python -m autarkic_systems.fixed_point_obstruction
 python -m autarkic_systems.fixed_point_obstruction --format json
 python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.formal_confidence
+python -m autarkic_systems.formal_confidence --format json
 python -m autarkic_systems.project_status --format summary
 ```
 

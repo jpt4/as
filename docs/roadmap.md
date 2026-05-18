@@ -4934,3 +4934,26 @@ Deliverables:
 Status: accepted in `docs/adr/0237-naive-fixed-point-obstruction.md`.
 Implemented in `autarkic_systems/fixed_point_obstruction.py`, with tests in
 `tests/test_fixed_point_obstruction.py`.
+
+## ADR-0238: Formal Confidence Obstruction Dependency
+
+Goal: make the fixed-point obstruction a checked dependency of the aggregate
+formal-confidence target instead of a text-only reference.
+
+Deliverables:
+
+- `claims/formal_confidence_targets.json` with a structured
+  `fixed_point_obstruction` configuration field;
+- `autarkic_systems.formal_confidence` validation that loads and checks the
+  referenced obstruction surface;
+- accepted text/JSON report output for the healthy checked obstruction;
+- fail-closed rejection for missing or invalid obstruction references,
+  reported as `target-fixed-point-obstruction`; and
+- no diagonal lemma, fixed-point equation proof, arithmetized proof predicate,
+  theorem prover, runtime behavior, command semantics, evidence bundle, or
+  GitHub submission logic changes.
+
+Status: accepted in
+`docs/adr/0238-formal-confidence-obstruction-dependency.md`. Implemented in
+`autarkic_systems/formal_confidence.py`, with tests in
+`tests/test_formal_confidence_target.py`.

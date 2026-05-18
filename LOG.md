@@ -5139,3 +5139,22 @@
   Live fixed-point-obstruction text/JSON output reported the naive candidate
   impossible by length growth; live project-status summary remained accepted
   and blocked.
+
+## 2026-05-18 - Formal Confidence Obstruction Dependency
+
+- Added ADR-0238 to make the ADR-0237 fixed-point obstruction a structured
+  dependency of the aggregate formal-confidence target.
+- Added red tests before implementation. The red run failed because
+  `fixed_point_obstruction` was not a required configuration field, the
+  aggregate report did not expose an accepted obstruction result, and missing
+  obstruction manifests did not reject formal-confidence validation.
+- Added `fixed_point_obstruction` to `claims/formal_confidence_targets.json`
+  and required configuration fields.
+- Updated `autarkic_systems.formal_confidence` to load and validate the
+  referenced obstruction surface, report `fixed-point obstruction accepted` on
+  the healthy path, and fail closed as `target-fixed-point-obstruction` when
+  the dependency is missing or invalid.
+- Focused formal-confidence and project-status tests passed 100 tests. Live
+  formal-confidence text/JSON output reported the obstruction dependency
+  accepted, while the formal-confidence target remained blocked on
+  `fixed-point-construction`; live project-status summary remained accepted.

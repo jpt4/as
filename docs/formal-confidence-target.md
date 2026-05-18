@@ -2,8 +2,8 @@
 
 Status: checked target boundary with arithmetic syntax, codebook, substitution,
 consistency-level target, deduction-apparatus target, fixed-point target, and
-quotation sequence/term dependencies, plus a validated fixed-point equation
-candidate dependency, 2026-05-18.
+quotation sequence/term dependencies, plus validated fixed-point equation
+candidate and obstruction dependencies, 2026-05-18.
 
 ADR-0224 adds `claims/formal_confidence_targets.json` and
 `autarkic_systems/formal_confidence.py`. The target records what AS would need
@@ -52,7 +52,8 @@ quotation-term substitution candidate is not fixed. ADR-0236 makes that
 candidate surface a structured, fail-closed dependency of the aggregate
 formal-confidence validator. ADR-0237 records the length-growth obstruction
 showing why direct quotation-term embedding cannot be the real fixed-point
-construction.
+construction. ADR-0238 makes that obstruction surface a structured,
+fail-closed dependency of the aggregate formal-confidence validator.
 
 ## Current Target
 
@@ -77,9 +78,10 @@ fixed-point target in `claims/fixed_point_targets.json`, which now references
 `language/formal_quotation_sequence_examples.json` and
 `language/formal_quotation_term_examples.json`; the naive equation candidate
 is recorded and validated through `claims/fixed_point_equation_candidates.json`.
-The checked obstruction in `claims/fixed_point_obstructions.json` records why
-that naive direct embedding route is closed. The target also records the
-remaining blocker: `fixed-point-construction`.
+The checked obstruction in `claims/fixed_point_obstructions.json` is also
+validated as an aggregate dependency and records why that naive direct
+embedding route is closed. The target also records the remaining blocker:
+`fixed-point-construction`.
 
 ## Run
 
@@ -116,6 +118,7 @@ The validator checks that:
 - required Willard anchors are present;
 - every required configuration field is present and non-blank;
 - the referenced fixed-point equation candidate surface validates;
+- the referenced fixed-point obstruction surface validates;
 - blocked targets name blockers; and
 - each target names a next AS action.
 

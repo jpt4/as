@@ -25,6 +25,7 @@ CONSISTENCY_LEVEL_TARGETS = Path("claims/consistency_level_targets.json")
 DEDUCTION_APPARATUS_TARGETS = Path("claims/deduction_apparatus_targets.json")
 FIXED_POINT_TARGETS = Path("claims/fixed_point_targets.json")
 FIXED_POINT_EQUATION_CANDIDATES = Path("claims/fixed_point_equation_candidates.json")
+FIXED_POINT_OBSTRUCTIONS = Path("claims/fixed_point_obstructions.json")
 
 
 class FormalConfidenceTargetTests(unittest.TestCase):
@@ -46,6 +47,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
                 "consistency_notion",
                 "self_reference",
                 "fixed_point_equation_candidate",
+                "fixed_point_obstruction",
                 "substrate_bridge",
             ),
         )
@@ -90,6 +92,10 @@ class FormalConfidenceTargetTests(unittest.TestCase):
             target.configuration["fixed_point_equation_candidate"],
             str(FIXED_POINT_EQUATION_CANDIDATES),
         )
+        self.assertEqual(
+            target.configuration["fixed_point_obstruction"],
+            str(FIXED_POINT_OBSTRUCTIONS),
+        )
         self.assertNotIn("arithmetic-object-language", target.blocked_by)
         self.assertNotIn("proof-code-encoding", target.blocked_by)
         self.assertNotIn("self-reference-substitution", target.blocked_by)
@@ -114,6 +120,13 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertTrue(
             any(
                 result.subject == "AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_equation_candidate"
+                and result.accepted
+                for result in report.results
+            )
+        )
+        self.assertTrue(
+            any(
+                result.subject == "AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_obstruction"
                 and result.accepted
                 for result in report.results
             )
@@ -170,6 +183,13 @@ class FormalConfidenceTargetTests(unittest.TestCase):
                 for result in payload["results"]
             )
         )
+        self.assertTrue(
+            any(
+                result["subject"].endswith(".fixed_point_obstruction")
+                and result["accepted"]
+                for result in payload["results"]
+            )
+        )
 
     def test_text_report_exposes_blocked_target(self):
         report = validate_formal_confidence_targets(self.manifest, WILLARD_MAP)
@@ -187,6 +207,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertNotIn("self-reference-fixed-point", text)
         self.assertIn("Willard anchors:", text)
         self.assertIn("fixed-point equation candidate accepted", text)
+        self.assertIn("fixed-point obstruction accepted", text)
         self.assertNotIn("FAIL", text)
 
     def test_unknown_willard_anchor_is_rejected(self):
@@ -237,6 +258,24 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertIn("target-fixed-point-equation-candidate", report.failed_subjects)
         self.assertTrue(
             any("fixed-point equation candidate rejected" in result.detail for result in report.results)
+        )
+
+    def test_missing_fixed_point_obstruction_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target_path = Path(tmp) / "targets.json"
+            data = json.loads(TARGETS.read_text(encoding="utf-8"))
+            data["targets"][0]["configuration"]["fixed_point_obstruction"] = (
+                "claims/missing_fixed_point_obstructions.json"
+            )
+            target_path.write_text(json.dumps(data), encoding="utf-8")
+            manifest = load_formal_confidence_targets(target_path)
+
+            report = validate_formal_confidence_targets(manifest, WILLARD_MAP)
+
+        self.assertFalse(report.accepted)
+        self.assertIn("target-fixed-point-obstruction", report.failed_subjects)
+        self.assertTrue(
+            any("fixed-point obstruction rejected" in result.detail for result in report.results)
         )
 
     def test_blocked_target_without_blockers_is_rejected(self):

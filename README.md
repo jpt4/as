@@ -395,7 +395,7 @@ proof certificates, object languages, evidence bundles, and status reports:
   formal-confidence target manifest against the Willard definition map, keeping
   the current AS self-consistency claim explicitly blocked until fixed-point
   construction exists and fail-closed over the current fixed-point equation
-  candidate dependency.
+  candidate and obstruction dependencies.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -469,7 +469,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.formal_confidence --format json` validates that
   target against `sources/willard_definition_map.json`, including required
   Willard anchors, required configuration fields, the fixed-point equation
-  candidate dependency, explicit blockers, and the next AS action.
+  candidate and obstruction dependencies, explicit blockers, and the next AS
+  action.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init/write-buffer delivery and rejected
   standard-signal delivery.
