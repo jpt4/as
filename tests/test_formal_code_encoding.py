@@ -55,6 +55,7 @@ class FormalCodeEncodingTests(unittest.TestCase):
         self.assertIn("successor", self.codebook.term_tags)
         self.assertIn("sequence_nil", self.codebook.term_tags)
         self.assertIn("sequence_cons", self.codebook.term_tags)
+        self.assertIn("substitution_code", self.codebook.term_tags)
         self.assertIn("bounded_exists", self.codebook.formula_tags)
         self.assertIn("pi1", self.codebook.sentence_tags)
         self.assertIn("proof_line", self.codebook.proof_line_tags)
@@ -95,6 +96,19 @@ class FormalCodeEncodingTests(unittest.TestCase):
         decoded = decode_code(code, self.codebook)
 
         self.assertEqual(code, (17, 13, 12, 17, 12, 16))
+        self.assertEqual(decoded, node)
+
+    def test_encoder_and_decoder_round_trip_a_substitution_code_term(self):
+        node = {
+            "kind": "substitution_code",
+            "left": {"kind": "variable", "name": "n"},
+            "right": {"kind": "variable", "name": "n"},
+        }
+
+        code = encode_node(node, self.codebook)
+        decoded = decode_code(code, self.codebook)
+
+        self.assertEqual(code, (18, 11, 4, 11, 4))
         self.assertEqual(decoded, node)
 
     def test_encoder_and_decoder_round_trip_a_bounded_formula(self):
@@ -148,7 +162,7 @@ class FormalCodeEncodingTests(unittest.TestCase):
         self.assertEqual(payload["codebook_id"], "as-formal-codebook-v1")
         self.assertEqual(payload["language_id"], "as-formal-arithmetic-v1")
         self.assertEqual(payload["failed_subjects"], [])
-        self.assertEqual(payload["example_count"], 5)
+        self.assertEqual(payload["example_count"], 6)
         self.assertIn("proof_line", payload["proof_line_tags"])
 
     def test_text_report_exposes_codebook_surface(self):
@@ -159,7 +173,7 @@ class FormalCodeEncodingTests(unittest.TestCase):
         self.assertIn("Formal codebook: accepted", text)
         self.assertIn("Codebook: as-formal-codebook-v1", text)
         self.assertIn("Language: as-formal-arithmetic-v1", text)
-        self.assertIn("Examples: 5", text)
+        self.assertIn("Examples: 6", text)
         self.assertNotIn("FAIL", text)
 
     def test_duplicate_tag_code_is_rejected(self):
@@ -286,7 +300,7 @@ class FormalCodeEncodingTests(unittest.TestCase):
         payload = json.loads(completed.stdout)
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertTrue(payload["accepted"])
-        self.assertEqual(payload["example_count"], 5)
+        self.assertEqual(payload["example_count"], 6)
 
 
 if __name__ == "__main__":

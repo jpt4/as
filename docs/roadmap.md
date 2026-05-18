@@ -5008,3 +5008,29 @@ Status: accepted in
 `docs/adr/0240-formal-confidence-consistency-dependency.md`. Implemented in
 `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0241: Substitution-Code Term Surface
+
+Goal: add the first checked term surface for arithmetized substitution-code
+routes needed by diagonal construction.
+
+Deliverables:
+
+- `language/formal_arithmetic_language.json` with a `substitution_code(t,u)`
+  binary coding term;
+- `language/formal_codebook.json` with a unique `substitution_code` term tag
+  and checked round-trip example;
+- `autarkic_systems.formal_code` encode/decode support for the term;
+- `autarkic_systems.formal_substitution` free-variable and substitution
+  traversal support for the term;
+- focused red-green tests for language, codebook, and substitution behavior;
+  and
+- no substitution representability proof, diagonal lemma, fixed-point equation
+  proof, self-consistency theorem, runtime behavior, command semantics,
+  evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in `docs/adr/0241-substitution-code-term-surface.md`.
+Implemented in `autarkic_systems/formal_code.py` and
+`autarkic_systems/formal_substitution.py`, with tests in
+`tests/test_formal_arithmetic_language.py`,
+`tests/test_formal_code_encoding.py`, and `tests/test_formal_substitution.py`.

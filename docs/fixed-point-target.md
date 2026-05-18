@@ -11,10 +11,10 @@ formal codebook.
 
 AS now has a formal codebook, capture-avoiding substitution examples, token
 numeral quotation examples, token-numeral sequence examples, quotation term
-examples, a checked naive equation candidate, a Level-1 consistency target,
-and a selected deduction-apparatus target. Those are prerequisites for a
-SelfCons-style statement, but they still do not construct a diagonal fixed
-point.
+examples, a checked `substitution_code` term surface, a checked naive equation
+candidate, a Level-1 consistency target, and a selected deduction-apparatus
+target. Those are prerequisites for a SelfCons-style statement, but they still
+do not construct a diagonal fixed point.
 
 The fixed-point target records the next precise obligation:
 
@@ -40,7 +40,9 @@ The checked instance proves only that the current substitution, codebook,
 token quotation, token-numeral sequence, and quotation-term surfaces can
 preserve the selected template boundary and round-trip the expected encoded
 instance. ADR-0235 additionally checks the naive quotation substitution and
-records that it is not a fixed point.
+records that it is not a fixed point. ADR-0241 adds the coding term needed to
+state a diagonal substitution route without repeating that direct
+self-embedding move.
 
 ## Run
 

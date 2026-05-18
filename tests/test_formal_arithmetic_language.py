@@ -48,8 +48,13 @@ class FormalArithmeticLanguageTests(unittest.TestCase):
         term_symbols = self.language.syntax_classes["terms"]["function_symbols"]
         self.assertEqual(term_symbols["sequence_nil"]["arity"], 0)
         self.assertEqual(term_symbols["sequence_cons"]["arity"], 2)
+        self.assertEqual(term_symbols["substitution_code"]["arity"], 2)
         self.assertEqual(
             term_symbols["sequence_cons"]["totality_status"],
+            "coding-symbol-not-arithmetic-theorem",
+        )
+        self.assertEqual(
+            term_symbols["substitution_code"]["totality_status"],
             "coding-symbol-not-arithmetic-theorem",
         )
 

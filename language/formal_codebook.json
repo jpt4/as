@@ -23,7 +23,8 @@
     "addition": 14,
     "multiplication": 15,
     "sequence_nil": 16,
-    "sequence_cons": 17
+    "sequence_cons": 17,
+    "substitution_code": 18
   },
   "formula_tags": {
     "equals": 21,
@@ -148,6 +149,21 @@
         }
       },
       "expected_code": [17, 13, 12, 17, 12, 16]
+    },
+    {
+      "example_id": "diagonal-substitution-code-term",
+      "node": {
+        "kind": "substitution_code",
+        "left": {
+          "kind": "variable",
+          "name": "n"
+        },
+        "right": {
+          "kind": "variable",
+          "name": "n"
+        }
+      },
+      "expected_code": [18, 11, 4, 11, 4]
     }
   ]
 }

@@ -1,6 +1,7 @@
 # Formal Codebook
 
-Status: first checked proof-code encoding surface, 2026-05-18.
+Status: checked proof-code encoding surface with substitution-code term,
+2026-05-18.
 
 ADR-0227 adds `language/formal_codebook.json` and
 `autarkic_systems/formal_code.py`. The codebook is the first AS proof-code
@@ -16,6 +17,8 @@ The codebook currently covers:
 
 - variables and arithmetic terms;
 - quotation-coding sequence terms with `sequence_nil` and `sequence_cons`;
+- the `substitution_code` binary term needed to state later diagonal
+  substitution-code routes;
 - equality, less-than, connectives, and bounded/unbounded quantifier nodes;
 - `pi1` and `sigma1` sentence wrappers; and
 - placeholder proof-line shells with line numbers, rule codes, formula codes,
@@ -27,6 +30,9 @@ self-reference or prove consistency over them. ADR-0228 adds the separate
 substitution surface over these nodes; ADR-0234 adds the checked
 quotation-term surface that uses the sequence term constructors. ADR-0239 adds
 a checked complement surface over `pi1` and `sigma1` sentence wrappers.
+ADR-0241 adds the checked `substitution_code` term surface needed before the
+diagonal construction can be stated as arithmetized substitution rather than
+direct quotation self-embedding.
 
 ## Run
 
@@ -40,7 +46,8 @@ The validator checks that:
 - the codebook points at the checked formal arithmetic language;
 - required Willard anchors are present and known;
 - term, formula, sentence, and proof-line tags are present, including the
-  sequence term tags needed by quotation;
+  sequence term tags needed by quotation and the substitution-code tag needed
+  by later diagonal construction;
 - tag values are unique positive integers;
 - checked examples encode to their expected code sequences; and
 - checked examples decode back to their canonical nodes.

@@ -3,7 +3,9 @@
 The encoder in this module is deliberately small and inspectable. It encodes
 the ADR-0226 formal arithmetic node vocabulary as tagged natural-number
 sequences and decodes those sequences back to canonical node dictionaries.
-This is proof-code infrastructure only; it is not a proof checker, deduction
+The `substitution_code` term is a syntactic coding hook for later diagonal
+construction, not an implemented arithmetic substitution function. This is
+proof-code infrastructure only; it is not a proof checker, deduction
 apparatus, substitution engine, arithmetic sequence theory, or
 self-reference theorem.
 """
@@ -199,7 +201,7 @@ def encode_node(node: dict[str, Any], codebook: FormalCodebook) -> tuple[int, ..
             *encode_node(_required_node(node, "head"), codebook),
             *encode_node(_required_node(node, "tail"), codebook),
         )
-    if kind in {"addition", "multiplication"}:
+    if kind in {"addition", "multiplication", "substitution_code"}:
         return (
             codebook.term_tags[kind],
             *encode_node(_required_node(node, "left"), codebook),
@@ -426,6 +428,7 @@ def _validate_tags(codebook: FormalCodebook) -> list[FormalCodeValidation]:
             "multiplication",
             "sequence_nil",
             "sequence_cons",
+            "substitution_code",
         ),
         "formula_tags": (
             "equals",
@@ -563,7 +566,7 @@ def _decode_term(
         head, index = _decode_at(tokens, index, codebook)
         tail, index = _decode_at(tokens, index, codebook)
         return {"kind": "sequence_cons", "head": head, "tail": tail}, index
-    if kind in {"addition", "multiplication"}:
+    if kind in {"addition", "multiplication", "substitution_code"}:
         left, index = _decode_at(tokens, index, codebook)
         right, index = _decode_at(tokens, index, codebook)
         return {"kind": kind, "left": left, "right": right}, index

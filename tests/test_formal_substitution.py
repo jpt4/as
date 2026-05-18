@@ -106,6 +106,26 @@ class FormalSubstitutionTests(unittest.TestCase):
         )
         self.assertEqual(free_variables(substituted), frozenset())
 
+    def test_substitutes_inside_substitution_code_terms(self):
+        node = {
+            "kind": "substitution_code",
+            "left": {"kind": "variable", "name": "x"},
+            "right": {"kind": "variable", "name": "n"},
+        }
+        replacement = {"kind": "successor", "term": {"kind": "zero"}}
+
+        substituted = substitute_node(node, "x", replacement)
+
+        self.assertEqual(
+            substituted,
+            {
+                "kind": "substitution_code",
+                "left": {"kind": "successor", "term": {"kind": "zero"}},
+                "right": {"kind": "variable", "name": "n"},
+            },
+        )
+        self.assertEqual(free_variables(substituted), frozenset({"n"}))
+
     def test_substitutes_inside_formulae(self):
         node = {
             "kind": "bounded_exists",

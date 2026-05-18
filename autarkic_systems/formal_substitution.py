@@ -183,7 +183,16 @@ def free_variables(node: dict[str, Any]) -> frozenset[str]:
         return free_variables(_required_node(node, "head")) | free_variables(
             _required_node(node, "tail")
         )
-    if kind in {"addition", "multiplication", "equals", "less_than", "and", "or", "implies"}:
+    if kind in {
+        "addition",
+        "multiplication",
+        "substitution_code",
+        "equals",
+        "less_than",
+        "and",
+        "or",
+        "implies",
+    }:
         return free_variables(_required_node(node, "left")) | free_variables(
             _required_node(node, "right")
         )
@@ -337,7 +346,16 @@ def _substitute(
             "head": _substitute(_required_node(node, "head"), variable, replacement),
             "tail": _substitute(_required_node(node, "tail"), variable, replacement),
         }
-    if kind in {"addition", "multiplication", "equals", "less_than", "and", "or", "implies"}:
+    if kind in {
+        "addition",
+        "multiplication",
+        "substitution_code",
+        "equals",
+        "less_than",
+        "and",
+        "or",
+        "implies",
+    }:
         return {
             "kind": kind,
             "left": _substitute(_required_node(node, "left"), variable, replacement),
@@ -553,7 +571,7 @@ def _is_term_node(node: dict[str, Any]) -> bool:
         return _is_term_node(_required_node(node, "head")) and _is_term_node(
             _required_node(node, "tail")
         )
-    if kind in {"addition", "multiplication"}:
+    if kind in {"addition", "multiplication", "substitution_code"}:
         return _is_term_node(_required_node(node, "left")) and _is_term_node(
             _required_node(node, "right")
         )

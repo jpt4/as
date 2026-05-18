@@ -38,9 +38,11 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/formal-arithmetic-language.md` records the first checked syntax-only
   Type-NS arithmetic language surface for the formal-confidence path.
 - `docs/formal-codebook.md` records the first checked proof-code encoding
-  surface over that arithmetic language.
+  surface over that arithmetic language, now including a substitution-code term
+  needed for later diagonal construction.
 - `docs/formal-substitution.md` records the first checked capture-avoiding
-  substitution surface over formal codebook nodes.
+  substitution surface over formal codebook nodes, including sequence and
+  substitution-code terms.
 - `docs/formal-complement.md` records the first checked `pi1`/`sigma1`
   sentence-complement surface for Level-1 consistency work.
 - `docs/formal-quotation.md` records the first checked code-token numeral
@@ -370,10 +372,12 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/formal_code.py` validates and runs the first formal
   proof-code codebook, encoding and decoding tagged natural-number prefix
   sequences for terms, formulae, `pi1`/`sigma1` sentence wrappers, and
-  placeholder proof-line shells.
+  placeholder proof-line shells, including the `substitution_code` term needed
+  to state later diagonal substitution-code routes.
 - `autarkic_systems/formal_substitution.py` validates and runs the first
   capture-avoiding free-variable substitution surface over the formal codebook
-  nodes, including binder-respecting and capture-rejection examples.
+  nodes, including binder-respecting, substitution-code term, and
+  capture-rejection examples.
 - `autarkic_systems/formal_complement.py` validates and runs the first
   `pi1`/`sigma1` sentence-complement surface over the formal codebook.
 - `autarkic_systems/formal_quotation.py` validates and runs the first
@@ -439,10 +443,12 @@ proof certificates, object languages, evidence bundles, and status reports:
   placeholder-only proof-object boundary.
 - `python -m autarkic_systems.formal_code --format json` validates
   `language/formal_codebook.json`, including required Willard anchors, unique
-  tag codes, manifest examples, and encode/decode round trips.
+  tag codes, manifest examples, the `substitution_code` tag, and encode/decode
+  round trips.
 - `python -m autarkic_systems.formal_substitution --format json` validates
   `language/formal_substitution_examples.json`, including free-variable
-  substitution examples, capture rejection, and expected encoded outputs.
+  substitution examples, substitution-code term traversal, capture rejection,
+  and expected encoded outputs.
 - `python -m autarkic_systems.formal_complement --format json` validates
   `language/formal_complement_examples.json`, including checked `pi1` to
   `sigma1` and `sigma1` to `pi1` sentence-wrapper complements.

@@ -40,9 +40,14 @@
           "notation": "cons(t,u)",
           "arity": 2,
           "totality_status": "coding-symbol-not-arithmetic-theorem"
+        },
+        "substitution_code": {
+          "notation": "subst_code(t,u)",
+          "arity": 2,
+          "totality_status": "coding-symbol-not-arithmetic-theorem"
         }
       },
-      "examples": ["0", "S(0)", "S(x)", "cons(S(0), nil)"]
+      "examples": ["0", "S(0)", "S(x)", "cons(S(0), nil)", "subst_code(n,n)"]
     },
     "formulae": {
       "relation_symbols": {

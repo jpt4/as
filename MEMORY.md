@@ -129,6 +129,12 @@
   quotation-term layer over quoted token sequences. It still does not prove
   sequence arithmetic axioms, a diagonal lemma, a fixed-point equation, or
   self-consistency.
+- ADR-0241 adds `substitution_code(t,u)` as a checked syntax/codebook term
+  surface for later diagonal construction; `formal_code` round-trips it with
+  tag `18`, and `formal_substitution` treats it as a binary term for
+  free-variable calculation and substitution. It still does not prove
+  substitution representability, a diagonal lemma, a fixed-point equation, or
+  self-consistency.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

@@ -1,11 +1,12 @@
 # Formal Substitution
 
-Status: first checked capture-avoiding substitution surface, 2026-05-18.
+Status: checked capture-avoiding substitution surface with sequence and
+substitution-code terms, 2026-05-18.
 
 ADR-0228 adds `language/formal_substitution_examples.json` and
 `autarkic_systems/formal_substitution.py`. This is the first substitution
 artifact over the formal codebook nodes, including the ADR-0234 sequence term
-constructors.
+constructors and ADR-0241 substitution-code term.
 
 ## Purpose
 
@@ -19,6 +20,8 @@ The substitution surface currently covers:
 - free-variable calculation for terms, formulae, sentence wrappers, bounded
   quantifiers, and proof-line shells;
 - free-variable calculation and substitution inside `sequence_cons` quotation
+  terms;
+- free-variable calculation and substitution inside `substitution_code` coding
   terms;
 - substitution of term nodes for free variable occurrences;
 - binder-respecting behavior for quantifiers and `pi1`/`sigma1` wrappers;
@@ -42,6 +45,7 @@ The validator checks that:
 
 ## Boundary
 
-This is not a parser, evaluator, proof checker, deduction apparatus, fixed-point
+This is not a parser, evaluator, proof checker, deduction apparatus, proof that
+`substitution_code` represents the meta-level substitution helper, fixed-point
 self-reference construction, diagonal lemma, or self-consistency theorem. It is
 the substitution layer needed before those later claims can be stated honestly.

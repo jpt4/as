@@ -5201,3 +5201,23 @@
   formal-confidence text/JSON output reported the consistency-level target
   dependency accepted, while the formal-confidence target remained blocked on
   `fixed-point-construction`.
+
+## 2026-05-18 - Substitution-Code Term Surface
+
+- Added ADR-0241 to create the first checked term surface for arithmetized
+  substitution-code routes needed by diagonal construction.
+- Added red tests before implementation. The red run failed because
+  `substitution_code` was missing from the formal arithmetic language, formal
+  codebook tags/examples, codebook encoder/decoder, and substitution traversal.
+- Added `substitution_code(t,u)` to
+  `language/formal_arithmetic_language.json` as a binary coding term without
+  asserting arithmetic totality.
+- Added `substitution_code` tag `18` and a checked `substitution_code(n,n)`
+  round-trip example to `language/formal_codebook.json`.
+- Updated `autarkic_systems.formal_code` to encode/decode the term and
+  `autarkic_systems.formal_substitution` to calculate free variables and
+  substitute inside both term arguments.
+- Focused formal-arithmetic, formal-codebook, and formal-substitution tests
+  passed 46 tests. This preserves the fixed-point blocker: no substitution
+  representability proof, diagonal lemma, fixed-point equation proof, or
+  self-consistency theorem is claimed.
