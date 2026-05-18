@@ -178,6 +178,9 @@ queue as the JSON report.
 ADR-0111 adds the corresponding question summaries to project status JSON and
 text output, bumping the schema version to `4` so the status report now carries
 the blocker work queue without requiring a second source-status file pass.
+ADR-0112 adds blocked runtime surfaces to project status JSON and text output,
+bumping the schema version to `5` so the report now names where the unresolved
+command-token questions apply.
 
 ## P3: Choose The First Proof Apparatus
 

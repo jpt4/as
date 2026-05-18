@@ -2115,3 +2115,24 @@ Status: accepted in
 `docs/adr/0111-project-status-resolution-question-summaries.md`. Implemented
 in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0112: Project Status Blocked Runtime Surfaces
+
+Goal: expose source-status blocked runtime surfaces from the project status
+frontier.
+
+Deliverables:
+
+- `blocked_runtime_surfaces` list on each accepted
+  `frontier.source_statuses` entry;
+- schema bump from project status `schema_version: 4` to `schema_version: 5`;
+- default text status renders blocked runtime surfaces under each contributing
+  command label;
+- `source-status-schema` failures for malformed `blocked_runtime_surfaces`
+  fields; and
+- focused in-process, JSON CLI, text-output, and malformed-surface tests.
+
+Status: accepted in
+`docs/adr/0112-project-status-blocked-runtime-surfaces.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

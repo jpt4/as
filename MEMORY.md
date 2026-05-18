@@ -505,3 +505,6 @@
 - ADR-0111 bumps `autarkic_systems.project_status` to `schema_version: 4` and
   adds summary-bearing per-source `resolution_questions` objects while keeping
   the existing `required_resolution_questions` ID lists.
+- ADR-0112 bumps `autarkic_systems.project_status` to `schema_version: 5`,
+  adds per-source `blocked_runtime_surfaces`, renders them in text status, and
+  rejects malformed surface lists as `source-status-schema`.

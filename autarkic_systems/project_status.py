@@ -32,7 +32,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 4
+PROJECT_STATUS_SCHEMA_VERSION = 5
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -96,6 +96,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         f"Chain evidence: {chain_status} ({chain['bundle_count']} bundles)",
         "Blocked commands: "
         + (", ".join(blocked_commands) if blocked_commands else "none"),
+        *_blocked_runtime_surface_text_lines(frontier),
         *_resolution_question_text_lines(frontier),
         f"Safe next slice: {frontier['safe_next_slice'] or 'none'}",
         "Missing registry files: "
@@ -262,6 +263,7 @@ def _frontier_summary(
                 "safe_next_slice": safe_next_slice,
                 "as_boundary": _optional_text(data, "as_boundary"),
                 "commands": _ordered_blocked_commands(source_commands),
+                "blocked_runtime_surfaces": _blocked_runtime_surfaces(data),
                 "required_resolution_questions": _resolution_question_ids(data),
                 "resolution_questions": _resolution_questions(data),
             }
@@ -330,6 +332,26 @@ def _resolution_questions(data: dict[str, Any]) -> list[dict[str, str]]:
     return resolution_questions
 
 
+def _blocked_runtime_surfaces(data: dict[str, Any]) -> list[str]:
+    surfaces = data.get("blocked_runtime_surfaces")
+    if not isinstance(surfaces, list):
+        return []
+    return [surface for surface in surfaces if isinstance(surface, str)]
+
+
+def _blocked_runtime_surface_text_lines(frontier: dict[str, Any]) -> list[str]:
+    lines = ["Blocked runtime surfaces:"]
+    for source_status in frontier["source_statuses"]:
+        surfaces = source_status["blocked_runtime_surfaces"]
+        if not surfaces:
+            continue
+        command_label = ", ".join(source_status["commands"]) or source_status["path"]
+        lines.append(f"  {command_label}: {', '.join(surfaces)}")
+    if len(lines) == 1:
+        return ["Blocked runtime surfaces: none"]
+    return lines
+
+
 def _resolution_question_text_lines(frontier: dict[str, Any]) -> list[str]:
     lines = ["Resolution questions:"]
     for source_status in frontier["source_statuses"]:
@@ -367,6 +389,9 @@ def _source_status_schema_error(data: Any) -> str:
         return command_error
     if not _blocked_commands_from_status(data):
         return "source-status command fields must include at least one command token"
+    surface_error = _blocked_runtime_surface_shape_error(data)
+    if surface_error:
+        return surface_error
     question_error = _resolution_question_shape_error(data)
     if question_error:
         return question_error
@@ -408,6 +433,20 @@ def _blank_command_token_error(data: dict[str, Any]) -> str:
             for item in value:
                 if isinstance(item, str) and not item.strip():
                     return "source-status command tokens must be non-empty text"
+    return ""
+
+
+def _blocked_runtime_surface_shape_error(data: dict[str, Any]) -> str:
+    if "blocked_runtime_surfaces" not in data:
+        return ""
+    surfaces = data.get("blocked_runtime_surfaces")
+    if not isinstance(surfaces, list):
+        return "source-status blocked_runtime_surfaces field must be a list"
+    for surface in surfaces:
+        if not isinstance(surface, str):
+            return "source-status runtime surfaces must be text"
+        if not surface.strip():
+            return "source-status runtime surfaces must be non-empty text"
     return ""
 
 

@@ -21,7 +21,12 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
-PROJECT_STATUS_SCHEMA_VERSION = 4
+PROJECT_STATUS_SCHEMA_VERSION = 5
+BLOCKED_RUNTIME_SURFACES = [
+    "recipient-command-message",
+    "self-mailbox-command",
+    "self-target-command-buffer",
+]
 STANDARD_SIGNAL_QUESTIONS = [
     "command-token-vs-binary-input",
     "command-table-offset",
@@ -143,6 +148,17 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertEqual(
             [
+                item["blocked_runtime_surfaces"]
+                for item in report["frontier"]["source_statuses"]
+            ],
+            [
+                [],
+                BLOCKED_RUNTIME_SURFACES,
+                BLOCKED_RUNTIME_SURFACES,
+            ],
+        )
+        self.assertEqual(
+            [
                 item["required_resolution_questions"]
                 for item in report["frontier"]["source_statuses"]
             ],
@@ -176,11 +192,36 @@ class ProjectStatusReportTests(unittest.TestCase):
             "Blocked commands: standard-signal, write-buf-zero, write-buf-one",
             text,
         )
+        self.assertIn("Blocked runtime surfaces:", text)
+        self.assertIn(
+            "standard-signal: recipient-command-message, "
+            "self-mailbox-command, self-target-command-buffer",
+            text,
+        )
         self.assertIn(
             "Safe next slice: revisit-standard-signal-or-write-buffer-command-semantics",
             text,
         )
         self.assertIn("Missing source-status files: none", text)
+
+    def test_text_status_names_no_blocked_runtime_surfaces_when_absent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            no_surface_status = Path(tmp) / "no_surface_status.json"
+            no_surface_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[no_surface_status],
+            )
+
+        text = format_project_status_report(report)
+        self.assertIn("Blocked runtime surfaces: none", text)
 
     def test_text_status_names_resolution_question_summaries(self):
         report = build_project_status_report()
@@ -242,6 +283,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 BLOCKED_COMMANDS,
                 ["standard-signal"],
                 ["write-buf-zero", "write-buf-one"],
+            ],
+        )
+        self.assertEqual(
+            [
+                item["blocked_runtime_surfaces"]
+                for item in payload["frontier"]["source_statuses"]
+            ],
+            [
+                [],
+                BLOCKED_RUNTIME_SURFACES,
+                BLOCKED_RUNTIME_SURFACES,
             ],
         )
         self.assertEqual(
@@ -585,6 +637,90 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn(
             "blocked_runtime_commands",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_scalar_blocked_runtime_surfaces_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "scalar_blocked_runtime_surfaces.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "blocked_runtime_surfaces": "recipient-command-message",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "blocked_runtime_surfaces",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_non_text_blocked_runtime_surface_entry_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "non_text_blocked_runtime_surface.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "blocked_runtime_surfaces": ["recipient-command-message", 0],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "runtime surface",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_blank_blocked_runtime_surface_entry_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "blank_blocked_runtime_surface.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "blocked_runtime_surfaces": ["recipient-command-message", " "],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "non-empty",
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 

@@ -310,3 +310,6 @@
 - Stable IDs are not enough for a useful blocker queue. Carry the short
   question summaries with the IDs so agents can choose the next source-backed
   work without re-opening every source-status artifact.
+- Blocker reports should include the runtime surfaces where a command is
+  blocked. Otherwise a future implementation can resolve the right command at
+  the wrong boundary.

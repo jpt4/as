@@ -2495,3 +2495,35 @@
   `resolution_questions`, and `frontier.failed_subjects: []`. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed, with the full
   suite running 565 tests.
+
+## 2026-05-18 - Project Status Blocked Runtime Surfaces
+
+- Added ADR-0112 to expose source-status `blocked_runtime_surfaces` in project
+  status.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed because the report still emitted `schema_version: 4`, lacked
+  per-source `blocked_runtime_surfaces`, text output omitted the blocked
+  runtime surface section, and malformed surface lists were accepted.
+- Updated `autarkic_systems.project_status` so accepted
+  `frontier.source_statuses` entries include `blocked_runtime_surfaces`, and
+  bumped `PROJECT_STATUS_SCHEMA_VERSION` to `5`.
+- Updated text status output so each contributing command label names its
+  blocked runtime surfaces.
+- Added source-status schema validation for malformed
+  `blocked_runtime_surfaces` fields.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the schema 5 blocked-runtime-surface contract.
+- Verified the focused project status test passed 33 tests; adjacent project
+  status, transition registry, and chain registry tests passed 58 tests. The
+  checked-in text status now reports accepted transition evidence with 8
+  bundles, accepted chain evidence with 2 bundles, blocked commands, blocked
+  runtime surfaces for standard-signal and write-buffer blockers, and
+  summary-bearing resolution-question lines. The checked-in JSON status
+  reported `schema_version: 5`, `accepted: true`, transition `bundle_count: 8`,
+  chain `bundle_count: 2`, aggregate blocked commands `standard-signal`,
+  `write-buf-zero`, and `write-buf-one`, per-source command attribution,
+  per-source `blocked_runtime_surfaces`, preserved
+  `required_resolution_questions` ID lists, summary-bearing
+  `resolution_questions`, and `frontier.failed_subjects: []`. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed, with the full
+  suite running 569 tests.

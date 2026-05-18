@@ -36,11 +36,12 @@ The text report names:
 - transition evidence accepted or rejected state and bundle count;
 - chain evidence accepted or rejected state and bundle count;
 - blocked command tokens;
+- blocked runtime surfaces;
 - blocker resolution question IDs and summaries; and
 - the safe next slice from the source-status records.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 4`. If a registry file is missing, the corresponding registry
+`schema_version: 5`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -62,7 +63,10 @@ rejects malformed resolution-question metadata when that optional field is
 present. ADR-0110 renders the accepted resolution question IDs in the default
 text report without changing the JSON shape. ADR-0111 adds per-source
 `resolution_questions` objects with `question_id` and `summary`, renders those
-summaries in text, and bumps the schema version to `4`.
+summaries in text, and bumps the schema version to `4`. ADR-0112 adds
+per-source `blocked_runtime_surfaces`, renders those surfaces in text, rejects
+malformed surface lists as source-status schema failures, and bumps the schema
+version to `5`.
 
 ## Boundary
 
