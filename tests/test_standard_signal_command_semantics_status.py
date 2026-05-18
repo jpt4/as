@@ -171,6 +171,15 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
             self_target["legacy_divergence"],
         )
 
+    def test_execution_readiness_preserves_unsupported_boundary(self):
+        readiness = self.status["execution_readiness"]
+
+        self.assertEqual(readiness["decision"], "preserved-unsupported")
+        self.assertFalse(readiness["execution_change_allowed"])
+        self.assertEqual(readiness["blocked_by_resolution_questions"], [])
+        self.assertIn("unsupported", readiness["summary"])
+        self.assertIn("new source evidence", readiness["summary"])
+
     def test_legacy_witnesses_exclude_standard_signal_from_special_messages(self):
         witnesses = {
             witness["witness_id"]: witness

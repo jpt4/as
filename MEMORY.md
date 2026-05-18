@@ -689,3 +689,7 @@
   and positive for rejected-chain behavior. Chain claim validation now
   evaluates nine examples without changing runtime, traces, SVGs, or evidence
   bundles.
+- ADR-0165 adds standard-signal `execution_readiness` as
+  `preserved-unsupported`: there are no live standard-signal resolution
+  questions, but execution changes remain disallowed unless new source
+  evidence replaces the existing unsupported self-target boundaries.

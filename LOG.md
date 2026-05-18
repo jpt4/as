@@ -3553,3 +3553,24 @@
   evaluated examples; project-status JSON accepted schema 15 with the same
   chain coverage. JSON parsing, `py_compile`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 731 tests.
+
+## 2026-05-18 - Standard-Signal Execution Readiness Boundary
+
+- Added ADR-0165 to remove an operator ambiguity in the standard-signal
+  source-status record: no live resolution questions means the unsupported
+  boundary is settled, not that command-token execution should be implemented.
+- Added red standard-signal, project-status, and source-status frontier tests
+  before implementation. The red full-suite check failed because
+  `sources/standard_signal_command_semantics_status.json` lacked
+  `execution_readiness`, and text/JSON reports therefore omitted the
+  standard-signal readiness line.
+- Added `execution_readiness.decision: preserved-unsupported` to the
+  standard-signal source-status record, with execution changes disallowed and
+  no unresolved-question blockers.
+- Runtime behavior, claims, proof certificates, traces, SVGs, and evidence
+  bundles remain unchanged; this is a source-status and operator-reporting
+  boundary slice.
+- Focused green verification passed 97 tests. Project-status remains schema
+  15 and source-status frontier remains schema 2. JSON parsing, `compileall`,
+  `git diff --check`, and `python -m unittest discover` passed; the full
+  suite ran 732 tests.

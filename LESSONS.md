@@ -466,3 +466,6 @@
   the composed-chain layer for the same zero/one or sibling-token symmetry.
   A chain claim can otherwise keep proving only the first example that happened
   to get a trace.
+- A settled negative command decision still needs explicit readiness metadata.
+  Otherwise "no unresolved questions" can be mistaken for implementation
+  permission when the actual decision is to preserve an unsupported boundary.

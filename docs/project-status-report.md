@@ -224,6 +224,9 @@ examples while preserving project status `schema_version: 15`.
 ADR-0164 extends the transition-chain claim/proof surface with delivered
 neighbor-c `write-buf-zero` rejection examples, so chain-claim validation now
 evaluates nine examples while preserving project status `schema_version: 15`.
+ADR-0165 adds explicit standard-signal execution-readiness metadata,
+rendering the settled `preserved-unsupported` decision in project-status JSON
+and text while preserving project status `schema_version: 15`.
 
 ## Boundary
 

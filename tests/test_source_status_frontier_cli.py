@@ -90,6 +90,18 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
         )
         self.assertIn("Execution readiness:", text)
         self.assertIn(
+            "standard-signal: preserved-unsupported; execution changes "
+            "allowed: no; blockers: none",
+            text,
+        )
+        self.assertIn(
+            "summary: Standard-signal command-token execution remains "
+            "preserved as unsupported at the self-target boundaries; "
+            "execution changes require new source evidence that replaces the "
+            "existing boundary.",
+            text,
+        )
+        self.assertIn(
             "write-buf-zero, write-buf-one: implemented; execution changes "
             "allowed: yes; blockers: none",
             text,

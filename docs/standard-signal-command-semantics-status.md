@@ -58,9 +58,16 @@ The restored legacy sketches do not supply a stable execution rule:
   nonzero binary input as ordinary standard input, and indexes command-buffer
   messages through the seven special messages only.
 
-ADR-0144 records the source conflict behind each still-unresolved
-standard-signal question in `resolution_question_evidence`, so the project
-status report names both the blocker and the reason it remains blocked.
+ADR-0144 recorded source conflict behind then-unresolved standard-signal
+questions in `resolution_question_evidence`, so the project status report
+could name both blockers and why they remained blocked while the queue was
+live.
+
+ADR-0165 records the settled execution-readiness boundary explicitly:
+`standard-signal` command-token execution is preserved as unsupported at the
+self-target boundaries, execution changes are not allowed, and any future
+change requires new source evidence that replaces the existing unsupported
+boundary.
 
 ## AS Boundary
 
@@ -101,7 +108,9 @@ unresolved. ADR-0148 moves `recipient-surface` into resolved questions through
 the existing recipient non-init rejection boundary. ADR-0150 moves
 `command-token-vs-binary-input` into resolved questions. ADR-0151 moves
 `self-target-surface` into resolved questions, leaving the standard-signal
-source-status record with no unresolved questions.
+source-status record with no unresolved questions. ADR-0165 adds explicit
+execution-readiness metadata so "no unresolved questions" cannot be mistaken
+for permission to implement `standard-signal` command-token execution.
 
 ## Verification
 
@@ -113,5 +122,5 @@ python -m unittest tests.test_standard_signal_command_semantics_status
 
 The tests check the decision, formal-model command/binary distinction, legacy
 witness divergence, resolved recipient-surface,
-command-token/binary-input, and self-target boundaries, and source-status
-frontier updates.
+command-token/binary-input, self-target boundaries, execution-readiness
+metadata, and source-status frontier updates.

@@ -3292,3 +3292,26 @@ Status: accepted in
 `docs/adr/0164-neighbor-write-buffer-zero-rejection-chain.md`. Implemented in
 the transition-chain claim/proof manifests and focused chain helper,
 chain-claim CLI, and project-status tests.
+
+## ADR-0165: Standard-Signal Execution Readiness Boundary
+
+Goal: make the settled `standard-signal` unsupported boundary explicit as
+execution-readiness metadata.
+
+Deliverables:
+
+- `sources/standard_signal_command_semantics_status.json` exposes
+  `execution_readiness.decision: preserved-unsupported`;
+- execution changes for `standard-signal` command-token behavior remain
+  disallowed unless new source evidence replaces the existing unsupported
+  boundary;
+- project-status JSON/text and source-status frontier JSON/text render the
+  standard-signal readiness decision alongside write-buffer readiness; and
+- unchanged Universal Cell runtime behavior, claims, proof certificates,
+  traces, SVGs, evidence bundles, project-status schema `15`, and
+  source-status frontier schema `2`.
+
+Status: accepted in
+`docs/adr/0165-standard-signal-execution-readiness.md`. Implemented in the
+standard-signal source-status record and focused source-status/project-status
+tests.

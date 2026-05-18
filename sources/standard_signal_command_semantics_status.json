@@ -113,6 +113,12 @@
   ],
   "required_resolution_questions": [],
   "resolution_question_evidence": [],
+  "execution_readiness": {
+    "decision": "preserved-unsupported",
+    "execution_change_allowed": false,
+    "blocked_by_resolution_questions": [],
+    "summary": "Standard-signal command-token execution remains preserved as unsupported at the self-target boundaries; execution changes require new source evidence that replaces the existing boundary."
+  },
   "additional_source_statuses": [
     {
       "adr": "ADR-0062",

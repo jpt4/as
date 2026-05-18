@@ -421,7 +421,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   machine-checkable, including the formal-model self-mailbox exception and the
   resolved command-table offset, self-mailbox equivalence, recipient
   command-message surface, command-token/binary-input, and self-target surface
-  decisions.
+  decisions. Its execution-readiness gate preserves the existing unsupported
+  self-target command boundaries and forbids execution changes without new
+  source evidence.
 - `sources/guile_asmsim_command_semantics_status.json` makes the
   `guile-asmsim.scm` command-semantics source-status decision
   machine-checkable.

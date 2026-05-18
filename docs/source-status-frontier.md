@@ -103,6 +103,10 @@ ADR-0163 adds explicit upstream `write-buf-zero` and `write-buf-one` rejection
 examples to the recipient non-init claim/proof/evidence coverage without
 changing the focused frontier schema or implementing recipient write-buffer
 command-message execution.
+ADR-0165 adds explicit standard-signal execution-readiness metadata, so the
+focused frontier renders the settled `preserved-unsupported` boundary instead
+of making "no live resolution questions" look like implementation readiness.
+The focused frontier schema remains `2`.
 
 ## Boundary
 

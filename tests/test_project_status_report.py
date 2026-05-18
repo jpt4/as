@@ -328,6 +328,16 @@ WRITE_BUFFER_RESOLVED_QUESTIONS = [
 ]
 WRITE_BUFFER_RESOLUTION_QUESTIONS = []
 WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE = []
+STANDARD_SIGNAL_EXECUTION_READINESS = {
+    "decision": "preserved-unsupported",
+    "execution_change_allowed": False,
+    "blocked_by_resolution_questions": [],
+    "summary": (
+        "Standard-signal command-token execution remains preserved as "
+        "unsupported at the self-target boundaries; execution changes require "
+        "new source evidence that replaces the existing boundary."
+    ),
+}
 WRITE_BUFFER_EXECUTION_READINESS = {
     "decision": "implemented",
     "execution_change_allowed": True,
@@ -581,7 +591,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             ],
             [
                 {},
-                {},
+                STANDARD_SIGNAL_EXECUTION_READINESS,
                 WRITE_BUFFER_EXECUTION_READINESS,
             ],
         )
@@ -1045,6 +1055,18 @@ class ProjectStatusReportTests(unittest.TestCase):
 
         self.assertIn("Execution readiness:", text)
         self.assertIn(
+            "standard-signal: preserved-unsupported; execution changes "
+            "allowed: no; blockers: none",
+            text,
+        )
+        self.assertIn(
+            "summary: Standard-signal command-token execution remains "
+            "preserved as unsupported at the self-target boundaries; "
+            "execution changes require new source evidence that replaces the "
+            "existing boundary.",
+            text,
+        )
+        self.assertIn(
             "write-buf-zero, write-buf-one: implemented; execution changes "
             "allowed: yes; blockers: none",
             text,
@@ -1266,7 +1288,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             ],
             [
                 {},
-                {},
+                STANDARD_SIGNAL_EXECUTION_READINESS,
                 WRITE_BUFFER_EXECUTION_READINESS,
             ],
         )

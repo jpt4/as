@@ -94,6 +94,10 @@ and evidence-bundle coverage so delivered `write-buf-zero` and
 boundary without adding recipient write-buffer execution.
 ADR-0058 records `standard-signal` command-token execution as still
 source-blocked while preserving ordinary binary-input standard-signal behavior.
+ADR-0165 makes that settled negative boundary explicit in execution-readiness
+metadata: no live standard-signal source-status questions remain, but
+command-token execution changes are still disallowed without new source
+evidence replacing the unsupported self-target boundaries.
 ADR-0059 selects reject-and-clear for multiple simultaneous recipient
 command-message inputs.
 ADR-0060 adds a schematic-linked trace for that multi-command rejection policy.
@@ -280,6 +284,9 @@ through the existing self-mailbox unsupported-preservation and self-target
 command-buffer append-boundary claims. Standard-signal now has no unresolved
 source-status questions; write-buffer remains the command-token semantics
 frontier.
+ADR-0165 records that standard-signal state as `preserved-unsupported`
+execution readiness: the lack of live standard-signal questions is a settled
+preservation decision, not permission to implement command-token execution.
 ADR-0152 resolves the write-buffer recipient surface through the existing
 recipient non-init rejection boundary and narrows the remaining write-buffer
 surface question to self-mailbox / self-target command-buffer behavior.
