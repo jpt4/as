@@ -47,6 +47,8 @@ The report validates:
   language and checked claim/proof surface;
 - `language/transition_chain_claim_language.json`, the transition-chain claim
   language and checked chain claim/proof surface;
+- `language/network_sequence_claim_language.json`, the network-sequence claim
+  language and checked sequence claim/proof surface;
 - `sources/recipient_non_init_command_source_status.json`;
 - `sources/standard_signal_command_semantics_status.json`; and
 - `sources/write_buffer_command_semantics_status.json`.
@@ -70,6 +72,8 @@ The text report names:
   certificates;
 - transition language accepted or rejected state and claim/certificate counts;
 - chain language accepted or rejected state and claim/certificate counts;
+- network-sequence language accepted or rejected state and claim/certificate
+  counts;
 - language failed subjects when a language summary is rejected;
 - transition, chain, and network-sequence evidence bundle IDs and paths;
 - transition bundle primary positive examples and covered examples;
@@ -89,7 +93,7 @@ digest: accepted state, evidence counts, claim counts, proof-rule counts,
 blocked commands, and safe next slice.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 18`. If a registry file is missing, the corresponding registry
+`schema_version: 19`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -283,6 +287,9 @@ includes it in aggregate acceptance, includes sequence certificates in the
 proof-rule audit, renders sequence claim counts in text and summary modes, adds
 `--sequence-claims` / `--sequence-certificates`, and bumps project status to
 `schema_version: 18`.
+ADR-0202 adds `sequence_language` from the network-sequence object-language
+surface, includes it in aggregate acceptance, renders it in text output, adds
+`--sequence-language`, and bumps project status to `schema_version: 19`.
 
 ## Boundary
 

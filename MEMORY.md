@@ -838,3 +838,6 @@
   `autarkic_systems.network_sequence_object_language`, making the
   post-handoff sequence claim syntax explicit and validating the checked
   sequence claim/proof surface against it without changing runtime behavior.
+- ADR-0202 folds the network-sequence object-language surface into aggregate
+  project status as `sequence_language`, adds `--sequence-language`, and bumps
+  project status to `schema_version: 19`.

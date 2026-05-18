@@ -4099,3 +4099,21 @@ Status: accepted in `docs/adr/0201-network-sequence-object-language.md`.
 Implemented in `autarkic_systems/network_sequence_object_language.py`, with
 tests in `tests/test_network_sequence_object_language.py` and operator notes in
 `docs/network-sequence-claim-language.md`.
+
+## ADR-0202: Project Status Sequence Language
+
+Goal: make aggregate project status fail closed over the network-sequence
+object-language surface.
+
+Deliverables:
+
+- `sequence_language` in project-status JSON;
+- aggregate acceptance that includes network-sequence language validation;
+- default text output naming the sequence language count;
+- language-failure output that includes sequence-language failed subjects;
+- `--sequence-language` override; and
+- project-status schema version `19`.
+
+Status: accepted in `docs/adr/0202-project-status-sequence-language.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

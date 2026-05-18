@@ -394,8 +394,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   certificate, a proof-rule audit showing 52 checked `predicate-result` steps
   and 0 checked `manifest-example` steps,
   transition language accepted with 16 claims and 16 certificates, chain
-  language accepted with 2 claims and 2 certificates, concrete transition,
-  chain, and network-sequence registry bundle entries, and the current blocked
+  language accepted with 2 claims and 2 certificates, network-sequence language
+  accepted with 1 claim and 1 certificate, concrete transition, chain, and
+  network-sequence registry bundle entries, and the current blocked
   `standard-signal`
   command-token frontier. The default text report also names the concrete
   transition, chain, and network-sequence evidence bundle IDs and paths,
@@ -446,6 +447,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   claim/proof surface, includes sequence certificates in the proof-rule audit,
   renders sequence claim counts in text and summary output, and adds
   `--sequence-claims` / `--sequence-certificates`.
+  Schema version `19` adds `sequence_language` from the network-sequence
+  object-language surface, includes it in aggregate acceptance, renders it in
+  text output, and adds `--sequence-language`.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

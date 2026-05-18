@@ -4303,3 +4303,25 @@
   `as-network-sequence-claim-v1` with one claim and one certificate.
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 860 tests.
+
+## 2026-05-18 - Project Status Sequence Language
+
+- Added ADR-0202 to fold the network-sequence object-language surface into
+  aggregate project status.
+- Added red project-status tests before implementation. The focused red run
+  executed 83 tests and failed because project status still reported schema
+  version `18`, had no `sequence_language`, omitted sequence language from text
+  output, omitted sequence-language failures, rejected `--sequence-language`,
+  and did not accept a `sequence_language_path` builder override.
+- Updated `autarkic_systems/project_status.py` to validate
+  `language/network_sequence_claim_language.json`, expose `sequence_language`,
+  include that surface in aggregate acceptance, render the sequence language in
+  default text output, and report sequence-language failed subjects through the
+  shared language failure section.
+- Focused green verification passed 83 project-status tests. Adjacent
+  project-status plus sequence object-language tests passed 95 tests. Live
+  JSON output reported schema version `19` and accepted sequence language with
+  32 validation results; text output reported `Network sequence language:
+  accepted (1 claim, 1 certificate)` and `Language failures: none`.
+  `compileall`, `git diff --check`, refreshed handoff, and
+  `python -m unittest discover` passed; the full suite ran 862 tests.

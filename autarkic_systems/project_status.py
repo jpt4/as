@@ -45,6 +45,10 @@ from autarkic_systems.network_sequence_claims import (
     network_sequence_claim_validation_report_payload,
     validate_network_sequence_claim_project,
 )
+from autarkic_systems.network_sequence_object_language import (
+    network_sequence_claim_language_report_payload,
+    validate_network_sequence_claim_language_project,
+)
 from autarkic_systems.object_language import (
     transition_claim_language_report_payload,
     validate_transition_claim_language_project,
@@ -67,6 +71,7 @@ DEFAULT_TRANSITION_CERTIFICATES = Path("claims/proof_certificates.json")
 DEFAULT_CHAIN_LANGUAGE = Path("language/transition_chain_claim_language.json")
 DEFAULT_CHAIN_CLAIMS = Path("claims/transition_chain_claims.json")
 DEFAULT_CHAIN_CERTIFICATES = Path("claims/transition_chain_proof_certificates.json")
+DEFAULT_SEQUENCE_LANGUAGE = Path("language/network_sequence_claim_language.json")
 DEFAULT_SEQUENCE_CLAIMS = Path("claims/network_sequence_claims.json")
 DEFAULT_SEQUENCE_CERTIFICATES = Path("claims/network_sequence_proof_certificates.json")
 DEFAULT_SOURCE_STATUS_PATHS = (
@@ -74,7 +79,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 18
+PROJECT_STATUS_SCHEMA_VERSION = 19
 PROOF_RULE_TEXT_ORDER = (
     PREDICATE_RESULT_RULE,
     MANIFEST_EXAMPLE_RULE,
@@ -100,6 +105,7 @@ def build_project_status_report(
     chain_language_path: Path | str = DEFAULT_CHAIN_LANGUAGE,
     chain_claims_path: Path | str = DEFAULT_CHAIN_CLAIMS,
     chain_certificates_path: Path | str = DEFAULT_CHAIN_CERTIFICATES,
+    sequence_language_path: Path | str = DEFAULT_SEQUENCE_LANGUAGE,
     sequence_claims_path: Path | str = DEFAULT_SEQUENCE_CLAIMS,
     sequence_certificates_path: Path | str = DEFAULT_SEQUENCE_CERTIFICATES,
     source_status_paths: list[Path | str] | tuple[Path | str, ...] = DEFAULT_SOURCE_STATUS_PATHS,
@@ -138,6 +144,11 @@ def build_project_status_report(
         chain_claims_path,
         chain_certificates_path,
     )
+    sequence_language = _sequence_language_summary(
+        sequence_language_path,
+        sequence_claims_path,
+        sequence_certificates_path,
+    )
     frontier = _frontier_summary(source_status_paths)
     accepted = (
         transition_summary["accepted"]
@@ -150,6 +161,7 @@ def build_project_status_report(
         and proof_rule_audit["accepted"]
         and transition_language["accepted"]
         and chain_language["accepted"]
+        and sequence_language["accepted"]
         and not frontier["missing_source_statuses"]
         and not frontier["invalid_source_statuses"]
     )
@@ -166,6 +178,7 @@ def build_project_status_report(
         "proof_rule_audit": proof_rule_audit,
         "transition_language": transition_language,
         "chain_language": chain_language,
+        "sequence_language": sequence_language,
         "frontier": frontier,
     }
 
@@ -184,6 +197,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
     proof_rule_audit = report["proof_rule_audit"]
     transition_language = report["transition_language"]
     chain_language = report["chain_language"]
+    sequence_language = report["sequence_language"]
     frontier = report["frontier"]
     transition_status = "accepted" if transition["accepted"] else "rejected"
     chain_status = "accepted" if chain["accepted"] else "rejected"
@@ -225,7 +239,12 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         _proof_rule_audit_text_line(proof_rule_audit),
         _language_text_line("Transition language", transition_language),
         _language_text_line("Chain language", chain_language),
-        *_language_failure_text_lines(transition_language, chain_language),
+        _language_text_line("Network sequence language", sequence_language),
+        *_language_failure_text_lines(
+            transition_language,
+            chain_language,
+            sequence_language,
+        ),
         *_registry_bundle_text_lines("Transition evidence", transition),
         *_registry_bundle_text_lines("Chain evidence", chain),
         *_registry_bundle_text_lines("Network sequence evidence", sequence),
@@ -332,6 +351,11 @@ def run_project_status_cli(argv: list[str] | None = None) -> int:
         help="Path to the transition-chain claim language manifest.",
     )
     parser.add_argument(
+        "--sequence-language",
+        default=str(DEFAULT_SEQUENCE_LANGUAGE),
+        help="Path to the network-sequence claim language manifest.",
+    )
+    parser.add_argument(
         "--chain-claims",
         default=str(DEFAULT_CHAIN_CLAIMS),
         help="Path to the transition-chain claim manifest.",
@@ -380,6 +404,7 @@ def run_project_status_cli(argv: list[str] | None = None) -> int:
         chain_language_path=args.chain_language,
         chain_claims_path=args.chain_claims,
         chain_certificates_path=args.chain_certificates,
+        sequence_language_path=args.sequence_language,
         sequence_claims_path=args.sequence_claims,
         sequence_certificates_path=args.sequence_certificates,
         source_status_paths=source_status_paths,
@@ -703,6 +728,27 @@ def _chain_language_summary(
         return _language_failure_summary(language, claims, certificates, exc)
 
     payload = transition_chain_claim_language_report_payload(report)
+    return _language_summary(payload)
+
+
+def _sequence_language_summary(
+    language_path: Path | str,
+    claims_path: Path | str,
+    certificates_path: Path | str,
+) -> dict[str, Any]:
+    language = Path(language_path)
+    claims = Path(claims_path)
+    certificates = Path(certificates_path)
+    try:
+        report = validate_network_sequence_claim_language_project(
+            language_path=language,
+            claims_path=claims,
+            certificates_path=certificates,
+        )
+    except Exception as exc:
+        return _language_failure_summary(language, claims, certificates, exc)
+
+    payload = network_sequence_claim_language_report_payload(report)
     return _language_summary(payload)
 
 
@@ -1224,10 +1270,13 @@ def _count_noun(count: int, singular: str, plural: str) -> str:
 
 def _language_text_line(label: str, summary: dict[str, Any]) -> str:
     status = "accepted" if summary["accepted"] else "rejected"
+    claim_count = summary["claim_count"]
+    certificate_count = summary["certificate_count"]
     return (
         f"{label}: {status} "
-        f"({summary['claim_count']} claims, "
-        f"{summary['certificate_count']} certificates)"
+        f"({claim_count} {_count_noun(claim_count, 'claim', 'claims')}, "
+        f"{certificate_count} "
+        f"{_count_noun(certificate_count, 'certificate', 'certificates')})"
     )
 
 
@@ -1323,11 +1372,13 @@ def _proof_rule_counts_text(summary: dict[str, Any]) -> str:
 def _language_failure_text_lines(
     transition_language: dict[str, Any],
     chain_language: dict[str, Any],
+    sequence_language: dict[str, Any],
 ) -> list[str]:
     lines = ["Language failures:"]
     for label, summary in (
         ("Transition language", transition_language),
         ("Chain language", chain_language),
+        ("Network sequence language", sequence_language),
     ):
         failed_subjects = summary["failed_subjects"]
         if failed_subjects:

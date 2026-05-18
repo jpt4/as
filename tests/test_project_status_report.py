@@ -18,6 +18,7 @@ from autarkic_systems.project_status import (
 TRANSITION_REGISTRY = Path("evidence/manifest.json")
 CHAIN_REGISTRY = Path("evidence/chains/manifest.json")
 SEQUENCE_REGISTRY = Path("evidence/sequences/manifest.json")
+SEQUENCE_LANGUAGE = Path("language/network_sequence_claim_language.json")
 SEQUENCE_CLAIMS = Path("claims/network_sequence_claims.json")
 SEQUENCE_CERTIFICATES = Path("claims/network_sequence_proof_certificates.json")
 RECIPIENT_STATUS = Path("sources/recipient_non_init_command_source_status.json")
@@ -31,7 +32,7 @@ RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
     "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle"
 )
 SAFE_NEXT_SLICE = ""
-PROJECT_STATUS_SCHEMA_VERSION = 18
+PROJECT_STATUS_SCHEMA_VERSION = 19
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
     "self-target-command-buffer",
@@ -207,6 +208,15 @@ CHAIN_LANGUAGE = {
     "claim_count": 2,
     "certificate_count": 2,
     "result_count": 33,
+}
+SEQUENCE_LANGUAGE_SUMMARY = {
+    "language_id": "as-network-sequence-claim-v1",
+    "language_path": "language/network_sequence_claim_language.json",
+    "claims_path": "claims/network_sequence_claims.json",
+    "certificates_path": "claims/network_sequence_proof_certificates.json",
+    "claim_count": 1,
+    "certificate_count": 1,
+    "result_count": 32,
 }
 TRANSITION_CLAIMS = {
     "claims_path": "claims/transition_claims.json",
@@ -762,6 +772,10 @@ class ProjectStatusReportTests(unittest.TestCase):
         for key, expected in CHAIN_LANGUAGE.items():
             self.assertEqual(report["chain_language"][key], expected)
         self.assertEqual(report["chain_language"]["failed_subjects"], [])
+        self.assertTrue(report["sequence_language"]["accepted"])
+        for key, expected in SEQUENCE_LANGUAGE_SUMMARY.items():
+            self.assertEqual(report["sequence_language"][key], expected)
+        self.assertEqual(report["sequence_language"]["failed_subjects"], [])
         self.assertEqual(report["frontier"]["blocked_commands"], BLOCKED_COMMANDS)
         self.assertEqual(report["frontier"]["failed_subjects"], [])
         self.assertEqual(report["frontier"]["safe_next_slice"], SAFE_NEXT_SLICE)
@@ -905,6 +919,10 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn("Transition language: accepted (16 claims, 16 certificates)", text)
         self.assertIn("Chain language: accepted (2 claims, 2 certificates)", text)
+        self.assertIn(
+            "Network sequence language: accepted (1 claim, 1 certificate)",
+            text,
+        )
         self.assertIn("Language failures: none", text)
         self.assertIn("Transition evidence bundles:", text)
         self.assertIn(
@@ -1030,6 +1048,23 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Chain language: rejected", text)
         self.assertIn("Language failures:", text)
         self.assertIn("Chain language failures: chain_formulae", text)
+
+    def test_text_status_names_sequence_language_failed_subjects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            language_path = Path(tmp) / "network_sequence_claim_language.json"
+            data = json.loads(SEQUENCE_LANGUAGE.read_text(encoding="utf-8"))
+            del data["syntax_classes"]["sequence_formulae"]
+            language_path.write_text(json.dumps(data), encoding="utf-8")
+
+            report = build_project_status_report(
+                sequence_language_path=language_path,
+            )
+
+        text = format_project_status_report(report)
+        self.assertFalse(report["accepted"])
+        self.assertIn("Network sequence language: rejected", text)
+        self.assertIn("Language failures:", text)
+        self.assertIn("Network sequence language failures: sequence_formulae", text)
 
     def test_text_status_names_transition_claim_failed_subjects(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -1604,6 +1639,10 @@ class ProjectStatusReportTests(unittest.TestCase):
         for key, expected in CHAIN_LANGUAGE.items():
             self.assertEqual(payload["chain_language"][key], expected)
         self.assertEqual(payload["chain_language"]["failed_subjects"], [])
+        self.assertTrue(payload["sequence_language"]["accepted"])
+        for key, expected in SEQUENCE_LANGUAGE_SUMMARY.items():
+            self.assertEqual(payload["sequence_language"][key], expected)
+        self.assertEqual(payload["sequence_language"]["failed_subjects"], [])
         self.assertEqual(payload["frontier"]["blocked_commands"], BLOCKED_COMMANDS)
         self.assertEqual(payload["frontier"]["failed_subjects"], [])
         self.assertEqual(
@@ -1741,6 +1780,27 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertTrue(payload["sequence_claims"]["accepted"])
         self.assertEqual(payload["sequence_claims"]["claim_count"], 1)
         self.assertEqual(payload["sequence_claims"]["certificate_count"], 1)
+
+    def test_cli_accepts_sequence_language_override(self):
+        stdout = io.StringIO()
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = run_project_status_cli(
+                [
+                    "--sequence-language",
+                    str(SEQUENCE_LANGUAGE),
+                    "--format",
+                    "json",
+                ]
+            )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 0, payload)
+        self.assertTrue(payload["sequence_language"]["accepted"])
+        self.assertEqual(
+            payload["sequence_language"]["language_id"],
+            "as-network-sequence-claim-v1",
+        )
 
     def test_missing_source_status_is_structured_failure(self):
         with tempfile.TemporaryDirectory() as tmp:
