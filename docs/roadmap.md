@@ -4909,3 +4909,28 @@ Status: accepted in
 `docs/adr/0236-formal-confidence-candidate-dependency.md`. Implemented in
 `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0237: Naive Fixed-Point Obstruction
+
+Goal: turn the ADR-0235 naive candidate mismatch into a checked structural
+obstruction for the current direct quotation-substitution operation.
+
+Deliverables:
+
+- `claims/fixed_point_obstructions.json` recording the naive length-growth
+  obstruction;
+- `autarkic_systems.fixed_point_obstruction` text/JSON CLI validation;
+- validation against the fixed-point equation candidate manifest and formal
+  codebook;
+- checks for template variable occurrence count, context code length, input
+  length, input token sum, quotation-term code length, candidate length, and
+  minimum length-growth delta;
+- rejection for unknown candidate IDs, stale length facts, and overclaiming
+  statuses; and
+- no diagonal lemma, arithmetic sequence axioms, fixed-point equation proof,
+  arithmetized proof predicate, theorem prover, runtime behavior, command
+  semantics, evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in `docs/adr/0237-naive-fixed-point-obstruction.md`.
+Implemented in `autarkic_systems/fixed_point_obstruction.py`, with tests in
+`tests/test_fixed_point_obstruction.py`.

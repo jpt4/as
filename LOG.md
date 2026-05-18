@@ -5117,3 +5117,25 @@
   formal-confidence text/JSON output reported the candidate dependency
   accepted, while the formal-confidence target remained blocked on
   `fixed-point-construction`; live project-status summary remained accepted.
+
+## 2026-05-18 - Naive Fixed-Point Obstruction
+
+- Added ADR-0237 to turn the ADR-0235 naive candidate mismatch into a checked
+  structural obstruction for the current direct quotation-substitution route.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.fixed_point_obstruction` and
+  `claims/fixed_point_obstructions.json` did not exist.
+- Added `claims/fixed_point_obstructions.json`, recording
+  `AS-FIXED-POINT-SELFCONS1-NAIVE-LENGTH-OBSTRUCTION` as
+  `obstruction-observed`, with context length `5`, observed input length `7`,
+  input token sum `101`, observed candidate length `121`, and minimum growth
+  delta `6`.
+- Added `autarkic_systems/fixed_point_obstruction.py` with dependency
+  validation against the fixed-point equation candidate and formal codebook,
+  the quotation-term length formula, free-template-variable occurrence checks,
+  text/JSON CLI output, and rejection of unknown candidate IDs, stale length
+  facts, and overclaiming statuses.
+- Focused fixed-point-obstruction and project-status tests passed 99 tests.
+  Live fixed-point-obstruction text/JSON output reported the naive candidate
+  impossible by length growth; live project-status summary remained accepted
+  and blocked.

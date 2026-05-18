@@ -56,6 +56,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   fixed-point construction blocked.
 - `docs/fixed-point-equation-candidate.md` records the first checked naive
   fixed-point equation candidate and why it is not yet fixed.
+- `docs/fixed-point-obstruction.md` records the checked length-growth
+  obstruction showing why the naive direct quotation-substitution route cannot
+  be the fixed point.
 - `docs/transition-claim-language.md` explains the first explicit object
   language for transition claims.
 - `docs/transition-chain-claim-language.md` explains the first explicit object
@@ -385,6 +388,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/fixed_point_equation.py` validates the first naive
   fixed-point equation candidate, recording that the checked quotation-term
   substitution is not yet a fixed point.
+- `autarkic_systems/fixed_point_obstruction.py` validates the checked
+  length-growth obstruction for that naive candidate, recording that direct
+  quotation-term embedding strictly grows the encoded candidate.
 - `autarkic_systems/formal_confidence.py` validates the first
   formal-confidence target manifest against the Willard definition map, keeping
   the current AS self-consistency claim explicitly blocked until fixed-point
@@ -456,6 +462,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.fixed_point_equation --format json` validates
   `claims/fixed_point_equation_candidates.json`, including the current
   `candidate-not-fixed` result for the naive quotation-term substitution.
+- `python -m autarkic_systems.fixed_point_obstruction --format json` validates
+  `claims/fixed_point_obstructions.json`, including the current
+  `obstruction-observed` result and minimum length-growth delta for direct
+  quotation-term embedding.
 - `python -m autarkic_systems.formal_confidence --format json` validates that
   target against `sources/willard_definition_map.json`, including required
   Willard anchors, required configuration fields, the fixed-point equation

@@ -13,6 +13,10 @@ ADR-0236 makes this surface a structured dependency of
 target now fails closed if the candidate manifest is missing, invalid, or
 overclaims.
 
+ADR-0237 adds `claims/fixed_point_obstructions.json`, recording that this
+naive direct quotation-substitution scheme is length-obstructed: for the
+current template, quoted-sequence embedding strictly increases encoded length.
+
 ## Purpose
 
 ADR-0234 gave AS a formal quotation-term surface. The next risk is
@@ -41,6 +45,8 @@ It validates
 ```sh
 python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.fixed_point_equation --format json
+python -m autarkic_systems.fixed_point_obstruction
+python -m autarkic_systems.fixed_point_obstruction --format json
 python -m autarkic_systems.fixed_point
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.formal_confidence --format json
@@ -56,6 +62,10 @@ The validator checks that:
 - expected original code, candidate length, and candidate prefix are current;
 - the candidate does not satisfy the fixed-point code equation; and
 - proved-equation statuses reject.
+
+The obstruction validator separately checks that the current direct quotation
+scheme cannot be fixed by this operation because its encoded output is always
+strictly longer than its input code.
 
 ## Boundary
 

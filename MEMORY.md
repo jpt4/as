@@ -131,6 +131,12 @@
   fail-closed dependency of `autarkic_systems.formal_confidence`; missing or
   invalid candidate references now reject formal-confidence validation as
   `target-fixed-point-equation-candidate`.
+- ADR-0237 adds `claims/fixed_point_obstructions.json` and
+  `autarkic_systems/fixed_point_obstruction.py`, recording the length-growth
+  obstruction for the naive direct quotation-substitution candidate. The
+  checked formula is `candidate_length = context_length + 1 + 2*input_length +
+  token_sum`, with context length `5` and minimum growth delta `6`, so this
+  direct embedding route cannot satisfy the fixed-point equation.
 - `AS-FORMAL-CONFIDENCE-TARGET-001` now points at the fixed-point target and no
   longer uses the broad `self-reference-fixed-point` blocker. It remains
   blocked on `fixed-point-construction`.

@@ -50,7 +50,9 @@ on constructing the actual fixed point. ADR-0235 adds
 `claims/fixed_point_equation_candidates.json`, recording that the naive
 quotation-term substitution candidate is not fixed. ADR-0236 makes that
 candidate surface a structured, fail-closed dependency of the aggregate
-formal-confidence validator.
+formal-confidence validator. ADR-0237 records the length-growth obstruction
+showing why direct quotation-term embedding cannot be the real fixed-point
+construction.
 
 ## Current Target
 
@@ -75,7 +77,9 @@ fixed-point target in `claims/fixed_point_targets.json`, which now references
 `language/formal_quotation_sequence_examples.json` and
 `language/formal_quotation_term_examples.json`; the naive equation candidate
 is recorded and validated through `claims/fixed_point_equation_candidates.json`.
-It also records the remaining blocker: `fixed-point-construction`.
+The checked obstruction in `claims/fixed_point_obstructions.json` records why
+that naive direct embedding route is closed. The target also records the
+remaining blocker: `fixed-point-construction`.
 
 ## Run
 
@@ -98,6 +102,8 @@ python -m autarkic_systems.formal_quotation_term
 python -m autarkic_systems.formal_quotation_term --format json
 python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.fixed_point_equation --format json
+python -m autarkic_systems.fixed_point_obstruction
+python -m autarkic_systems.fixed_point_obstruction --format json
 python -m autarkic_systems.fixed_point
 python -m autarkic_systems.fixed_point --format json
 python -m autarkic_systems.project_status --format summary
