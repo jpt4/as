@@ -317,6 +317,20 @@ class ProjectStatusReportTests(unittest.TestCase):
             "self-mailbox-command, self-target-command-buffer",
             text,
         )
+        self.assertIn("AS boundaries:", text)
+        self.assertIn(
+            "standard-signal, write-buf-zero, write-buf-one: "
+            f"{RECIPIENT_NON_INIT_AS_BOUNDARY}",
+            text,
+        )
+        self.assertIn(
+            f"standard-signal: {STANDARD_SIGNAL_AS_BOUNDARY}",
+            text,
+        )
+        self.assertIn(
+            f"write-buf-zero, write-buf-one: {WRITE_BUFFER_AS_BOUNDARY}",
+            text,
+        )
         self.assertIn(
             "Safe next slice: revisit-standard-signal-or-write-buffer-command-semantics",
             text,

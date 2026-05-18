@@ -2236,3 +2236,22 @@ Status: accepted in
 `autarkic_systems/project_status.py` and
 `sources/recipient_non_init_command_source_status.json`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0118: Project Status Text AS Boundaries
+
+Goal: render accepted source-status AS boundaries in the default project
+status text report.
+
+Deliverables:
+
+- `AS boundaries:` section in `format_project_status_report`;
+- recipient non-init AS boundary visible in text status output;
+- standard-signal command-token AS boundary visible in text status output;
+- write-buffer command-token AS boundary visible in text status output;
+- unchanged project status JSON shape at `schema_version: 6`; and
+- focused tests covering the text boundary section.
+
+Status: accepted in
+`docs/adr/0118-project-status-text-as-boundaries.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

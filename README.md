@@ -259,9 +259,9 @@ the project legible:
   `standard-signal`, `write-buf-zero`, and `write-buf-one` command-token
   frontier. The default text report also names the concrete transition and
   chain evidence bundle IDs and paths, plus the standard-signal and
-  write-buffer blocked runtime surfaces and the resolution-question IDs and
-  summaries that define the next source-backed decision work. Schema version
-  `2` attributes blocked commands to each
+  write-buffer blocked runtime surfaces, source-status AS boundaries, and the
+  resolution-question IDs and summaries that define the next source-backed
+  decision work. Schema version `2` attributes blocked commands to each
   accepted source-status entry, schema version `3` carries the source-status
   resolution-question IDs that still block command-token execution and rejects
   malformed resolution-question metadata, schema version `4` adds

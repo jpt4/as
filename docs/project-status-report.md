@@ -38,6 +38,7 @@ The text report names:
 - transition and chain evidence bundle IDs and paths;
 - blocked command tokens;
 - blocked runtime surfaces;
+- source-status AS boundaries;
 - blocker resolution question IDs and summaries; and
 - the safe next slice from the source-status records.
 
@@ -75,6 +76,8 @@ report without changing the JSON schema.
 ADR-0117 requires every accepted source-status record to provide non-empty
 top-level `as_boundary` text, preserving `schema_version: 6` while preventing
 blank boundary explanations in `frontier.source_statuses`.
+ADR-0118 renders those AS boundaries in the default text report without
+changing the JSON schema.
 
 ## Boundary
 

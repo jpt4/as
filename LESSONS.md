@@ -328,3 +328,6 @@
 - A source-status record that participates in project status should state the
   AS boundary it enforces at the top level. Nested rationale is useful, but a
   blank aggregate boundary makes the first diagnostic report weaker.
+- If a boundary explanation is required in project status JSON, render it in
+  text status too. Boundary text is operator-critical, not just automation
+  metadata.

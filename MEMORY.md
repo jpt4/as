@@ -522,3 +522,5 @@
 - ADR-0117 requires non-empty top-level `as_boundary` text on source-status
   records consumed by project status and adds that boundary to the recipient
   non-init command-message source-status artifact.
+- ADR-0118 makes the default `autarkic_systems.project_status` text report
+  render source-status AS boundaries while preserving `schema_version: 6`.

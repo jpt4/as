@@ -2640,3 +2640,21 @@
   non-empty `as_boundary` text for all accepted source-status entries; default
   project status text remained accepted; and `python -m unittest discover`
   passed 575 tests.
+
+## 2026-05-18 - Project Status Text AS Boundaries
+
+- Added ADR-0118 to render accepted source-status AS boundaries in the default
+  project status text report.
+- Updated `tests/test_project_status_report.py` before implementation. The
+  red run failed because the text report omitted an `AS boundaries:` section.
+- Updated `autarkic_systems.project_status.format_project_status_report` with
+  AS boundary text lines while preserving project status JSON
+  `schema_version: 6`.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the text AS-boundary contract.
+- Verification passed: focused project status tests ran 35 tests; adjacent
+  project-status/recipient-source-status/transition-registry/chain-registry
+  tests ran 69 tests; `py_compile` and `git diff --check` passed; default
+  project status text reported all three source-status AS boundaries; project
+  status JSON remained accepted at `schema_version: 6`; and
+  `python -m unittest discover` passed 575 tests.

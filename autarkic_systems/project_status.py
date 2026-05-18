@@ -99,6 +99,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         "Blocked commands: "
         + (", ".join(blocked_commands) if blocked_commands else "none"),
         *_blocked_runtime_surface_text_lines(frontier),
+        *_as_boundary_text_lines(frontier),
         *_resolution_question_text_lines(frontier),
         f"Safe next slice: {frontier['safe_next_slice'] or 'none'}",
         "Missing registry files: "
@@ -363,6 +364,19 @@ def _registry_bundle_text_lines(label: str, summary: dict[str, Any]) -> list[str
     lines = [f"{label} bundles:"]
     for bundle in bundles:
         lines.append(f"  {bundle['bundle_id']} -> {bundle['path']}")
+    return lines
+
+
+def _as_boundary_text_lines(frontier: dict[str, Any]) -> list[str]:
+    lines = ["AS boundaries:"]
+    for source_status in frontier["source_statuses"]:
+        boundary = source_status["as_boundary"]
+        if not boundary:
+            continue
+        command_label = ", ".join(source_status["commands"]) or source_status["path"]
+        lines.append(f"  {command_label}: {boundary}")
+    if len(lines) == 1:
+        return ["AS boundaries: none"]
     return lines
 
 

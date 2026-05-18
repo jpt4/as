@@ -193,6 +193,8 @@ report without changing the JSON schema.
 ADR-0117 requires non-empty top-level `as_boundary` text on source-status
 records consumed by project status, and adds that boundary to the recipient
 non-init command-message source-status artifact.
+ADR-0118 renders those source-status AS boundaries in the default text status
+report without changing the JSON schema.
 
 ## P3: Choose The First Proof Apparatus
 
