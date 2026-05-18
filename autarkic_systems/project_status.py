@@ -680,8 +680,8 @@ def _frontier_summary(
         safe_next_slice = _optional_text(data, "safe_next_slice")
         if safe_next_slice:
             safe_next_slices.append(safe_next_slice)
-        source_commands = _blocked_commands_from_status(data)
-        blocked_commands.update(source_commands)
+        source_commands = _source_commands_from_status(data)
+        blocked_commands.update(_blocked_commands_from_status(data))
         source_statuses.append(
             {
                 "path": str(path),
@@ -717,7 +717,7 @@ def _frontier_summary(
     }
 
 
-def _blocked_commands_from_status(data: dict[str, Any]) -> set[str]:
+def _source_commands_from_status(data: dict[str, Any]) -> set[str]:
     commands: set[str] = set()
     blocked_runtime_commands = data.get("blocked_runtime_commands")
     if isinstance(blocked_runtime_commands, list):
@@ -729,6 +729,31 @@ def _blocked_commands_from_status(data: dict[str, Any]) -> set[str]:
     if isinstance(command_list, list):
         commands.update(item for item in command_list if isinstance(item, str))
     return commands
+
+
+def _blocked_commands_from_status(data: dict[str, Any]) -> set[str]:
+    commands: set[str] = set()
+    blocked_runtime_commands = data.get("blocked_runtime_commands")
+    if isinstance(blocked_runtime_commands, list):
+        commands.update(item for item in blocked_runtime_commands if isinstance(item, str))
+
+    if not _status_declares_active_blocker(data):
+        return commands
+
+    command = data.get("command")
+    if isinstance(command, str):
+        commands.add(command)
+    command_list = data.get("commands")
+    if isinstance(command_list, list):
+        commands.update(item for item in command_list if isinstance(item, str))
+    return commands
+
+
+def _status_declares_active_blocker(data: dict[str, Any]) -> bool:
+    if _blocked_runtime_surfaces(data) or _resolution_question_ids(data):
+        return True
+    decision = _optional_text(data, "decision")
+    return decision.startswith("do-not-") or "blocked" in decision
 
 
 def _resolution_question_ids(data: dict[str, Any]) -> list[str]:
@@ -1090,7 +1115,7 @@ def _source_status_schema_error(data: Any) -> str:
     command_error = _blank_command_token_error(data)
     if command_error:
         return command_error
-    if not _blocked_commands_from_status(data):
+    if not _source_commands_from_status(data):
         return "source-status command fields must include at least one command token"
     surface_error = _blocked_runtime_surface_shape_error(data)
     if surface_error:

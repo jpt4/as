@@ -3645,3 +3645,33 @@
   with no live resolution questions. JSON parsing, `compileall`,
   `git diff --check`, and `python -m unittest discover` passed; the full
   suite ran 733 tests.
+
+## 2026-05-18 - Recipient Write-Buffer Command Execution
+
+- Added ADR-0169 to implement recipient-side `write-buf-zero` and
+  `write-buf-one` command-message execution after ADR-0168 resolved the source
+  boundary as append-ready.
+- Added red runtime, claim/proof/language, chain, and status tests before
+  implementation. The focused red run executed 151 tests and failed because
+  recipient write-buffer command messages still rejected, the append status and
+  predicate were absent, write-buffer still appeared in blocked command
+  reports, and chain/evidence manifests still represented delivered
+  write-buffer as rejection behavior.
+- Implemented recipient write-buffer command-message append behavior in the
+  universal-cell transition path, preserving the full-buffer boundary and
+  leaving single `standard-signal` plus multi-command conflicts rejected.
+- Added `UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED` with predicate,
+  proof certificate, object-language entries, and focused tests; removed single
+  write-buffer inputs from the recipient non-init rejection claim and evidence
+  bundle.
+- Updated neighbor-delivery chain claims so delivered write-buffer commands
+  are consumed by recipient append behavior, while delivered `standard-signal`
+  remains the rejection-chain witness.
+- Updated source-status and project-status reports so `standard-signal` is the
+  only remaining blocked command and write-buffer safe-next guidance points to
+  evidence-bundle promotion.
+- Focused green verification passed 230 tests. Project-status JSON accepted
+  schema 15 with 16 transition claims and 40 evaluated examples; source-status
+  JSON accepted schema 2; transition and chain evidence registries accepted 10
+  and 2 bundles respectively. JSON parsing, `compileall`, `git diff --check`,
+  and `python -m unittest discover` passed; the full suite ran 744 tests.

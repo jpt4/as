@@ -239,21 +239,31 @@
       ]
     },
     {
+      "claim_id": "UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "fixed upstream write-buf-zero command appended",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "stem recipient write-buf-one command appended",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "recipient write buffer wrong bit",
+          "expected": false
+        }
+      ]
+    },
+    {
       "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
       "steps": [
         {
           "rule": "manifest-example",
           "example": "fixed upstream standard-signal command rejected",
-          "expected": true
-        },
-        {
-          "rule": "manifest-example",
-          "example": "fixed upstream write-buf-zero command rejected",
-          "expected": true
-        },
-        {
-          "rule": "manifest-example",
-          "example": "fixed upstream write-buf-one command rejected",
           "expected": true
         },
         {

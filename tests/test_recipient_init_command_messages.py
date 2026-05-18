@@ -86,16 +86,6 @@ class RecipientInitCommandMessageConsumptionTests(unittest.TestCase):
                 step_fixed_cell,
                 Cell(role="wire", memory="right", input=("standard-signal", "_", "_")),
             ),
-            (
-                "stem write-buffer command message",
-                step_stem_cell,
-                Cell(
-                    role="stem",
-                    memory="right",
-                    input=("_", "_", "write-buf-one"),
-                    buffer=(1, 0),
-                ),
-            ),
         )
 
         for name, step, cell in cases:

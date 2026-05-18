@@ -805,6 +805,84 @@
       ]
     },
     {
+      "id": "UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED",
+      "predicate": "recipient_write_buffer_command_message_appends_literal",
+      "description": "A recipient cell that receives a single write-buffer command-message input appends the command's literal bit, clears the active command source, and preserves role, memory, output, and command state.",
+      "examples": [
+        {
+          "name": "fixed upstream write-buf-zero command appended",
+          "expected": true,
+          "before": {
+            "role": "wire",
+            "memory": "right",
+            "upstream": ["write-buf-zero", "_", "_"],
+            "buffer": [1]
+          },
+          "result": {
+            "status": "recipient-write-buffer-command-message-appended",
+            "cell": {
+              "role": "wire",
+              "memory": "right",
+              "upstream": ["_", "_", "_"],
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": [1, 0]
+            }
+          }
+        },
+        {
+          "name": "stem recipient write-buf-one command appended",
+          "expected": true,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "input": ["_", "_", "write-buf-one"],
+            "self_mailbox": "proc-r-init",
+            "control": [0, 1, 0],
+            "buffer": [1, 0]
+          },
+          "result": {
+            "status": "recipient-write-buffer-command-message-appended",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "proc-r-init",
+              "control": [0, 1, 0],
+              "buffer": [1, 0, 1]
+            }
+          }
+        },
+        {
+          "name": "recipient write buffer wrong bit",
+          "expected": false,
+          "before": {
+            "role": "proc",
+            "memory": "left",
+            "input": ["write-buf-one", "_", "_"]
+          },
+          "result": {
+            "status": "recipient-write-buffer-command-message-appended",
+            "cell": {
+              "role": "proc",
+              "memory": "left",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": [0]
+            }
+          }
+        }
+      ]
+    },
+    {
       "id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
       "predicate": "recipient_non_init_command_message_rejected",
       "description": "A recipient cell that receives a blocked non-init or conflicting command-message input rejects it without changing role, memory, output, or command state.",
@@ -822,52 +900,6 @@
             "cell": {
               "role": "proc",
               "memory": "left",
-              "upstream": ["_", "_", "_"],
-              "input": ["_", "_", "_"],
-              "output": ["_", "_", "_"],
-              "automail": "_",
-              "self_mailbox": "_",
-              "control": [],
-              "buffer": []
-            }
-          }
-        },
-        {
-          "name": "fixed upstream write-buf-zero command rejected",
-          "expected": true,
-          "before": {
-            "role": "wire",
-            "memory": "right",
-            "upstream": ["write-buf-zero", "_", "_"]
-          },
-          "result": {
-            "status": "rejected-input",
-            "cell": {
-              "role": "wire",
-              "memory": "right",
-              "upstream": ["_", "_", "_"],
-              "input": ["_", "_", "_"],
-              "output": ["_", "_", "_"],
-              "automail": "_",
-              "self_mailbox": "_",
-              "control": [],
-              "buffer": []
-            }
-          }
-        },
-        {
-          "name": "fixed upstream write-buf-one command rejected",
-          "expected": true,
-          "before": {
-            "role": "wire",
-            "memory": "right",
-            "upstream": ["_", "_", "write-buf-one"]
-          },
-          "result": {
-            "status": "rejected-input",
-            "cell": {
-              "role": "wire",
-              "memory": "right",
               "upstream": ["_", "_", "_"],
               "input": ["_", "_", "_"],
               "output": ["_", "_", "_"],
@@ -930,7 +962,7 @@
           "before": {
             "role": "wire",
             "memory": "right",
-            "input": ["write-buf-zero", "_", "_"]
+            "input": ["standard-signal", "_", "_"]
           },
           "result": {
             "status": "rejected-input",

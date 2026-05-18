@@ -30,15 +30,19 @@ class CommandChannelTokenRepresentationTests(unittest.TestCase):
         self.assertEqual(result.status, "blocked-output")
         self.assertEqual(result.cell, cell)
 
-    def test_write_buffer_command_message_input_is_represented_but_not_executed(self):
+    def test_write_buffer_command_message_input_is_represented_and_executed(self):
         cell = Cell(role="stem", memory="right", input=("write-buf-one", "_", "_"))
 
         result = step_stem_cell(cell)
 
-        self.assertEqual(result.status, "rejected-input")
+        self.assertEqual(
+            result.status,
+            "recipient-write-buffer-command-message-appended",
+        )
         self.assertEqual(result.cell.input, EMPTY)
         self.assertEqual(result.cell.role, "stem")
         self.assertEqual(result.cell.memory, "right")
+        self.assertEqual(result.cell.buffer, (1,))
 
     def test_fixed_cell_distinguishes_command_token_from_si_shorthand_status(self):
         command_token = Cell(role="wire", memory="left", input=("stem-init", "_", "_"))

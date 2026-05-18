@@ -26,19 +26,20 @@ into the same evidence surface:
 
 - chain claim `UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED`;
 - predicate `neighbor_delivery_rejected_by_recipient`;
-- positive example `neighbor c write buffer delivery rejected by recipient`;
+- positive example `neighbor c standard signal delivery rejected by recipient`;
 - chain trace `schematics/chains/neighbor_delivery_rejection_chain_trace.json`;
 - chain SVG `schematics/chains/neighbor_delivery_rejection_chain_trace.svg`;
 - the neighbor command-buffer delivery transition bundle; and
 - the recipient non-init command rejection transition bundle.
 
-ADR-0164 adds chain-claim and proof-certificate coverage for a delivered
-`write-buf-zero` rejection path. The rejection-chain bundle's primary trace and
-SVG remain the existing delivered `write-buf-one` witness.
+ADR-0164 added chain-claim and proof-certificate coverage for a delivered
+`write-buf-zero` rejection path. ADR-0169 replaces those write-buffer
+rejection witnesses with recipient append consumption and changes the
+rejection-chain bundle's primary trace and SVG to delivered `standard-signal`.
 
 Both bundles also record the source-status files that keep full stem command
-execution, recipient non-init command execution, `standard-signal` command
-tokens, and write-buffer command tokens blocked.
+execution and `standard-signal` command tokens blocked while documenting that
+write-buffer recipient command messages are implemented by ADR-0169.
 
 ## Boundary
 
@@ -48,8 +49,8 @@ It is deliberately stored under `evidence/chains/` instead of beside
 `*_bundle.json` files.
 
 The chain evidence bundles do not add a scheduler, topology model, multi-cell
-timing semantics, non-init recipient command execution, `standard-signal`
-command-token execution, or write-buffer command-token execution.
+timing semantics, general non-init recipient command execution, or
+`standard-signal` command-token execution.
 
 ## Verification
 

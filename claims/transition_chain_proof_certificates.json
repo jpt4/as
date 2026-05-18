@@ -21,12 +21,17 @@
         },
         {
           "rule": "manifest-example",
-          "example": "neighbor c write buffer delivery remains unconsumed",
-          "expected": false
+          "example": "neighbor c write buffer delivery consumed by recipient append",
+          "expected": true
         },
         {
           "rule": "manifest-example",
-          "example": "neighbor c write buffer zero delivery remains unconsumed",
+          "example": "neighbor c write buffer zero delivery consumed by recipient append",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "neighbor c standard signal delivery remains unconsumed",
           "expected": false
         }
       ]
@@ -36,12 +41,7 @@
       "steps": [
         {
           "rule": "manifest-example",
-          "example": "neighbor c write buffer delivery rejected by recipient",
-          "expected": true
-        },
-        {
-          "rule": "manifest-example",
-          "example": "neighbor c write buffer zero delivery rejected by recipient",
+          "example": "neighbor c standard signal delivery rejected by recipient",
           "expected": true
         },
         {

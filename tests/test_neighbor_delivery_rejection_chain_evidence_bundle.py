@@ -14,7 +14,7 @@ from autarkic_systems.chain_evidence_bundle import (
 BUNDLE = Path("evidence/chains/neighbor_delivery_rejection_chain_bundle.json")
 BUNDLE_ID = "neighbor-delivery-recipient-rejection-chain-evidence-bundle"
 CLAIM_ID = "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED"
-EXAMPLE = "neighbor c write buffer delivery rejected by recipient"
+EXAMPLE = "neighbor c standard signal delivery rejected by recipient"
 STATUS = "recipient-not-consumed"
 
 

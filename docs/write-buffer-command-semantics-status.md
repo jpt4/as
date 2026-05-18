@@ -8,10 +8,11 @@ The structured status lives in
 ## Decision
 
 Write-buffer command execution is source-resolved and implemented for direct
-stem `self_mailbox` commands plus completed self-target command buffers.
-Delivered recipient command-message append execution is source-ready after
-ADR-0168, but current runtime still rejects those messages until the
-implementation ADR replaces the checked recipient boundary.
+stem `self_mailbox` commands, completed self-target command buffers, and
+single delivered recipient command-message inputs. ADR-0169 adds the recipient
+surface: `write-buf-zero` and `write-buf-one` append literal `0` and `1`,
+clear the active command source, preserve role/memory/output/command state,
+and keep the existing full-buffer boundary.
 
 The formal model names `write-buf-zero` and `write-buf-one` in the command
 table and routes special messages through generic special-message paths, but
@@ -68,11 +69,11 @@ implemented, but delivered recipient write-buffer command-message execution
 remains blocked until `recipient-command-message-surface` is resolved.
 ADR-0168 resolves that surface as
 `execute-recipient-write-buffer-command-message-append`. Write-buffer
-readiness is now `recipient-command-message-source-ready`: the recipient
-append rule is source-resolved, direct self-mailbox and completed self-target
-surfaces remain implemented, and current recipient runtime still rejects
-delivered write-buffer command messages until the implementation ADR changes
-the checked transition behavior.
+readiness became `recipient-command-message-source-ready`: the recipient
+append rule was source-resolved while direct self-mailbox and completed
+self-target surfaces remained implemented. ADR-0169 implements that recipient
+surface and changes readiness to `implemented`; no write-buffer runtime
+surface remains blocked.
 
 ADR-0159 resolves `buffer-full-boundary` as
 `preserve-existing-full-buffer-boundary-before-write-buffer-append`. The formal
@@ -90,19 +91,14 @@ ADR-0161 implements the source-resolved self-target append behavior for:
 - direct self-mailbox command execution;
 - completed self-target command-buffer dispatch.
 
-Recipient command-message input remains outside the implemented write-buffer
-surface. AS currently rejects delivered recipient write-buffer command
-messages through `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`, but that
-runtime boundary is now an implementation backlog item rather than a source
-semantics blocker.
-
-The current recipient rejection claim remains the correct executable boundary
-until a later implementation ADR moves recipient write-buffer command-message
-input out of the non-init rejection surface. ADR-0168 records the resolved
-source decision: the formal model plus RAA and FSMSIM support input-channel
-write-buffer append behavior, while SEMSIM remains divergent on post-append
-clearing as already recorded by ADR-0160. ADR-0061 completes the current
-multi-command rejection
+Recipient write-buffer command-message input is now part of the implemented
+write-buffer surface. The recipient non-init rejection claim no longer covers
+single write-buffer command messages; it continues to cover delivered
+`standard-signal` and multi-command conflicts. ADR-0168 records the resolved
+source decision, and ADR-0169 records the checked runtime behavior: the formal
+model plus RAA and FSMSIM support input-channel write-buffer append behavior,
+while SEMSIM remains divergent on post-append clearing as already recorded by
+ADR-0160. ADR-0061 completes the current multi-command rejection
 render frontier, so future write-buffer work should start from source
 resolution rather than another rejection artifact. ADR-0062 reviews
 `guile-asmsim.scm`, which has binary
@@ -132,7 +128,9 @@ tokens explicitly. ADR-0167 restores a live write-buffer question for the
 recipient command-message surface, with matching evidence and readiness
 blocker metadata. ADR-0168 resolves that question, clears the live
 write-buffer question queue, and moves the safe-next slice to recipient
-write-buffer command-message execution.
+write-buffer command-message execution. ADR-0169 implements that slice and
+moves the safe-next slice to a dedicated recipient write-buffer
+command-message evidence-bundle promotion.
 
 ## Verification
 
@@ -144,5 +142,5 @@ python -m unittest tests.test_write_buffer_command_semantics_status
 
 The tests check the decision, formal-model gap, legacy witness divergence,
 resolved recipient, self-target, buffer-full, and post-append surfaces, the
-resolved recipient command-message surface, the source-ready recipient
-execution-readiness gate, and source-status frontier updates.
+resolved recipient command-message surface, the implemented execution-readiness
+state, and source-status frontier updates.

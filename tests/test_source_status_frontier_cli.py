@@ -22,13 +22,13 @@ STANDARD_SIGNAL_SAFE_NEXT_SLICE = (
     "review-new-standard-signal-command-token-source-evidence-before-execution-change"
 )
 RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
-    "implement-recipient-write-buffer-command-message-execution"
+    "add-recipient-write-buffer-command-message-evidence-bundle"
 )
 SAFE_NEXT_SLICE = (
     f"{RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE}, "
     f"{STANDARD_SIGNAL_SAFE_NEXT_SLICE}"
 )
-BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
+BLOCKED_COMMANDS = ["standard-signal"]
 
 
 class SourceStatusFrontierCliTests(unittest.TestCase):
@@ -58,7 +58,7 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
 
         self.assertIn("AS source-status frontier: accepted", text)
         self.assertIn(
-            "Blocked commands: standard-signal, write-buf-zero, write-buf-one",
+            "Blocked commands: standard-signal",
             text,
         )
         self.assertIn("Resolution questions:", text)
@@ -116,9 +116,8 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
             text,
         )
         self.assertIn(
-            "write-buf-zero, write-buf-one: "
-            "recipient-command-message-source-ready; execution changes "
-            "allowed: yes; blockers: none",
+            "write-buf-zero, write-buf-one: implemented; execution changes "
+            "allowed: no; blockers: none",
             text,
         )
         self.assertNotIn("recipient-vs-stem-surface", text)

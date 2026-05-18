@@ -27,8 +27,6 @@ REJECTION_STATUS = "rejected-input"
 REJECTION_EXAMPLE = "fixed upstream standard-signal command rejected"
 REJECTION_COVERED_EXAMPLES = [
     "fixed upstream standard-signal command rejected",
-    "fixed upstream write-buf-zero command rejected",
-    "fixed upstream write-buf-one command rejected",
 ]
 MULTI_COMMAND_BUNDLE = Path("evidence/multi_command_recipient_rejection_bundle.json")
 MULTI_COMMAND_BUNDLE_ID = "multi-command-recipient-rejection-evidence-bundle"

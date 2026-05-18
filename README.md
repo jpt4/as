@@ -77,12 +77,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   of that recipient non-init command-message rejection trace.
 - `docs/write-buffer-command-semantics-status.md` records why write-buffer
   command execution is now source-resolved and implemented for direct
-  self-mailbox plus completed self-target command-buffer surfaces. It records
-  the narrowed source agreement that `write-buf-zero` / `write-buf-one` carry
-  literal `0` / `1` append bits rather than high-rail-derived standard-signal
-  values, and records that recipient write-buffer command messages are
-  source-ready for append execution while current runtime still uses the
-  recipient non-init rejection boundary.
+  self-mailbox, completed self-target command-buffer, and single recipient
+  command-message surfaces. It records the narrowed source agreement that
+  `write-buf-zero` / `write-buf-one` carry literal `0` / `1` append bits
+  rather than high-rail-derived standard-signal values.
 - `docs/standard-signal-command-semantics-status.md` records why
   `standard-signal` command-token execution is preserved as unsupported while
   ordinary standard-signal binary input stays implemented, and records the
@@ -241,12 +239,11 @@ proof certificates, object languages, evidence bundles, and status reports:
   inputs, while non-init recipient commands and self non-init command semantics
   remain open.
 - `step_stem_cell` now executes direct self-mailbox and completed self-target
-  command-buffer write-buffer commands, and the transition evidence registry
-  includes the two ADR-0162 write-buffer execution bundles. The existing
-  recipient non-init evidence bundle now explicitly covers delivered
-  `write-buf-zero` and `write-buf-one` rejection examples while ADR-0168 marks
-  recipient write-buffer command-message execution source-ready for the next
-  runtime implementation slice.
+  command-buffer write-buffer commands, and recipient cells now execute single
+  delivered write-buffer command messages. The transition evidence registry
+  includes the two ADR-0162 self-target write-buffer execution bundles, while
+  ADR-0169 adds the recipient runtime/claim/proof surface and moves its next
+  step to evidence-bundle promotion.
 - `autarkic_systems/transition_chains.py` composes one neighbor delivery step
   with one recipient step, proving the delivered init-family token can be
   consumed without adding a general multi-cell simulator.
@@ -291,8 +288,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.object_language` validates the transition claim
   language manifest and the checked claim/proof surface in text or JSON form.
 - `claims/transition_chain_claims.json` names the executable two-step
-  transition-chain claims for consumed init delivery and rejected non-init
-  delivery, including both delivered write-buffer rejection tokens.
+  transition-chain claims for consumed init/write-buffer delivery and rejected
+  standard-signal delivery.
 - `claims/transition_chain_proof_certificates.json` adds matching
   manifest-example proof certificates for those chain claims.
 - `language/transition_chain_claim_language.json` names the first explicit
@@ -416,10 +413,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   literal command bit-source evidence and the resolved standard-signal
   interaction, recipient-surface, and self-target-surface questions, plus the
   resolved full-buffer and post-append clearing boundaries. Its
-  execution-readiness gate now marks direct self-mailbox and completed
-  self-target command-buffer append execution implemented while marking
-  delivered recipient write-buffer command-message append execution
-  source-ready but not yet implemented.
+  execution-readiness gate now marks direct self-mailbox, completed
+  self-target command-buffer, and single recipient command-message append
+  execution implemented.
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
   machine-checkable, including the formal-model self-mailbox exception and the

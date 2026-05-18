@@ -36,13 +36,16 @@ SELF_MAILBOX_UNSUPPORTED_COMMANDS = {
 }
 RECIPIENT_NON_INIT_COMMANDS = {
     "standard-signal",
-    "write-buf-zero",
-    "write-buf-one",
 }
 WRITE_BUFFER_COMMAND_BITS = {
     "write-buf-zero": 0,
     "write-buf-one": 1,
 }
+COMMAND_MESSAGE_TOKENS = (
+    set(SELF_MAILBOX_INIT_TARGETS)
+    | RECIPIENT_NON_INIT_COMMANDS
+    | set(WRITE_BUFFER_COMMAND_BITS)
+)
 NEIGHBOR_OUTPUT_INDEX = {
     "neighbor-a": 0,
     "neighbor-b": 1,
@@ -597,6 +600,57 @@ def recipient_init_command_message_processed(
     )
 
 
+def recipient_write_buffer_command_message_appends_literal(
+    before: Cell,
+    result: StepResult,
+) -> PredicateResult:
+    """Check recipient-side write-buffer command-message append execution."""
+
+    name = "recipient_write_buffer_command_message_appends_literal"
+    command_source = _recipient_write_buffer_command_source(before)
+    if command_source is None:
+        return PredicateResult(name, True, "precondition not active")
+
+    command_id, source_kind = command_source
+    bit = WRITE_BUFFER_COMMAND_BITS[command_id]
+    if result.status != "recipient-write-buffer-command-message-appended":
+        return PredicateResult(
+            name,
+            False,
+            "expected recipient-write-buffer-command-message-appended, "
+            f"got {result.status}",
+        )
+    if result.cell.role != before.role or result.cell.memory != before.memory:
+        return PredicateResult(name, False, "write-buffer changed role or memory")
+    if result.cell.input != EMPTY or result.cell.output != EMPTY:
+        return PredicateResult(name, False, "input or output was not cleared")
+    if result.cell.automail != before.automail:
+        return PredicateResult(name, False, "automail changed")
+    if result.cell.self_mailbox != before.self_mailbox:
+        return PredicateResult(name, False, "self mailbox changed")
+    if result.cell.control != before.control:
+        return PredicateResult(name, False, "control rail changed")
+
+    if source_kind == "upstream":
+        if result.cell.upstream != EMPTY:
+            return PredicateResult(name, False, "pulled upstream command was not cleared")
+    elif result.cell.upstream != before.upstream:
+        return PredicateResult(name, False, "direct input changed upstream")
+
+    expected_buffer = before.buffer + (bit,)
+    if result.cell.buffer != expected_buffer:
+        return PredicateResult(
+            name,
+            False,
+            f"expected buffer {expected_buffer}, got {result.cell.buffer}",
+        )
+    return PredicateResult(
+        name,
+        True,
+        f"{source_kind} {command_id} appended literal {bit}",
+    )
+
+
 def recipient_non_init_command_message_rejected(
     before: Cell,
     result: StepResult,
@@ -714,6 +768,25 @@ def _recipient_init_command_source(before: Cell) -> tuple[str, str] | None:
     return None
 
 
+def _recipient_write_buffer_command_source(before: Cell) -> tuple[str, str] | None:
+    if before.output != EMPTY or len(before.buffer) >= COMMAND_BUFFER_WIDTH:
+        return None
+
+    direct_command = _single_write_buffer_command_message(before.input)
+    if before.role in {"wire", "proc"}:
+        if direct_command is not None:
+            return direct_command, "direct"
+        if before.input == EMPTY:
+            upstream_command = _single_write_buffer_command_message(before.upstream)
+            if upstream_command is not None:
+                return upstream_command, "upstream"
+        return None
+
+    if before.role == "stem" and before.automail == "_" and direct_command is not None:
+        return direct_command, "direct"
+    return None
+
+
 def _single_init_command_message(
     signal: tuple[object, object, object],
 ) -> str | None:
@@ -721,6 +794,19 @@ def _single_init_command_message(
         channel
         for channel in signal
         if isinstance(channel, str) and channel in SELF_MAILBOX_INIT_TARGETS
+    ]
+    if len(commands) != 1 or signal.count("_") != 2:
+        return None
+    return commands[0]
+
+
+def _single_write_buffer_command_message(
+    signal: tuple[object, object, object],
+) -> str | None:
+    commands = [
+        channel
+        for channel in signal
+        if isinstance(channel, str) and channel in WRITE_BUFFER_COMMAND_BITS
     ]
     if len(commands) != 1 or signal.count("_") != 2:
         return None
@@ -752,10 +838,7 @@ def _is_non_init_or_conflict_command_input(
         for channel in signal
         if isinstance(channel, str)
         and channel != "_"
-        and (
-            channel in SELF_MAILBOX_INIT_TARGETS
-            or channel in RECIPIENT_NON_INIT_COMMANDS
-        )
+        and channel in COMMAND_MESSAGE_TOKENS
     ]
     if not command_tokens:
         return False

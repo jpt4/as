@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "reviewed_at": "2026-05-18",
-  "decision": "implement-recipient-init-family-command-message-consumption-next",
-  "runtime_change": "none-source-status-only",
+  "decision": "recipient-init-and-write-buffer-command-consumption-implemented",
+  "runtime_change": "recipient-write-buffer-implemented",
   "implemented_slices": [
     {
       "adr": "ADR-0049",
@@ -53,12 +53,12 @@
     {
       "adr": "ADR-0053",
       "path": "sources/recipient_non_init_command_source_status.json",
-      "summary": "AS now has a source-status decision blocking recipient-side non-init command-message execution and selecting a rejection-boundary claim as the safe next slice."
+      "summary": "AS now has a source-status decision preserving recipient-side standard-signal and multi-command conflict rejection after ADR-0169 write-buffer implementation."
     },
     {
       "adr": "ADR-0057",
       "path": "sources/write_buffer_command_semantics_status.json",
-      "summary": "AS now has a source-status decision and ADR-0161 implementation for direct self-mailbox and completed self-target command-buffer write-buffer execution, and ADR-0168 marks recipient write-buffer command-message inputs source-ready for a later implementation slice."
+      "summary": "AS now has a source-status decision and runtime implementation for direct self-mailbox, completed self-target command-buffer, and recipient command-message write-buffer execution."
     },
     {
       "adr": "ADR-0058",
@@ -140,17 +140,13 @@
   "allowed_next_slice": {
     "recipient_init_family": true,
     "standard_signal": false,
-    "write_buffer": true,
-    "summary": "AS may next implement recipient-side write-buffer command-message append execution while keeping standard-signal command-message execution blocked."
+    "write_buffer": false,
+    "summary": "AS has implemented recipient-side init-family and write-buffer command-message consumption while keeping standard-signal command-message execution blocked."
   },
   "blockers": [
     {
       "blocker_id": "standard-signal-command-message-divergence",
       "summary": "ADR-0058 records standard-signal command-token execution as blocked: the formal command table includes standard-signal at offset 0, but ordinary standard-signal behavior is binary-input behavior and legacy special-message sets exclude standard-signal."
-    },
-    {
-      "blocker_id": "write-buffer-command-message-runtime",
-      "summary": "ADR-0168 resolves recipient write-buffer command-message semantics as source-ready append behavior, but the current runtime still rejects delivered recipient write-buffer command messages until the implementation ADR replaces that boundary."
     },
     {
       "blocker_id": "multi-command-input-conflict-policy",
@@ -159,6 +155,6 @@
   ],
   "allowed_next_slices": [
     "Review new standard-signal command-token source evidence before changing the ADR-0165 preserved unsupported boundary.",
-    "Implement recipient write-buffer command-message append execution from the ADR-0168 source-ready surface."
+    "Add recipient write-buffer command-message evidence bundle after ADR-0169 implementation."
   ]
 }

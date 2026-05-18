@@ -82,7 +82,7 @@ class NeighborDeliveryRecipientChainTests(unittest.TestCase):
         self.assertIsNone(chain.recipient_result)
         self.assertIn("recipient input/upstream must be empty", chain.detail)
 
-    def test_delivered_non_init_command_remains_unconsumed_boundary(self):
+    def test_delivered_write_buffer_one_is_consumed_by_recipient_append(self):
         sender = Cell(
             role="stem",
             memory="right",
@@ -94,17 +94,20 @@ class NeighborDeliveryRecipientChainTests(unittest.TestCase):
 
         chain = execute_neighbor_delivery_recipient_chain(sender, recipient)
 
-        self.assertFalse(chain.accepted)
-        self.assertEqual(chain.status, "recipient-not-consumed")
+        self.assertTrue(chain.accepted, chain.detail)
+        self.assertEqual(chain.status, "neighbor-delivery-consumed")
         self.assertIsNotNone(chain.recipient_before)
         self.assertEqual(chain.recipient_before.upstream, ("_", "_", "write-buf-one"))
         self.assertIsNotNone(chain.recipient_result)
-        self.assertEqual(chain.recipient_result.status, "rejected-input")
+        self.assertEqual(
+            chain.recipient_result.status,
+            "recipient-write-buffer-command-message-appended",
+        )
         self.assertEqual(chain.recipient_result.cell.role, "wire")
         self.assertEqual(chain.recipient_result.cell.memory, "right")
-        self.assertIn("recipient-init-command-message-processed", chain.detail)
+        self.assertEqual(chain.recipient_result.cell.buffer, (1,))
 
-    def test_delivered_write_buffer_zero_remains_unconsumed_boundary(self):
+    def test_delivered_write_buffer_zero_is_consumed_by_recipient_append(self):
         sender = Cell(
             role="stem",
             memory="right",
@@ -116,10 +119,35 @@ class NeighborDeliveryRecipientChainTests(unittest.TestCase):
 
         chain = execute_neighbor_delivery_recipient_chain(sender, recipient)
 
+        self.assertTrue(chain.accepted, chain.detail)
+        self.assertEqual(chain.status, "neighbor-delivery-consumed")
+        self.assertIsNotNone(chain.recipient_before)
+        self.assertEqual(chain.recipient_before.upstream, ("_", "_", "write-buf-zero"))
+        self.assertIsNotNone(chain.recipient_result)
+        self.assertEqual(
+            chain.recipient_result.status,
+            "recipient-write-buffer-command-message-appended",
+        )
+        self.assertEqual(chain.recipient_result.cell.upstream, EMPTY)
+        self.assertEqual(chain.recipient_result.cell.input, EMPTY)
+        self.assertEqual(chain.recipient_result.cell.buffer, (0,))
+
+    def test_delivered_standard_signal_remains_rejection_boundary(self):
+        sender = Cell(
+            role="stem",
+            memory="right",
+            input=(1, 0, 0),
+            control=(0, 1, 0),
+            buffer=(1, 1, 0, 0),
+        )
+        recipient = Cell(role="wire", memory="right")
+
+        chain = execute_neighbor_delivery_recipient_chain(sender, recipient)
+
         self.assertFalse(chain.accepted)
         self.assertEqual(chain.status, "recipient-not-consumed")
         self.assertIsNotNone(chain.recipient_before)
-        self.assertEqual(chain.recipient_before.upstream, ("_", "_", "write-buf-zero"))
+        self.assertEqual(chain.recipient_before.upstream, ("_", "_", "standard-signal"))
         self.assertIsNotNone(chain.recipient_result)
         self.assertEqual(chain.recipient_result.status, "rejected-input")
         self.assertEqual(chain.recipient_result.cell.upstream, EMPTY)

@@ -41,7 +41,7 @@ surface, and ADR-0161 implements its direct self-mailbox and completed
 self-target command-buffer append behavior. ADR-0162 registers both
 implemented write-buffer self-target surfaces as integrated evidence bundles.
 ADR-0168 resolves recipient write-buffer command-message semantics as
-source-ready append behavior while leaving runtime implementation for the next
+source-ready append behavior, and ADR-0169 implements that recipient runtime
 slice.
 ADR-0058 records `standard-signal` command-token semantics as still
 source-blocked while preserving ordinary binary-input standard-signal
@@ -64,9 +64,9 @@ as an integrated evidence bundle. ADR-0077 composes that delivery output into
 recipient init-family consumption without widening stem command execution.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority for
-standard-signal command tokens. AS still does not execute recipient
-write-buffer command-message inputs at runtime, but that gap is now an
-implementation frontier rather than a source-semantics blocker.
+standard-signal command tokens. Recipient write-buffer command-message inputs
+now execute at runtime; the next write-buffer work is evidence-bundle
+promotion rather than behavior implementation.
 
 ## Evidence
 
@@ -106,8 +106,8 @@ command behavior honestly, AS still needs to choose:
 
 - how `standard-signal` behaves when selected as a self-mailbox or self-target
   command-buffer command;
-- how to implement the ADR-0168 source-ready recipient write-buffer
-  command-message append surface; and
+- how to promote ADR-0169 recipient write-buffer command-message append
+  execution into an integrated evidence bundle; and
 - how standard-signal command-message inputs behave on recipient cells after
   the implemented init-family recipient slice.
 

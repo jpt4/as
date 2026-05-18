@@ -704,7 +704,14 @@
   remains blocked pending that question.
 - ADR-0168 resolves `recipient-command-message-surface` as
   `execute-recipient-write-buffer-command-message-append`. Write-buffer
-  readiness is now `recipient-command-message-source-ready`: recipient
-  append behavior is source-resolved, current runtime still rejects delivered
-  recipient write-buffer command messages, and the safe next slice is runtime
-  implementation of that recipient surface.
+  readiness became `recipient-command-message-source-ready`: recipient
+  append behavior was source-resolved while current runtime still rejected
+  delivered recipient write-buffer command messages.
+- ADR-0169 implements recipient write-buffer command-message append execution.
+  Single delivered `write-buf-zero` and `write-buf-one` tokens now append
+  literal `0` and `1`, clear the active command source, preserve role/memory/
+  output/command state, and keep the full-buffer boundary. The recipient
+  non-init rejection claim now covers `standard-signal` and multi-command
+  conflicts only; delivered write-buffer neighbor handoffs are consumed-chain
+  examples, delivered `standard-signal` is the rejection-chain witness, and
+  the blocked command frontier is `standard-signal` only.

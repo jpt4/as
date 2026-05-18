@@ -57,6 +57,7 @@ Status = Literal[
     "stem-command-buffer-self-processed",
     "stem-command-buffer-self-write-buffer-appended",
     "recipient-init-command-message-processed",
+    "recipient-write-buffer-command-message-appended",
     "self-mailbox-processed",
     "self-mailbox-unsupported",
     "self-mailbox-write-buffer-appended",
@@ -179,6 +180,10 @@ def step_fixed_cell(cell: Cell) -> StepResult:
     if recipient_command_result is not None:
         return recipient_command_result
 
+    recipient_write_buffer_result = _process_recipient_write_buffer_command_message(active)
+    if recipient_write_buffer_result is not None:
+        return recipient_write_buffer_result
+
     if _is_stem_init(active.input):
         return StepResult("stem-init", _to_stem(active))
 
@@ -219,6 +224,10 @@ def step_stem_cell(cell: Cell) -> StepResult:
         recipient_command_result = _process_recipient_init_command_message(cell)
         if recipient_command_result is not None:
             return recipient_command_result
+
+        recipient_write_buffer_result = _process_recipient_write_buffer_command_message(cell)
+        if recipient_write_buffer_result is not None:
+            return recipient_write_buffer_result
 
         if not _is_one_hot_standard_signal(cell.input):
             return StepResult("rejected-input", _replace(cell, input=EMPTY))
@@ -336,6 +345,31 @@ def _process_recipient_init_command_message(cell: Cell) -> StepResult | None:
             self_mailbox="_",
             control=(),
             buffer=(),
+        ),
+    )
+
+
+def _process_recipient_write_buffer_command_message(cell: Cell) -> StepResult | None:
+    """Append the literal bit carried by a single recipient write-buffer command."""
+
+    command = _single_command_message_input(cell.input)
+    if command is None:
+        return None
+
+    bit = WRITE_BUFFER_COMMAND_BITS.get(command)
+    if bit is None:
+        return None
+
+    if len(cell.buffer) >= MAX_STEM_BUFFER_SIZE:
+        return StepResult("stem-buffer-full", cell)
+
+    return StepResult(
+        "recipient-write-buffer-command-message-appended",
+        _replace(
+            cell,
+            input=EMPTY,
+            output=EMPTY,
+            buffer=cell.buffer + (bit,),
         ),
     )
 

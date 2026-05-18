@@ -53,10 +53,10 @@ class NeighborDeliveryChainSvgTests(unittest.TestCase):
         self.assertIn("recipient: recipient-non-init-rejection", rejection_svg)
         self.assertIn("status: recipient-not-consumed", rejection_svg)
         self.assertIn("sender output[2] -> recipient upstream[2]", rejection_svg)
-        self.assertIn("delivered tuple: [_, _, write-buf-one]", rejection_svg)
-        self.assertIn("sender after output: [_, _, write-buf-one]", rejection_svg)
+        self.assertIn("delivered tuple: [_, _, standard-signal]", rejection_svg)
+        self.assertIn("sender after output: [_, _, standard-signal]", rejection_svg)
         self.assertIn(
-            "recipient before upstream: [_, _, write-buf-one]",
+            "recipient before upstream: [_, _, standard-signal]",
             rejection_svg,
         )
         self.assertIn("step status: rejected-input", rejection_svg)

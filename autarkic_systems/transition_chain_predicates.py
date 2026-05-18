@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from autarkic_systems.transition_chains import (
     NEIGHBOR_DELIVERY_STATUS,
-RECIPIENT_CONSUMED_STATUS,
+    RECIPIENT_CONSUMED_STATUSES,
     NeighborDeliveryRecipientChain,
 )
 
@@ -46,12 +46,12 @@ def neighbor_delivery_consumed_by_recipient(
             False,
             "recipient upstream does not match delivered sender output",
         )
-    if chain.recipient_result.status != RECIPIENT_CONSUMED_STATUS:
+    if chain.recipient_result.status not in RECIPIENT_CONSUMED_STATUSES:
         return ChainPredicateResult(
             name,
             False,
             "recipient status "
-            f"{chain.recipient_result.status} is not {RECIPIENT_CONSUMED_STATUS}",
+            f"{chain.recipient_result.status} is not consumed",
         )
     if chain.recipient_result.cell.upstream != ("_", "_", "_"):
         return ChainPredicateResult(name, False, "recipient upstream was not cleared")
@@ -60,7 +60,7 @@ def neighbor_delivery_consumed_by_recipient(
     return ChainPredicateResult(
         name,
         True,
-        "neighbor delivery output was consumed by recipient init-family logic",
+        "neighbor delivery output was consumed by recipient command logic",
     )
 
 

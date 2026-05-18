@@ -15,19 +15,19 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
     def setUp(self):
         self.status = json.loads(STATUS.read_text(encoding="utf-8"))
 
-    def test_decision_blocks_full_consumption_but_allows_init_family_slice(self):
+    def test_decision_records_implemented_recipient_command_consumption_slice(self):
         self.assertEqual(self.status["schema_version"], 1)
         self.assertEqual(
             self.status["decision"],
-            "implement-recipient-init-family-command-message-consumption-next",
+            "recipient-init-and-write-buffer-command-consumption-implemented",
         )
         self.assertEqual(
             self.status["runtime_change"],
-            "none-source-status-only",
+            "recipient-write-buffer-implemented",
         )
         self.assertTrue(self.status["allowed_next_slice"]["recipient_init_family"])
         self.assertFalse(self.status["allowed_next_slice"]["standard_signal"])
-        self.assertTrue(self.status["allowed_next_slice"]["write_buffer"])
+        self.assertFalse(self.status["allowed_next_slice"]["write_buffer"])
 
         implemented = self.status["implemented_slices"][0]
         self.assertEqual(implemented["adr"], "ADR-0049")
@@ -130,7 +130,7 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
         blocker_ids = {blocker["blocker_id"] for blocker in self.status["blockers"]}
 
         self.assertIn("standard-signal-command-message-divergence", blocker_ids)
-        self.assertIn("write-buffer-command-message-runtime", blocker_ids)
+        self.assertNotIn("write-buffer-command-message-runtime", blocker_ids)
         self.assertIn("multi-command-input-conflict-policy", blocker_ids)
 
         implemented_statuses = {
@@ -155,7 +155,12 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
 
         self.assertFalse(any("multiple command-message" in item for item in allowed))
         self.assertTrue(any("standard-signal" in item for item in allowed))
-        self.assertTrue(any("write-buffer" in item for item in allowed))
+        self.assertTrue(
+            any("recipient write-buffer command-message evidence bundle" in item for item in allowed)
+        )
+        self.assertFalse(
+            any(item.startswith("Implement recipient write-buffer") for item in allowed)
+        )
         self.assertFalse(any("rendered SVG" in item for item in allowed))
         self.assertFalse(
             any(

@@ -19,12 +19,12 @@ CHAIN_REGISTRY = Path("evidence/chains/manifest.json")
 RECIPIENT_STATUS = Path("sources/recipient_non_init_command_source_status.json")
 STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.json")
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
-BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
+BLOCKED_COMMANDS = ["standard-signal"]
 STANDARD_SIGNAL_SAFE_NEXT_SLICE = (
     "review-new-standard-signal-command-token-source-evidence-before-execution-change"
 )
 RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
-    "implement-recipient-write-buffer-command-message-execution"
+    "add-recipient-write-buffer-command-message-evidence-bundle"
 )
 SAFE_NEXT_SLICE = (
     f"{RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE}, "
@@ -35,20 +35,17 @@ STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
     "self-target-command-buffer",
 ]
-WRITE_BUFFER_BLOCKED_RUNTIME_SURFACES = [
-    "recipient-command-message",
-]
+WRITE_BUFFER_BLOCKED_RUNTIME_SURFACES = []
 RECIPIENT_NON_INIT_AS_BOUNDARY = (
     "Continue rejecting recipient non-init command-message inputs for "
-    "standard-signal and write-buffer command tokens; standard-signal "
+    "standard-signal command tokens and multi-command conflicts; standard-signal "
     "recipient input is a resolved rejection boundary and standard-signal "
     "self-target command execution is preserved unsupported unless new source "
     "evidence replaces that boundary, while direct self-mailbox and completed "
     "self-target write-buffer execution are implemented by ADR-0161 and "
-    "recipient write-buffer command-message execution is source-ready after "
-    "ADR-0168. The accepted current runtime behavior is still the ADR-0054 "
-    "rejection boundary until the implementation ADR replaces it, with "
-    "multi-command conflicts assigned to ADR-0059 reject-and-clear."
+    "recipient write-buffer command-message execution is implemented by "
+    "ADR-0169. The accepted current runtime behavior rejects only "
+    "standard-signal command messages and multi-command conflicts."
 )
 STANDARD_SIGNAL_AS_BOUNDARY = (
     "Continue rejecting or preserving standard-signal command tokens at the "
@@ -60,10 +57,8 @@ WRITE_BUFFER_AS_BOUNDARY = (
     "Direct self-mailbox and completed self-target command-buffer "
     "write-buffer execution are implemented through ADR-0161 append behavior "
     "and bundled as integrated evidence by ADR-0162. Delivered recipient "
-    "write-buffer command-message inputs are source-ready for append execution "
-    "after ADR-0168, but current runtime still rejects them under the "
-    "ADR-0054/ADR-0163 recipient non-init boundary until the implementation "
-    "ADR replaces that checked behavior."
+    "write-buffer command-message inputs are implemented by ADR-0169 append "
+    "behavior; no write-buffer runtime surface remains blocked."
 )
 TRANSITION_BUNDLES = [
     {
@@ -82,8 +77,6 @@ TRANSITION_BUNDLES = [
         "positive_example": "fixed upstream standard-signal command rejected",
         "covered_positive_examples": [
             "fixed upstream standard-signal command rejected",
-            "fixed upstream write-buf-zero command rejected",
-            "fixed upstream write-buf-one command rejected",
         ],
     },
     {
@@ -180,9 +173,9 @@ TRANSITION_LANGUAGE = {
     "language_path": "language/transition_claim_language.json",
     "claims_path": "claims/transition_claims.json",
     "certificates_path": "claims/proof_certificates.json",
-    "claim_count": 15,
-    "certificate_count": 15,
-    "result_count": 69,
+    "claim_count": 16,
+    "certificate_count": 16,
+    "result_count": 72,
 }
 CHAIN_LANGUAGE = {
     "language_id": "as-transition-chain-claim-v1",
@@ -195,17 +188,17 @@ CHAIN_LANGUAGE = {
 }
 TRANSITION_CLAIMS = {
     "claims_path": "claims/transition_claims.json",
-    "claim_count": 15,
-    "example_count": 39,
-    "matched_count": 39,
-    "result_count": 39,
+    "claim_count": 16,
+    "example_count": 40,
+    "matched_count": 40,
+    "result_count": 40,
 }
 TRANSITION_PROOF_CERTIFICATES = {
     "claims_path": "claims/transition_claims.json",
     "certificates_path": "claims/proof_certificates.json",
-    "claim_count": 15,
-    "certificate_count": 15,
-    "result_count": 15,
+    "claim_count": 16,
+    "certificate_count": 16,
+    "result_count": 16,
 }
 CHAIN_CLAIMS = {
     "language_id": "as-transition-chain-claim-v1",
@@ -298,8 +291,8 @@ WRITE_BUFFER_RESOLVED_QUESTIONS = [
             "write-buf-one to literal append behavior while clearing "
             "command-source input. SEMSIM clears the buffer after append, but "
             "AS preserves appended-buffer behavior consistently with ADR-0160. "
-            "Current runtime remains rejected until the implementation ADR "
-            "replaces the ADR-0054 boundary."
+            "ADR-0169 implements this recipient command-message append surface "
+            "as checked runtime behavior."
         ),
     },
     {
@@ -312,8 +305,8 @@ WRITE_BUFFER_RESOLVED_QUESTIONS = [
             "write-buf-one to literal append behavior while clearing "
             "command-source input. SEMSIM clears the buffer after append, but "
             "AS preserves appended-buffer behavior consistently with ADR-0160. "
-            "Current runtime remains rejected until the implementation ADR "
-            "replaces the ADR-0054 boundary."
+            "ADR-0169 implements this recipient command-message append surface "
+            "as checked runtime behavior."
         ),
     },
     {
@@ -366,13 +359,13 @@ STANDARD_SIGNAL_EXECUTION_READINESS = {
     ),
 }
 WRITE_BUFFER_EXECUTION_READINESS = {
-    "decision": "recipient-command-message-source-ready",
-    "execution_change_allowed": True,
+    "decision": "implemented",
+    "execution_change_allowed": False,
     "blocked_by_resolution_questions": [],
     "summary": (
-        "Recipient write-buffer command-message append execution is "
-        "source-resolved but not yet implemented; direct self-mailbox and "
-        "completed self-target command-buffer surfaces remain implemented."
+        "Write-buffer append execution is implemented for direct self-mailbox, "
+        "completed self-target command-buffer, and single recipient "
+        "command-message surfaces."
     ),
 }
 STANDARD_SIGNAL_ADDITIONAL_SOURCE_STATUSES = [
@@ -644,11 +637,11 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Transition evidence: accepted (10 bundles)", text)
         self.assertIn("Chain evidence: accepted (2 bundles)", text)
         self.assertIn(
-            "Transition claims: accepted (15 claims, 39 examples, 39 matched)",
+            "Transition claims: accepted (16 claims, 40 examples, 40 matched)",
             text,
         )
         self.assertIn(
-            "Transition proof certificates: accepted (15 claims, 15 certificates)",
+            "Transition proof certificates: accepted (16 claims, 16 certificates)",
             text,
         )
         self.assertIn("Claim/proof failures: none", text)
@@ -657,7 +650,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn("Chain claim failures: none", text)
-        self.assertIn("Transition language: accepted (15 claims, 15 certificates)", text)
+        self.assertIn("Transition language: accepted (16 claims, 16 certificates)", text)
         self.assertIn("Chain language: accepted (2 claims, 2 certificates)", text)
         self.assertIn("Language failures: none", text)
         self.assertIn("Transition evidence bundles:", text)
@@ -699,7 +692,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn(
-            "Blocked commands: standard-signal, write-buf-zero, write-buf-one",
+            "Blocked commands: standard-signal",
             text,
         )
         self.assertIn("Blocked runtime surfaces:", text)
@@ -707,14 +700,13 @@ class ProjectStatusReportTests(unittest.TestCase):
             "standard-signal: self-mailbox-command, self-target-command-buffer",
             text,
         )
-        self.assertIn(
+        self.assertNotIn(
             "write-buf-zero, write-buf-one: recipient-command-message",
             text,
         )
         self.assertIn("AS boundaries:", text)
         self.assertIn(
-            "standard-signal, write-buf-zero, write-buf-one: "
-            f"{RECIPIENT_NON_INIT_AS_BOUNDARY}",
+            f"standard-signal: {RECIPIENT_NON_INIT_AS_BOUNDARY}",
             text,
         )
         self.assertIn(
@@ -1034,8 +1026,8 @@ class ProjectStatusReportTests(unittest.TestCase):
             "FSMSIM route write-buf-zero and write-buf-one to literal append "
             "behavior while clearing command-source input. SEMSIM clears the "
             "buffer after append, but AS preserves appended-buffer behavior "
-            "consistently with ADR-0160. Current runtime remains rejected "
-            "until the implementation ADR replaces the ADR-0054 boundary.",
+            "consistently with ADR-0160. ADR-0169 implements this recipient "
+            "command-message append surface as checked runtime behavior.",
             text,
         )
         self.assertIn(
@@ -1107,15 +1099,13 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn(
             "write-buf-zero, write-buf-one: "
-            "recipient-command-message-source-ready; execution changes "
-            "allowed: yes; blockers: none",
+            "implemented; execution changes allowed: no; blockers: none",
             text,
         )
         self.assertIn(
-            "summary: Recipient write-buffer command-message append execution "
-            "is source-resolved but not yet implemented; direct self-mailbox "
-            "and completed self-target command-buffer surfaces remain "
-            "implemented.",
+            "summary: Write-buffer append execution is implemented for direct "
+            "self-mailbox, completed self-target command-buffer, and single "
+            "recipient command-message surfaces.",
             text,
         )
 

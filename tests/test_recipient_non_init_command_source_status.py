@@ -16,16 +16,16 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
     def setUp(self):
         self.status = json.loads(STATUS.read_text(encoding="utf-8"))
 
-    def test_decision_blocks_runtime_execution_and_selects_rejection_claim(self):
+    def test_decision_preserves_standard_signal_and_conflict_rejection(self):
         self.assertEqual(self.status["schema_version"], 1)
         self.assertEqual(
             self.status["decision"],
-            "do-not-implement-recipient-non-init-command-messages-yet",
+            "preserve-standard-signal-and-conflict-rejection-boundary",
         )
-        self.assertEqual(self.status["runtime_change"], "none-source-status-only")
+        self.assertEqual(self.status["runtime_change"], "recipient-write-buffer-implemented")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "implement-recipient-write-buffer-command-message-execution",
+            "add-recipient-write-buffer-command-message-evidence-bundle",
         )
         claim = self.status["implemented_claims"][0]
         self.assertEqual(
@@ -95,7 +95,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         blocked = self.status["blocked_runtime_commands"]
         self.assertEqual(
             blocked,
-            ["standard-signal", "write-buf-zero", "write-buf-one"],
+            ["standard-signal"],
         )
 
     def test_standard_signal_divergence_is_recorded(self):
@@ -139,14 +139,14 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertIn("append", divergences["LEGACY-FSMSIM-WRITE-BUFFER"]["summary"])
         self.assertEqual(
             self.status["write_buffer_status"]["decision"],
-            "recipient-command-message-source-ready-runtime-rejected",
+            "recipient-command-message-implemented",
         )
         self.assertEqual(
             self.status["write_buffer_status"]["depends_on"],
             "sources/write_buffer_command_semantics_status.json",
         )
         self.assertIn(
-            "current runtime",
+            "implemented",
             self.status["write_buffer_status"]["as_boundary"],
         )
 
@@ -178,9 +178,15 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
                 for item in recipient_status["allowed_next_slices"]
             )
         )
-        self.assertTrue(
+        self.assertFalse(
             any(
                 item.startswith("Implement recipient write-buffer")
+                for item in recipient_status["allowed_next_slices"]
+            )
+        )
+        self.assertTrue(
+            any(
+                "recipient write-buffer command-message evidence bundle" in item
                 for item in recipient_status["allowed_next_slices"]
             )
         )

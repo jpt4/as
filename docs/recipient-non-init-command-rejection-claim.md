@@ -14,8 +14,7 @@ boundary into the transition-claim surface. The claim is
 The claim covers recipient input cases that ADR-0053 keeps blocked:
 
 - single `standard-signal` command-message input;
-- single `write-buf-zero` or `write-buf-one` command-message input;
-- fixed-cell upstream non-init command-message input;
+- fixed-cell upstream `standard-signal` command-message input;
 - multiple simultaneous command-message input conflicts.
 
 The predicate checks that the transition returns `rejected-input`, clears the
@@ -23,21 +22,28 @@ consumed input, preserves role and memory, creates no output, preserves
 automail, self-mailbox, control, and buffer state, and handles upstream
 according to the source of the rejected command.
 
-The claim does not execute the blocked commands. It names the current
-rejection boundary so later traces or semantic revisions have a stable
-reference point.
+Single `write-buf-zero` and `write-buf-one` recipient command-message inputs
+are excluded from this rejection boundary after ADR-0169. They now belong to
+the `UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED` execution claim.
+This claim still names the remaining rejected non-init command boundary so
+later traces or semantic revisions have a stable reference point.
 
 ## Proof Surface
 
 `claims/proof_certificates.json` covers the claim with `manifest-example`
-steps for fixed upstream `standard-signal`, `write-buf-zero`, and
-`write-buf-one` rejections, a stem multi-command conflict rejection, an
-all-init conflict rejection, and a negative changed-role example.
+steps for fixed upstream `standard-signal` rejection, a stem multi-command
+conflict rejection, an all-init conflict rejection, and a negative
+changed-role example.
 
-ADR-0163 adds the explicit upstream write-buffer positive examples. This keeps
-recipient write-buffer command-message behavior inside the rejection boundary
-while making the claim/proof coverage as explicit as the already implemented
-self-target write-buffer surfaces.
+ADR-0163 had added the explicit upstream write-buffer positive examples. At
+that point, recipient write-buffer command-message behavior remained inside
+the rejection boundary while the claim/proof coverage was made as explicit as
+the already implemented self-target write-buffer surfaces.
+
+ADR-0169 removes those write-buffer positive examples from this rejection
+claim. The remaining rejection examples cover `standard-signal` and
+multi-command conflict behavior, while single recipient write-buffer command
+messages are verified by the new append-execution claim.
 
 ## Verification
 

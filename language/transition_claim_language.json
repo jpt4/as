@@ -45,6 +45,7 @@
         "stem-command-buffer-self-processed",
         "stem-command-buffer-self-write-buffer-appended",
         "recipient-init-command-message-processed",
+        "recipient-write-buffer-command-message-appended",
         "stem-init",
         "self-mailbox-processed",
         "self-mailbox-unsupported",
@@ -78,6 +79,7 @@
         "stem_command_buffer_executes_self_write_buffer",
         "stem_command_buffer_delivers_neighbor_command",
         "recipient_init_command_message_processed",
+        "recipient_write_buffer_command_message_appends_literal",
         "recipient_non_init_command_message_rejected"
       ],
       "form": "predicate(before_cell, step_result)"

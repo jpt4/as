@@ -11,9 +11,11 @@ The first claim lives in `claims/transition_chain_claims.json` as
 `autarkic_systems/transition_chain_predicates.py`.
 ADR-0091 adds `UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED`, checked by
 `neighbor_delivery_rejected_by_recipient`, for the delivered non-init
-recipient rejection boundary. ADR-0164 extends the manifest examples so the
-chain claim names delivered `write-buf-zero` as well as the existing
-`write-buf-one` rejection path.
+recipient rejection boundary. ADR-0164 temporarily extended the manifest
+examples so the chain claim named delivered `write-buf-zero` as well as the
+existing `write-buf-one` rejection path. ADR-0169 moves delivered
+write-buffer commands to the consumed chain and keeps delivered
+`standard-signal` as the rejection-chain witness.
 
 ## Claim Boundary
 
@@ -26,16 +28,20 @@ The manifest also records negative examples for:
 
 - a sender that completes a self-target non-init command instead of delivering;
 - a recipient that already has pending upstream state; and
-- delivered non-init `write-buf-one` and `write-buf-zero` tokens.
+- delivered non-init `standard-signal` tokens.
 
 Those negative examples keep the claim from becoming a hidden scheduler or
 overwrite rule.
 
-The rejection claim covers delivered non-init `write-buf-one` and
-`write-buf-zero` token paths: the sender performs neighbor delivery, the
-delivered output is installed as recipient upstream state, and the recipient
-rejects the command through the existing non-init boundary. It deliberately
-does not execute write-buffer semantics.
+The consumed claim now covers delivered `write-buf-one` and `write-buf-zero`
+token paths: the sender performs neighbor delivery, the delivered output is
+installed as recipient upstream state, and the recipient appends the literal
+write-buffer bit through ADR-0169 recipient command-message execution.
+
+The rejection claim covers delivered non-init `standard-signal` token paths:
+the sender performs neighbor delivery, the delivered output is installed as
+recipient upstream state, and the recipient rejects the command through the
+remaining non-init boundary.
 
 ## Proof Surface
 
@@ -54,8 +60,9 @@ python -m autarkic_systems.chain_claims
 ```
 
 The tests cover manifest loading, example evaluation, proof-certificate
-coverage, positive predicate acceptance, non-init delivered-token rejection,
-and rejection-predicate refusal of the init-consumption chain.
+coverage, positive predicate acceptance, delivered write-buffer consumption,
+delivered standard-signal rejection, and rejection-predicate refusal of the
+init/write-buffer consumption chain.
 
 ADR-0080 adds the module command so the chain claim surface can be validated
 outside the unit-test runner.

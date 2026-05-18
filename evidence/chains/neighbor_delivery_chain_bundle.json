@@ -28,9 +28,9 @@
     ]
   },
   "boundaries": [
-    "This bundle covers only the init-family neighbor delivery recipient chain.",
-    "Recipient non-init command messages remain blocked by source-status records.",
-    "standard-signal command-token execution and write-buffer command-token execution remain source-blocked.",
+    "This bundle covers neighbor delivery recipient chains consumed by init-family or write-buffer command-message logic.",
+    "Recipient non-init standard-signal command messages remain blocked by source-status records.",
+    "Write-buffer recipient command messages are implemented by ADR-0169, while standard-signal command-token execution remains source-blocked.",
     "No scheduler, topology, or multi-cell timing model is claimed."
   ]
 }

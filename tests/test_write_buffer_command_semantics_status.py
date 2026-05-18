@@ -25,23 +25,23 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
     def setUp(self):
         self.status = json.loads(STATUS.read_text(encoding="utf-8"))
 
-    def test_decision_marks_write_buffer_runtime_execution_source_ready(self):
+    def test_decision_marks_write_buffer_runtime_execution_implemented(self):
         self.assertEqual(self.status["schema_version"], 1)
         self.assertEqual(
             self.status["decision"],
-            "write-buffer-recipient-command-message-source-ready",
+            "write-buffer-command-execution-implemented",
         )
         self.assertEqual(
             self.status["runtime_change"],
-            "self-target-implemented-recipient-source-status-only",
+            "implemented-by-adr-0169",
         )
         self.assertEqual(
             self.status["safe_next_slice"],
-            "implement-recipient-write-buffer-command-message-execution",
+            "add-recipient-write-buffer-command-message-evidence-bundle",
         )
         self.assertEqual(
             self.status["blocked_runtime_surfaces"],
-            ["recipient-command-message"],
+            [],
         )
         self.assertEqual(
             self.status["commands"],
@@ -118,7 +118,7 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(self.status["required_resolution_questions"], [])
         self.assertEqual(self.status["resolution_question_evidence"], [])
 
-    def test_recipient_surface_is_source_ready_but_runtime_still_rejected(self):
+    def test_recipient_surface_is_implemented_and_no_longer_runtime_blocked(self):
         resolved_questions = {
             question["question_id"]: question
             for question in self.status["resolved_resolution_questions"]
@@ -140,8 +140,12 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertIn("RAA", resolved["legacy_divergence"])
         self.assertIn("FSMSIM", resolved["legacy_divergence"])
         self.assertIn("SEMSIM", resolved["legacy_divergence"])
-        self.assertIn(
+        self.assertNotIn(
             "write-buf-zero",
+            recipient_non_init["blocked_runtime_commands"],
+        )
+        self.assertNotIn(
+            "write-buf-one",
             recipient_non_init["blocked_runtime_commands"],
         )
         surface = self.status["recipient_surface_resolution"]
@@ -151,15 +155,15 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         )
         self.assertEqual(surface["source_status"], str(STATUS))
         self.assertEqual(
-            surface["current_runtime_boundary_claim_id"],
-            "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+            surface["claim_id"],
+            "UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED",
         )
         self.assertEqual(
-            surface["current_runtime_evidence_bundle"],
-            "evidence/recipient_non_init_command_rejection_bundle.json",
+            surface["evidence_bundle_status"],
+            "pending",
         )
-        self.assertIn("source-ready", surface["summary"])
-        self.assertIn("current runtime", surface["summary"])
+        self.assertIn("implemented", surface["summary"])
+        self.assertIn("evidence bundle", surface["summary"])
 
     def test_recipient_command_message_surface_question_is_resolved(self):
         resolved_questions = {
@@ -324,20 +328,20 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertIn("FSMSIM", resolved["legacy_divergence"])
         self.assertIn("SEMSIM", resolved["legacy_divergence"])
 
-    def test_execution_readiness_allows_recipient_implementation_next(self):
+    def test_execution_readiness_records_implemented_surfaces(self):
         readiness = self.status["execution_readiness"]
 
         self.assertEqual(
             readiness["decision"],
-            "recipient-command-message-source-ready",
+            "implemented",
         )
-        self.assertTrue(readiness["execution_change_allowed"])
+        self.assertFalse(readiness["execution_change_allowed"])
         self.assertEqual(
             readiness["blocked_by_resolution_questions"],
             [],
         )
-        self.assertIn("source-resolved", readiness["summary"])
-        self.assertIn("not yet implemented", readiness["summary"])
+        self.assertIn("implemented", readiness["summary"])
+        self.assertIn("recipient command-message", readiness["summary"])
 
     def test_existing_source_status_frontiers_point_past_write_buffer(self):
         recipient_non_init = json.loads(RECIPIENT_NON_INIT.read_text(encoding="utf-8"))
@@ -358,7 +362,7 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "implement-recipient-write-buffer-command-message-execution",
+            "add-recipient-write-buffer-command-message-evidence-bundle",
         )
         self.assertFalse(
             any(
@@ -378,9 +382,15 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
                 for item in recipient_status["allowed_next_slices"]
             )
         )
-        self.assertTrue(
+        self.assertFalse(
             any(
                 item.startswith("Implement recipient write-buffer")
+                for item in recipient_status["allowed_next_slices"]
+            )
+        )
+        self.assertTrue(
+            any(
+                "recipient write-buffer command-message evidence bundle" in item
                 for item in recipient_status["allowed_next_slices"]
             )
         )

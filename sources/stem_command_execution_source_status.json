@@ -30,7 +30,7 @@
     "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
     "locus": "lines 660-681, process-buffer and stem-process-special-message",
     "summary": "The formal model sketches 32 target/message cases, clears the buffer, places self-target messages in a self mailbox, places neighbor-target messages on output channels, and then processes self special messages.",
-    "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox standard-signal preservation, direct self-mailbox write-buffer append execution, self-target init command-buffer dispatch, self-target write-buffer command-buffer execution, neighbor-target command-buffer delivery onto output channels, recipient-side init-family command-message input consumption, source-ready recipient write-buffer command-message append behavior, and the unsupported self-target standard-signal append boundary. It still does not execute recipient write-buffer command-message inputs at runtime or execute standard-signal command tokens."
+    "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox standard-signal preservation, direct self-mailbox write-buffer append execution, self-target init command-buffer dispatch, self-target write-buffer command-buffer execution, neighbor-target command-buffer delivery onto output channels, recipient-side init-family command-message input consumption, recipient write-buffer command-message execution, and the unsupported self-target standard-signal append boundary. It still does not execute standard-signal command tokens."
   },
   "implemented_evidence_bundles": [
     {
@@ -168,19 +168,15 @@
   "blockers": [
     {
       "blocker_id": "recipient-non-init-command-message-semantics",
-      "summary": "AS can consume delivered init-family command-message inputs, and ADR-0168 resolves recipient write-buffer command-message append semantics as source-ready. Recipient cells still reject delivered write-buffer command messages at runtime until the implementation ADR replaces the ADR-0054 boundary, and standard-signal command execution remains blocked."
+      "summary": "AS can consume delivered init-family and write-buffer command-message inputs. Standard-signal command execution remains blocked, and multiple simultaneous command-message inputs keep the reject-and-clear conflict policy."
     },
     {
       "blocker_id": "standard-signal-command-semantics",
       "summary": "ADR-0058 records standard-signal command-token execution as blocked: ADR-0026 names formal offset 0, ordinary standard-signal processing is binary-input behavior, legacy special-message lists omit it, and RAA puts standard-signal at the final command case."
-    },
-    {
-      "blocker_id": "write-buffer-command-semantics",
-      "summary": "ADR-0161 implements direct self-mailbox and completed self-target command-buffer write-buffer execution; ADR-0168 resolves recipient write-buffer command-message semantics as source-ready append behavior, leaving runtime implementation as the next slice."
     }
   ],
   "allowed_next_slices": [
-    "Implement recipient write-buffer command-message append execution from the ADR-0168 source-ready surface.",
+    "Add recipient write-buffer command-message evidence bundle after ADR-0169 implementation.",
     "Add more source-status tests if another PRC source resolves the target, command-order, standard-signal command-token, or recipient write-buffer command-message divergence."
   ]
 }

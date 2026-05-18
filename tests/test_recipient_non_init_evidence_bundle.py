@@ -15,10 +15,6 @@ REGISTRY = Path("evidence/manifest.json")
 BUNDLE_ID = "recipient-non-init-command-rejection-evidence-bundle"
 CLAIM_ID = "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED"
 EXAMPLE = "fixed upstream standard-signal command rejected"
-WRITE_BUFFER_REJECTION_EXAMPLES = (
-    "fixed upstream write-buf-zero command rejected",
-    "fixed upstream write-buf-one command rejected",
-)
 STATUS = "rejected-input"
 
 
@@ -37,7 +33,7 @@ class RecipientNonInitEvidenceBundleTests(unittest.TestCase):
         self.assertEqual(self.bundle.positive_example, EXAMPLE)
         self.assertEqual(
             self.bundle.covered_positive_examples,
-            (EXAMPLE, *WRITE_BUFFER_REJECTION_EXAMPLES),
+            (EXAMPLE,),
         )
         self.assertEqual(self.bundle.transition_function, "step_fixed_cell")
         self.assertEqual(self.bundle.expected_status, STATUS)

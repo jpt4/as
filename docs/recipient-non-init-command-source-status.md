@@ -15,7 +15,8 @@ boundaries.
 
 ## Decision
 
-Do not implement recipient-side non-init command-message execution yet.
+Preserve recipient-side rejection for delivered `standard-signal` command
+messages and multi-command conflicts.
 
 Delivered recipient `standard-signal` command messages remain rejected by the
 ADR-0054 non-init rejection boundary. ADR-0148 resolves the recipient surface,
@@ -23,22 +24,21 @@ ADR-0150 resolves the command-token/binary-input distinction, ADR-0151
 resolves self-target `standard-signal` as unsupported preservation, and
 ADR-0165 makes execution changes require new source evidence.
 
-Delivered recipient `write-buf-zero` and `write-buf-one` command messages
-remain rejected by the current ADR-0054 non-init rejection boundary, but
-ADR-0168 resolves their source semantics as append execution. ADR-0161 now
-implements direct self-mailbox and completed self-target command-buffer
-write-buffer append execution; the remaining work is to replace this current
-recipient runtime boundary with the source-ready recipient append behavior.
+Delivered recipient `write-buf-zero` and `write-buf-one` command messages no
+longer belong to this rejection boundary. ADR-0168 resolves their source
+semantics as append execution, and ADR-0169 implements the recipient runtime
+append behavior.
 
 Multiple simultaneous command-message inputs also remain blocked because AS has
 selected reject-and-clear as the conflict policy, not priority or sequencing.
 
 ## Safe Next Slice
 
-The current runtime already rejects `standard-signal`, write-buffer, and
-multi-command recipient inputs. ADR-0053 identified claim promotion as the
-safe next slice because the rejection boundary needed to become explicit
-before trace/render work could depend on it.
+The current runtime rejects `standard-signal` and multi-command recipient
+inputs while executing single write-buffer recipient command messages. ADR-0053
+identified claim promotion as the safe next slice because the original
+rejection boundary needed to become explicit before trace/render work could
+depend on it.
 
 ADR-0054 completes that promotion as
 `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`. ADR-0055 adds the
@@ -78,9 +78,11 @@ integrated evidence bundle in
 proof certificate, schematic trace, SVG render, hardware witness map, and
 source-status boundaries together.
 
-ADR-0163 keeps that same trace-aligned primary example but extends the
-recipient non-init claim, proof certificate, and evidence-bundle coverage with
-explicit upstream `write-buf-zero` and `write-buf-one` rejection examples.
+ADR-0163 kept that same trace-aligned primary example and temporarily extended
+the recipient non-init claim, proof certificate, and evidence-bundle coverage
+with upstream `write-buf-zero` and `write-buf-one` rejection examples. ADR-0169
+removes those single write-buffer examples from the rejection surface because
+they now append.
 
 ADR-0148 reuses this completed rejection evidence ladder to resolve the
 standard-signal `recipient-surface` question: delivered recipient
@@ -92,11 +94,12 @@ ADR-0152 reuses the same rejection evidence ladder to resolve the write-buffer
 `write-buf-one` command messages are rejected as non-init command-message
 inputs rather than executed.
 
-The rejection evidence ladder is complete again. ADR-0168 resolves recipient
-write-buffer command-message source semantics as append execution, so the
-active safe next slice is recipient write-buffer command-message runtime
-implementation. Standard-signal command-token execution should be changed only
-if later source evidence replaces the ADR-0165 preserved unsupported boundary.
+The rejection evidence ladder is complete again for `standard-signal` and
+multi-command conflicts. ADR-0169 implements recipient write-buffer
+command-message append execution, so the active safe next slice is a dedicated
+recipient write-buffer command-message evidence bundle. Standard-signal
+command-token execution should be changed only if later source evidence
+replaces the ADR-0165 preserved unsupported boundary.
 
 ADR-0117 keeps this boundary visible to project-status automation: accepted
 source-status records must now carry non-empty top-level `as_boundary` text.

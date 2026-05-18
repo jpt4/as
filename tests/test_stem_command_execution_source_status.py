@@ -28,16 +28,16 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         blocker_ids = {blocker["blocker_id"] for blocker in self.status["blockers"]}
         self.assertIn("recipient-non-init-command-message-semantics", blocker_ids)
         self.assertIn("standard-signal-command-semantics", blocker_ids)
-        self.assertIn("write-buffer-command-semantics", blocker_ids)
+        self.assertNotIn("write-buffer-command-semantics", blocker_ids)
 
         execution_gap = self.status["formal_model_execution_anchor"]["as_gap"]
         self.assertIn("self-target init command-buffer dispatch", execution_gap)
         self.assertIn("self-target write-buffer command-buffer execution", execution_gap)
         self.assertIn("neighbor-target command-buffer delivery", execution_gap)
         self.assertIn("recipient-side init-family command-message input consumption", execution_gap)
-        self.assertIn("source-ready recipient write-buffer", execution_gap)
+        self.assertIn("recipient write-buffer command-message execution", execution_gap)
         self.assertIn("unsupported self-target standard-signal append boundary", execution_gap)
-        self.assertIn("does not execute recipient write-buffer", execution_gap)
+        self.assertNotIn("does not execute recipient write-buffer", execution_gap)
         self.assertIn("standard-signal command tokens", execution_gap)
 
     def test_formal_model_command_table_matches_adr_0026_map(self):
@@ -217,7 +217,10 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertTrue(any("standard-signal" in item for item in allowed))
         self.assertTrue(any("write-buffer" in item for item in allowed))
         self.assertTrue(
-            any("recipient write-buffer command-message" in item for item in allowed)
+            any(
+                "recipient write-buffer command-message evidence bundle" in item
+                for item in allowed
+            )
         )
         self.assertFalse(any("multiple command-message" in item for item in allowed))
         self.assertFalse(
@@ -233,7 +236,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
             )
         )
         self.assertFalse(any("schematic-linked trace" in item for item in allowed))
-        self.assertFalse(any("evidence bundle" in item for item in allowed))
+        self.assertTrue(any("evidence bundle" in item for item in allowed))
         self.assertFalse(any("rendered SVG" in item for item in allowed))
         self.assertTrue(
             all("full stem command execution" not in item for item in allowed)

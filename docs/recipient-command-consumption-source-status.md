@@ -16,7 +16,9 @@ The structured status lives in
 ## Decision
 
 ADR-0048 decided to implement recipient-side init-family command-message
-consumption next, but not full command-message consumption.
+consumption first, but not full command-message consumption. ADR-0169 extends
+the implemented recipient-consumption surface to single `write-buf-zero` and
+`write-buf-one` command messages.
 
 The formal model routes input-channel special messages for wire, proc, and
 stem cells through `process-special-message`. The restored PRC legacy sources
@@ -42,12 +44,11 @@ ADR-0054 non-init rejection boundary, and self-target `standard-signal`
 command tokens remain preserved as unsupported. ADR-0165 gates any future
 execution change on new source evidence.
 
-Delivered recipient `write-buf-zero` and `write-buf-one` command messages
-remain rejected by the current ADR-0054 non-init rejection boundary, but
-ADR-0168 resolves their source semantics as append execution. ADR-0161 selects
-and implements direct self-mailbox and completed self-target command-buffer
-write-buffer append behavior; the remaining recipient work is now runtime
-implementation rather than source-semantics resolution.
+Delivered recipient `write-buf-zero` and `write-buf-one` command messages are
+implemented by ADR-0169 as append execution. ADR-0161 selects and implements
+direct self-mailbox and completed self-target command-buffer write-buffer
+append behavior; ADR-0169 completes the single recipient command-message
+write-buffer surface.
 
 Full recipient-side command-message consumption still excludes non-init
 command-token execution. ADR-0059 selects reject-and-clear as the policy for
@@ -94,9 +95,10 @@ ADR-0056 adds the rendered SVG view in
 ADR-0057 records the write-buffer command semantics source-status decision in
 `sources/write_buffer_command_semantics_status.json`. ADR-0161 implements the
 direct self-mailbox and completed self-target command-buffer write-buffer
-surfaces, and ADR-0168 marks delivered recipient write-buffer command messages
-source-ready for append execution while this recipient-consumption status keeps
-the current runtime boundary blocked until the implementation slice.
+surfaces, ADR-0168 marks delivered recipient write-buffer command messages
+source-ready for append execution, and ADR-0169 implements that recipient
+append execution. The remaining next step is evidence-bundle promotion for the
+recipient write-buffer command-message surface.
 
 ADR-0058 records the `standard-signal` command-token semantics source-status
 decision in `sources/standard_signal_command_semantics_status.json` while

@@ -241,6 +241,12 @@ append execution, clears the live write-buffer question/evidence lists, marks
 write-buffer readiness as `recipient-command-message-source-ready`, and moves
 the safe next slice to recipient write-buffer command-message implementation
 while preserving project status `schema_version: 15`.
+ADR-0169 implements recipient write-buffer command-message append execution,
+adds the matching transition claim/proof/language surface, moves delivered
+write-buffer neighbor handoffs to the consumed-chain examples, keeps delivered
+`standard-signal` as the rejection-chain witness, and changes the blocked
+command frontier to `standard-signal` only while preserving project status
+`schema_version: 15`.
 
 ## Boundary
 

@@ -44,10 +44,11 @@ class NeighborDeliveryChainClaimTests(unittest.TestCase):
             set(examples),
             {
                 "neighbor b proc left delivery consumed by empty recipient",
+                "neighbor c write buffer delivery consumed by recipient append",
+                "neighbor c write buffer zero delivery consumed by recipient append",
                 "self write buffer completion is not neighbor delivery",
                 "recipient pending upstream blocks delivered command",
-                "neighbor c write buffer delivery remains unconsumed",
-                "neighbor c write buffer zero delivery remains unconsumed",
+                "neighbor c standard signal delivery remains unconsumed",
             },
         )
         self.assertTrue(
@@ -56,11 +57,16 @@ class NeighborDeliveryChainClaimTests(unittest.TestCase):
             ].expected
         )
         self.assertFalse(
-            examples["neighbor c write buffer delivery remains unconsumed"].expected
+            examples["neighbor c standard signal delivery remains unconsumed"].expected
         )
-        self.assertFalse(
+        self.assertTrue(
             examples[
-                "neighbor c write buffer zero delivery remains unconsumed"
+                "neighbor c write buffer delivery consumed by recipient append"
+            ].expected
+        )
+        self.assertTrue(
+            examples[
+                "neighbor c write buffer zero delivery consumed by recipient append"
             ].expected
         )
 
@@ -76,20 +82,14 @@ class NeighborDeliveryChainClaimTests(unittest.TestCase):
         self.assertEqual(
             set(examples),
             {
-                "neighbor c write buffer delivery rejected by recipient",
-                "neighbor c write buffer zero delivery rejected by recipient",
+                "neighbor c standard signal delivery rejected by recipient",
                 "neighbor b proc left delivery is consumed not rejected",
                 "self write buffer completion is not neighbor rejection",
             },
         )
         self.assertTrue(
             examples[
-                "neighbor c write buffer delivery rejected by recipient"
-            ].expected
-        )
-        self.assertTrue(
-            examples[
-                "neighbor c write buffer zero delivery rejected by recipient"
+                "neighbor c standard signal delivery rejected by recipient"
             ].expected
         )
         self.assertFalse(
@@ -110,15 +110,19 @@ class NeighborDeliveryChainClaimTests(unittest.TestCase):
         )
         self.assertFalse(observed["self write buffer completion is not neighbor delivery"])
         self.assertFalse(observed["recipient pending upstream blocks delivered command"])
-        self.assertFalse(observed["neighbor c write buffer delivery remains unconsumed"])
-        self.assertFalse(
-            observed["neighbor c write buffer zero delivery remains unconsumed"]
+        self.assertFalse(observed["neighbor c standard signal delivery remains unconsumed"])
+        self.assertTrue(
+            observed[
+                "neighbor c write buffer delivery consumed by recipient append"
+            ]
         )
         self.assertTrue(
-            observed["neighbor c write buffer delivery rejected by recipient"]
+            observed[
+                "neighbor c write buffer zero delivery consumed by recipient append"
+            ]
         )
         self.assertTrue(
-            observed["neighbor c write buffer zero delivery rejected by recipient"]
+            observed["neighbor c standard signal delivery rejected by recipient"]
         )
         self.assertFalse(
             observed["neighbor b proc left delivery is consumed not rejected"]
@@ -136,11 +140,11 @@ class NeighborDeliveryChainClaimTests(unittest.TestCase):
         self.assertTrue(all(result.accepted for result in results), results)
         detail_by_claim = {result.claim_id: result.detail for result in results}
         self.assertIn(
-            "verified 5 manifest-example steps",
+            "verified 6 manifest-example steps",
             detail_by_claim[CONSUMED_CLAIM_ID],
         )
         self.assertIn(
-            "verified 4 manifest-example steps",
+            "verified 3 manifest-example steps",
             detail_by_claim[REJECTED_CLAIM_ID],
         )
 
@@ -160,7 +164,7 @@ class NeighborDeliveryChainClaimTests(unittest.TestCase):
         self.assertTrue(predicate.holds, predicate.detail)
         self.assertEqual(predicate.name, "neighbor_delivery_consumed_by_recipient")
 
-    def test_predicate_rejects_non_init_delivered_token(self):
+    def test_predicate_accepts_write_buffer_delivered_token(self):
         sender = Cell(
             role="stem",
             memory="right",
@@ -173,16 +177,15 @@ class NeighborDeliveryChainClaimTests(unittest.TestCase):
         chain = execute_neighbor_delivery_recipient_chain(sender, recipient)
         predicate = neighbor_delivery_consumed_by_recipient(chain)
 
-        self.assertFalse(predicate.holds)
-        self.assertIn("recipient-not-consumed", predicate.detail)
+        self.assertTrue(predicate.holds, predicate.detail)
 
-    def test_rejection_predicate_accepts_delivered_non_init_rejection(self):
+    def test_rejection_predicate_accepts_delivered_standard_signal_rejection(self):
         sender = Cell(
             role="stem",
             memory="right",
-            input=(0, 1, 0),
+            input=(1, 0, 0),
             control=(0, 1, 0),
-            buffer=(1, 1, 1, 1),
+            buffer=(1, 1, 0, 0),
         )
         recipient = Cell(role="wire", memory="right")
 

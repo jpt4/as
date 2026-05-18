@@ -24,16 +24,11 @@ CERTIFICATES = Path("claims/proof_certificates.json")
 LANGUAGE = Path("language/transition_claim_language.json")
 CLAIM_ID = "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED"
 EMPTY = ("_", "_", "_")
-WRITE_BUFFER_REJECTION_EXAMPLES = {
-    "fixed upstream write-buf-zero command rejected": "write-buf-zero",
-    "fixed upstream write-buf-one command rejected": "write-buf-one",
-}
-
 
 class RecipientNonInitCommandMessageRejectionClaimTests(unittest.TestCase):
-    def test_predicate_accepts_fixed_direct_and_upstream_non_init_rejection(self):
+    def test_predicate_accepts_fixed_direct_and_upstream_standard_signal_rejection(self):
         cases = (
-            Cell(role="wire", memory="right", input=("write-buf-one", "_", "_")),
+            Cell(role="wire", memory="right", input=("standard-signal", "_", "_")),
             Cell(role="proc", memory="left", upstream=("_", "standard-signal", "_")),
         )
 
@@ -67,7 +62,7 @@ class RecipientNonInitCommandMessageRejectionClaimTests(unittest.TestCase):
         self.assertTrue(predicate.holds, predicate.detail)
 
     def test_predicate_rejects_wrong_status_changed_role_and_uncleared_input(self):
-        before = Cell(role="wire", memory="right", input=("write-buf-zero", "_", "_"))
+        before = Cell(role="wire", memory="right", input=("standard-signal", "_", "_"))
         wrong_status = StepResult(
             status="routed",
             cell=Cell(role="wire", memory="right", input=EMPTY),
@@ -78,7 +73,7 @@ class RecipientNonInitCommandMessageRejectionClaimTests(unittest.TestCase):
         )
         uncleared_input = StepResult(
             status="rejected-input",
-            cell=Cell(role="wire", memory="right", input=("write-buf-zero", "_", "_")),
+            cell=Cell(role="wire", memory="right", input=("standard-signal", "_", "_")),
         )
 
         wrong_status_result = recipient_non_init_command_message_rejected(
@@ -102,13 +97,17 @@ class RecipientNonInitCommandMessageRejectionClaimTests(unittest.TestCase):
         self.assertIn("input", uncleared_input_result.detail)
 
     def test_predicate_rejects_wrong_upstream_handling(self):
-        before = Cell(role="proc", memory="left", upstream=("write-buf-one", "_", "_"))
+        before = Cell(
+            role="proc",
+            memory="left",
+            upstream=("standard-signal", "_", "_"),
+        )
         bad = StepResult(
             status="rejected-input",
             cell=Cell(
                 role="proc",
                 memory="left",
-                upstream=("write-buf-one", "_", "_"),
+                upstream=("standard-signal", "_", "_"),
                 input=EMPTY,
             ),
         )
@@ -148,24 +147,13 @@ class RecipientNonInitCommandMessageRejectionClaimTests(unittest.TestCase):
         self.assertTrue(evaluations)
         self.assertTrue(all(evaluation.matched for evaluation in evaluations), evaluations)
 
-    def test_manifest_examples_name_single_write_buffer_rejections(self):
+    def test_manifest_examples_do_not_name_single_write_buffer_rejections(self):
         claims = load_transition_claims(CLAIMS)
         claim = next(claim for claim in claims if claim.claim_id == CLAIM_ID)
-        examples = {example.name: example for example in claim.examples}
+        example_names = {example.name for example in claim.examples}
 
-        evaluations = evaluate_claim_examples([claim])
-        by_name = {evaluation.example_name: evaluation for evaluation in evaluations}
-
-        for example_name, command in WRITE_BUFFER_REJECTION_EXAMPLES.items():
-            with self.subTest(example_name=example_name):
-                example = examples[example_name]
-                self.assertTrue(example.expected)
-                self.assertEqual(example.before.upstream.count(command), 1)
-                self.assertEqual(example.before.input, EMPTY)
-                self.assertEqual(example.result.status, "rejected-input")
-                self.assertEqual(example.result.cell.upstream, EMPTY)
-                self.assertEqual(example.result.cell.input, EMPTY)
-                self.assertTrue(by_name[example_name].matched, by_name[example_name])
+        self.assertNotIn("fixed upstream write-buf-zero command rejected", example_names)
+        self.assertNotIn("fixed upstream write-buf-one command rejected", example_names)
 
     def test_proof_certificates_cover_recipient_non_init_rejection_claim(self):
         claims = load_transition_claims(CLAIMS)
@@ -177,7 +165,7 @@ class RecipientNonInitCommandMessageRejectionClaimTests(unittest.TestCase):
         self.assertIn(CLAIM_ID, certificate_ids)
         self.assertTrue(all(result.accepted for result in results), results)
 
-    def test_proof_certificate_names_single_write_buffer_rejections(self):
+    def test_proof_certificate_omits_single_write_buffer_rejections(self):
         certificates = load_proof_certificates(CERTIFICATES)
         certificate = next(
             certificate
@@ -190,9 +178,8 @@ class RecipientNonInitCommandMessageRejectionClaimTests(unittest.TestCase):
             if step.expected is True
         }
 
-        for example_name in WRITE_BUFFER_REJECTION_EXAMPLES:
-            with self.subTest(example_name=example_name):
-                self.assertIn(example_name, covered)
+        self.assertNotIn("fixed upstream write-buf-zero command rejected", covered)
+        self.assertNotIn("fixed upstream write-buf-one command rejected", covered)
 
     def test_object_language_names_recipient_non_init_rejection_predicate(self):
         language = load_transition_claim_language(LANGUAGE)

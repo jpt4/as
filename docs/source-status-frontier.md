@@ -120,6 +120,10 @@ append execution, clears the live write-buffer question/evidence lists, marks
 write-buffer readiness as `recipient-command-message-source-ready`, and moves
 the safe next slice to recipient write-buffer command-message implementation.
 The focused frontier schema remains `2`.
+ADR-0169 implements recipient write-buffer command-message append execution,
+changes write-buffer readiness to `implemented`, removes write-buffer from the
+blocked command frontier, and moves write-buffer safe-next guidance to
+evidence-bundle promotion. The focused frontier schema remains `2`.
 
 ## Boundary
 

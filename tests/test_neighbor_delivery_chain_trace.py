@@ -102,15 +102,15 @@ class NeighborDeliveryChainTraceTests(unittest.TestCase):
         recipient_before = rejection_trace.recipient_step.before_cell
         recipient_after = rejection_trace.recipient_step.expected_after_cell
 
-        self.assertEqual(sender_before["input"], [0, 1, 0])
+        self.assertEqual(sender_before["input"], [1, 0, 0])
         self.assertEqual(sender_before["control"], [0, 1, 0])
-        self.assertEqual(sender_before["buffer"], [1, 1, 1, 1])
-        self.assertEqual(sender_after["output"], ["_", "_", "write-buf-one"])
+        self.assertEqual(sender_before["buffer"], [1, 1, 0, 0])
+        self.assertEqual(sender_after["output"], ["_", "_", "standard-signal"])
         self.assertEqual(
             rejection_trace.handoff.delivered_tuple,
-            ("_", "_", "write-buf-one"),
+            ("_", "_", "standard-signal"),
         )
-        self.assertEqual(recipient_before["upstream"], ["_", "_", "write-buf-one"])
+        self.assertEqual(recipient_before["upstream"], ["_", "_", "standard-signal"])
         self.assertEqual(rejection_trace.recipient_step.expected_status, "rejected-input")
         self.assertEqual(recipient_after["role"], "wire")
         self.assertEqual(recipient_after["memory"], "right")

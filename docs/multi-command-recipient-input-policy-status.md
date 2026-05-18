@@ -36,15 +36,14 @@ The boundary is:
 
 - one init-family command-message token: consume it under ADR-0049;
 - two or more command-message tokens: reject and clear active command input;
-- non-init command-token execution remains blocked under ADR-0057 and
-  ADR-0058.
+- single write-buffer command-message tokens append under ADR-0169;
+- `standard-signal` command-token execution remains blocked under ADR-0058.
 
 ADR-0060 adds that schematic-linked trace, and ADR-0061 adds the generated
 SVG render. The multi-command evidence ladder is now complete; the next
-command-execution work should implement the ADR-0168 source-ready recipient
-write-buffer command-message append surface. Standard-signal command-token
-execution is preserved as unsupported unless new source evidence replaces that
-boundary.
+write-buffer work is ADR-0169 evidence-bundle promotion. Standard-signal
+command-token execution is preserved as unsupported unless new source evidence
+replaces that boundary.
 
 ADR-0069 records the same direct `wire-r-init` plus `proc-l-init` conflict as
 an integrated evidence bundle in

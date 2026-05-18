@@ -45,6 +45,7 @@
         "stem-command-buffer-self-processed",
         "stem-command-buffer-self-write-buffer-appended",
         "recipient-init-command-message-processed",
+        "recipient-write-buffer-command-message-appended",
         "stem-init",
         "self-mailbox-processed",
         "self-mailbox-unsupported",

@@ -17,7 +17,10 @@ ChainStatus = Literal[
 
 EMPTY = ("_", "_", "_")
 NEIGHBOR_DELIVERY_STATUS = "stem-command-buffer-neighbor-delivered"
-RECIPIENT_CONSUMED_STATUS = "recipient-init-command-message-processed"
+RECIPIENT_CONSUMED_STATUSES = {
+    "recipient-init-command-message-processed",
+    "recipient-write-buffer-command-message-appended",
+}
 
 
 @dataclass(frozen=True)
@@ -40,9 +43,9 @@ def execute_neighbor_delivery_recipient_chain(
 
     This is intentionally not a general multi-cell simulator. It only composes
     the already implemented stem neighbor-delivery transition with the already
-    implemented recipient init-family command-message transition. The recipient
-    must have empty direct input and upstream channels so the chain cannot
-    overwrite pending state.
+    implemented recipient command-message transitions. The recipient must have
+    empty direct input and upstream channels so the chain cannot overwrite
+    pending state.
     """
 
     sender_result = step_stem_cell(sender)
@@ -71,7 +74,7 @@ def execute_neighbor_delivery_recipient_chain(
 
     recipient_before = replace(recipient, upstream=sender_result.cell.output)
     recipient_result = _step_recipient(recipient_before)
-    if recipient_result.status != RECIPIENT_CONSUMED_STATUS:
+    if recipient_result.status not in RECIPIENT_CONSUMED_STATUSES:
         return NeighborDeliveryRecipientChain(
             status="recipient-not-consumed",
             accepted=False,
@@ -79,8 +82,8 @@ def execute_neighbor_delivery_recipient_chain(
             recipient_before=recipient_before,
             recipient_result=recipient_result,
             detail=(
-                "recipient must produce "
-                f"{RECIPIENT_CONSUMED_STATUS}, got {recipient_result.status}"
+                "recipient must produce a consumed command-message status, "
+                f"got {recipient_result.status}"
             ),
         )
 
@@ -90,7 +93,7 @@ def execute_neighbor_delivery_recipient_chain(
         sender_result=sender_result,
         recipient_before=recipient_before,
         recipient_result=recipient_result,
-        detail="neighbor delivery output was consumed by recipient init logic",
+        detail="neighbor delivery output was consumed by recipient command logic",
     )
 
 

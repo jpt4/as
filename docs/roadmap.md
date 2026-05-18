@@ -3390,3 +3390,32 @@ Status: accepted in
 `docs/adr/0168-recipient-write-buffer-surface-resolution.md`. Implemented in
 the write-buffer and recipient source-status records plus focused
 write-buffer/source-status/project-status/recipient frontier tests.
+
+## ADR-0169: Recipient Write-Buffer Command Execution
+
+Goal: implement delivered recipient `write-buf-zero` and `write-buf-one`
+command-message append behavior.
+
+Deliverables:
+
+- fixed and stem recipient cells append the command's literal bit for a single
+  delivered write-buffer command message;
+- the active command source is cleared while role, memory, output, automail,
+  self-mailbox, control, and existing buffer contents are preserved;
+- the full-buffer boundary still reports `stem-buffer-full` without changing
+  the cell;
+- single delivered `standard-signal` command messages and multi-command
+  conflicts remain rejected;
+- a new transition claim/proof/object-language surface records recipient
+  write-buffer append execution;
+- delivered write-buffer neighbor handoffs move to the consumed-chain examples,
+  while delivered `standard-signal` becomes the rejection-chain witness;
+- source/project status report only `standard-signal` as blocked and move the
+  write-buffer safe-next slice to evidence-bundle promotion; and
+- project-status schema `15` and source-status frontier schema `2` remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0169-recipient-write-buffer-command-execution.md`. Implemented in
+runtime, claim/proof/language, chain, source-status, and project-status
+surfaces.

@@ -9,10 +9,10 @@ The bundle's trace-aligned primary example is the positive
 recipient pulls an upstream `standard-signal` command-message token, rejects
 it, preserves role and memory, and clears the active command source.
 
-ADR-0163 extends the bundle's covered positive examples to include upstream
-`write-buf-zero` and `write-buf-one` recipient rejections. Those examples are
-checked through the claim/proof layer while the committed schematic trace and
-SVG remain the primary upstream `standard-signal` witness.
+ADR-0163 temporarily extended the bundle's covered positive examples to
+include upstream `write-buf-zero` and `write-buf-one` recipient rejections.
+ADR-0169 removes those write-buffer examples from this rejection bundle because
+single recipient write-buffer command messages now append instead of reject.
 
 ## Evidence Path
 
@@ -37,10 +37,10 @@ the source-status boundary files remain present and parseable.
 ## Boundary
 
 The bundle records a rejection boundary, not new recipient command execution.
-`standard-signal`, delivered `write-buf-zero` / `write-buf-one`, and
-multi-command recipient inputs remain governed by source-status blockers and
-rejection policy. Direct self-mailbox and completed self-target
-command-buffer write-buffer command tokens are separate implemented surfaces.
+`standard-signal` and multi-command recipient inputs remain governed by
+source-status blockers and rejection policy. Direct self-mailbox, completed
+self-target command-buffer, and single delivered recipient write-buffer
+command tokens are separate implemented surfaces.
 
 ## Verification
 
