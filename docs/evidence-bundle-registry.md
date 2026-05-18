@@ -72,6 +72,8 @@ ADR-0120 lets individual transition evidence bundles name
 `covered_positive_examples` in addition to their trace-aligned
 `positive_example`; bundle validation checks every covered example against the
 claim predicate and expected status.
+ADR-0121 carries each bundle's `positive_example` and
+`covered_positive_examples` into the registry JSON `bundles` entries.
 
 ## Boundary
 

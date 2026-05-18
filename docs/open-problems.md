@@ -202,6 +202,9 @@ positive manifest example.
 ADR-0120 carries that explicit coverage into the integrated evidence-bundle
 layer by letting the unsupported self-command bundles validate
 `covered_positive_examples` while keeping one trace-aligned primary example.
+ADR-0121 exposes transition bundle `positive_example` and
+`covered_positive_examples` metadata in registry JSON and project-status JSON,
+bumping project status to `schema_version: 7`.
 
 ## P3: Choose The First Proof Apparatus
 

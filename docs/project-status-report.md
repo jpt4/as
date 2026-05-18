@@ -43,7 +43,7 @@ The text report names:
 - the safe next slice from the source-status records.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 6`. If a registry file is missing, the corresponding registry
+`schema_version: 7`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -78,6 +78,8 @@ top-level `as_boundary` text, preserving `schema_version: 6` while preventing
 blank boundary explanations in `frontier.source_statuses`.
 ADR-0118 renders those AS boundaries in the default text report without
 changing the JSON schema.
+ADR-0121 adds `positive_example` and `covered_positive_examples` to transition
+evidence bundle entries in JSON and bumps the schema version to `7`.
 
 ## Boundary
 

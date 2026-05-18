@@ -2703,3 +2703,26 @@
   tests; JSON parsing, `py_compile`, `git diff --check`, transition evidence
   registry JSON, and project status text/JSON passed; and
   `python -m unittest discover` passed 579 tests.
+
+## 2026-05-18 - Registry Covered Example JSON
+
+- Added ADR-0121 to expose transition bundle positive-example coverage in the
+  registry JSON and project-status JSON first-run surfaces.
+- Updated evidence registry and project status tests before implementation.
+  The red run failed because transition registry JSON bundle entries lacked
+  `positive_example` and `covered_positive_examples`, and project status still
+  reported `schema_version: 6`.
+- Updated `autarkic_systems.evidence_bundle.registry_validation_report_payload`
+  so each transition bundle JSON entry carries `positive_example` and
+  `covered_positive_examples`, with structured empty fallback values when a
+  bundle cannot be loaded.
+- Bumped `autarkic_systems.project_status` to `schema_version: 7`, carrying
+  the enriched transition bundle entries into project status JSON while
+  leaving project status text unchanged.
+- Updated README, project-status docs, evidence-bundle registry docs, open
+  problems, roadmap, memory, and lessons with the covered-example JSON
+  contract.
+- Verification passed: focused registry/status tests ran 52 tests; adjacent
+  registry/status/unsupported-evidence tests ran 64 tests; `py_compile`,
+  `git diff --check`, transition evidence registry JSON, and project status
+  text/JSON passed; and `python -m unittest discover` passed 579 tests.

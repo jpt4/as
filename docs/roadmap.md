@@ -2301,3 +2301,25 @@ Status: accepted in
 `evidence/command_buffer_unsupported_bundle.json`, with tests in
 `tests/test_self_mailbox_unsupported_evidence_bundle.py` and
 `tests/test_command_buffer_unsupported_evidence_bundle.py`.
+
+## ADR-0121: Registry Covered Example JSON
+
+Goal: expose transition bundle positive-example coverage in the first-run JSON
+registry and project-status surfaces.
+
+Deliverables:
+
+- `positive_example` in each transition registry JSON bundle entry;
+- `covered_positive_examples` in each transition registry JSON bundle entry;
+- structured fallback values when a bundle cannot be loaded;
+- project status JSON `schema_version: 7`;
+- unchanged project status text output; and
+- focused tests covering registry JSON, CLI JSON, project status JSON, and
+  missing-bundle fallback entries.
+
+Status: accepted in
+`docs/adr/0121-registry-covered-example-json.md`. Implemented in
+`autarkic_systems/evidence_bundle.py` and
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_evidence_bundle_registry.py` and
+`tests/test_project_status_report.py`.

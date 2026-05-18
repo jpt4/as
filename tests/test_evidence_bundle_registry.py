@@ -19,32 +19,50 @@ BUNDLE = Path("evidence/recipient_init_command_message_bundle.json")
 BUNDLE_ID = "recipient-init-command-message-transition-evidence-bundle"
 CLAIM_ID = "UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED"
 STATUS = "recipient-init-command-message-processed"
+EXAMPLE = "fixed upstream wire right init processed"
 REJECTION_BUNDLE = Path("evidence/recipient_non_init_command_rejection_bundle.json")
 REJECTION_BUNDLE_ID = "recipient-non-init-command-rejection-evidence-bundle"
 REJECTION_CLAIM_ID = "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED"
 REJECTION_STATUS = "rejected-input"
+REJECTION_EXAMPLE = "fixed upstream standard-signal command rejected"
 MULTI_COMMAND_BUNDLE = Path("evidence/multi_command_recipient_rejection_bundle.json")
 MULTI_COMMAND_BUNDLE_ID = "multi-command-recipient-rejection-evidence-bundle"
+MULTI_COMMAND_EXAMPLE = "fixed all-init command conflict rejected"
 SELF_MAILBOX_BUNDLE = Path("evidence/self_mailbox_init_bundle.json")
 SELF_MAILBOX_BUNDLE_ID = "self-mailbox-init-evidence-bundle"
 SELF_MAILBOX_CLAIM_ID = "UC-STEM-SELF-MAILBOX-INIT-COMMAND"
 SELF_MAILBOX_STATUS = "self-mailbox-processed"
+SELF_MAILBOX_EXAMPLE = "processor left mailbox init"
 UNSUPPORTED_MAILBOX_BUNDLE = Path("evidence/self_mailbox_unsupported_bundle.json")
 UNSUPPORTED_MAILBOX_BUNDLE_ID = "self-mailbox-unsupported-evidence-bundle"
 UNSUPPORTED_MAILBOX_CLAIM_ID = "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED"
 UNSUPPORTED_MAILBOX_STATUS = "self-mailbox-unsupported"
+UNSUPPORTED_MAILBOX_EXAMPLE = "write buffer one unsupported preserved"
+UNSUPPORTED_MAILBOX_COVERED_EXAMPLES = [
+    "standard signal unsupported preserved",
+    "write buffer zero unsupported preserved",
+    "write buffer one unsupported preserved",
+]
 SELF_COMMAND_BUFFER_BUNDLE = Path("evidence/self_command_buffer_init_bundle.json")
 SELF_COMMAND_BUFFER_BUNDLE_ID = "self-command-buffer-init-evidence-bundle"
 SELF_COMMAND_BUFFER_CLAIM_ID = "UC-STEM-COMMAND-BUFFER-SELF-INIT"
 SELF_COMMAND_BUFFER_STATUS = "stem-command-buffer-self-processed"
+SELF_COMMAND_BUFFER_EXAMPLE = "self command buffer processor left init"
 UNSUPPORTED_COMMAND_BUFFER_BUNDLE = Path("evidence/command_buffer_unsupported_bundle.json")
 UNSUPPORTED_COMMAND_BUFFER_BUNDLE_ID = "command-buffer-unsupported-evidence-bundle"
 UNSUPPORTED_COMMAND_BUFFER_CLAIM_ID = "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED"
 UNSUPPORTED_COMMAND_BUFFER_STATUS = "stem-buffer-appended"
+UNSUPPORTED_COMMAND_BUFFER_EXAMPLE = "self write buffer command remains appended"
+UNSUPPORTED_COMMAND_BUFFER_COVERED_EXAMPLES = [
+    "self standard signal command remains appended",
+    "self write buffer zero command remains appended",
+    "self write buffer command remains appended",
+]
 NEIGHBOR_COMMAND_BUFFER_BUNDLE = Path("evidence/neighbor_command_buffer_delivery_bundle.json")
 NEIGHBOR_COMMAND_BUFFER_BUNDLE_ID = "neighbor-command-buffer-delivery-evidence-bundle"
 NEIGHBOR_COMMAND_BUFFER_CLAIM_ID = "UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED"
 NEIGHBOR_COMMAND_BUFFER_STATUS = "stem-command-buffer-neighbor-delivered"
+NEIGHBOR_COMMAND_BUFFER_EXAMPLE = "neighbor b proc left command delivered"
 
 
 class EvidenceBundleRegistryTests(unittest.TestCase):
@@ -155,48 +173,64 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
                     "path": str(BUNDLE),
                     "claim_id": CLAIM_ID,
                     "expected_status": STATUS,
+                    "positive_example": EXAMPLE,
+                    "covered_positive_examples": [EXAMPLE],
                 },
                 {
                     "bundle_id": REJECTION_BUNDLE_ID,
                     "path": str(REJECTION_BUNDLE),
                     "claim_id": REJECTION_CLAIM_ID,
                     "expected_status": REJECTION_STATUS,
+                    "positive_example": REJECTION_EXAMPLE,
+                    "covered_positive_examples": [REJECTION_EXAMPLE],
                 },
                 {
                     "bundle_id": MULTI_COMMAND_BUNDLE_ID,
                     "path": str(MULTI_COMMAND_BUNDLE),
                     "claim_id": REJECTION_CLAIM_ID,
                     "expected_status": REJECTION_STATUS,
+                    "positive_example": MULTI_COMMAND_EXAMPLE,
+                    "covered_positive_examples": [MULTI_COMMAND_EXAMPLE],
                 },
                 {
                     "bundle_id": SELF_MAILBOX_BUNDLE_ID,
                     "path": str(SELF_MAILBOX_BUNDLE),
                     "claim_id": SELF_MAILBOX_CLAIM_ID,
                     "expected_status": SELF_MAILBOX_STATUS,
+                    "positive_example": SELF_MAILBOX_EXAMPLE,
+                    "covered_positive_examples": [SELF_MAILBOX_EXAMPLE],
                 },
                 {
                     "bundle_id": UNSUPPORTED_MAILBOX_BUNDLE_ID,
                     "path": str(UNSUPPORTED_MAILBOX_BUNDLE),
                     "claim_id": UNSUPPORTED_MAILBOX_CLAIM_ID,
                     "expected_status": UNSUPPORTED_MAILBOX_STATUS,
+                    "positive_example": UNSUPPORTED_MAILBOX_EXAMPLE,
+                    "covered_positive_examples": UNSUPPORTED_MAILBOX_COVERED_EXAMPLES,
                 },
                 {
                     "bundle_id": SELF_COMMAND_BUFFER_BUNDLE_ID,
                     "path": str(SELF_COMMAND_BUFFER_BUNDLE),
                     "claim_id": SELF_COMMAND_BUFFER_CLAIM_ID,
                     "expected_status": SELF_COMMAND_BUFFER_STATUS,
+                    "positive_example": SELF_COMMAND_BUFFER_EXAMPLE,
+                    "covered_positive_examples": [SELF_COMMAND_BUFFER_EXAMPLE],
                 },
                 {
                     "bundle_id": UNSUPPORTED_COMMAND_BUFFER_BUNDLE_ID,
                     "path": str(UNSUPPORTED_COMMAND_BUFFER_BUNDLE),
                     "claim_id": UNSUPPORTED_COMMAND_BUFFER_CLAIM_ID,
                     "expected_status": UNSUPPORTED_COMMAND_BUFFER_STATUS,
+                    "positive_example": UNSUPPORTED_COMMAND_BUFFER_EXAMPLE,
+                    "covered_positive_examples": UNSUPPORTED_COMMAND_BUFFER_COVERED_EXAMPLES,
                 },
                 {
                     "bundle_id": NEIGHBOR_COMMAND_BUFFER_BUNDLE_ID,
                     "path": str(NEIGHBOR_COMMAND_BUFFER_BUNDLE),
                     "claim_id": NEIGHBOR_COMMAND_BUFFER_CLAIM_ID,
                     "expected_status": NEIGHBOR_COMMAND_BUFFER_STATUS,
+                    "positive_example": NEIGHBOR_COMMAND_BUFFER_EXAMPLE,
+                    "covered_positive_examples": [NEIGHBOR_COMMAND_BUFFER_EXAMPLE],
                 },
             ],
         )
@@ -216,6 +250,16 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(payload["bundles"][0]["bundle_id"], BUNDLE_ID)
         self.assertEqual(payload["bundles"][0]["path"], str(BUNDLE))
+        self.assertEqual(payload["bundles"][0]["positive_example"], EXAMPLE)
+        self.assertEqual(payload["bundles"][0]["covered_positive_examples"], [EXAMPLE])
+        self.assertEqual(
+            payload["bundles"][4]["covered_positive_examples"],
+            UNSUPPORTED_MAILBOX_COVERED_EXAMPLES,
+        )
+        self.assertEqual(
+            payload["bundles"][6]["covered_positive_examples"],
+            UNSUPPORTED_COMMAND_BUFFER_COVERED_EXAMPLES,
+        )
         self.assertEqual(
             payload["bundles"][-1]["bundle_id"],
             NEIGHBOR_COMMAND_BUFFER_BUNDLE_ID,
@@ -275,6 +319,8 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
                 "registry-completeness",
             ],
         )
+        self.assertEqual(payload["bundles"][0]["positive_example"], "")
+        self.assertEqual(payload["bundles"][0]["covered_positive_examples"], [])
 
     def test_json_cli_emits_failed_subjects_for_missing_bundle(self):
         with tempfile.TemporaryDirectory() as tmp:

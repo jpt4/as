@@ -337,3 +337,6 @@
 - Evidence bundles can keep one trace-aligned primary example while still
   validating broader manifest coverage. Separate `positive_example` from
   covered examples when one trace stands for a finite boundary set.
+- When a validator starts checking richer bundle metadata, carry that metadata
+  into the registry JSON too. A green registry result should reveal the
+  evidence coverage it just validated.

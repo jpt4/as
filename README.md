@@ -157,7 +157,7 @@ the project legible:
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json --format json`
   emits the same registry validation as machine-readable JSON, including the
   registered transition bundle IDs, paths, claim IDs, expected statuses, and
-  compact failed-subject summary.
+  positive and covered examples, plus the compact failed-subject summary.
 - `docs/self-mailbox-init-claim.md` records the named claim and
   proof-certificate surface for the self-mailbox init-command subset.
 - `docs/self-mailbox-unsupported-claim.md` records the named preservation
@@ -273,6 +273,8 @@ the project legible:
   summary-bearing `resolution_questions` objects, schema version `5` adds
   checked `blocked_runtime_surfaces` lists, and schema version `6` adds
   registry `bundles` arrays to the transition and chain evidence summaries.
+  Schema version `7` adds `positive_example` and
+  `covered_positive_examples` to transition evidence bundle entries.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

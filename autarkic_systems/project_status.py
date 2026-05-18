@@ -32,7 +32,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 6
+PROJECT_STATUS_SCHEMA_VERSION = 7
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",

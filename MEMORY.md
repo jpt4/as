@@ -531,3 +531,6 @@
   validation and uses it on the unsupported self-mailbox and self-target
   command-buffer bundles so the integrated evidence layer reflects ADR-0119's
   explicit command coverage.
+- ADR-0121 exposes transition evidence bundle `positive_example` and
+  `covered_positive_examples` in registry JSON and project-status JSON,
+  bumping project status to `schema_version: 7`.

@@ -21,7 +21,7 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
-PROJECT_STATUS_SCHEMA_VERSION = 6
+PROJECT_STATUS_SCHEMA_VERSION = 7
 BLOCKED_RUNTIME_SURFACES = [
     "recipient-command-message",
     "self-mailbox-command",
@@ -50,48 +50,72 @@ TRANSITION_BUNDLES = [
         "path": "evidence/recipient_init_command_message_bundle.json",
         "claim_id": "UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED",
         "expected_status": "recipient-init-command-message-processed",
+        "positive_example": "fixed upstream wire right init processed",
+        "covered_positive_examples": ["fixed upstream wire right init processed"],
     },
     {
         "bundle_id": "recipient-non-init-command-rejection-evidence-bundle",
         "path": "evidence/recipient_non_init_command_rejection_bundle.json",
         "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
         "expected_status": "rejected-input",
+        "positive_example": "fixed upstream standard-signal command rejected",
+        "covered_positive_examples": ["fixed upstream standard-signal command rejected"],
     },
     {
         "bundle_id": "multi-command-recipient-rejection-evidence-bundle",
         "path": "evidence/multi_command_recipient_rejection_bundle.json",
         "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
         "expected_status": "rejected-input",
+        "positive_example": "fixed all-init command conflict rejected",
+        "covered_positive_examples": ["fixed all-init command conflict rejected"],
     },
     {
         "bundle_id": "self-mailbox-init-evidence-bundle",
         "path": "evidence/self_mailbox_init_bundle.json",
         "claim_id": "UC-STEM-SELF-MAILBOX-INIT-COMMAND",
         "expected_status": "self-mailbox-processed",
+        "positive_example": "processor left mailbox init",
+        "covered_positive_examples": ["processor left mailbox init"],
     },
     {
         "bundle_id": "self-mailbox-unsupported-evidence-bundle",
         "path": "evidence/self_mailbox_unsupported_bundle.json",
         "claim_id": "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
         "expected_status": "self-mailbox-unsupported",
+        "positive_example": "write buffer one unsupported preserved",
+        "covered_positive_examples": [
+            "standard signal unsupported preserved",
+            "write buffer zero unsupported preserved",
+            "write buffer one unsupported preserved",
+        ],
     },
     {
         "bundle_id": "self-command-buffer-init-evidence-bundle",
         "path": "evidence/self_command_buffer_init_bundle.json",
         "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-INIT",
         "expected_status": "stem-command-buffer-self-processed",
+        "positive_example": "self command buffer processor left init",
+        "covered_positive_examples": ["self command buffer processor left init"],
     },
     {
         "bundle_id": "command-buffer-unsupported-evidence-bundle",
         "path": "evidence/command_buffer_unsupported_bundle.json",
         "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
         "expected_status": "stem-buffer-appended",
+        "positive_example": "self write buffer command remains appended",
+        "covered_positive_examples": [
+            "self standard signal command remains appended",
+            "self write buffer zero command remains appended",
+            "self write buffer command remains appended",
+        ],
     },
     {
         "bundle_id": "neighbor-command-buffer-delivery-evidence-bundle",
         "path": "evidence/neighbor_command_buffer_delivery_bundle.json",
         "claim_id": "UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED",
         "expected_status": "stem-command-buffer-neighbor-delivered",
+        "positive_example": "neighbor b proc left command delivered",
+        "covered_positive_examples": ["neighbor b proc left command delivered"],
     },
 ]
 CHAIN_BUNDLES = [

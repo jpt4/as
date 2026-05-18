@@ -192,12 +192,7 @@ def registry_validation_report_payload(
         ],
         "result_count": len(results),
         "bundles": [
-            {
-                "bundle_id": entry.bundle_id,
-                "path": str(entry.path),
-                "claim_id": entry.claim_id,
-                "expected_status": entry.expected_status,
-            }
+            _registry_bundle_payload(entry)
             for entry in registry.bundles
         ],
         "results": [
@@ -208,6 +203,24 @@ def registry_validation_report_payload(
             }
             for result in results
         ],
+    }
+
+
+def _registry_bundle_payload(entry: EvidenceBundleRegistryEntry) -> dict[str, Any]:
+    try:
+        bundle = load_transition_evidence_bundle(entry.path)
+        positive_example = bundle.positive_example
+        covered_positive_examples = list(bundle.covered_positive_examples)
+    except Exception:
+        positive_example = ""
+        covered_positive_examples = []
+    return {
+        "bundle_id": entry.bundle_id,
+        "path": str(entry.path),
+        "claim_id": entry.claim_id,
+        "expected_status": entry.expected_status,
+        "positive_example": positive_example,
+        "covered_positive_examples": covered_positive_examples,
     }
 
 
