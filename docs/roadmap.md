@@ -5282,3 +5282,30 @@ Status: accepted in
 `docs/adr/0251-substitution-graph-evaluation-examples.md`. Implemented in
 `autarkic_systems/substitution_graph_evaluation.py`, with tests in
 `tests/test_substitution_graph_evaluation.py`.
+
+## ADR-0252: Substitution Graph Correctness Target
+
+Goal: record the exact proof obligation that the checked substitution graph
+formula schema must satisfy, without claiming the proof has been constructed.
+
+Deliverables:
+
+- `claims/substitution_graph_correctness_targets.json` with one checked
+  correctness target binding the graph target, formula candidate, and finite
+  evaluation examples;
+- `autarkic_systems.substitution_graph_correctness` validation that checks
+  formal-language, codebook, graph-target, formula-candidate, and finite
+  evaluation dependencies;
+- text/JSON report output for the proof boundary, formula candidate, finite
+  example count, and remaining future work;
+- fail-closed rejection for unknown formula candidates, missing finite
+  examples, missing non-claims, and proved-status overclaims; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma, fixed-point equation proof, arithmetized proof predicate, theorem
+  prover, runtime behavior, command semantics, evidence bundle, or GitHub
+  submission logic changes.
+
+Status: accepted in
+`docs/adr/0252-substitution-graph-correctness-target.md`. Implemented in
+`autarkic_systems/substitution_graph_correctness.py`, with tests in
+`tests/test_substitution_graph_correctness_target.py`.

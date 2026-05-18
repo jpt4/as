@@ -9,7 +9,9 @@ syntactic formula candidate for the ADR-0246 substitution graph target:
 dependency of the aggregate formal-confidence target, so formal-confidence
 validation fails closed if this surface drifts. ADR-0250 adds a concrete
 witness evaluator for the checked formula instance. ADR-0251 adds finite
-evaluation examples around the same substitution graph path.
+evaluation examples around the same substitution graph path. ADR-0252 records
+the downstream correctness target that must prove this schema before the
+diagonal route can rely on it.
 
 ## Purpose
 
@@ -96,6 +98,7 @@ The validator checks that:
 
 This is not a formula correctness proof, not a substitution representability
 proof, not a diagonal lemma, not a fixed-point equation proof, and not a
-self-consistency theorem. It evaluates one checked graph point only. The next
-AS step is to prove that this formula schema correctly represents the checked
-`substitution_code` graph before using it in the diagonal lemma route.
+self-consistency theorem. It evaluates one checked graph point only. ADR-0252
+now names the next AS proof target: prove that this formula schema correctly
+represents the checked `substitution_code` graph before using it in the
+diagonal lemma route.

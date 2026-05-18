@@ -4,7 +4,9 @@ Status: finite examples, not a formula correctness proof, 2026-05-18.
 
 ADR-0251 adds `claims/substitution_graph_evaluation_examples.json` and
 `autarkic_systems/substitution_graph_evaluation.py`. It records three concrete
-substitution graph examples over the current formal codebook.
+substitution graph examples over the current formal codebook. ADR-0252 binds
+these examples into the substitution graph correctness target while preserving
+that they are finite evidence only.
 
 ## Purpose
 
@@ -42,3 +44,5 @@ The validator checks that:
 This is not a formula correctness proof, not a substitution representability
 proof, not a diagonal lemma, not a fixed-point equation proof, and not a
 self-consistency theorem. It is finite evaluator coverage for the proof route.
+The checked correctness target in ADR-0252 uses these examples as guardrails,
+not as a substitute for the general proof.

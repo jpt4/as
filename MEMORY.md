@@ -189,6 +189,12 @@
   substitution graph examples for direct substitution, nested
   `substitution_code`, and no-occurrence preservation; these examples are
   finite evaluator coverage, not a formula correctness proof.
+- ADR-0252 adds `claims/substitution_graph_correctness_targets.json` and
+  `autarkic_systems.substitution_graph_correctness`, binding the graph target,
+  formula schema candidate, and three finite evaluation examples into
+  `AS-SUBSTITUTION-GRAPH-CORRECTNESS-TARGET` while keeping formula correctness
+  and downstream representability/diagonal/fixed-point/self-consistency proofs
+  open.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

@@ -5427,3 +5427,22 @@
   the fixed-point blocker: no formula correctness proof, substitution
   representability proof, diagonal lemma, fixed-point equation proof, or
   self-consistency theorem is claimed.
+
+## 2026-05-18 - Substitution Graph Correctness Target
+
+- Added ADR-0252 to record the proof target that must show the checked
+  `substitution_code(x,y) = z` schema correctly represents the substitution
+  graph.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.substitution_graph_correctness` did not exist.
+- Added `claims/substitution_graph_correctness_targets.json`, binding
+  `AS-SUBSTITUTION-GRAPH-DELTA0-TARGET`,
+  `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`, and the three finite ADR-0251
+  evaluation examples.
+- Added `autarkic_systems/substitution_graph_correctness.py`, validating the
+  formal arithmetic language, formal codebook, graph target, formula
+  candidate, finite evaluation examples, explicit future work, and non-claims.
+- Focused substitution-graph correctness tests passed 12 tests. This names the
+  next proof obligation without claiming formula correctness, substitution
+  representability, the diagonal lemma, a fixed-point equation proof, or
+  self-consistency.
