@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "artifact_id": "post-handoff-signal-sequence-trace",
+  "reviewed_at": "2026-05-18",
+  "purpose": "Record the accepted post-handoff signal sequence from init-family neighbor delivery through one recipient follow-up input.",
+  "sequence_claim_id": "UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED",
+  "sequence_helper": "execute_post_handoff_signal_witness",
+  "expected_status": "post-handoff-signal-routed",
+  "expected_delivery_status": "neighbor-delivery-consumed",
+  "expected_delivered_tuple": [
+    "_",
+    "proc-l-init",
+    "_"
+  ],
+  "followup_input": [
+    1,
+    0,
+    0
+  ],
+  "expected_followup_status": "routed",
+  "sender_initial_cell": {
+    "role": "stem",
+    "memory": "right",
+    "upstream": [
+      "_",
+      "_",
+      "_"
+    ],
+    "input": [
+      1,
+      0,
+      0
+    ],
+    "output": [
+      "_",
+      "_",
+      "_"
+    ],
+    "automail": "_",
+    "self_mailbox": "_",
+    "control": [
+      1,
+      0,
+      0
+    ],
+    "buffer": [
+      1,
+      0,
+      1,
+      0
+    ]
+  },
+  "recipient_initial_cell": {
+    "role": "wire",
+    "memory": "right",
+    "upstream": [
+      "_",
+      "_",
+      "_"
+    ],
+    "input": [
+      "_",
+      "_",
+      "_"
+    ],
+    "output": [
+      "_",
+      "_",
+      "_"
+    ],
+    "automail": "_",
+    "self_mailbox": "_",
+    "control": [],
+    "buffer": []
+  },
+  "expected_recipient_before_followup": {
+    "role": "proc",
+    "memory": "left",
+    "upstream": [
+      "_",
+      "_",
+      "_"
+    ],
+    "input": [
+      1,
+      0,
+      0
+    ],
+    "output": [
+      "_",
+      "_",
+      "_"
+    ],
+    "automail": "_",
+    "self_mailbox": "_",
+    "control": [],
+    "buffer": []
+  },
+  "expected_recipient_after_followup": {
+    "role": "proc",
+    "memory": "right",
+    "upstream": [
+      "_",
+      "_",
+      "_"
+    ],
+    "input": [
+      "_",
+      "_",
+      "_"
+    ],
+    "output": [
+      0,
+      0,
+      1
+    ],
+    "automail": "_",
+    "self_mailbox": "_",
+    "control": [],
+    "buffer": []
+  },
+  "routed_signal_flow": [
+    "proc-l-init handoff -> recipient proc/left",
+    "follow-up input[1,0,0] routes through proc/left",
+    "recipient output[2] set to 1",
+    "processor memory toggles left -> right",
+    "recipient input cleared"
+  ],
+  "boundaries": [
+    "This trace records one accepted post-handoff sequence after consumed proc-l-init neighbor delivery.",
+    "It does not add a scheduler, topology, timing model, trace clock, queued delivery, output-clearing rule, or new command semantics.",
+    "The sender-to-recipient delivery remains justified by the checked transition-chain evidence bundle."
+  ]
+}

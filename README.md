@@ -267,6 +267,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   witness showing that a delivered init command has a later recipient behavior:
   `proc-l-init` reconfigures the recipient to `proc/left`, after which a binary
   follow-up signal routes through the existing fixed-cell logic.
+- `autarkic_systems/network_sequence_trace.py` validates the checked
+  post-handoff sequence trace artifact, replaying the accepted delivery and
+  follow-up path through the existing sequence helper.
 - `autarkic_systems/network_sequence_claims.py` validates the first named claim
   and predicate-result proof certificate over that post-handoff signal witness.
 - `autarkic_systems/network_sequence_object_language.py` validates the first

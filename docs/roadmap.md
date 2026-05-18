@@ -4159,3 +4159,24 @@ Status: accepted in `docs/adr/0204-network-sequence-demo-report.md`.
 Implemented in `autarkic_systems/network_sequence_demo.py`, with tests in
 `tests/test_network_sequence_demo_report.py` and operator notes in
 `docs/network-sequence-demo-report.md`.
+
+## ADR-0205: Post-Handoff Sequence Trace
+
+Goal: record the accepted post-handoff sequence as a checked trace artifact.
+
+Deliverables:
+
+- `schematics/sequences/post_handoff_signal_sequence_trace.json`;
+- `autarkic_systems/network_sequence_trace.py`;
+- replay through the existing `execute_post_handoff_signal_witness` helper;
+- validation for trace identity, cell fields, delivered tuple, follow-up
+  status, recipient before/after follow-up cells, sequence status, and
+  boundary terms; and
+- no runtime behavior, claim, proof-rule, evidence-bundle field,
+  project-status, scheduler, topology, timing, SVG, or command-semantics
+  changes.
+
+Status: accepted in `docs/adr/0205-post-handoff-sequence-trace.md`.
+Implemented in `autarkic_systems/network_sequence_trace.py`, with tests in
+`tests/test_post_handoff_sequence_trace.py` and operator notes in
+`docs/post-handoff-sequence-trace.md`.

@@ -851,3 +851,7 @@
   registry. It exposes validation results, evidence-layer presence, missing
   paths, source-status boundaries, and explicit boundary terms without adding
   new validation authority or runtime semantics.
+- ADR-0205 adds `schematics/sequences/post_handoff_signal_sequence_trace.json`
+  and `autarkic_systems.network_sequence_trace`, recording and validating the
+  accepted post-handoff delivery plus follow-up path without adding scheduler,
+  topology, timing, SVG, evidence-bundle fields, or runtime semantics.

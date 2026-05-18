@@ -4365,3 +4365,24 @@
   reported `accepted: true`, 8 validation checks, all evidence layers present,
   and registry `bundle_count: 1`. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 876 tests.
+
+## 2026-05-18 - Post-Handoff Sequence Trace
+
+- Added ADR-0205 to record the accepted post-handoff signal sequence as a
+  checked JSON trace artifact.
+- Added red trace tests before implementation. The focused red run failed
+  because `autarkic_systems.network_sequence_trace` did not exist.
+- Added `schematics/sequences/post_handoff_signal_sequence_trace.json`,
+  recording the sender initial cell, recipient initial cell, delivered
+  `proc-l-init` tuple, follow-up input, recipient before/after follow-up cells,
+  routed signal-flow notes, and boundary text.
+- Added `autarkic_systems/network_sequence_trace.py`, replaying the trace
+  through `execute_post_handoff_signal_witness` and validating trace identity,
+  participants, delivery, follow-up, sequence status, and boundaries.
+- Focused green verification passed 8 post-handoff sequence trace tests.
+  Adjacent post-handoff sequence/demo/evidence/language/claim tests passed 61
+  tests. Live witness JSON still reported accepted status,
+  `neighbor-delivery-consumed`, delivered tuple `["_", "proc-l-init", "_"]`,
+  follow-up status `routed`, and recipient after-follow-up output `[0, 0, 1]`.
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 884 tests.
