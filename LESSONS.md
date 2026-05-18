@@ -390,3 +390,7 @@
   in the specialized commands.
 - If JSON exposes failed subjects for an operator-critical layer, the default
   text report should give humans a compact pointer to those subjects too.
+- Language membership is not the same as semantic validation. If a status
+  report says a claim/proof surface is green, it should expose both the
+  object-language check and the lower claim-example/proof-certificate
+  evaluator results.

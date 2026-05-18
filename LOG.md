@@ -3059,3 +3059,25 @@
   status text rendered `Language failures: none`; project status JSON remained
   accepted at `schema_version: 11`; `py_compile` and `git diff --check`
   passed; and `python -m unittest discover` passed 633 tests.
+
+## 2026-05-18 - Project Status Claim And Proof Surfaces
+
+- Added ADR-0140 to include the base transition claim-example evaluator and
+  proof-certificate verifier in `python -m autarkic_systems.project_status`.
+- Updated project-status tests before implementation. The red run executed 56
+  tests and failed because project status still reported `schema_version: 11`,
+  omitted `transition_claims` and `transition_proof_certificates`, omitted
+  compact accepted claim/proof text lines, and accepted broken claim/proof
+  fixture paths.
+- Updated `autarkic_systems.project_status` so project status JSON includes
+  `transition_claims` and `transition_proof_certificates` summaries with
+  accepted state, paths, counts, failed subjects, result counts, and detailed
+  validation results.
+- Added compact default text lines for transition claims, transition proof
+  certificates, and `Claim/proof failures:` failed-subject summaries, and
+  bumped project status JSON to `schema_version: 12`.
+- Verification passed: focused project-status tests ran 56 tests; project
+  status text rendered accepted claim/proof summaries; project status JSON was
+  accepted at `schema_version: 12`; direct claim/proof JSON CLIs were
+  accepted; `py_compile` passed; and `python -m unittest discover` passed 635
+  tests.

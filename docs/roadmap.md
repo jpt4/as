@@ -2702,3 +2702,28 @@ Deliverables:
 Status: accepted in `docs/adr/0139-project-status-language-failure-text.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0140: Project Status Claim And Proof Surfaces
+
+Goal: include the base transition claim-example evaluator and
+proof-certificate verifier in the first project diagnostic command.
+
+Deliverables:
+
+- project status JSON `schema_version: 12`;
+- `transition_claims` summary with accepted state, path, claim count, example
+  count, matched count, failed subjects, result count, and per-example
+  validation results;
+- `transition_proof_certificates` summary with accepted state, paths, claim
+  count, certificate count, failed subjects, result count, and
+  per-certificate validation results;
+- compact transition claim and proof-certificate lines in default text output;
+- compact claim/proof failed-subject text when either lower surface is
+  rejected; and
+- focused project-status tests covering JSON, text, CLI output, and rejected
+  claim/proof fixtures.
+
+Status: accepted in
+`docs/adr/0140-project-status-claim-proof-surfaces.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

@@ -11,9 +11,11 @@ final source of confidence.
 
 ## Current Repository State
 
-This repository is at its first scaffolding stage. The initial upstream commit
-contains only `AGENTS.md` and its backup, so the first durable work is to make
-the project legible:
+This repository has moved from its initial scaffolding stage into a narrow
+executable evidence stack. The initial upstream commit contained only
+`AGENTS.md` and its backup, so the first durable work made the project
+legible; current work now layers checked Universal Cell transitions, claims,
+proof certificates, object languages, evidence bundles, and status reports:
 
 - `docs/project-charter.md` defines the umbrella project, key terms, and
   near-term research obligations.
@@ -234,7 +236,8 @@ the project legible:
   lower-level evidence bundles, source-status boundaries, artifact-presence
   summary, and validation result.
 - `autarkic_systems/project_status.py` renders one operator-facing report over
-  the transition evidence registry, chain evidence registry, and the live
+  the transition evidence registry, chain evidence registry, base
+  claim/proof/language surfaces, chain language surface, and the live
   source-status frontier for blocked command-token semantics and their
   resolution-question IDs.
 - `claims/transition_claims.json` names the current executable transition
@@ -275,18 +278,20 @@ the project legible:
 - `python -m autarkic_systems.project_status --format json` emits the current
   project status as schema-versioned machine-readable JSON: transition
   evidence accepted with 8 bundles, chain evidence accepted with 2 bundles,
+  transition claim examples accepted with 13 claims and 35 matched examples,
+  transition proof certificates accepted with 13 claims and 13 certificates,
   transition language accepted with 13 claims and 13 certificates, chain
   language accepted with 2 claims and 2 certificates, concrete transition and
   chain registry bundle entries, and the blocked
   `standard-signal`, `write-buf-zero`, and `write-buf-one` command-token
   frontier. The default text report also names the concrete transition and
   chain evidence bundle IDs and paths, transition bundle positive and covered
-  examples, language failed subjects when present, the standard-signal and
-  write-buffer blocked runtime surfaces, source-status AS boundaries, the
-  resolution-question IDs and summaries that define the next source-backed
-  decision work, resolved question decisions that should not be reopened
-  without new evidence, and the source-status cross-links behind the blocked
-  frontier. Schema version `2` attributes
+  examples, claim/proof and language failed subjects when present, the
+  standard-signal and write-buffer blocked runtime surfaces, source-status AS
+  boundaries, the resolution-question IDs and summaries that define the next
+  source-backed decision work, resolved question decisions that should not be
+  reopened without new evidence, and the source-status cross-links behind the
+  blocked frontier. Schema version `2` attributes
   blocked commands to each
   accepted source-status entry, schema version `3` carries the source-status
   resolution-question IDs that still block command-token execution and rejects
@@ -305,6 +310,8 @@ the project legible:
   section. Schema version `10` carries optional resolved-question detail fields
   such as formal command offset and legacy divergence into JSON/text. Schema
   version `11` adds transition and chain language summaries to JSON/text.
+  Schema version `12` adds base transition claim and proof-certificate
+  summaries to JSON/text.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

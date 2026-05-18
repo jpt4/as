@@ -22,6 +22,10 @@ from autarkic_systems.chain_object_language import (
     transition_chain_claim_language_report_payload,
     validate_transition_chain_claim_language_project,
 )
+from autarkic_systems.claim_manifest import (
+    transition_claim_report_payload,
+    validate_transition_claim_project,
+)
 from autarkic_systems.evidence_bundle import (
     load_evidence_bundle_registry,
     registry_validation_report_payload,
@@ -30,6 +34,10 @@ from autarkic_systems.evidence_bundle import (
 from autarkic_systems.object_language import (
     transition_claim_language_report_payload,
     validate_transition_claim_language_project,
+)
+from autarkic_systems.proof_certificates import (
+    proof_certificate_report_payload,
+    validate_proof_certificate_project,
 )
 
 
@@ -46,7 +54,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 11
+PROJECT_STATUS_SCHEMA_VERSION = 12
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -69,6 +77,11 @@ def build_project_status_report(
 
     transition_summary = _transition_registry_summary(transition_registry_path)
     chain_summary = _chain_registry_summary(chain_registry_path)
+    transition_claims = _transition_claim_summary(transition_claims_path)
+    transition_proof_certificates = _transition_proof_certificate_summary(
+        transition_claims_path,
+        transition_certificates_path,
+    )
     transition_language = _transition_language_summary(
         transition_language_path,
         transition_claims_path,
@@ -83,6 +96,8 @@ def build_project_status_report(
     accepted = (
         transition_summary["accepted"]
         and chain_summary["accepted"]
+        and transition_claims["accepted"]
+        and transition_proof_certificates["accepted"]
         and transition_language["accepted"]
         and chain_language["accepted"]
         and not frontier["missing_source_statuses"]
@@ -93,6 +108,8 @@ def build_project_status_report(
         "accepted": accepted,
         "transition_evidence": transition_summary,
         "chain_evidence": chain_summary,
+        "transition_claims": transition_claims,
+        "transition_proof_certificates": transition_proof_certificates,
         "transition_language": transition_language,
         "chain_language": chain_language,
         "frontier": frontier,
@@ -105,6 +122,8 @@ def format_project_status_report(report: dict[str, Any]) -> str:
     status = "accepted" if report["accepted"] else "rejected"
     transition = report["transition_evidence"]
     chain = report["chain_evidence"]
+    transition_claims = report["transition_claims"]
+    transition_proof_certificates = report["transition_proof_certificates"]
     transition_language = report["transition_language"]
     chain_language = report["chain_language"]
     frontier = report["frontier"]
@@ -130,6 +149,12 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         f"Autarkic Systems project status: {status}",
         f"Transition evidence: {transition_status} ({transition['bundle_count']} bundles)",
         f"Chain evidence: {chain_status} ({chain['bundle_count']} bundles)",
+        _transition_claim_text_line(transition_claims),
+        _transition_proof_certificate_text_line(transition_proof_certificates),
+        *_claim_proof_failure_text_lines(
+            transition_claims,
+            transition_proof_certificates,
+        ),
         _language_text_line("Transition language", transition_language),
         _language_text_line("Chain language", chain_language),
         *_language_failure_text_lines(transition_language, chain_language),
@@ -263,6 +288,65 @@ def _chain_registry_summary(registry_path: Path | str) -> dict[str, Any]:
     return _registry_summary(payload, path)
 
 
+def _transition_claim_summary(claims_path: Path | str) -> dict[str, Any]:
+    path = Path(claims_path)
+    try:
+        report = validate_transition_claim_project(claims_path=path)
+    except Exception as exc:
+        return _transition_claim_failure_summary(path, exc)
+
+    payload = transition_claim_report_payload(report)
+    failed_subjects = [
+        f"{result['claim_id']}/{result['example_name']}"
+        for result in payload["results"]
+        if not result["matched"]
+    ]
+    return {
+        "claims_path": str(path),
+        "accepted": payload["accepted"],
+        "claim_count": payload["claim_count"],
+        "example_count": payload["example_count"],
+        "matched_count": payload["matched_count"],
+        "failed_subjects": failed_subjects,
+        "result_count": payload["result_count"],
+        "results": payload["results"],
+    }
+
+
+def _transition_proof_certificate_summary(
+    claims_path: Path | str,
+    certificates_path: Path | str,
+) -> dict[str, Any]:
+    claims = Path(claims_path)
+    certificates = Path(certificates_path)
+    try:
+        report = validate_proof_certificate_project(
+            claims_path=claims,
+            certificates_path=certificates,
+        )
+    except Exception as exc:
+        return _transition_proof_certificate_failure_summary(
+            claims,
+            certificates,
+            exc,
+        )
+
+    payload = proof_certificate_report_payload(report)
+    failed_subjects = [
+        result["claim_id"] for result in payload["results"] if not result["accepted"]
+    ]
+    return {
+        "claims_path": str(claims),
+        "certificates_path": str(certificates),
+        "accepted": payload["accepted"],
+        "claim_count": payload["claim_count"],
+        "certificate_count": payload["certificate_count"],
+        "failed_subjects": failed_subjects,
+        "result_count": payload["result_count"],
+        "results": payload["results"],
+    }
+
+
 def _transition_language_summary(
     language_path: Path | str,
     claims_path: Path | str,
@@ -349,6 +433,70 @@ def _language_failure_summary(
             }
         ],
     }
+
+
+def _transition_claim_failure_summary(path: Path, exc: Exception) -> dict[str, Any]:
+    subject = "claim-file" if isinstance(exc, FileNotFoundError) else "claim-json"
+    detail = f"{type(exc).__name__}: {exc}"
+    return {
+        "claims_path": str(path),
+        "accepted": False,
+        "claim_count": 0,
+        "example_count": 0,
+        "matched_count": 0,
+        "failed_subjects": [subject],
+        "result_count": 1,
+        "results": [
+            {
+                "subject": subject,
+                "accepted": False,
+                "detail": detail,
+            }
+        ],
+    }
+
+
+def _transition_proof_certificate_failure_summary(
+    claims_path: Path,
+    certificates_path: Path,
+    exc: Exception,
+) -> dict[str, Any]:
+    subject = _proof_certificate_failure_subject(claims_path, certificates_path, exc)
+    detail = f"{type(exc).__name__}: {exc}"
+    return {
+        "claims_path": str(claims_path),
+        "certificates_path": str(certificates_path),
+        "accepted": False,
+        "claim_count": 0,
+        "certificate_count": 0,
+        "failed_subjects": [subject],
+        "result_count": 1,
+        "results": [
+            {
+                "subject": subject,
+                "accepted": False,
+                "detail": detail,
+            }
+        ],
+    }
+
+
+def _proof_certificate_failure_subject(
+    claims_path: Path,
+    certificates_path: Path,
+    exc: Exception,
+) -> str:
+    if isinstance(exc, FileNotFoundError):
+        if not claims_path.is_file():
+            return "claim-file"
+        if not certificates_path.is_file():
+            return "certificate-file"
+        return "proof-file"
+    if not claims_path.is_file():
+        return "claim-file"
+    if not certificates_path.is_file():
+        return "certificate-file"
+    return "proof-json"
 
 
 def _registry_summary(payload: dict[str, Any], path: Path) -> dict[str, Any]:
@@ -591,6 +739,44 @@ def _language_text_line(label: str, summary: dict[str, Any]) -> str:
         f"({summary['claim_count']} claims, "
         f"{summary['certificate_count']} certificates)"
     )
+
+
+def _transition_claim_text_line(summary: dict[str, Any]) -> str:
+    status = "accepted" if summary["accepted"] else "rejected"
+    return (
+        f"Transition claims: {status} "
+        f"({summary['claim_count']} claims, "
+        f"{summary['example_count']} examples, "
+        f"{summary['matched_count']} matched)"
+    )
+
+
+def _transition_proof_certificate_text_line(summary: dict[str, Any]) -> str:
+    status = "accepted" if summary["accepted"] else "rejected"
+    return (
+        f"Transition proof certificates: {status} "
+        f"({summary['claim_count']} claims, "
+        f"{summary['certificate_count']} certificates)"
+    )
+
+
+def _claim_proof_failure_text_lines(
+    transition_claims: dict[str, Any],
+    transition_proof_certificates: dict[str, Any],
+) -> list[str]:
+    lines = ["Claim/proof failures:"]
+    failed_claims = transition_claims["failed_subjects"]
+    if failed_claims:
+        lines.append(f"  Transition claim failures: {', '.join(failed_claims)}")
+    failed_certificates = transition_proof_certificates["failed_subjects"]
+    if failed_certificates:
+        lines.append(
+            "  Transition proof certificate failures: "
+            + ", ".join(failed_certificates)
+        )
+    if len(lines) == 1:
+        return ["Claim/proof failures: none"]
+    return lines
 
 
 def _language_failure_text_lines(

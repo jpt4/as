@@ -593,3 +593,6 @@
   chain object-language surfaces.
 - ADR-0139 adds a default project-status text `Language failures:` section,
   while preserving project status `schema_version: 11`.
+- ADR-0140 bumps `autarkic_systems.project_status` to `schema_version: 12` and
+  adds `transition_claims` and `transition_proof_certificates` summaries for
+  the base transition claim-example and proof-certificate validators.

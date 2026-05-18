@@ -21,7 +21,7 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
-PROJECT_STATUS_SCHEMA_VERSION = 11
+PROJECT_STATUS_SCHEMA_VERSION = 12
 BLOCKED_RUNTIME_SURFACES = [
     "recipient-command-message",
     "self-mailbox-command",
@@ -149,6 +149,20 @@ CHAIN_LANGUAGE = {
     "claim_count": 2,
     "certificate_count": 2,
     "result_count": 32,
+}
+TRANSITION_CLAIMS = {
+    "claims_path": "claims/transition_claims.json",
+    "claim_count": 13,
+    "example_count": 35,
+    "matched_count": 35,
+    "result_count": 35,
+}
+TRANSITION_PROOF_CERTIFICATES = {
+    "claims_path": "claims/transition_claims.json",
+    "certificates_path": "claims/proof_certificates.json",
+    "claim_count": 13,
+    "certificate_count": 13,
+    "result_count": 13,
 }
 STANDARD_SIGNAL_QUESTIONS = [
     "command-token-vs-binary-input",
@@ -316,6 +330,36 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertTrue(report["chain_evidence"]["accepted"])
         self.assertEqual(report["chain_evidence"]["bundle_count"], 2)
         self.assertEqual(report["chain_evidence"]["bundles"], CHAIN_BUNDLES)
+        self.assertTrue(report["transition_claims"]["accepted"])
+        for key, expected in TRANSITION_CLAIMS.items():
+            self.assertEqual(report["transition_claims"][key], expected)
+        self.assertEqual(report["transition_claims"]["failed_subjects"], [])
+        self.assertEqual(
+            report["transition_claims"]["results"][0],
+            {
+                "claim_id": "UC-FIXED-OUTPUT-PRESERVED",
+                "example_name": "blocked output preserved",
+                "expected": True,
+                "observed": True,
+                "matched": True,
+                "detail": "occupied output was preserved",
+            },
+        )
+        self.assertTrue(report["transition_proof_certificates"]["accepted"])
+        for key, expected in TRANSITION_PROOF_CERTIFICATES.items():
+            self.assertEqual(report["transition_proof_certificates"][key], expected)
+        self.assertEqual(
+            report["transition_proof_certificates"]["failed_subjects"],
+            [],
+        )
+        self.assertEqual(
+            report["transition_proof_certificates"]["results"][0],
+            {
+                "claim_id": "UC-FIXED-OUTPUT-PRESERVED",
+                "accepted": True,
+                "detail": "verified 2 certificate steps: 2 predicate-result steps",
+            },
+        )
         self.assertTrue(report["transition_language"]["accepted"])
         for key, expected in TRANSITION_LANGUAGE.items():
             self.assertEqual(report["transition_language"][key], expected)
@@ -419,6 +463,15 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Autarkic Systems project status: accepted", text)
         self.assertIn("Transition evidence: accepted (8 bundles)", text)
         self.assertIn("Chain evidence: accepted (2 bundles)", text)
+        self.assertIn(
+            "Transition claims: accepted (13 claims, 35 examples, 35 matched)",
+            text,
+        )
+        self.assertIn(
+            "Transition proof certificates: accepted (13 claims, 13 certificates)",
+            text,
+        )
+        self.assertIn("Claim/proof failures: none", text)
         self.assertIn("Transition language: accepted (13 claims, 13 certificates)", text)
         self.assertIn("Chain language: accepted (2 claims, 2 certificates)", text)
         self.assertIn("Language failures: none", text)
@@ -535,6 +588,61 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Chain language: rejected", text)
         self.assertIn("Language failures:", text)
         self.assertIn("Chain language failures: chain_formulae", text)
+
+    def test_text_status_names_transition_claim_failed_subjects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            claims_path = Path(tmp) / "transition_claims.json"
+            data = json.loads(
+                Path("claims/transition_claims.json").read_text(encoding="utf-8")
+            )
+            data["claims"][0]["examples"][0]["expected"] = False
+            claims_path.write_text(json.dumps(data), encoding="utf-8")
+
+            report = build_project_status_report(
+                transition_claims_path=claims_path,
+            )
+
+        text = format_project_status_report(report)
+        self.assertFalse(report["accepted"])
+        self.assertFalse(report["transition_claims"]["accepted"])
+        self.assertIn(
+            "UC-FIXED-OUTPUT-PRESERVED/blocked output preserved",
+            report["transition_claims"]["failed_subjects"],
+        )
+        self.assertIn("Transition claims: rejected", text)
+        self.assertIn("Claim/proof failures:", text)
+        self.assertIn(
+            "Transition claim failures: "
+            "UC-FIXED-OUTPUT-PRESERVED/blocked output preserved",
+            text,
+        )
+
+    def test_text_status_names_transition_proof_failed_subjects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            certificates_path = Path(tmp) / "proof_certificates.json"
+            data = json.loads(
+                Path("claims/proof_certificates.json").read_text(encoding="utf-8")
+            )
+            data["certificates"][0]["steps"][0]["expected"] = False
+            certificates_path.write_text(json.dumps(data), encoding="utf-8")
+
+            report = build_project_status_report(
+                transition_certificates_path=certificates_path,
+            )
+
+        text = format_project_status_report(report)
+        self.assertFalse(report["accepted"])
+        self.assertFalse(report["transition_proof_certificates"]["accepted"])
+        self.assertIn(
+            "UC-FIXED-OUTPUT-PRESERVED",
+            report["transition_proof_certificates"]["failed_subjects"],
+        )
+        self.assertIn("Transition proof certificates: rejected", text)
+        self.assertIn("Claim/proof failures:", text)
+        self.assertIn(
+            "Transition proof certificate failures: UC-FIXED-OUTPUT-PRESERVED",
+            text,
+        )
 
     def test_text_status_names_no_blocked_runtime_surfaces_when_absent(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -700,6 +808,25 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertEqual(payload["chain_evidence"]["bundle_count"], 2)
         self.assertEqual(payload["chain_evidence"]["bundles"], CHAIN_BUNDLES)
+        self.assertTrue(payload["transition_claims"]["accepted"])
+        for key, expected in TRANSITION_CLAIMS.items():
+            self.assertEqual(payload["transition_claims"][key], expected)
+        self.assertEqual(payload["transition_claims"]["failed_subjects"], [])
+        self.assertEqual(
+            payload["transition_claims"]["results"][0]["claim_id"],
+            "UC-FIXED-OUTPUT-PRESERVED",
+        )
+        self.assertTrue(payload["transition_proof_certificates"]["accepted"])
+        for key, expected in TRANSITION_PROOF_CERTIFICATES.items():
+            self.assertEqual(payload["transition_proof_certificates"][key], expected)
+        self.assertEqual(
+            payload["transition_proof_certificates"]["failed_subjects"],
+            [],
+        )
+        self.assertEqual(
+            payload["transition_proof_certificates"]["results"][0]["claim_id"],
+            "UC-FIXED-OUTPUT-PRESERVED",
+        )
         self.assertTrue(payload["transition_language"]["accepted"])
         for key, expected in TRANSITION_LANGUAGE.items():
             self.assertEqual(payload["transition_language"][key], expected)

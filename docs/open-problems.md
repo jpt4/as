@@ -21,7 +21,9 @@ proof clauses remain open. ADR-0133 adds the first `predicate-result`
 certificate steps for the fixed-output preservation claim, making the proof
 object name the predicate it evaluates instead of relying only on the claim
 manifest lookup. ADR-0135 exposes the base transition claim examples through
-direct text and JSON CLI validation.
+direct text and JSON CLI validation. ADR-0140 carries the base claim-example
+and proof-certificate validator summaries into the aggregate project status
+report.
 
 Status update: ADR-0031 promotes the self-mailbox init-command execution subset
 into a named transition claim with manifest examples and proof-certificate
