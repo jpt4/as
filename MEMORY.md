@@ -135,6 +135,13 @@
   free-variable calculation and substitution. It still does not prove
   substitution representability, a diagonal lemma, a fixed-point equation, or
   self-consistency.
+- ADR-0242 adds `claims/diagonal_construction_targets.json` and
+  `autarkic_systems.diagonal_construction`, checking the first
+  `substitution_code(n,n)` diagonal seed and closed quoted seed instance for
+  `AS-FIXED-POINT-SELFCONS1-TARGET`. It records seed code length `10`,
+  instance length `296`, and still does not prove substitution
+  representability, a diagonal lemma, a fixed-point equation, or
+  self-consistency.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

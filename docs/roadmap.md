@@ -5034,3 +5034,26 @@ Implemented in `autarkic_systems/formal_code.py` and
 `autarkic_systems/formal_substitution.py`, with tests in
 `tests/test_formal_arithmetic_language.py`,
 `tests/test_formal_code_encoding.py`, and `tests/test_formal_substitution.py`.
+
+## ADR-0242: Diagonal Seed Surface
+
+Goal: use the checked `substitution_code` term to build the first syntactic
+diagonal seed and quoted seed instance for the fixed-point route.
+
+Deliverables:
+
+- `claims/diagonal_construction_targets.json` with one checked diagonal seed
+  target for `AS-FIXED-POINT-SELFCONS1-TARGET`;
+- `autarkic_systems.diagonal_construction` helpers for building the seed node
+  and quoted seed instance code;
+- text/JSON CLI validation for seed code, seed free variables, quoted instance
+  length, quoted instance prefix, and closed-instance free variables;
+- fail-closed rejection for unknown fixed-point targets, stale seed facts, and
+  proved-status overclaims; and
+- no substitution representability proof, diagonal lemma, fixed-point equation
+  proof, arithmetized proof predicate, theorem prover, runtime behavior,
+  command semantics, evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in `docs/adr/0242-diagonal-seed-surface.md`. Implemented in
+`autarkic_systems/diagonal_construction.py`, with tests in
+`tests/test_diagonal_construction.py`.

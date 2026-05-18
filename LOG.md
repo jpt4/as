@@ -5221,3 +5221,22 @@
   passed 46 tests. This preserves the fixed-point blocker: no substitution
   representability proof, diagonal lemma, fixed-point equation proof, or
   self-consistency theorem is claimed.
+
+## 2026-05-18 - Diagonal Seed Surface
+
+- Added ADR-0242 to use the checked `substitution_code` term in the first
+  syntactic diagonal seed for the fixed-point route.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.diagonal_construction` and
+  `claims/diagonal_construction_targets.json` did not exist.
+- Added `claims/diagonal_construction_targets.json`, recording
+  `AS-FIXED-POINT-SELFCONS1-DIAGONAL-SEED` as `diagonal-seed-not-proved`.
+- Added `autarkic_systems/diagonal_construction.py` with helpers to build the
+  seed by replacing `n` with `substitution_code(n,n)`, quote the seed code,
+  build the closed seed instance, and validate recorded code/free-variable
+  facts.
+- The checked seed code is `[41, 1, 22, 11, 1, 18, 11, 4, 11, 4]`, and the
+  closed quoted seed instance has code length `296`.
+- Focused diagonal-construction tests passed 13 tests. This preserves the
+  fixed-point blocker: no substitution representability proof, diagonal lemma,
+  fixed-point equation proof, or self-consistency theorem is claimed.
