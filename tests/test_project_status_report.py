@@ -104,6 +104,43 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn("Missing source-status files: none", text)
 
+    def test_text_status_names_resolution_question_ids(self):
+        report = build_project_status_report()
+
+        text = format_project_status_report(report)
+
+        self.assertIn("Resolution questions:", text)
+        self.assertIn(
+            "standard-signal: command-token-vs-binary-input, "
+            "command-table-offset, recipient-surface, self-target-surface",
+            text,
+        )
+        self.assertIn(
+            "write-buf-zero, write-buf-one: recipient-vs-stem-surface, "
+            "buffer-full-boundary, post-append-clearing, "
+            "standard-signal-interaction",
+            text,
+        )
+
+    def test_text_status_names_no_resolution_questions_when_absent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            no_question_status = Path(tmp) / "no_question_status.json"
+            no_question_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[no_question_status],
+            )
+
+        text = format_project_status_report(report)
+        self.assertIn("Resolution questions: none", text)
+
     def test_json_cli_reports_project_status(self):
         stdout = io.StringIO()
 

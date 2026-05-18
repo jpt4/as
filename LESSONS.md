@@ -304,3 +304,6 @@
 - Once a report exposes blocker question IDs, validate the optional question
   metadata when present. Treating malformed question lists as absent loses the
   work queue that explains the frontier.
+- Keep the human status surface at parity with the machine surface for
+  operator-critical blockers. If JSON names the question IDs that unblock a
+  frontier, the default text report should name them too.

@@ -172,6 +172,9 @@ ADR-0108 adds the blocked source-status resolution question IDs to project
 status and bumps the schema version to `3`.
 ADR-0109 rejects malformed resolution-question metadata so blocker question IDs
 cannot be silently dropped from project status.
+ADR-0110 renders those checked resolution question IDs in the default text
+status report so the human first-run surface exposes the same blocker work
+queue as the JSON report.
 
 ## P3: Choose The First Proof Apparatus
 

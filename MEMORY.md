@@ -499,3 +499,6 @@
 - ADR-0109 makes `autarkic_systems.project_status` reject malformed
   source-status `required_resolution_questions` metadata as
   `source-status-schema`, preserving `schema_version: 3`.
+- ADR-0110 makes the default `autarkic_systems.project_status` text report
+  render the checked standard-signal and write-buffer resolution question IDs,
+  preserving `schema_version: 3`.

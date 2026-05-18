@@ -220,7 +220,8 @@ the project legible:
   summary, and validation result.
 - `autarkic_systems/project_status.py` renders one operator-facing report over
   the transition evidence registry, chain evidence registry, and the live
-  source-status frontier for blocked command-token semantics.
+  source-status frontier for blocked command-token semantics and their
+  resolution-question IDs.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -253,9 +254,11 @@ the project legible:
   project status as schema-versioned machine-readable JSON: transition
   evidence accepted with 8 bundles, chain evidence accepted with 2 bundles,
   and the blocked `standard-signal`, `write-buf-zero`, and `write-buf-one`
-  command-token frontier. Schema version `2` also attributes those commands to
-  each accepted source-status entry, while schema version `3` also carries the
-  source-status resolution-question IDs that still block command-token
+  command-token frontier. The default text report also names the
+  standard-signal and write-buffer resolution-question IDs that define the next
+  source-backed decision work. Schema version `2` attributes blocked commands
+  to each accepted source-status entry, while schema version `3` also carries
+  the source-status resolution-question IDs that still block command-token
   execution and rejects malformed resolution-question metadata. Missing
   registries report
   `registry-file`, malformed registries report `registry-json`, and

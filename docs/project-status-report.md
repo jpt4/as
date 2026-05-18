@@ -35,7 +35,8 @@ The text report names:
 - overall accepted or rejected status;
 - transition evidence accepted or rejected state and bundle count;
 - chain evidence accepted or rejected state and bundle count;
-- blocked command tokens; and
+- blocked command tokens;
+- blocker resolution question IDs; and
 - the safe next slice from the source-status records.
 
 JSON mode emits the same surface for automation and includes top-level
@@ -58,7 +59,8 @@ entries as source-status schema failures. ADR-0107 rejects malformed
 command-token field container shapes. ADR-0108 adds per-source
 `required_resolution_questions` and bumps the schema version to `3`. ADR-0109
 rejects malformed resolution-question metadata when that optional field is
-present.
+present. ADR-0110 renders the accepted resolution question IDs in the default
+text report without changing the JSON shape.
 
 ## Boundary
 

@@ -2076,3 +2076,21 @@ Status: accepted in
 `docs/adr/0109-project-status-resolution-question-shape.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0110: Project Status Text Resolution Questions
+
+Goal: render accepted blocker resolution question IDs in the default project
+status text report.
+
+Deliverables:
+
+- `Resolution questions:` section in `format_project_status_report`;
+- standard-signal question IDs visible in text status output;
+- write-buffer question IDs visible in text status output;
+- unchanged `schema_version: 3` project status JSON shape; and
+- focused tests covering the text-report question section.
+
+Status: accepted in
+`docs/adr/0110-project-status-text-resolution-questions.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

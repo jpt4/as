@@ -2440,3 +2440,28 @@
   IDs, and `frontier.failed_subjects: []`. `py_compile`, `git diff --check`,
   and `python -m unittest discover` passed, with the full suite running 563
   tests.
+
+## 2026-05-18 - Project Status Text Resolution Questions
+
+- Added ADR-0110 to render source-status resolution question IDs in the default
+  project status text report.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed because the text report omitted the `Resolution questions:`
+  section.
+- Updated `autarkic_systems.project_status` so text status output now names the
+  standard-signal and write-buffer blocker question IDs while preserving the
+  JSON `schema_version: 3` contract.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the text-report question surface.
+- Verified the focused project status test passed 29 tests; adjacent project
+  status, transition registry, and chain registry tests passed 54 tests. The
+  checked-in text status now reports accepted transition evidence with 8
+  bundles, accepted chain evidence with 2 bundles, the blocked commands, and
+  text resolution-question lines for standard-signal and write-buffer
+  blockers. The checked-in JSON status reported `schema_version: 3`,
+  `accepted: true`, transition `bundle_count: 8`, chain `bundle_count: 2`,
+  aggregate blocked commands `standard-signal`, `write-buf-zero`, and
+  `write-buf-one`, per-source command attribution, standard-signal and
+  write-buffer resolution question IDs, and `frontier.failed_subjects: []`.
+  `py_compile`, `git diff --check`, and `python -m unittest discover` passed,
+  with the full suite running 565 tests.

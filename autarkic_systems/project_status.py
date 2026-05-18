@@ -96,6 +96,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         f"Chain evidence: {chain_status} ({chain['bundle_count']} bundles)",
         "Blocked commands: "
         + (", ".join(blocked_commands) if blocked_commands else "none"),
+        *_resolution_question_text_lines(frontier),
         f"Safe next slice: {frontier['safe_next_slice'] or 'none'}",
         "Missing registry files: "
         + (", ".join(missing_registries) if missing_registries else "none"),
@@ -308,6 +309,19 @@ def _resolution_question_ids(data: dict[str, Any]) -> list[str]:
             if isinstance(question_id, str) and question_id:
                 question_ids.append(question_id)
     return question_ids
+
+
+def _resolution_question_text_lines(frontier: dict[str, Any]) -> list[str]:
+    lines = ["Resolution questions:"]
+    for source_status in frontier["source_statuses"]:
+        question_ids = source_status["required_resolution_questions"]
+        if not question_ids:
+            continue
+        command_label = ", ".join(source_status["commands"]) or source_status["path"]
+        lines.append(f"  {command_label}: {', '.join(question_ids)}")
+    if len(lines) == 1:
+        return ["Resolution questions: none"]
+    return lines
 
 
 def _source_status_schema_error(data: Any) -> str:
