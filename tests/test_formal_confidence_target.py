@@ -32,6 +32,9 @@ SUBSTITUTION_GRAPH_TARGETS = Path("claims/substitution_graph_targets.json")
 SUBSTITUTION_GRAPH_FORMULA_CANDIDATES = Path(
     "claims/substitution_graph_formula_candidates.json"
 )
+SUBSTITUTION_GRAPH_CORRECTNESS_TARGETS = Path(
+    "claims/substitution_graph_correctness_targets.json"
+)
 FIXED_POINT_EQUATION_CANDIDATES = Path("claims/fixed_point_equation_candidates.json")
 FIXED_POINT_OBSTRUCTIONS = Path("claims/fixed_point_obstructions.json")
 
@@ -59,6 +62,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
                 "substitution_representability",
                 "substitution_graph",
                 "substitution_graph_formula",
+                "substitution_graph_correctness",
                 "fixed_point_equation_candidate",
                 "fixed_point_obstruction",
                 "substrate_bridge",
@@ -122,6 +126,10 @@ class FormalConfidenceTargetTests(unittest.TestCase):
             str(SUBSTITUTION_GRAPH_FORMULA_CANDIDATES),
         )
         self.assertEqual(
+            target.configuration["substitution_graph_correctness"],
+            str(SUBSTITUTION_GRAPH_CORRECTNESS_TARGETS),
+        )
+        self.assertEqual(
             target.configuration["fixed_point_equation_candidate"],
             str(FIXED_POINT_EQUATION_CANDIDATES),
         )
@@ -181,6 +189,13 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertTrue(
             any(
                 result.subject == "AS-FORMAL-CONFIDENCE-TARGET-001.substitution_graph_formula"
+                and result.accepted
+                for result in report.results
+            )
+        )
+        self.assertTrue(
+            any(
+                result.subject == "AS-FORMAL-CONFIDENCE-TARGET-001.substitution_graph_correctness"
                 and result.accepted
                 for result in report.results
             )
@@ -281,6 +296,13 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
+                result["subject"].endswith(".substitution_graph_correctness")
+                and result["accepted"]
+                for result in payload["results"]
+            )
+        )
+        self.assertTrue(
+            any(
                 result["subject"].endswith(".fixed_point_equation_candidate")
                 and result["accepted"]
                 for result in payload["results"]
@@ -314,6 +336,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertIn("substitution representability accepted", text)
         self.assertIn("substitution graph target accepted", text)
         self.assertIn("substitution graph formula accepted", text)
+        self.assertIn("substitution graph correctness target accepted", text)
         self.assertIn("fixed-point equation candidate accepted", text)
         self.assertIn("fixed-point obstruction accepted", text)
         self.assertNotIn("FAIL", text)
@@ -474,6 +497,24 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertIn("target-substitution-graph-formula", report.failed_subjects)
         self.assertTrue(
             any("substitution graph formula rejected" in result.detail for result in report.results)
+        )
+
+    def test_missing_substitution_graph_correctness_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target_path = Path(tmp) / "targets.json"
+            data = json.loads(TARGETS.read_text(encoding="utf-8"))
+            data["targets"][0]["configuration"]["substitution_graph_correctness"] = (
+                "claims/missing_substitution_graph_correctness_targets.json"
+            )
+            target_path.write_text(json.dumps(data), encoding="utf-8")
+            manifest = load_formal_confidence_targets(target_path)
+
+            report = validate_formal_confidence_targets(manifest, WILLARD_MAP)
+
+        self.assertFalse(report.accepted)
+        self.assertIn("target-substitution-graph-correctness", report.failed_subjects)
+        self.assertTrue(
+            any("substitution graph correctness target rejected" in result.detail for result in report.results)
         )
 
     def test_blocked_target_without_blockers_is_rejected(self):

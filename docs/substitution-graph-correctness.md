@@ -5,7 +5,9 @@ Status: correctness proof target, proof not constructed, 2026-05-18.
 ADR-0252 adds `claims/substitution_graph_correctness_targets.json` and
 `autarkic_systems/substitution_graph_correctness.py`. It records the proof
 obligation that the checked delta0 formula schema must satisfy before the
-diagonal construction can depend on the substitution graph route.
+diagonal construction can depend on the substitution graph route. ADR-0253
+makes this proof target a fail-closed dependency of aggregate
+formal-confidence validation.
 
 ## Purpose
 

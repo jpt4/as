@@ -5309,3 +5309,28 @@ Status: accepted in
 `docs/adr/0252-substitution-graph-correctness-target.md`. Implemented in
 `autarkic_systems/substitution_graph_correctness.py`, with tests in
 `tests/test_substitution_graph_correctness_target.py`.
+
+## ADR-0253: Formal Confidence Substitution Graph Correctness Dependency
+
+Goal: make the substitution graph correctness proof target a checked
+dependency of the aggregate formal-confidence target instead of a standalone
+surface.
+
+Deliverables:
+
+- `claims/formal_confidence_targets.json` with a structured
+  `substitution_graph_correctness` configuration field;
+- `autarkic_systems.formal_confidence` validation that loads and checks the
+  referenced substitution graph correctness target surface;
+- accepted text/JSON report output for the healthy checked correctness target;
+- fail-closed rejection for missing or invalid substitution graph correctness
+  references, reported as `target-substitution-graph-correctness`; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma, fixed-point equation proof, arithmetized proof predicate, theorem
+  prover, runtime behavior, command semantics, evidence bundle, or GitHub
+  submission logic changes.
+
+Status: accepted in
+`docs/adr/0253-formal-confidence-substitution-graph-correctness-dependency.md`.
+Implemented in `autarkic_systems/formal_confidence.py`, with tests in
+`tests/test_formal_confidence_target.py`.

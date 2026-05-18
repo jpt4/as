@@ -5446,3 +5446,21 @@
   next proof obligation without claiming formula correctness, substitution
   representability, the diagonal lemma, a fixed-point equation proof, or
   self-consistency.
+
+## 2026-05-18 - Formal Confidence Substitution Graph Correctness Dependency
+
+- Added ADR-0253 to make the ADR-0252 substitution graph correctness target a
+  structured dependency of aggregate formal-confidence validation.
+- Added red tests before implementation. The red run failed because
+  `REQUIRED_CONFIGURATION_FIELDS` had no `substitution_graph_correctness`
+  field, the checked manifest had no corresponding path, and missing
+  correctness targets did not reject formal-confidence validation.
+- Added `substitution_graph_correctness` to
+  `claims/formal_confidence_targets.json`, pointing at
+  `claims/substitution_graph_correctness_targets.json`.
+- Updated `autarkic_systems/formal_confidence.py` to load and validate the
+  substitution graph correctness target, reporting
+  `substitution graph correctness target accepted` on the healthy path and
+  `target-substitution-graph-correctness` on failure.
+- Focused formal-confidence/project-status tests passed 106 tests. The
+  formal-confidence target remains blocked on fixed-point construction.

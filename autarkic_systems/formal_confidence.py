@@ -43,6 +43,10 @@ from autarkic_systems.substitution_graph_formula import (
     load_substitution_graph_formula_candidates,
     validate_substitution_graph_formula_candidates,
 )
+from autarkic_systems.substitution_graph_correctness import (
+    load_substitution_graph_correctness_targets,
+    validate_substitution_graph_correctness_targets,
+)
 from autarkic_systems.willard_map import load_willard_definition_map
 
 
@@ -62,6 +66,7 @@ REQUIRED_CONFIGURATION_FIELDS = (
     "substitution_representability",
     "substitution_graph",
     "substitution_graph_formula",
+    "substitution_graph_correctness",
     "fixed_point_equation_candidate",
     "fixed_point_obstruction",
     "substrate_bridge",
@@ -400,6 +405,9 @@ def _validate_target(
     if "substitution_graph_formula" in target.configuration:
         results.extend(_validate_substitution_graph_formula(target))
 
+    if "substitution_graph_correctness" in target.configuration:
+        results.extend(_validate_substitution_graph_correctness(target))
+
     if "fixed_point_equation_candidate" in target.configuration:
         results.extend(_validate_fixed_point_equation_candidate(target))
 
@@ -560,6 +568,32 @@ def _validate_substitution_graph_formula(
     ]
 
 
+def _validate_substitution_graph_correctness(
+    target: FormalConfidenceTarget,
+) -> list[FormalConfidenceValidation]:
+    subject = f"{target.target_id}.substitution_graph_correctness"
+    target_path = target.configuration["substitution_graph_correctness"]
+    try:
+        correctness_targets = load_substitution_graph_correctness_targets(target_path)
+        report = validate_substitution_graph_correctness_targets(correctness_targets)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return [
+            _rejected(
+                subject,
+                "substitution graph correctness target rejected: " + str(exc),
+            )
+        ]
+    if report.accepted:
+        return [_accepted(subject, "substitution graph correctness target accepted")]
+    return [
+        _rejected(
+            subject,
+            "substitution graph correctness target rejected: "
+            + _joined_or_none(report.failed_subjects),
+        )
+    ]
+
+
 def _validate_fixed_point_equation_candidate(
     target: FormalConfidenceTarget,
 ) -> list[FormalConfidenceValidation]:
@@ -627,6 +661,8 @@ def _failed_subject_for_result(subject: str) -> str:
         return "target-substitution-graph"
     if subject.endswith(".substitution_graph_formula"):
         return "target-substitution-graph-formula"
+    if subject.endswith(".substitution_graph_correctness"):
+        return "target-substitution-graph-correctness"
     if subject.endswith(".fixed_point_equation_candidate"):
         return "target-fixed-point-equation-candidate"
     if subject.endswith(".fixed_point_obstruction"):
