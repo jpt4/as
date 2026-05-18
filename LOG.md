@@ -2353,3 +2353,23 @@
   command attribution, and `frontier.failed_subjects: []`. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed, with the full
   suite running 556 tests.
+
+## 2026-05-18 - Project Status Command Token Types
+
+- Added ADR-0106 to reject non-text command-token entries in source-status
+  command lists consumed by the project status command.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed because a source-status record with `commands:
+  ["standard-signal", 0]` was accepted after silently dropping the integer.
+- Updated `autarkic_systems.project_status` so non-string entries in
+  `commands` or `blocked_runtime_commands` report `source-status-schema`.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the command-token type contract.
+- Verified the focused project status test passed 21 tests; adjacent project
+  status, transition registry, and chain registry tests passed 46 tests. The
+  checked-in JSON status reported `schema_version: 2`, `accepted: true`,
+  transition `bundle_count: 8`, chain `bundle_count: 2`, aggregate blocked
+  commands `standard-signal`, `write-buf-zero`, and `write-buf-one`, per-source
+  command attribution, and `frontier.failed_subjects: []`. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed, with the full
+  suite running 557 tests.

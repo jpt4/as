@@ -293,3 +293,5 @@
 - Operator-facing status text is also part of the contract. If a field exists
   to explain a decision or next step, whitespace-only content should fail the
   same way missing content fails.
+- Do not silently filter malformed semantic-token lists. Dropping bad entries
+  can make an invalid artifact look like a smaller valid one.

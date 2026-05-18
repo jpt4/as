@@ -261,7 +261,8 @@ the project legible:
   source-status records must also expose at least one blocked command token
   through `command`, `commands`, or `blocked_runtime_commands`, and blank
   command-token strings are rejected as schema failures. Source-status
-  `decision` and `safe_next_slice` text must also be non-whitespace.
+  `decision` and `safe_next_slice` text must also be non-whitespace, and
+  command-list entries must be text.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

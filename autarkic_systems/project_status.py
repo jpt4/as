@@ -303,6 +303,9 @@ def _source_status_schema_error(data: Any) -> str:
         return "source-status decision must be non-empty text"
     if not _is_nonempty_text(data.get("safe_next_slice")):
         return "source-status safe_next_slice must be non-empty text"
+    command_type_error = _command_token_type_error(data)
+    if command_type_error:
+        return command_type_error
     command_error = _blank_command_token_error(data)
     if command_error:
         return command_error
@@ -313,6 +316,16 @@ def _source_status_schema_error(data: Any) -> str:
 
 def _is_nonempty_text(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
+
+
+def _command_token_type_error(data: dict[str, Any]) -> str:
+    for key in ("commands", "blocked_runtime_commands"):
+        value = data.get(key)
+        if isinstance(value, list):
+            for item in value:
+                if not isinstance(item, str):
+                    return "source-status command tokens must be text"
+    return ""
 
 
 def _blank_command_token_error(data: dict[str, Any]) -> str:

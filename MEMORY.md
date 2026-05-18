@@ -487,3 +487,6 @@
 - ADR-0105 makes `autarkic_systems.project_status` reject whitespace-only
   `decision` and `safe_next_slice` fields as `source-status-schema`, preserving
   `schema_version: 2`.
+- ADR-0106 makes `autarkic_systems.project_status` reject non-text entries in
+  source-status command-token lists as `source-status-schema`, preserving
+  `schema_version: 2`.

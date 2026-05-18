@@ -164,6 +164,8 @@ ADR-0104 rejects blank command-token strings so the project status frontier
 cannot contain invisible command terms.
 ADR-0105 rejects whitespace-only source-status decision and safe-next text so
 accepted frontier entries keep meaningful operator wording.
+ADR-0106 rejects non-text command-list entries so malformed source-status
+commands cannot disappear from the project report.
 
 ## P3: Choose The First Proof Apparatus
 

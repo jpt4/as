@@ -1999,3 +1999,22 @@ Status: accepted in
 `docs/adr/0105-project-status-nonempty-source-text.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0106: Project Status Command Token Types
+
+Goal: reject non-text command-list entries in source-status records consumed by
+project status.
+
+Deliverables:
+
+- `source-status-schema` failure for non-string entries in `commands`;
+- `source-status-schema` failure for non-string entries in
+  `blocked_runtime_commands`;
+- unchanged `schema_version: 2` project status JSON shape;
+- focused tests covering non-text command-token rejection; and
+- documentation update for the source-status command-token type contract.
+
+Status: accepted in
+`docs/adr/0106-project-status-command-token-types.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

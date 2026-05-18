@@ -310,6 +310,37 @@ class ProjectStatusReportTests(unittest.TestCase):
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 
+    def test_non_text_source_status_command_entry_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "non_text_command_status.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "commands": ["standard-signal", 0],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertEqual(
+            [item["path"] for item in report["frontier"]["invalid_source_statuses"]],
+            [str(invalid_status)],
+        )
+        self.assertIn(
+            "text",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
     def test_frontier_failed_subjects_preserve_mixed_failure_order(self):
         with tempfile.TemporaryDirectory() as tmp:
             missing_status = Path(tmp) / "missing_status.json"
