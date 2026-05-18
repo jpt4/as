@@ -871,3 +871,7 @@
   reports schema version `20`, keeps accepted-path bundle failures empty, and
   renders `Network sequence evidence failures: ...` on rejected sequence-bundle
   paths.
+- ADR-0210 adds `bundle_failed_subjects` to network-sequence demo registry
+  reports, preserving inner failed subjects for rejected existing bundles and
+  rendering `Failed subjects: ...` in registry text while leaving missing
+  registered-bundle behavior unchanged.

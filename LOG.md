@@ -4477,3 +4477,21 @@
   digest; direct sequence registry validation remained accepted. `compileall`,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 894 tests.
+
+## 2026-05-18 - Network Sequence Demo Registry Failure Detail
+
+- Added ADR-0210 to make vertical network-sequence demo registry reports name
+  inner failed subjects for rejected existing bundles.
+- Added red demo-registry tests before implementation. The focused red run
+  failed because registry reports lacked `bundle_failed_subjects` and rejected
+  existing-bundle text did not name the bundle validation failed subjects.
+- Updated `autarkic_systems/network_sequence_demo.py` to derive
+  `bundle_failed_subjects` from per-bundle validation payloads and render
+  `Failed subjects: ...` under rejected bundle entries in registry text.
+- Updated the network-sequence demo docs, README, and roadmap notes for the
+  registry failure-detail summary.
+- Focused network-sequence demo tests passed 14 tests. Adjacent
+  demo/evidence/project-status tests passed 112 tests. Live registry JSON
+  reported `accepted: true`, `bundle_count: 1`, and
+  `bundle_failed_subjects: []`. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 895 tests.

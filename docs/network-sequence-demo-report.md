@@ -42,7 +42,10 @@ missing registered bundle paths or missing evidence-layer paths.
 
 Registry mode validates `evidence/sequences/manifest.json`, builds a demo
 report for every existing registered bundle, and summarizes registry ID, bundle
-count, accepted and failed counts, missing paths, and per-bundle demo reports.
+count, accepted and failed counts, missing paths, per-bundle failed subjects,
+and per-bundle demo reports. Text output names failed subjects for rejected
+existing bundles so operators can see whether the drift is in the witness,
+trace, SVG, language, or another validated layer.
 
 ## Boundary
 

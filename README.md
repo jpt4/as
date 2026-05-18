@@ -380,7 +380,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   machine-readable JSON.
 - `python -m autarkic_systems.network_sequence_demo --registry evidence/sequences/manifest.json --format json`
   renders the post-handoff network-sequence claim-to-evidence demo registry as
-  machine-readable JSON.
+  machine-readable JSON, including per-bundle failed subjects when a registered
+  existing bundle rejects.
 - `python -m autarkic_systems.project_status --format summary` emits a compact
   six-line operator digest over the accepted state, evidence counts, claim
   counts, proof-rule audit, blocked commands, and safe next slice.

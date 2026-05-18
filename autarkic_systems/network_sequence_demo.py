@@ -130,6 +130,7 @@ def build_network_sequence_demo_registry_report(
         "accepted_count": accepted_count,
         "failed_count": len(registry.bundles) - accepted_count,
         "missing_evidence_paths": missing_paths,
+        "bundle_failed_subjects": _registry_bundle_failed_subjects(bundle_reports),
         "validation": {
             "accepted": validation["accepted"],
             "failed_subjects": validation["failed_subjects"],
@@ -153,6 +154,7 @@ def format_network_sequence_demo_registry_report(report: dict[str, Any]) -> str:
     ]
     for bundle_report in report["bundle_reports"]:
         status = "accepted" if bundle_report["accepted"] else "rejected"
+        failed_subjects = bundle_report["validation"]["failed_subjects"] or []
         lines.extend(
             [
                 "",
@@ -167,6 +169,8 @@ def format_network_sequence_demo_registry_report(report: dict[str, Any]) -> str:
                 ),
             ]
         )
+        if failed_subjects:
+            lines.append(f"  Failed subjects: {', '.join(failed_subjects)}")
     return "\n".join(lines)
 
 
@@ -264,6 +268,20 @@ def _with_presence(layer: dict[str, str]) -> dict[str, Any]:
 
 def _missing_evidence_paths(layers: list[dict[str, Any]]) -> list[str]:
     return [layer["path"] for layer in layers if not layer["exists"]]
+
+
+def _registry_bundle_failed_subjects(
+    bundle_reports: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    failed: list[dict[str, Any]] = []
+    for report in bundle_reports:
+        failed_subjects = report["validation"]["failed_subjects"] or []
+        if failed_subjects:
+            failed.append({
+                "bundle_id": report["bundle_id"],
+                "failed_subjects": failed_subjects,
+            })
+    return failed
 
 
 def _path_for_role(layers: list[dict[str, Any]], role: str) -> str:

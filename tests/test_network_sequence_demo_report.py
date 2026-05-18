@@ -26,6 +26,20 @@ TRACE = "schematics/sequences/post_handoff_signal_sequence_trace.json"
 SVG = "schematics/sequences/post_handoff_signal_sequence_trace.svg"
 
 
+def _write_registry_with_drifted_existing_bundle(directory: Path) -> Path:
+    bundle_path = directory / "post_handoff_signal_bundle.json"
+    registry_path = directory / "manifest.json"
+
+    bundle_data = json.loads(BUNDLE.read_text(encoding="utf-8"))
+    bundle_data["expected_status"] = "handoff-not-init-consumed"
+    bundle_path.write_text(json.dumps(bundle_data), encoding="utf-8")
+
+    registry_data = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    registry_data["bundles"][0]["path"] = str(bundle_path)
+    registry_path.write_text(json.dumps(registry_data), encoding="utf-8")
+    return registry_path
+
+
 class NetworkSequenceDemoReportTests(unittest.TestCase):
     def test_payload_maps_the_vertical_sequence_evidence_surface(self):
         report = build_network_sequence_demo_report(BUNDLE)
@@ -157,6 +171,7 @@ class NetworkSequenceDemoReportTests(unittest.TestCase):
         self.assertEqual(report["accepted_count"], 1)
         self.assertEqual(report["failed_count"], 0)
         self.assertEqual(report["missing_evidence_paths"], [])
+        self.assertEqual(report["bundle_failed_subjects"], [])
         self.assertEqual(report["validation"]["failed_subjects"], [])
         self.assertEqual(
             [item["bundle_id"] for item in report["bundle_reports"]],
@@ -191,9 +206,36 @@ class NetworkSequenceDemoReportTests(unittest.TestCase):
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["bundle_count"], 1)
+        self.assertEqual(payload["bundle_failed_subjects"], [])
         self.assertEqual(
             [item["bundle_id"] for item in payload["bundle_reports"]],
             [BUNDLE_ID],
+        )
+
+    def test_registry_report_names_failed_subjects_for_rejected_existing_bundle(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            registry_path = _write_registry_with_drifted_existing_bundle(Path(tmp))
+
+            report = build_network_sequence_demo_registry_report(registry_path)
+
+        text = format_network_sequence_demo_registry_report(report)
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["accepted_count"], 0)
+        self.assertEqual(report["failed_count"], 1)
+        self.assertEqual(report["missing_evidence_paths"], [])
+        self.assertEqual(
+            report["bundle_failed_subjects"],
+            [
+                {
+                    "bundle_id": BUNDLE_ID,
+                    "failed_subjects": ["sequence-witness", "sequence-trace"],
+                }
+            ],
+        )
+        self.assertIn(f"- {BUNDLE_ID}: rejected", text)
+        self.assertIn(
+            "Failed subjects: sequence-witness, sequence-trace",
+            text,
         )
 
     def test_registry_json_mode_reports_missing_bundle_without_crashing(self):

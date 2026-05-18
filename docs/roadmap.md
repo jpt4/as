@@ -4265,3 +4265,23 @@ Status: accepted in
 `docs/adr/0209-project-status-sequence-evidence-failure-detail.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0210: Network Sequence Demo Registry Failure Detail
+
+Goal: make the vertical network-sequence demo registry name inner failed
+subjects for rejected existing bundles.
+
+Deliverables:
+
+- `bundle_failed_subjects` in registry demo JSON;
+- accepted registry demo reports with `bundle_failed_subjects: []`;
+- rejected existing bundle reports with `{bundle_id, failed_subjects}`;
+- registry text output that prints failed subjects for rejected bundles; and
+- no runtime behavior, claim, proof-rule, evidence-bundle validation,
+  project-status, source-status boundary, trace/SVG rendering, scheduler,
+  topology, timing, or command-semantics changes.
+
+Status: accepted in
+`docs/adr/0210-network-sequence-demo-registry-failure-detail.md`.
+Implemented in `autarkic_systems/network_sequence_demo.py`, with tests in
+`tests/test_network_sequence_demo_report.py`.
