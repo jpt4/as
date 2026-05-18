@@ -266,6 +266,11 @@ ADR-0150 resolves the standard-signal command-token/binary-input question as a
 negative equivalence decision: command tokens do not replay ordinary
 binary-input standard-signal behavior by default. The standard-signal frontier
 now leaves only the self-target-surface question open.
+ADR-0151 resolves that remaining standard-signal self-target-surface question
+through the existing self-mailbox unsupported-preservation and self-target
+command-buffer append-boundary claims. Standard-signal now has no unresolved
+source-status questions; write-buffer remains the command-token semantics
+frontier.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

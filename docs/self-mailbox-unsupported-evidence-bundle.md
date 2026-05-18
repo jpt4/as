@@ -40,6 +40,8 @@ remain present and parseable.
 The bundle records unsupported self-mailbox preservation only. It does not add
 write-buffer command-token execution, `standard-signal` command-token
 execution, recipient non-init command execution, priority, or sequencing.
+ADR-0151 reuses this existing preservation boundary to resolve the
+standard-signal self-mailbox surface as unsupported-preserved.
 
 ## Verification
 

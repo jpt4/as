@@ -177,36 +177,14 @@ CHAIN_CLAIMS = {
     "certificate_count": 2,
     "result_count": 4,
 }
-STANDARD_SIGNAL_QUESTIONS = [
-    "self-target-surface",
-]
+STANDARD_SIGNAL_QUESTIONS = []
 WRITE_BUFFER_QUESTIONS = [
     "recipient-vs-stem-surface",
     "buffer-full-boundary",
     "post-append-clearing",
 ]
-STANDARD_SIGNAL_RESOLUTION_QUESTIONS = [
-    {
-        "question_id": "self-target-surface",
-        "summary": (
-            "Decide whether self-mailbox and self-target command-buffer "
-            "standard-signal tokens should execute, be preserved, or be "
-            "reported as unsupported."
-        ),
-    },
-]
-STANDARD_SIGNAL_RESOLUTION_QUESTION_EVIDENCE = [
-    {
-        "question_id": "self-target-surface",
-        "evidence": (
-            "The formal model excludes standard signals sent to the "
-            "self-mailbox of a stem cell from ordinary productive behavior, "
-            "and no reviewed source selects preserve, clear/no-op, or "
-            "execution behavior for self-target standard-signal command "
-            "tokens."
-        ),
-    },
-]
+STANDARD_SIGNAL_RESOLUTION_QUESTIONS = []
+STANDARD_SIGNAL_RESOLUTION_QUESTION_EVIDENCE = []
 STANDARD_SIGNAL_RESOLVED_QUESTIONS = [
     {
         "question_id": "command-table-offset",
@@ -250,6 +228,17 @@ STANDARD_SIGNAL_RESOLVED_QUESTIONS = [
             "processing and the command-table standard-signal entry; RAA, "
             "SEMSIM, and FSMSIM exclude standard-signal from special-message "
             "dispatch and treat ordinary standard input separately."
+        ),
+    },
+    {
+        "question_id": "self-target-surface",
+        "decision": "preserve-self-target-standard-signal-as-unsupported",
+        "source_status": "sources/standard_signal_command_semantics_status.json",
+        "legacy_divergence": (
+            "AS already preserves direct self-mailbox standard-signal under "
+            "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED and preserves "
+            "completed self-target command-buffer standard-signal under "
+            "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED."
         ),
     },
 ]
@@ -825,15 +814,12 @@ class ProjectStatusReportTests(unittest.TestCase):
         text = format_project_status_report(report)
 
         self.assertIn("Resolution questions:", text)
-        self.assertIn("standard-signal:", text)
         self.assertNotIn(
             "command-token-vs-binary-input: Decide whether a standard-signal",
             text,
         )
-        self.assertIn(
-            "self-target-surface: Decide whether self-mailbox and self-target "
-            "command-buffer standard-signal tokens should execute, be "
-            "preserved, or be reported as unsupported.",
+        self.assertNotIn(
+            "self-target-surface: Decide whether self-mailbox and self-target",
             text,
         )
         self.assertIn("write-buf-zero, write-buf-one:", text)
@@ -850,17 +836,12 @@ class ProjectStatusReportTests(unittest.TestCase):
         text = format_project_status_report(report)
 
         self.assertIn("Resolution question evidence:", text)
-        self.assertIn("standard-signal:", text)
         self.assertNotIn(
             "command-token-vs-binary-input: The formal model names",
             text,
         )
-        self.assertIn(
-            "self-target-surface: The formal model excludes standard signals "
-            "sent to the self-mailbox of a stem cell from ordinary productive "
-            "behavior, and no reviewed source selects preserve, clear/no-op, "
-            "or execution behavior for self-target standard-signal command "
-            "tokens.",
+        self.assertNotIn(
+            "self-target-surface: The formal model excludes standard signals",
             text,
         )
         self.assertIn("write-buf-zero, write-buf-one:", text)
@@ -909,6 +890,12 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn(
+            "self-target-surface: "
+            "preserve-self-target-standard-signal-as-unsupported "
+            "(sources/standard_signal_command_semantics_status.json)",
+            text,
+        )
+        self.assertIn(
             "legacy divergence: The formal model excludes standard signals "
             "sent to the self-mailbox of a stem cell from productive "
             "ordinary standard-signal behavior; legacy witnesses exclude "
@@ -930,6 +917,14 @@ class ProjectStatusReportTests(unittest.TestCase):
             "entry; RAA, SEMSIM, and FSMSIM exclude standard-signal from "
             "special-message dispatch and treat ordinary standard input "
             "separately.",
+            text,
+        )
+        self.assertIn(
+            "legacy divergence: AS already preserves direct self-mailbox "
+            "standard-signal under UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED "
+            "and preserves completed self-target command-buffer "
+            "standard-signal under "
+            "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED.",
             text,
         )
         self.assertIn("write-buf-zero, write-buf-one:", text)

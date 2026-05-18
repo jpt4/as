@@ -3263,3 +3263,24 @@
   standard-signal; project-status JSON remained accepted at
   `schema_version: 14`; `py_compile` and `git diff --check` passed; and
   `python -m unittest discover` passed 659 tests.
+
+## 2026-05-18 - Standard-Signal Self-Target Resolution
+
+- Added ADR-0151 to resolve the remaining standard-signal
+  `self-target-surface` question through existing unsupported preservation
+  boundaries.
+- Updated standard-signal, project-status, and source-status frontier tests
+  before implementation. The red run executed 87 tests and failed because
+  `self-target-surface` was still unresolved and absent from
+  `resolved_resolution_questions`.
+- Updated `sources/standard_signal_command_semantics_status.json` and the
+  self-mailbox/command-buffer unsupported evidence bundle boundaries so
+  standard-signal self-target behavior points at the existing preservation
+  claims.
+- Verification passed: focused standard-signal, project-status, source-status
+  frontier, and unsupported evidence-bundle tests ran 99 tests; the evidence
+  bundle registry accepted all 8 bundles; source-status JSON was accepted at
+  `schema_version: 1` with no unresolved standard-signal questions;
+  project-status JSON remained accepted at `schema_version: 14`; `py_compile`
+  and `git diff --check` passed; and `python -m unittest discover` passed 660
+  tests.

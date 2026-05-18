@@ -150,6 +150,27 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
             binary_input["legacy_divergence"],
         )
 
+    def test_self_target_surface_is_resolved_to_unsupported_boundaries(self):
+        resolved = {
+            question["question_id"]: question
+            for question in self.status["resolved_resolution_questions"]
+        }
+
+        self_target = resolved["self-target-surface"]
+        self.assertEqual(
+            self_target["decision"],
+            "preserve-self-target-standard-signal-as-unsupported",
+        )
+        self.assertEqual(self_target["source_status"], str(STATUS))
+        self.assertIn(
+            "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
+            self_target["legacy_divergence"],
+        )
+        self.assertIn(
+            "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
+            self_target["legacy_divergence"],
+        )
+
     def test_legacy_witnesses_exclude_standard_signal_from_special_messages(self):
         witnesses = {
             witness["witness_id"]: witness
@@ -181,9 +202,7 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
 
         self.assertEqual(
             question_ids,
-            {
-                "self-target-surface",
-            },
+            set(),
         )
 
     def test_existing_source_status_frontiers_point_to_multi_command_trace(self):

@@ -421,3 +421,5 @@
 - Negative equivalence decisions are useful source progress: recording that a
   command token does not inherit an ordinary input path can narrow the frontier
   without pretending to know the final command behavior.
+- A checked unsupported boundary can close a source-status question when the
+  decision is to preserve/report unsupported rather than implement execution.

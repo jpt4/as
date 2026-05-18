@@ -2957,3 +2957,29 @@ Implemented in `sources/standard_signal_command_semantics_status.json`, with
 tests in `tests/test_standard_signal_command_semantics_status.py`,
 `tests/test_project_status_report.py`, and
 `tests/test_source_status_frontier_cli.py`.
+
+## ADR-0151: Standard-Signal Self-Target Resolution
+
+Goal: resolve the remaining standard-signal self-target-surface question
+through existing unsupported preservation boundaries.
+
+Deliverables:
+
+- `self-target-surface` removed from standard-signal unresolved
+  `required_resolution_questions`;
+- `self-target-surface` added to standard-signal
+  `resolved_resolution_questions`;
+- standard-signal unresolved source evidence reduced to an empty list;
+- existing self-mailbox unsupported and command-buffer unsupported evidence
+  bundles updated to name the standard-signal settled boundary;
+- project-status and source-status frontier text/JSON output showing no live
+  standard-signal resolution questions; and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in `docs/adr/0151-standard-signal-self-target-resolution.md`.
+Implemented in `sources/standard_signal_command_semantics_status.json`,
+`evidence/self_mailbox_unsupported_bundle.json`, and
+`evidence/command_buffer_unsupported_bundle.json`, with tests in
+`tests/test_standard_signal_command_semantics_status.py`,
+`tests/test_project_status_report.py`, and
+`tests/test_source_status_frontier_cli.py`.

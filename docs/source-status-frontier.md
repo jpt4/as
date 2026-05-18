@@ -60,6 +60,9 @@ as live and settled at the same time.
 ADR-0150 moves the standard-signal `command-token-vs-binary-input` question
 from unresolved to resolved, recording that command tokens do not replay
 ordinary binary-input standard-signal behavior by default.
+ADR-0151 moves the standard-signal `self-target-surface` question from
+unresolved to resolved, so the standard-signal source-status record no longer
+has live resolution questions.
 
 ## Boundary
 

@@ -173,6 +173,9 @@ unresolved and resolved, preserving `schema_version: 14`.
 ADR-0150 resolves the standard-signal `command-token-vs-binary-input` question
 as a negative equivalence decision while leaving project status
 `schema_version: 14`.
+ADR-0151 resolves the standard-signal `self-target-surface` question through
+the existing unsupported preservation boundaries while leaving project status
+`schema_version: 14`.
 
 ## Boundary
 

@@ -66,6 +66,12 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
             "(sources/standard_signal_command_semantics_status.json)",
             text,
         )
+        self.assertIn(
+            "self-target-surface: "
+            "preserve-self-target-standard-signal-as-unsupported "
+            "(sources/standard_signal_command_semantics_status.json)",
+            text,
+        )
         self.assertIn(f"Safe next slice: {SAFE_NEXT_SLICE}", text)
         self.assertIn("Missing source-status files: none", text)
         self.assertIn("Invalid source-status files: none", text)

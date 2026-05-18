@@ -41,6 +41,8 @@ The bundle records self-target non-init command-buffer append preservation
 only. It does not add write-buffer command-token execution,
 `standard-signal` command-token execution, recipient non-init command
 execution, priority, or sequencing.
+ADR-0151 reuses this existing append boundary to resolve the standard-signal
+self-target command-buffer surface as unsupported-preserved.
 
 ## Verification
 

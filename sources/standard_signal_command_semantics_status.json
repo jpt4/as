@@ -37,6 +37,19 @@
     "evidence_bundle": "evidence/recipient_non_init_command_rejection_bundle.json",
     "summary": "Delivered recipient standard-signal command messages stay in the already-claimed non-init recipient rejection boundary. The formal model gives no recipient execution rule for them, and RAA, SEMSIM, and FSMSIM exclude standard-signal from special-message sets."
   },
+  "self_target_surface_resolution": {
+    "decision": "preserve-self-target-standard-signal-as-unsupported",
+    "source_status": "sources/standard_signal_command_semantics_status.json",
+    "claim_ids": [
+      "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
+      "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED"
+    ],
+    "evidence_bundles": [
+      "evidence/self_mailbox_unsupported_bundle.json",
+      "evidence/command_buffer_unsupported_bundle.json"
+    ],
+    "summary": "AS preserves direct self-mailbox standard-signal as unsupported and preserves completed self-target command-buffer standard-signal at the append boundary."
+  },
   "resolved_resolution_questions": [
     {
       "question_id": "command-table-offset",
@@ -62,6 +75,12 @@
       "decision": "do-not-replay-ordinary-binary-input-standard-signal",
       "source_status": "sources/standard_signal_command_semantics_status.json",
       "legacy_divergence": "The formal model separately names ordinary standard-signal processing and the command-table standard-signal entry; RAA, SEMSIM, and FSMSIM exclude standard-signal from special-message dispatch and treat ordinary standard input separately."
+    },
+    {
+      "question_id": "self-target-surface",
+      "decision": "preserve-self-target-standard-signal-as-unsupported",
+      "source_status": "sources/standard_signal_command_semantics_status.json",
+      "legacy_divergence": "AS already preserves direct self-mailbox standard-signal under UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED and preserves completed self-target command-buffer standard-signal under UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED."
     }
   ],
   "legacy_standard_signal_witnesses": [
@@ -92,18 +111,8 @@
       "summary": "FSMSIM excludes standard-signal from special-messages, classifies nonzero binary input as ordinary standard input, and indexes command-buffer messages through the seven special messages only."
     }
   ],
-  "required_resolution_questions": [
-    {
-      "question_id": "self-target-surface",
-      "summary": "Decide whether self-mailbox and self-target command-buffer standard-signal tokens should execute, be preserved, or be reported as unsupported."
-    }
-  ],
-  "resolution_question_evidence": [
-    {
-      "question_id": "self-target-surface",
-      "evidence": "The formal model excludes standard signals sent to the self-mailbox of a stem cell from ordinary productive behavior, and no reviewed source selects preserve, clear/no-op, or execution behavior for self-target standard-signal command tokens."
-    }
-  ],
+  "required_resolution_questions": [],
+  "resolution_question_evidence": [],
   "additional_source_statuses": [
     {
       "adr": "ADR-0062",

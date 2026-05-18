@@ -628,3 +628,6 @@
 - ADR-0150 resolves standard-signal `command-token-vs-binary-input` as
   `do-not-replay-ordinary-binary-input-standard-signal`, leaving only
   `self-target-surface` unresolved for standard-signal command tokens.
+- ADR-0151 resolves standard-signal `self-target-surface` through existing
+  unsupported preservation boundaries, leaving no unresolved standard-signal
+  source-status questions.

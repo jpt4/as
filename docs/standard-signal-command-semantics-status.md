@@ -23,6 +23,11 @@ standard-signal processing from the command-table `standard-signal` entry, and
 the reviewed legacy witnesses keep `standard-signal` outside special-message
 dispatch.
 
+ADR-0151 resolves the remaining self-target-surface question: direct
+self-mailbox `standard-signal` command tokens are preserved as unsupported, and
+completed self-target command-buffer `standard-signal` tokens remain preserved
+at the append boundary.
+
 The formal-model prose narrows one self-target case: it says wire, proc, and
 stem cells all perform productive behavior on standard signals "unless sent to
 the self-mailbox of a stem cell." AS therefore must not treat a stem
@@ -71,8 +76,9 @@ Recipient command-message input is no longer an unresolved
 `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`.
 
 Command-token execution also no longer inherits ordinary binary-input
-standard-signal behavior by default. Future work must choose an explicit
-self-target command-token boundary.
+standard-signal behavior by default. Future work that wants executable
+standard-signal command-token behavior must intentionally replace these
+unsupported preservation boundaries.
 
 The current ordinary standard-signal behavior remains valid because it is
 binary-input behavior, not command-token execution. ADR-0059 selects
@@ -93,8 +99,9 @@ favor of the formal PRC command-buffer map. ADR-0143 exposes the self-mailbox
 exception as a resolved sub-decision while leaving `self-target-surface`
 unresolved. ADR-0148 moves `recipient-surface` into resolved questions through
 the existing recipient non-init rejection boundary. ADR-0150 moves
-`command-token-vs-binary-input` into resolved questions while leaving
-`self-target-surface` as the only standard-signal unresolved question.
+`command-token-vs-binary-input` into resolved questions. ADR-0151 moves
+`self-target-surface` into resolved questions, leaving the standard-signal
+source-status record with no unresolved questions.
 
 ## Verification
 
@@ -105,6 +112,6 @@ python -m unittest tests.test_standard_signal_command_semantics_status
 ```
 
 The tests check the decision, formal-model command/binary distinction, legacy
-witness divergence, resolved recipient-surface and command-token/binary-input
-boundaries, remaining required resolution questions, and source-status
+witness divergence, resolved recipient-surface,
+command-token/binary-input, and self-target boundaries, and source-status
 frontier updates.
