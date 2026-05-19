@@ -10,6 +10,7 @@ from pathlib import Path
 from autarkic_systems import substitution_graph_correctness_cases
 from autarkic_systems.substitution_graph_correctness_cases import (
     REQUIRED_CASE_KINDS,
+    REQUIRED_DEPENDENCIES_BY_KIND,
     REQUIRED_FUTURE_WORK,
     REQUIRED_NON_CLAIMS,
     load_substitution_graph_correctness_cases,
@@ -28,6 +29,7 @@ FORMULA_CANDIDATES = Path("claims/substitution_graph_formula_candidates.json")
 SUBSTITUTION_REPRESENTABILITY_TARGETS = Path(
     "claims/substitution_representability_targets.json"
 )
+CODEBOOK_ROUNDTRIP = Path("claims/substitution_graph_codebook_roundtrip.json")
 
 
 class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
@@ -65,6 +67,10 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
             str(SUBSTITUTION_REPRESENTABILITY_TARGETS),
         )
         self.assertEqual(
+            self.cases.codebook_roundtrip_path,
+            str(CODEBOOK_ROUNDTRIP),
+        )
+        self.assertEqual(
             REQUIRED_CASE_KINDS,
             (
                 "codebook-roundtrip",
@@ -73,6 +79,10 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
                 "formula-schema-relation",
                 "diagonal-witness-composition",
             ),
+        )
+        self.assertEqual(
+            REQUIRED_DEPENDENCIES_BY_KIND["codebook-roundtrip"],
+            ("correctness_target", "codebook", "codebook_roundtrip"),
         )
         self.assertEqual(
             REQUIRED_FUTURE_WORK,
@@ -104,7 +114,10 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
             first.correctness_target_id,
             "AS-SUBSTITUTION-GRAPH-CORRECTNESS-TARGET",
         )
-        self.assertEqual(first.required_dependency_subjects, ("correctness_target", "codebook"))
+        self.assertEqual(
+            first.required_dependency_subjects,
+            ("correctness_target", "codebook", "codebook_roundtrip"),
+        )
         self.assertEqual(second.case_kind, "quotation-term-closure")
         self.assertEqual(third.case_kind, "meta-substitution-semantics")
         self.assertEqual(fourth.case_kind, "formula-schema-relation")
@@ -119,6 +132,13 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
         self.assertTrue(report.accepted, report.results)
         self.assertEqual(report.failed_subjects, ())
         self.assertEqual(report.case_count, 5)
+        self.assertTrue(
+            any(
+                result.subject == "codebook_roundtrip"
+                and result.accepted
+                for result in report.results
+            )
+        )
         self.assertTrue(
             any(
                 result.subject == "cases"
@@ -139,7 +159,7 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
         self.assertEqual(payload["case_count"], 5)
         self.assertEqual(payload["failed_subjects"], [])
         self.assertTrue(payload["cases"][0]["observed_all_required_dependencies_present"])
-        self.assertEqual(payload["cases"][0]["observed_dependency_count"], 2)
+        self.assertEqual(payload["cases"][0]["observed_dependency_count"], 3)
         self.assertIn(
             "formula-correctness-proof",
             payload["cases"][0]["required_future_work"],
@@ -157,7 +177,10 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
         self.assertIn("Cases: 5", text)
         self.assertIn("AS-SUBST-GRAPH-CORRECTNESS-CODEBOOK-ROUNDTRIP", text)
         self.assertIn("Case kind: codebook-roundtrip", text)
-        self.assertIn("Dependencies: correctness_target, codebook", text)
+        self.assertIn(
+            "Dependencies: correctness_target, codebook, codebook_roundtrip",
+            text,
+        )
         self.assertIn("Future work:", text)
         self.assertNotIn("FAIL", text)
 

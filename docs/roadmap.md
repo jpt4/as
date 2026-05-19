@@ -5404,3 +5404,33 @@ Deliverables:
 Status: accepted in `docs/adr/0256-origin-main-submission-status.md`.
 Implemented in `autarkic_systems/github_submission.py`, with tests in
 `tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.
+
+## ADR-0257: Substitution Graph Codebook Roundtrip Domain
+
+Goal: make the first substitution graph correctness case depend on executable
+codebook roundtrip evidence over the graph-domain codes currently exercised by
+the formula candidate and finite evaluation examples.
+
+Deliverables:
+
+- `claims/substitution_graph_codebook_roundtrip.json` with the expected
+  12-subject finite roundtrip domain;
+- `autarkic_systems.substitution_graph_codebook_roundtrip` validation that
+  derives formula-candidate and finite-evaluation code subjects, decodes each
+  through the formal codebook, and re-encodes each to the same sequence;
+- text/JSON output for subject count, source-kind counts, and roundtrip
+  failures;
+- `claims/substitution_graph_correctness_cases.json` and
+  `autarkic_systems.substitution_graph_correctness_cases` updated so the
+  `codebook-roundtrip` case requires the accepted `codebook_roundtrip`
+  dependency; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma, fixed-point equation proof, self-consistency theorem, GitHub
+  submission logic change, or runtime command-token behavior change.
+
+Status: accepted in
+`docs/adr/0257-substitution-graph-codebook-roundtrip-domain.md`. Implemented
+in `autarkic_systems/substitution_graph_codebook_roundtrip.py` and
+`autarkic_systems/substitution_graph_correctness_cases.py`, with tests in
+`tests/test_substitution_graph_codebook_roundtrip.py` and
+`tests/test_substitution_graph_correctness_cases.py`.

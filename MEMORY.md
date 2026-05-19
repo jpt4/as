@@ -208,6 +208,12 @@
   structured fail-closed dependency of `autarkic_systems.formal_confidence`;
   missing or invalid correctness-case references now reject formal-confidence
   validation as `target-substitution-graph-correctness-cases`.
+- ADR-0257 adds `claims/substitution_graph_codebook_roundtrip.json` and
+  `autarkic_systems.substitution_graph_codebook_roundtrip`, checking 12 finite
+  graph-domain code subjects from the formula candidate and finite evaluation
+  examples for formal-codebook decode/re-encode roundtrip; the
+  `codebook-roundtrip` correctness case now requires this accepted dependency,
+  but the case remains open and no formula correctness proof is claimed.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

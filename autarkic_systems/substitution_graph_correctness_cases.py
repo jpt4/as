@@ -27,6 +27,10 @@ from autarkic_systems.formal_substitution import (
     load_substitution_examples,
     validate_substitution_examples,
 )
+from autarkic_systems.substitution_graph_codebook_roundtrip import (
+    load_substitution_graph_codebook_roundtrip,
+    validate_substitution_graph_codebook_roundtrip,
+)
 from autarkic_systems.substitution_graph_correctness import (
     SubstitutionGraphCorrectnessObservation,
     load_substitution_graph_correctness_targets,
@@ -53,7 +57,7 @@ REQUIRED_CASE_KINDS = (
     "diagonal-witness-composition",
 )
 REQUIRED_DEPENDENCIES_BY_KIND = {
-    "codebook-roundtrip": ("correctness_target", "codebook"),
+    "codebook-roundtrip": ("correctness_target", "codebook", "codebook_roundtrip"),
     "quotation-term-closure": (
         "correctness_target",
         "codebook",
@@ -122,6 +126,7 @@ class SubstitutionGraphCorrectnessCaseManifest:
     quotation_term_examples_path: str
     formula_candidates_path: str
     substitution_representability_targets_path: str
+    codebook_roundtrip_path: str
     cases: tuple[SubstitutionGraphCorrectnessCase, ...]
 
 
@@ -158,6 +163,7 @@ class SubstitutionGraphCorrectnessCaseReport:
     quotation_term_examples_path: Path
     formula_candidates_path: Path
     substitution_representability_targets_path: Path
+    codebook_roundtrip_path: Path
     willard_map_path: Path
     results: tuple[SubstitutionGraphCorrectnessCaseValidation, ...]
     observations: tuple[SubstitutionGraphCorrectnessCaseObservation, ...]
@@ -217,6 +223,7 @@ def load_substitution_graph_correctness_cases(
             data,
             "substitution_representability_targets_path",
         ),
+        codebook_roundtrip_path=_required_text(data, "codebook_roundtrip_path"),
         cases=tuple(_parse_case(item) for item in _required_list(data, "cases")),
     )
 
@@ -237,6 +244,7 @@ def validate_substitution_graph_correctness_cases(
     checked_representability_path = Path(
         manifest.substitution_representability_targets_path
     )
+    checked_roundtrip_path = Path(manifest.codebook_roundtrip_path)
 
     codebook = load_formal_codebook(checked_codebook_path)
     codebook_report = validate_formal_codebook(
@@ -280,6 +288,13 @@ def validate_substitution_graph_correctness_cases(
         checked_language_path,
         checked_willard_map_path,
     )
+    roundtrip_manifest = load_substitution_graph_codebook_roundtrip(
+        checked_roundtrip_path,
+    )
+    roundtrip_report = validate_substitution_graph_codebook_roundtrip(
+        roundtrip_manifest,
+        checked_willard_map_path,
+    )
 
     results: list[SubstitutionGraphCorrectnessCaseValidation] = [
         _accepted("manifest", f"loaded {len(manifest.cases)} case(s)")
@@ -292,6 +307,7 @@ def validate_substitution_graph_correctness_cases(
         quotation_term_report,
         formula_report,
         representability_report,
+        roundtrip_report,
     )
     results.extend(dependency_results)
     case_results, observations = _validate_cases(
@@ -310,6 +326,7 @@ def validate_substitution_graph_correctness_cases(
         quotation_term_examples_path=checked_quotation_term_path,
         formula_candidates_path=checked_formula_path,
         substitution_representability_targets_path=checked_representability_path,
+        codebook_roundtrip_path=checked_roundtrip_path,
         willard_map_path=checked_willard_map_path,
         results=tuple(results),
         observations=tuple(observations),
@@ -342,6 +359,7 @@ def substitution_graph_correctness_cases_report_payload(
         "substitution_representability_targets_path": str(
             report.substitution_representability_targets_path
         ),
+        "codebook_roundtrip_path": str(report.codebook_roundtrip_path),
         "willard_map": str(report.willard_map_path),
         "case_count": report.case_count,
         "failed_subjects": list(report.failed_subjects),
@@ -503,6 +521,11 @@ def _validate_references(
             manifest.substitution_representability_targets_path,
             "claims/substitution_representability_targets.json",
         ),
+        (
+            "codebook_roundtrip_path",
+            manifest.codebook_roundtrip_path,
+            "claims/substitution_graph_codebook_roundtrip.json",
+        ),
     )
     results: list[SubstitutionGraphCorrectnessCaseValidation] = []
     for subject, actual, expected_value in expected:
@@ -522,6 +545,7 @@ def _validate_dependency_reports(
     quotation_term_report: Any,
     formula_report: Any,
     representability_report: Any,
+    roundtrip_report: Any,
 ) -> tuple[list[SubstitutionGraphCorrectnessCaseValidation], frozenset[str]]:
     checks = (
         ("codebook", codebook_report, "formal codebook"),
@@ -534,6 +558,7 @@ def _validate_dependency_reports(
             representability_report,
             "substitution representability",
         ),
+        ("codebook_roundtrip", roundtrip_report, "codebook roundtrip"),
     )
     results: list[SubstitutionGraphCorrectnessCaseValidation] = []
     accepted_dependencies: set[str] = set()

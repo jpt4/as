@@ -10,6 +10,7 @@
   "quotation_term_examples_path": "language/formal_quotation_term_examples.json",
   "formula_candidates_path": "claims/substitution_graph_formula_candidates.json",
   "substitution_representability_targets_path": "claims/substitution_representability_targets.json",
+  "codebook_roundtrip_path": "claims/substitution_graph_codebook_roundtrip.json",
   "cases": [
     {
       "case_id": "AS-SUBST-GRAPH-CORRECTNESS-CODEBOOK-ROUNDTRIP",
@@ -18,7 +19,8 @@
       "status": "proof-case-open",
       "required_dependency_subjects": [
         "correctness_target",
-        "codebook"
+        "codebook",
+        "codebook_roundtrip"
       ],
       "required_future_work": [
         "formula-correctness-proof",

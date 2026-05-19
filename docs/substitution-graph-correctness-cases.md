@@ -12,6 +12,10 @@ ADR-0255 makes this case map visible to aggregate formal-confidence validation:
 if the case map disappears or drifts, the formal-confidence target now rejects
 instead of silently treating the correctness route as aligned.
 
+ADR-0257 adds a finite codebook-roundtrip verifier for the graph-domain codes
+currently exercised by the formula candidate and finite evaluation examples,
+then makes the `codebook-roundtrip` case depend on that verifier.
+
 ## Purpose
 
 The correctness target is useful because it names the theorem. The case
@@ -32,6 +36,8 @@ The checked cases are:
 ```sh
 python -m autarkic_systems.substitution_graph_correctness_cases
 python -m autarkic_systems.substitution_graph_correctness_cases --format json
+python -m autarkic_systems.substitution_graph_codebook_roundtrip
+python -m autarkic_systems.substitution_graph_codebook_roundtrip --format json
 ```
 
 The validator checks that:
@@ -39,6 +45,7 @@ The validator checks that:
 - the correctness target, codebook, quotation-term, formal-substitution,
   formula-candidate, and substitution-representability dependencies remain
   accepted;
+- the codebook-roundtrip domain dependency remains accepted for the first case;
 - case IDs are unique;
 - each case targets `AS-SUBSTITUTION-GRAPH-CORRECTNESS-TARGET`;
 - each case preserves `proof-case-open`;

@@ -74,7 +74,8 @@ validator. ADR-0252 adds the substitution graph correctness proof target, and
 ADR-0253 makes that target a structured, fail-closed dependency of the
 aggregate formal-confidence validator. ADR-0254 decomposes that target into
 five open proof cases, and ADR-0255 makes the case map a structured,
-fail-closed dependency of the aggregate formal-confidence validator.
+fail-closed dependency of the aggregate formal-confidence validator. ADR-0257
+makes the first case depend on finite graph-domain codebook roundtrip evidence.
 
 ## Current Target
 
@@ -146,6 +147,8 @@ python -m autarkic_systems.substitution_graph_formula
 python -m autarkic_systems.substitution_graph_formula --format json
 python -m autarkic_systems.substitution_graph_correctness
 python -m autarkic_systems.substitution_graph_correctness --format json
+python -m autarkic_systems.substitution_graph_codebook_roundtrip
+python -m autarkic_systems.substitution_graph_codebook_roundtrip --format json
 python -m autarkic_systems.substitution_graph_correctness_cases
 python -m autarkic_systems.substitution_graph_correctness_cases --format json
 python -m autarkic_systems.fixed_point_equation

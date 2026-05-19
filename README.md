@@ -72,6 +72,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/substitution-graph-correctness.md` records the checked proof target
   that binds the graph target, formula schema, and finite examples while
   leaving the correctness proof open.
+- `docs/substitution-graph-codebook-roundtrip.md` records finite codebook
+  roundtrip evidence over the current substitution-graph domain codes, while
+  leaving the general proof open.
 - `docs/substitution-graph-correctness-cases.md` records five open proof cases
   for the substitution graph correctness target while leaving every case
   unproved.
@@ -434,6 +437,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/substitution_graph_correctness.py` validates and runs the
   checked correctness proof target binding the graph target, formula schema,
   and finite evaluation examples while keeping the proof obligation open.
+- `autarkic_systems/substitution_graph_codebook_roundtrip.py` validates and
+  runs finite codebook roundtrip evidence for the graph-domain codes exercised
+  by the formula candidate and finite evaluation examples, while keeping the
+  general proof obligation open.
 - `autarkic_systems/substitution_graph_correctness_cases.py` validates and
   runs the open case decomposition for that correctness target, tying each
   case to its checked dependency surface without claiming proof.
@@ -557,9 +564,14 @@ proof certificates, object languages, evidence bundles, and status reports:
   validates `claims/substitution_graph_correctness_targets.json`, including
   the checked proof target tying the graph target, formula schema, and finite
   examples together.
+- `python -m autarkic_systems.substitution_graph_codebook_roundtrip --format json`
+  validates `claims/substitution_graph_codebook_roundtrip.json`, including 12
+  finite graph-domain code subjects that decode and re-encode through the
+  formal codebook.
 - `python -m autarkic_systems.substitution_graph_correctness_cases --format json`
   validates `claims/substitution_graph_correctness_cases.json`, including the
-  five open proof cases for the substitution graph correctness target.
+  five open proof cases for the substitution graph correctness target and the
+  codebook-roundtrip dependency for the first case.
 - `python -m autarkic_systems.fixed_point_obstruction --format json` validates
   `claims/fixed_point_obstructions.json`, including the current
   `obstruction-observed` result and minimum length-growth delta for direct

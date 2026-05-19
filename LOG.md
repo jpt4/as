@@ -5514,3 +5514,26 @@
 - Preserved the existing `submitted-to-fork` fallback when `origin/main` does
   not match but `fork/main` does.
 - Focused GitHub submission and handoff tests passed 21 tests.
+
+## 2026-05-19 - Substitution Graph Codebook Roundtrip Domain
+
+- Added ADR-0257 to make the first substitution graph correctness case depend
+  on finite codebook roundtrip evidence over the current graph-domain codes.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.substitution_graph_codebook_roundtrip` and
+  `claims/substitution_graph_codebook_roundtrip.json` did not exist, the
+  correctness-case manifest had no `codebook_roundtrip_path`, and the first
+  case still depended only on `correctness_target` and `codebook`.
+- Added `claims/substitution_graph_codebook_roundtrip.json` with an expected
+  12-subject finite domain derived from the formula candidate and finite
+  evaluation examples.
+- Added `autarkic_systems/substitution_graph_codebook_roundtrip.py`, deriving
+  those code subjects, decoding each through the formal codebook, and
+  re-encoding each to the same token sequence.
+- Updated `claims/substitution_graph_correctness_cases.json` and
+  `autarkic_systems/substitution_graph_correctness_cases.py` so the
+  `codebook-roundtrip` case requires the accepted `codebook_roundtrip`
+  dependency.
+- Focused roundtrip/correctness-case tests passed 22 tests. This is finite
+  evidence for the first open correctness case, not a general formula
+  correctness or substitution representability proof.
