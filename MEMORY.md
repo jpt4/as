@@ -204,6 +204,10 @@
   `AS-SUBSTITUTION-GRAPH-CORRECTNESS-TARGET` into five open proof cases tied
   to codebook, quotation-term, formal-substitution, formula-candidate, and
   substitution-representability dependencies without proving any case.
+- ADR-0255 makes `claims/substitution_graph_correctness_cases.json` a
+  structured fail-closed dependency of `autarkic_systems.formal_confidence`;
+  missing or invalid correctness-case references now reject formal-confidence
+  validation as `target-substitution-graph-correctness-cases`.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

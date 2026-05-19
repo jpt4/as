@@ -36,8 +36,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   validating the current consistency-level, fixed-point equation candidate,
   diagonal-construction, substitution-representability witness, fixed-point
   equation candidate, substitution graph target, substitution graph formula,
-  substitution graph correctness target, and fixed-point obstruction
-  dependencies.
+  substitution graph correctness target, substitution graph correctness case
+  map, and fixed-point obstruction dependencies.
 - `docs/formal-arithmetic-language.md` records the first checked syntax-only
   Type-NS arithmetic language surface for the formal-confidence path.
 - `docs/formal-codebook.md` records the first checked proof-code encoding
@@ -455,7 +455,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   construction exists and fail-closed over the current consistency-level,
   diagonal-construction, substitution-representability witness, fixed-point
   equation candidate, substitution graph target, substitution graph formula,
-  substitution graph correctness target, and obstruction dependencies.
+  substitution graph correctness target, substitution graph correctness case
+  map, and obstruction dependencies.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -488,7 +489,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   with structured dependency checks for the consistency-level target, diagonal
   construction, substitution-representability witness, fixed-point equation
   candidate, substitution graph target, substitution graph formula,
-  substitution graph correctness target, and fixed-point obstruction.
+  substitution graph correctness target, substitution graph correctness case
+  map, and fixed-point obstruction.
 - `python -m autarkic_systems.formal_arithmetic --format json` validates
   `language/formal_arithmetic_language.json`, including required Willard
   anchors, the Type-NS profile, `delta0`, `pi1`, `sigma1`, and the
@@ -565,8 +567,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   Willard anchors, required configuration fields, the consistency-level target,
   diagonal-construction, substitution-representability witness, fixed-point
   equation candidate, substitution graph target, substitution graph formula,
-  substitution graph correctness target, and obstruction dependencies,
-  explicit blockers, and the next AS action.
+  substitution graph correctness target, substitution graph correctness case
+  map, and obstruction dependencies, explicit blockers, and the next AS
+  action.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init/write-buffer delivery and rejected
   standard-signal delivery.

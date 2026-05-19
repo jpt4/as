@@ -8,6 +8,10 @@ ADR-0252 substitution graph correctness target into the proof cases that must
 be discharged before the checked `substitution_code(x,y) = z` schema can be
 treated as correct.
 
+ADR-0255 makes this case map visible to aggregate formal-confidence validation:
+if the case map disappears or drifts, the formal-confidence target now rejects
+instead of silently treating the correctness route as aligned.
+
 ## Purpose
 
 The correctness target is useful because it names the theorem. The case

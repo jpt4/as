@@ -5,8 +5,8 @@ consistency-level target, deduction-apparatus target, fixed-point target, and
 quotation sequence/term dependencies, plus validated consistency-level,
 diagonal-construction, substitution-representability witness, fixed-point
 equation candidate, substitution graph target, substitution graph formula,
-substitution graph correctness target, and obstruction dependencies,
-2026-05-18.
+substitution graph correctness target, substitution graph correctness case
+map, and obstruction dependencies, 2026-05-18.
 
 ADR-0224 adds `claims/formal_confidence_targets.json` and
 `autarkic_systems/formal_confidence.py`. The target records what AS would need
@@ -72,7 +72,9 @@ substitution graph formula schema candidate, and ADR-0249 makes that candidate
 a structured, fail-closed dependency of the aggregate formal-confidence
 validator. ADR-0252 adds the substitution graph correctness proof target, and
 ADR-0253 makes that target a structured, fail-closed dependency of the
-aggregate formal-confidence validator.
+aggregate formal-confidence validator. ADR-0254 decomposes that target into
+five open proof cases, and ADR-0255 makes the case map a structured,
+fail-closed dependency of the aggregate formal-confidence validator.
 
 ## Current Target
 
@@ -106,7 +108,9 @@ target is recorded and validated through
 schema candidate is recorded and validated through
 `claims/substitution_graph_formula_candidates.json`; the substitution graph
 correctness proof target is recorded and validated through
-`claims/substitution_graph_correctness_targets.json`; the naive equation
+`claims/substitution_graph_correctness_targets.json`; the substitution graph
+correctness case map is recorded and validated through
+`claims/substitution_graph_correctness_cases.json`; the naive equation
 candidate is recorded and validated through
 `claims/fixed_point_equation_candidates.json`. The checked obstruction in
 `claims/fixed_point_obstructions.json` is also validated as an aggregate
@@ -142,6 +146,8 @@ python -m autarkic_systems.substitution_graph_formula
 python -m autarkic_systems.substitution_graph_formula --format json
 python -m autarkic_systems.substitution_graph_correctness
 python -m autarkic_systems.substitution_graph_correctness --format json
+python -m autarkic_systems.substitution_graph_correctness_cases
+python -m autarkic_systems.substitution_graph_correctness_cases --format json
 python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.fixed_point_equation --format json
 python -m autarkic_systems.fixed_point_obstruction
@@ -163,6 +169,7 @@ The validator checks that:
 - the referenced substitution graph target validates;
 - the referenced substitution graph formula candidate validates;
 - the referenced substitution graph correctness target validates;
+- the referenced substitution graph correctness case map validates;
 - the referenced fixed-point equation candidate surface validates;
 - the referenced fixed-point obstruction surface validates;
 - blocked targets name blockers; and

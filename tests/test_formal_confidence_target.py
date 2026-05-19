@@ -35,6 +35,9 @@ SUBSTITUTION_GRAPH_FORMULA_CANDIDATES = Path(
 SUBSTITUTION_GRAPH_CORRECTNESS_TARGETS = Path(
     "claims/substitution_graph_correctness_targets.json"
 )
+SUBSTITUTION_GRAPH_CORRECTNESS_CASES = Path(
+    "claims/substitution_graph_correctness_cases.json"
+)
 FIXED_POINT_EQUATION_CANDIDATES = Path("claims/fixed_point_equation_candidates.json")
 FIXED_POINT_OBSTRUCTIONS = Path("claims/fixed_point_obstructions.json")
 
@@ -63,6 +66,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
                 "substitution_graph",
                 "substitution_graph_formula",
                 "substitution_graph_correctness",
+                "substitution_graph_correctness_cases",
                 "fixed_point_equation_candidate",
                 "fixed_point_obstruction",
                 "substrate_bridge",
@@ -128,6 +132,10 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertEqual(
             target.configuration["substitution_graph_correctness"],
             str(SUBSTITUTION_GRAPH_CORRECTNESS_TARGETS),
+        )
+        self.assertEqual(
+            target.configuration["substitution_graph_correctness_cases"],
+            str(SUBSTITUTION_GRAPH_CORRECTNESS_CASES),
         )
         self.assertEqual(
             target.configuration["fixed_point_equation_candidate"],
@@ -196,6 +204,13 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertTrue(
             any(
                 result.subject == "AS-FORMAL-CONFIDENCE-TARGET-001.substitution_graph_correctness"
+                and result.accepted
+                for result in report.results
+            )
+        )
+        self.assertTrue(
+            any(
+                result.subject == "AS-FORMAL-CONFIDENCE-TARGET-001.substitution_graph_correctness_cases"
                 and result.accepted
                 for result in report.results
             )
@@ -303,6 +318,13 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
+                result["subject"].endswith(".substitution_graph_correctness_cases")
+                and result["accepted"]
+                for result in payload["results"]
+            )
+        )
+        self.assertTrue(
+            any(
                 result["subject"].endswith(".fixed_point_equation_candidate")
                 and result["accepted"]
                 for result in payload["results"]
@@ -337,6 +359,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertIn("substitution graph target accepted", text)
         self.assertIn("substitution graph formula accepted", text)
         self.assertIn("substitution graph correctness target accepted", text)
+        self.assertIn("substitution graph correctness cases accepted", text)
         self.assertIn("fixed-point equation candidate accepted", text)
         self.assertIn("fixed-point obstruction accepted", text)
         self.assertNotIn("FAIL", text)
@@ -515,6 +538,27 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertIn("target-substitution-graph-correctness", report.failed_subjects)
         self.assertTrue(
             any("substitution graph correctness target rejected" in result.detail for result in report.results)
+        )
+
+    def test_missing_substitution_graph_correctness_cases_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target_path = Path(tmp) / "targets.json"
+            data = json.loads(TARGETS.read_text(encoding="utf-8"))
+            data["targets"][0]["configuration"]["substitution_graph_correctness_cases"] = (
+                "claims/missing_substitution_graph_correctness_cases.json"
+            )
+            target_path.write_text(json.dumps(data), encoding="utf-8")
+            manifest = load_formal_confidence_targets(target_path)
+
+            report = validate_formal_confidence_targets(manifest, WILLARD_MAP)
+
+        self.assertFalse(report.accepted)
+        self.assertIn(
+            "target-substitution-graph-correctness-cases",
+            report.failed_subjects,
+        )
+        self.assertTrue(
+            any("substitution graph correctness cases rejected" in result.detail for result in report.results)
         )
 
     def test_blocked_target_without_blockers_is_rejected(self):

@@ -5481,3 +5481,21 @@
   dependency lists, future work, and non-claims.
 - Focused substitution-graph correctness-case tests passed 12 tests. This
   creates a proof-case map without proving formula correctness.
+
+## 2026-05-18 - Formal Confidence Correctness Cases Dependency
+
+- Added ADR-0255 to make the ADR-0254 substitution graph correctness case map
+  a structured dependency of aggregate formal-confidence validation.
+- Added red tests before implementation. The red run failed because
+  `REQUIRED_CONFIGURATION_FIELDS` had no `substitution_graph_correctness_cases`
+  field, healthy reports had no accepted correctness-cases result, and missing
+  correctness-case manifests did not reject formal-confidence validation.
+- Added `substitution_graph_correctness_cases` to
+  `claims/formal_confidence_targets.json`, pointing at
+  `claims/substitution_graph_correctness_cases.json`.
+- Updated `autarkic_systems/formal_confidence.py` to load and validate the
+  substitution graph correctness case map, reporting
+  `substitution graph correctness cases accepted` on the healthy path and
+  `target-substitution-graph-correctness-cases` on failure.
+- Focused formal-confidence/project-status tests passed 107 tests. The
+  formal-confidence target remains blocked on fixed-point construction.

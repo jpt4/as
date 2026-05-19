@@ -5360,3 +5360,27 @@ Status: accepted in
 `docs/adr/0254-substitution-graph-correctness-cases.md`. Implemented in
 `autarkic_systems/substitution_graph_correctness_cases.py`, with tests in
 `tests/test_substitution_graph_correctness_cases.py`.
+
+## ADR-0255: Formal Confidence Correctness Cases Dependency
+
+Goal: make the substitution graph correctness case map a checked dependency of
+the aggregate formal-confidence target instead of a standalone surface.
+
+Deliverables:
+
+- `claims/formal_confidence_targets.json` with a structured
+  `substitution_graph_correctness_cases` configuration field;
+- `autarkic_systems.formal_confidence` validation that loads and checks the
+  referenced correctness-case surface;
+- accepted text/JSON report output for the healthy checked case map;
+- fail-closed rejection for missing or invalid correctness-case references,
+  reported as `target-substitution-graph-correctness-cases`; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma, fixed-point equation proof, arithmetized proof predicate, theorem
+  prover, runtime behavior, command semantics, evidence bundle, or GitHub
+  submission logic changes.
+
+Status: accepted in
+`docs/adr/0255-formal-confidence-correctness-cases-dependency.md`.
+Implemented in `autarkic_systems/formal_confidence.py`, with tests in
+`tests/test_formal_confidence_target.py`.
