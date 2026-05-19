@@ -113,6 +113,11 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/fixed-point-substitution-witness-bridge.md` records finite alignment
   evidence tying the current substitution witness to the bridge and closure
   surfaces, while leaving representability proof open.
+- `docs/fixed-point-substitution-graph-correctness-bridge.md` records finite
+  dependency-coverage evidence tying the fixed-point construction graph
+  correctness case to the checked graph correctness target, correctness case
+  map, and finite graph-domain dependencies, while leaving correctness proof
+  open.
 - `docs/fixed-point-obstruction.md` records the checked length-growth
   obstruction showing why the naive direct quotation-substitution route cannot
   be the fixed point.
@@ -507,6 +512,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/fixed_point_substitution_witness_bridge.py` validates
   finite alignment evidence for the current substitution witness used by the
   second construction case.
+- `autarkic_systems/fixed_point_substitution_graph_correctness_bridge.py`
+  validates finite dependency-coverage evidence for the graph-correctness case
+  used by the third construction case.
 - `autarkic_systems/fixed_point_obstruction.py` validates the checked
   length-growth obstruction for that naive candidate, recording that direct
   quotation-term embedding strictly grows the encoded candidate.
@@ -520,7 +528,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   substitution graph correctness target, substitution graph correctness case
   map, including codebook-roundtrip, quotation-term-closure,
   meta-substitution-semantics, formula-schema-relation, and
-  diagonal-witness-composition dependencies, and obstruction dependencies.
+  diagonal-witness-composition dependencies, fixed-point construction case map
+  including diagonal-instance closure, substitution-witness bridge, and
+  substitution graph correctness bridge dependencies, and obstruction
+  dependencies.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -614,6 +625,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   validates `claims/fixed_point_substitution_witness_bridge.json`, including
   the one finite substitution-witness alignment point for the second
   construction case.
+- `python -m autarkic_systems.fixed_point_substitution_graph_correctness_bridge --format json`
+  validates `claims/fixed_point_substitution_graph_correctness_bridge.json`,
+  including the one finite graph-correctness bridge point for the third
+  construction case.
 - `python -m autarkic_systems.diagonal_construction --format json` validates
   `claims/diagonal_construction_targets.json`, including the checked
   `substitution_code(n,n)` diagonal seed and closed quoted seed instance.
@@ -674,7 +689,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   substitution graph correctness target, substitution graph correctness case
   map with the finite codebook-roundtrip, quotation-term-closure,
   meta-substitution-semantics, formula-schema-relation, and
-  diagonal-witness-composition dependencies, and obstruction dependencies,
+  diagonal-witness-composition dependencies, fixed-point construction case map
+  with the finite diagonal-instance closure, substitution-witness bridge, and
+  substitution graph correctness bridge dependencies, and obstruction dependencies,
   explicit blockers, and the next AS action.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init/write-buffer delivery and rejected

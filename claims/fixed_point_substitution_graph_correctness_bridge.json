@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "bridge_set_id": "as-fixed-point-substitution-graph-correctness-bridge-v1",
+  "reviewed_at": "2026-05-19",
+  "purpose": "Finite alignment evidence tying the fixed-point construction substitution-graph-correctness proof case to the checked substitution graph correctness target, correctness case map, and five finite graph-domain dependency surfaces. This is not a substitution graph correctness proof.",
+  "fixed_point_construction_cases_path": "claims/fixed_point_construction_cases.json",
+  "substitution_graph_correctness_targets_path": "claims/substitution_graph_correctness_targets.json",
+  "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
+  "codebook_roundtrip_path": "claims/substitution_graph_codebook_roundtrip.json",
+  "quotation_term_closure_path": "claims/substitution_graph_quotation_term_closure.json",
+  "meta_substitution_semantics_path": "claims/substitution_graph_meta_substitution_semantics.json",
+  "formula_schema_relation_path": "claims/substitution_graph_formula_schema_relation.json",
+  "diagonal_witness_composition_path": "claims/substitution_graph_diagonal_witness_composition.json",
+  "expected_bridge_count": 1,
+  "expected_correctness_case_count": 5,
+  "required_source_kinds": [
+    "graph-correctness-bridge"
+  ],
+  "required_correctness_case_kinds": [
+    "codebook-roundtrip",
+    "quotation-term-closure",
+    "meta-substitution-semantics",
+    "formula-schema-relation",
+    "diagonal-witness-composition"
+  ],
+  "required_finite_dependency_subjects": [
+    "codebook_roundtrip",
+    "quotation_term_closure",
+    "meta_substitution_semantics",
+    "formula_schema_relation",
+    "diagonal_witness_composition"
+  ],
+  "required_future_work": [
+    "substitution-graph-correctness-proof",
+    "bridge-equality-proof",
+    "fixed-point-equation-proof",
+    "self-consistency-theorem"
+  ],
+  "non_claims": [
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Prove the substitution graph correctness cases before treating this finite dependency coverage as a correctness proof for fixed-point construction."
+}

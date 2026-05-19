@@ -29,6 +29,9 @@ SUBSTITUTION_GRAPH_CORRECTNESS_CASES = Path("claims/substitution_graph_correctne
 FIXED_POINT_EQUATION_BRIDGE = Path("claims/fixed_point_equation_bridge_targets.json")
 DIAGONAL_INSTANCE_CLOSURE = Path("claims/fixed_point_diagonal_instance_closure.json")
 SUBSTITUTION_WITNESS_BRIDGE = Path("claims/fixed_point_substitution_witness_bridge.json")
+SUBSTITUTION_GRAPH_CORRECTNESS_BRIDGE = Path(
+    "claims/fixed_point_substitution_graph_correctness_bridge.json"
+)
 WILLARD_MAP = Path("sources/willard_definition_map.json")
 
 
@@ -74,6 +77,10 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
             str(SUBSTITUTION_WITNESS_BRIDGE),
         )
         self.assertEqual(
+            self.manifest.substitution_graph_correctness_bridge_path,
+            str(SUBSTITUTION_GRAPH_CORRECTNESS_BRIDGE),
+        )
+        self.assertEqual(
             REQUIRED_CASE_KINDS,
             (
                 "diagonal-instance-closure",
@@ -107,6 +114,14 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
                 "fixed_point_equation_bridge",
                 "substitution_representability",
                 "substitution_graph_correctness_cases",
+            ),
+        )
+        self.assertEqual(
+            REQUIRED_DEPENDENCIES_BY_KIND["substitution-graph-correctness-proof"],
+            (
+                "substitution_graph_correctness",
+                "substitution_graph_correctness_cases",
+                "substitution_graph_correctness_bridge",
             ),
         )
         self.assertEqual(
@@ -172,6 +187,13 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
                 for result in report.results
             )
         )
+        self.assertTrue(
+            any(
+                result.subject == "substitution_graph_correctness_bridge"
+                and result.accepted
+                for result in report.results
+            )
+        )
 
     def test_json_payload_exposes_case_dependencies(self):
         report = validate_fixed_point_construction_cases(
@@ -188,12 +210,12 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
         self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(payload["cases"][0]["observed_dependency_count"], 4)
         self.assertEqual(payload["cases"][1]["observed_dependency_count"], 4)
-        self.assertEqual(payload["cases"][2]["observed_dependency_count"], 2)
+        self.assertEqual(payload["cases"][2]["observed_dependency_count"], 3)
         self.assertEqual(payload["cases"][3]["observed_dependency_count"], 3)
         self.assertEqual(payload["cases"][4]["observed_dependency_count"], 3)
         self.assertIn(
-            "fixed_point_equation_bridge",
-            payload["cases"][3]["required_dependency_subjects"],
+            "substitution_graph_correctness_bridge",
+            payload["cases"][2]["required_dependency_subjects"],
         )
 
     def test_text_report_exposes_open_cases(self):
@@ -210,7 +232,7 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
         self.assertIn("Cases: 5", text)
         self.assertIn("bridge-equality-proof", text)
         self.assertIn(
-            "Dependencies: fixed_point_equation_bridge, substitution_representability, substitution_graph_correctness_cases",
+            "Dependencies: substitution_graph_correctness, substitution_graph_correctness_cases, substitution_graph_correctness_bridge",
             text,
         )
         self.assertNotIn("FAIL", text)

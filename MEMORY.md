@@ -267,6 +267,14 @@
   finite alignment point for the current substitution witness and making the
   second fixed-point construction case require `substitution_witness_bridge`
   while staying open.
+- ADR-0266 adds
+  `claims/fixed_point_substitution_graph_correctness_bridge.json` and
+  `autarkic_systems.fixed_point_substitution_graph_correctness_bridge`,
+  checking one finite dependency-coverage point for the third fixed-point
+  construction case. The bridge requires the accepted substitution graph
+  correctness target, all five correctness cases, all five finite graph-domain
+  dependencies, and the diagonal-witness composition link while keeping the
+  `substitution-graph-correctness-proof` case open.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

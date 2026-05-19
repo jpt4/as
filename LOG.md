@@ -5778,3 +5778,42 @@
   substitution representability proof, substitution graph correctness proof,
   bridge equality proof, fixed-point equation proof, arithmetized proof
   predicate, or self-consistency theorem.
+
+## 2026-05-19 - Fixed-Point Substitution Graph Correctness Bridge Domain
+
+- Added ADR-0266 to make the third fixed-point construction case depend on
+  finite dependency-coverage evidence tying the construction case to the
+  checked substitution graph correctness target, correctness case map, and all
+  five finite graph-domain dependency surfaces.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.fixed_point_substitution_graph_correctness_bridge` and
+  `claims/fixed_point_substitution_graph_correctness_bridge.json` did not
+  exist, the construction-case manifest had no
+  `substitution_graph_correctness_bridge_path`, and the third construction
+  case still had only two dependency subjects.
+- Added `claims/fixed_point_substitution_graph_correctness_bridge.json` with a
+  one-point finite graph-correctness bridge domain for the current fixed-point
+  construction case.
+- Added
+  `autarkic_systems/fixed_point_substitution_graph_correctness_bridge.py`,
+  checking that the construction case remains open, requires the bridge,
+  observes all five graph correctness cases, keeps all five finite dependency
+  surfaces accepted, and links the current diagonal-witness composition to the
+  fixed-point target and graph correctness target.
+- Updated `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems/fixed_point_construction_cases.py` so the
+  `substitution-graph-correctness-proof` case requires the accepted
+  `substitution_graph_correctness_bridge` dependency while remaining
+  `proof-case-open`.
+- Focused graph-correctness-bridge/construction-cases tests passed 22 tests.
+  Live graph-correctness-bridge text/JSON output reported one bridge, five
+  correctness cases, five accepted finite dependencies, linked diagonal
+  composition, and no failed subjects; live construction-cases JSON reported
+  `substitution_graph_correctness_bridge` as accepted for the third case; live
+  formal-confidence JSON remained accepted with one blocked target; live
+  project-status summary remained accepted. Adjacent fixed-point
+  graph-correctness regression tests passed 106 tests, compileall/JSON
+  parsing/diff checks passed, and the full default suite passed 1,289 tests.
+  This is not a substitution graph correctness proof, bridge equality proof,
+  fixed-point equation proof, arithmetized proof predicate, or
+  self-consistency theorem.

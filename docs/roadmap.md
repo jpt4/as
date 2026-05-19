@@ -5696,3 +5696,39 @@ Implemented in `autarkic_systems/fixed_point_substitution_witness_bridge.py`
 and `autarkic_systems/fixed_point_construction_cases.py`, with tests in
 `tests/test_fixed_point_substitution_witness_bridge.py` and
 `tests/test_fixed_point_construction_cases.py`.
+
+## ADR-0266: Fixed-Point Substitution Graph Correctness Bridge Domain
+
+Goal: make the third fixed-point construction case depend on finite evidence
+that the current substitution graph correctness target, correctness case map,
+and five graph-domain dependency surfaces are aligned with the fixed-point
+construction case.
+
+Deliverables:
+
+- `claims/fixed_point_substitution_graph_correctness_bridge.json` with the
+  expected one-point graph-correctness bridge domain;
+- `autarkic_systems.fixed_point_substitution_graph_correctness_bridge`
+  validation deriving the current graph-correctness bridge from the checked
+  construction-case map, correctness target, correctness cases,
+  codebook-roundtrip, quotation-term-closure, meta-substitution-semantics,
+  formula-schema-relation, and diagonal-witness-composition surfaces;
+- text/JSON output for bridge count, source-kind counts, correctness-case
+  count, finite-dependency count, alignment booleans, failed subjects, and
+  validation results;
+- `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems.fixed_point_construction_cases` updated so the
+  `substitution-graph-correctness-proof` case requires the accepted
+  `substitution_graph_correctness_bridge` dependency; and
+- no substitution graph correctness proof, bridge equality proof,
+  fixed-point equation proof, arithmetized proof predicate, self-consistency
+  theorem, runtime behavior, command semantics, evidence bundle, or GitHub
+  submission logic changes.
+
+Status: accepted in
+`docs/adr/0266-fixed-point-substitution-graph-correctness-bridge-domain.md`.
+Implemented in
+`autarkic_systems/fixed_point_substitution_graph_correctness_bridge.py` and
+`autarkic_systems/fixed_point_construction_cases.py`, with tests in
+`tests/test_fixed_point_substitution_graph_correctness_bridge.py` and
+`tests/test_fixed_point_construction_cases.py`.

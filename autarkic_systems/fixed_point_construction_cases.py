@@ -78,6 +78,7 @@ REQUIRED_DEPENDENCIES_BY_KIND = {
     "substitution-graph-correctness-proof": (
         "substitution_graph_correctness",
         "substitution_graph_correctness_cases",
+        "substitution_graph_correctness_bridge",
     ),
     "bridge-equality-proof": (
         "fixed_point_equation_bridge",
@@ -140,6 +141,7 @@ class FixedPointConstructionCaseManifest:
     fixed_point_equation_bridge_targets_path: str
     diagonal_instance_closure_path: str
     substitution_witness_bridge_path: str
+    substitution_graph_correctness_bridge_path: str
     cases: tuple[FixedPointConstructionCase, ...]
 
 
@@ -179,6 +181,7 @@ class FixedPointConstructionCaseReport:
     fixed_point_equation_bridge_targets_path: Path
     diagonal_instance_closure_path: Path
     substitution_witness_bridge_path: Path
+    substitution_graph_correctness_bridge_path: Path
     willard_map_path: Path
     results: tuple[FixedPointConstructionCaseValidation, ...]
     observations: tuple[FixedPointConstructionCaseObservation, ...]
@@ -253,6 +256,10 @@ def load_fixed_point_construction_cases(
             data,
             "substitution_witness_bridge_path",
         ),
+        substitution_graph_correctness_bridge_path=_required_text(
+            data,
+            "substitution_graph_correctness_bridge_path",
+        ),
         cases=tuple(_parse_case(item) for item in _required_list(data, "cases")),
     )
 
@@ -276,6 +283,9 @@ def validate_fixed_point_construction_cases(
     checked_bridge_path = Path(manifest.fixed_point_equation_bridge_targets_path)
     checked_diagonal_closure_path = Path(manifest.diagonal_instance_closure_path)
     checked_witness_bridge_path = Path(manifest.substitution_witness_bridge_path)
+    checked_graph_correctness_bridge_path = Path(
+        manifest.substitution_graph_correctness_bridge_path
+    )
 
     codebook = load_formal_codebook(checked_codebook_path)
     codebook_report = validate_formal_codebook(
@@ -333,6 +343,20 @@ def validate_fixed_point_construction_cases(
         witness_bridge,
         checked_willard_map_path,
     )
+    from autarkic_systems.fixed_point_substitution_graph_correctness_bridge import (
+        load_fixed_point_substitution_graph_correctness_bridge,
+        validate_fixed_point_substitution_graph_correctness_bridge,
+    )
+
+    graph_correctness_bridge = load_fixed_point_substitution_graph_correctness_bridge(
+        checked_graph_correctness_bridge_path
+    )
+    graph_correctness_bridge_report = (
+        validate_fixed_point_substitution_graph_correctness_bridge(
+            graph_correctness_bridge,
+            checked_willard_map_path,
+        )
+    )
 
     results: list[FixedPointConstructionCaseValidation] = [
         _accepted("manifest", f"loaded {len(manifest.cases)} case(s)")
@@ -349,6 +373,7 @@ def validate_fixed_point_construction_cases(
         bridge_report,
         diagonal_closure_report,
         witness_bridge_report,
+        graph_correctness_bridge_report,
     )
     results.extend(dependency_results)
     case_results, observations = _validate_cases(manifest.cases, accepted_dependencies)
@@ -366,6 +391,9 @@ def validate_fixed_point_construction_cases(
         fixed_point_equation_bridge_targets_path=checked_bridge_path,
         diagonal_instance_closure_path=checked_diagonal_closure_path,
         substitution_witness_bridge_path=checked_witness_bridge_path,
+        substitution_graph_correctness_bridge_path=(
+            checked_graph_correctness_bridge_path
+        ),
         willard_map_path=checked_willard_map_path,
         results=tuple(results),
         observations=tuple(observations),
@@ -405,6 +433,9 @@ def fixed_point_construction_cases_payload(
         ),
         "diagonal_instance_closure_path": str(report.diagonal_instance_closure_path),
         "substitution_witness_bridge_path": str(report.substitution_witness_bridge_path),
+        "substitution_graph_correctness_bridge_path": str(
+            report.substitution_graph_correctness_bridge_path
+        ),
         "willard_map": str(report.willard_map_path),
         "case_count": report.case_count,
         "failed_subjects": list(report.failed_subjects),
@@ -573,6 +604,11 @@ def _validate_references(
             manifest.substitution_witness_bridge_path,
             "claims/fixed_point_substitution_witness_bridge.json",
         ),
+        (
+            "substitution_graph_correctness_bridge_path",
+            manifest.substitution_graph_correctness_bridge_path,
+            "claims/fixed_point_substitution_graph_correctness_bridge.json",
+        ),
     )
     results: list[FixedPointConstructionCaseValidation] = []
     for subject, actual, expected_value in expected:
@@ -595,6 +631,7 @@ def _validate_dependency_reports(
     bridge_report: Any,
     diagonal_closure_report: Any,
     witness_bridge_report: Any,
+    graph_correctness_bridge_report: Any,
 ) -> tuple[list[FixedPointConstructionCaseValidation], frozenset[str]]:
     checks = (
         ("codebook", codebook_report, "formal codebook"),
@@ -625,6 +662,11 @@ def _validate_dependency_reports(
             "substitution_witness_bridge",
             witness_bridge_report,
             "fixed-point substitution witness bridge",
+        ),
+        (
+            "substitution_graph_correctness_bridge",
+            graph_correctness_bridge_report,
+            "fixed-point substitution graph correctness bridge",
         ),
     )
     results: list[FixedPointConstructionCaseValidation] = []
