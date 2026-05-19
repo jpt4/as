@@ -54,7 +54,9 @@ boundary for that witness, and ADR-0248 records the first checked formula
 schema candidate, while still leaving formula correctness and proof open.
 ADR-0262 records the finite equality bridge target between the checked
 diagonal instance and the direct fixed-point target form, while still leaving
-that equality and the fixed-point equation unproved.
+that equality and the fixed-point equation unproved. ADR-0263 records the
+open proof-case map for converting those checked finite surfaces into an
+actual fixed-point construction, while keeping every case unproved.
 
 ## Run
 
@@ -69,6 +71,7 @@ python -m autarkic_systems.substitution_graph_target
 python -m autarkic_systems.substitution_graph_formula
 python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.fixed_point_equation_bridge
+python -m autarkic_systems.fixed_point_construction_cases
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.project_status --format summary
 ```

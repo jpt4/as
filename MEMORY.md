@@ -252,6 +252,11 @@
   form via a 4815-token equality target; aggregate formal-confidence
   validation now requires this bridge target but remains blocked on
   `fixed-point-construction`.
+- ADR-0263 adds `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems.fixed_point_construction_cases`, decomposing the remaining
+  fixed-point construction blocker into five open proof cases while preserving
+  the same blocker and making aggregate formal-confidence fail closed over the
+  case map.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

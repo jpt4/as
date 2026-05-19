@@ -31,6 +31,10 @@ from autarkic_systems.fixed_point_equation_bridge import (
     load_fixed_point_equation_bridge_targets,
     validate_fixed_point_equation_bridge_targets,
 )
+from autarkic_systems.fixed_point_construction_cases import (
+    load_fixed_point_construction_cases,
+    validate_fixed_point_construction_cases,
+)
 from autarkic_systems.fixed_point_obstruction import (
     load_fixed_point_obstructions,
     validate_fixed_point_obstructions,
@@ -78,6 +82,7 @@ REQUIRED_CONFIGURATION_FIELDS = (
     "substitution_graph_correctness_cases",
     "fixed_point_equation_candidate",
     "fixed_point_equation_bridge",
+    "fixed_point_construction_cases",
     "fixed_point_obstruction",
     "substrate_bridge",
 )
@@ -427,6 +432,9 @@ def _validate_target(
     if "fixed_point_equation_bridge" in target.configuration:
         results.extend(_validate_fixed_point_equation_bridge(target))
 
+    if "fixed_point_construction_cases" in target.configuration:
+        results.extend(_validate_fixed_point_construction_cases(target))
+
     if "fixed_point_obstruction" in target.configuration:
         results.extend(_validate_fixed_point_obstruction(target))
 
@@ -714,6 +722,32 @@ def _validate_fixed_point_equation_bridge(
     ]
 
 
+def _validate_fixed_point_construction_cases(
+    target: FormalConfidenceTarget,
+) -> list[FormalConfidenceValidation]:
+    subject = f"{target.target_id}.fixed_point_construction_cases"
+    case_path = target.configuration["fixed_point_construction_cases"]
+    try:
+        cases = load_fixed_point_construction_cases(case_path)
+        report = validate_fixed_point_construction_cases(cases)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return [
+            _rejected(
+                subject,
+                "fixed-point construction cases rejected: " + str(exc),
+            )
+        ]
+    if report.accepted:
+        return [_accepted(subject, "fixed-point construction cases accepted")]
+    return [
+        _rejected(
+            subject,
+            "fixed-point construction cases rejected: "
+            + _joined_or_none(report.failed_subjects),
+        )
+    ]
+
+
 def _failed_subject_for_result(subject: str) -> str:
     if subject.endswith(".willard_anchors"):
         return "target-willard-anchor"
@@ -737,6 +771,8 @@ def _failed_subject_for_result(subject: str) -> str:
         return "target-fixed-point-equation-candidate"
     if subject.endswith(".fixed_point_equation_bridge"):
         return "target-fixed-point-equation-bridge"
+    if subject.endswith(".fixed_point_construction_cases"):
+        return "target-fixed-point-construction-cases"
     if subject.endswith(".fixed_point_obstruction"):
         return "target-fixed-point-obstruction"
     if subject.endswith(".blockers"):

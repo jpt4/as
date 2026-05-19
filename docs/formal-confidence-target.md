@@ -6,7 +6,8 @@ quotation sequence/term dependencies, plus validated consistency-level,
 diagonal-construction, substitution-representability witness, fixed-point
 equation candidate, substitution graph target, substitution graph formula,
 substitution graph correctness target, substitution graph correctness case
-map, and obstruction dependencies, 2026-05-19.
+map, fixed-point construction case map, and obstruction dependencies,
+2026-05-19.
 
 ADR-0224 adds `claims/formal_confidence_targets.json` and
 `autarkic_systems/formal_confidence.py`. The target records what AS would need
@@ -83,7 +84,9 @@ finite graph-domain formula-schema relation evidence. ADR-0261 makes the fifth
 case depend on finite graph-domain diagonal-witness composition evidence.
 ADR-0262 adds the fixed-point equation bridge target, naming the checked
 finite equality still needed between the diagonal instance and the direct
-fixed-point target form.
+fixed-point target form. ADR-0263 decomposes the remaining
+`fixed-point-construction` blocker into five checked open proof cases without
+claiming any of those cases are proved.
 
 ## Current Target
 
@@ -125,7 +128,9 @@ formula-schema-relation, and diagonal-witness-composition dependencies for all
 five open cases; the naive equation candidate is recorded and validated through
 `claims/fixed_point_equation_candidates.json`; and the fixed-point equation
 bridge target is recorded and validated through
-`claims/fixed_point_equation_bridge_targets.json`. The checked obstruction in
+`claims/fixed_point_equation_bridge_targets.json`; the fixed-point
+construction case map is recorded and validated through
+`claims/fixed_point_construction_cases.json`. The checked obstruction in
 `claims/fixed_point_obstructions.json` is also validated as an aggregate
 dependency and records why that naive direct embedding route is closed. The
 target also records the remaining blocker: `fixed-point-construction`.
@@ -175,6 +180,8 @@ python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.fixed_point_equation --format json
 python -m autarkic_systems.fixed_point_equation_bridge
 python -m autarkic_systems.fixed_point_equation_bridge --format json
+python -m autarkic_systems.fixed_point_construction_cases
+python -m autarkic_systems.fixed_point_construction_cases --format json
 python -m autarkic_systems.fixed_point_obstruction
 python -m autarkic_systems.fixed_point_obstruction --format json
 python -m autarkic_systems.fixed_point
@@ -200,6 +207,7 @@ The validator checks that:
   diagonal-witness-composition dependencies;
 - the referenced fixed-point equation candidate surface validates;
 - the referenced fixed-point equation bridge target validates;
+- the referenced fixed-point construction case map validates;
 - the referenced fixed-point obstruction surface validates;
 - blocked targets name blockers; and
 - each target names a next AS action.

@@ -29,7 +29,9 @@ substitution_code(quote(seed), quote(seed)) = quote(diagonal_instance)
 ```
 
 Proving that equality is still future work. This surface only makes the
-obligation executable and fail-closed.
+obligation executable and fail-closed. ADR-0263 decomposes that future work
+into an open construction-case map at
+`claims/fixed_point_construction_cases.json`.
 
 ## Current Surface
 
@@ -55,6 +57,8 @@ diagonal instance code.
 ```sh
 python -m autarkic_systems.fixed_point_equation_bridge
 python -m autarkic_systems.fixed_point_equation_bridge --format json
+python -m autarkic_systems.fixed_point_construction_cases
+python -m autarkic_systems.fixed_point_construction_cases --format json
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.formal_confidence --format json
 python -m autarkic_systems.project_status --format summary

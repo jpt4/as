@@ -37,8 +37,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   substitution-representability witness, fixed-point equation candidate,
   substitution graph target, substitution graph formula,
   substitution graph correctness target, substitution graph correctness case
-  map, fixed-point equation bridge target, and fixed-point obstruction
-  dependencies.
+  map, fixed-point equation bridge target, fixed-point construction case map,
+  and fixed-point obstruction dependencies.
 - `docs/formal-arithmetic-language.md` records the first checked syntax-only
   Type-NS arithmetic language surface for the formal-confidence path.
 - `docs/formal-codebook.md` records the first checked proof-code encoding
@@ -104,6 +104,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/fixed-point-equation-bridge.md` records the finite bridge target
   between the checked diagonal instance and the direct fixed-point target form,
   while leaving the equality proof open.
+- `docs/fixed-point-construction-cases.md` records five open proof cases for
+  the remaining fixed-point construction blocker, while leaving every case
+  unproved.
 - `docs/fixed-point-obstruction.md` records the checked length-growth
   obstruction showing why the naive direct quotation-substitution route cannot
   be the fixed point.
@@ -489,6 +492,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/fixed_point_equation_bridge.py` validates the finite bridge
   target between the checked diagonal instance and the direct fixed-point
   target form, recording the exact equality still needed.
+- `autarkic_systems/fixed_point_construction_cases.py` validates the open case
+  decomposition for the remaining fixed-point construction blocker, tying each
+  case to its checked dependency surface without claiming proof.
 - `autarkic_systems/fixed_point_obstruction.py` validates the checked
   length-growth obstruction for that naive candidate, recording that direct
   quotation-term embedding strictly grows the encoded candidate.
@@ -497,10 +503,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   the current AS self-consistency claim explicitly blocked until fixed-point
   construction exists and fail-closed over the current consistency-level,
   diagonal-construction, substitution-representability witness, fixed-point
-  equation candidate, fixed-point equation bridge target, substitution graph
-  target, substitution graph formula, substitution graph correctness target,
-  substitution graph correctness case map, including codebook-roundtrip,
-  quotation-term-closure,
+  equation candidate, fixed-point equation bridge target, fixed-point
+  construction case map, substitution graph target, substitution graph formula,
+  substitution graph correctness target, substitution graph correctness case
+  map, including codebook-roundtrip, quotation-term-closure,
   meta-substitution-semantics, formula-schema-relation, and
   diagonal-witness-composition dependencies, and obstruction dependencies.
 - `claims/transition_claims.json` names the current executable transition
@@ -536,7 +542,7 @@ proof certificates, object languages, evidence bundles, and status reports:
   construction, substitution-representability witness, fixed-point equation
   candidate, substitution graph target, substitution graph formula,
   substitution graph correctness target, substitution graph correctness case
-  map, and fixed-point obstruction.
+  map, fixed-point construction case map, and fixed-point obstruction.
 - `python -m autarkic_systems.formal_arithmetic --format json` validates
   `language/formal_arithmetic_language.json`, including required Willard
   anchors, the Type-NS profile, `delta0`, `pi1`, `sigma1`, and the
@@ -584,6 +590,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   validates `claims/fixed_point_equation_bridge_targets.json`, including the
   checked 296-token diagonal instance, 4528-token direct target form, and
   4815-token equality bridge target.
+- `python -m autarkic_systems.fixed_point_construction_cases --format json`
+  validates `claims/fixed_point_construction_cases.json`, including the five
+  open proof cases for the fixed-point construction blocker and their checked
+  dependency subjects.
 - `python -m autarkic_systems.diagonal_construction --format json` validates
   `claims/diagonal_construction_targets.json`, including the checked
   `substitution_code(n,n)` diagonal seed and closed quoted seed instance.
@@ -639,10 +649,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   target against `sources/willard_definition_map.json`, including required
   Willard anchors, required configuration fields, the consistency-level target,
   diagonal-construction, substitution-representability witness, fixed-point
-  equation candidate, fixed-point equation bridge target, substitution graph
-  target, substitution graph formula, substitution graph correctness target,
-  substitution graph correctness case map with the finite codebook-roundtrip,
-  quotation-term-closure,
+  equation candidate, fixed-point equation bridge target, fixed-point
+  construction case map, substitution graph target, substitution graph formula,
+  substitution graph correctness target, substitution graph correctness case
+  map with the finite codebook-roundtrip, quotation-term-closure,
   meta-substitution-semantics, formula-schema-relation, and
   diagonal-witness-composition dependencies, and obstruction dependencies,
   explicit blockers, and the next AS action.

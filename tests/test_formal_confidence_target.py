@@ -40,6 +40,7 @@ SUBSTITUTION_GRAPH_CORRECTNESS_CASES = Path(
 )
 FIXED_POINT_EQUATION_CANDIDATES = Path("claims/fixed_point_equation_candidates.json")
 FIXED_POINT_EQUATION_BRIDGE = Path("claims/fixed_point_equation_bridge_targets.json")
+FIXED_POINT_CONSTRUCTION_CASES = Path("claims/fixed_point_construction_cases.json")
 FIXED_POINT_OBSTRUCTIONS = Path("claims/fixed_point_obstructions.json")
 
 
@@ -70,6 +71,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
                 "substitution_graph_correctness_cases",
                 "fixed_point_equation_candidate",
                 "fixed_point_equation_bridge",
+                "fixed_point_construction_cases",
                 "fixed_point_obstruction",
                 "substrate_bridge",
             ),
@@ -146,6 +148,10 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertEqual(
             target.configuration["fixed_point_equation_bridge"],
             str(FIXED_POINT_EQUATION_BRIDGE),
+        )
+        self.assertEqual(
+            target.configuration["fixed_point_construction_cases"],
+            str(FIXED_POINT_CONSTRUCTION_CASES),
         )
         self.assertEqual(
             target.configuration["fixed_point_obstruction"],
@@ -231,6 +237,13 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertTrue(
             any(
                 result.subject == "AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_equation_bridge"
+                and result.accepted
+                for result in report.results
+            )
+        )
+        self.assertTrue(
+            any(
+                result.subject == "AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_cases"
                 and result.accepted
                 for result in report.results
             )
@@ -352,6 +365,13 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
+                result["subject"].endswith(".fixed_point_construction_cases")
+                and result["accepted"]
+                for result in payload["results"]
+            )
+        )
+        self.assertTrue(
+            any(
                 result["subject"].endswith(".fixed_point_obstruction")
                 and result["accepted"]
                 for result in payload["results"]
@@ -382,6 +402,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertIn("substitution graph correctness cases accepted", text)
         self.assertIn("fixed-point equation candidate accepted", text)
         self.assertIn("fixed-point equation bridge accepted", text)
+        self.assertIn("fixed-point construction cases accepted", text)
         self.assertIn("fixed-point obstruction accepted", text)
         self.assertNotIn("FAIL", text)
 
@@ -469,6 +490,24 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertIn("target-fixed-point-equation-bridge", report.failed_subjects)
         self.assertTrue(
             any("fixed-point equation bridge rejected" in result.detail for result in report.results)
+        )
+
+    def test_missing_fixed_point_construction_cases_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target_path = Path(tmp) / "targets.json"
+            data = json.loads(TARGETS.read_text(encoding="utf-8"))
+            data["targets"][0]["configuration"]["fixed_point_construction_cases"] = (
+                "claims/missing_fixed_point_construction_cases.json"
+            )
+            target_path.write_text(json.dumps(data), encoding="utf-8")
+            manifest = load_formal_confidence_targets(target_path)
+
+            report = validate_formal_confidence_targets(manifest, WILLARD_MAP)
+
+        self.assertFalse(report.accepted)
+        self.assertIn("target-fixed-point-construction-cases", report.failed_subjects)
+        self.assertTrue(
+            any("fixed-point construction cases rejected" in result.detail for result in report.results)
         )
 
     def test_missing_consistency_level_target_is_rejected(self):

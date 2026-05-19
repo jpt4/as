@@ -5599,3 +5599,33 @@ Implemented in `autarkic_systems/fixed_point_equation_bridge.py` and
 `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_fixed_point_equation_bridge.py` and
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0263: Fixed-Point Construction Cases
+
+Goal: decompose the remaining fixed-point construction blocker into checked
+open proof cases without claiming any case is proved.
+
+Deliverables:
+
+- `claims/fixed_point_construction_cases.json` with five open cases for
+  diagonal-instance closure, substitution representability, substitution graph
+  correctness, bridge equality, and fixed-point equation lifting;
+- `autarkic_systems.fixed_point_construction_cases` validation that checks the
+  case set, checked dependency subjects, future work, and explicit non-claims;
+- text/JSON output for case count, case kinds, dependency subjects, observed
+  dependency counts, failed subjects, and validation results;
+- `claims/formal_confidence_targets.json` and
+  `autarkic_systems.formal_confidence` updated so aggregate formal-confidence
+  validation fails closed over the construction-case map;
+- rejection for stale case dependencies, missing construction-case manifests,
+  and overclaiming statuses; and
+- no substitution representability proof, substitution graph correctness
+  proof, bridge equality proof, fixed-point equation proof, arithmetized proof
+  predicate, self-consistency theorem, runtime behavior, command semantics,
+  evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in `docs/adr/0263-fixed-point-construction-cases.md`.
+Implemented in `autarkic_systems/fixed_point_construction_cases.py` and
+`autarkic_systems/formal_confidence.py`, with tests in
+`tests/test_fixed_point_construction_cases.py` and
+`tests/test_formal_confidence_target.py`.

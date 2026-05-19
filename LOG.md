@@ -5680,3 +5680,36 @@
   the fixed-point equation; it is not a substitution representability proof,
   substitution graph correctness proof, fixed-point equation proof, or
   self-consistency theorem.
+
+## 2026-05-19 - Fixed-Point Construction Cases
+
+- Added ADR-0263 to decompose the remaining fixed-point construction blocker
+  into five open proof cases: diagonal-instance closure, substitution
+  representability proof, substitution graph correctness proof, bridge equality
+  proof, and fixed-point equation lifting.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.fixed_point_construction_cases` and
+  `claims/fixed_point_construction_cases.json` did not exist, aggregate
+  formal-confidence validation had no `fixed_point_construction_cases`
+  configuration field, missing construction-case manifests did not reject, and
+  the text report did not expose construction-case acceptance.
+- Added `claims/fixed_point_construction_cases.json`, naming all five proof
+  cases as `proof-case-open` and preserving explicit non-claims for
+  substitution representability, substitution graph correctness, bridge
+  equality, fixed-point equations, arithmetized proof predicates, and
+  self-consistency.
+- Added `autarkic_systems/fixed_point_construction_cases.py`, checking the
+  case set, dependency subjects, future work, non-claims, dependency
+  acceptance, stale dependencies, and overclaiming statuses.
+- Updated aggregate formal-confidence validation to require and fail closed
+  over the construction-case map while preserving the
+  `fixed-point-construction` blocker.
+- Focused construction/formal-confidence tests passed 33 tests. Live
+  construction-case text/JSON output reported five open cases with no failed
+  subjects; live formal-confidence output reported the construction-case map
+  accepted while keeping one blocked target; live project-status summary
+  remained accepted. Adjacent fixed-point and substitution-graph regression
+  tests passed 106 tests, compileall/JSON/diff checks passed, and the full
+  default suite passed 1,256 tests. This is not a substitution
+  representability proof, substitution graph correctness proof, bridge equality
+  proof, fixed-point equation proof, or self-consistency theorem.
