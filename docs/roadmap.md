@@ -5732,3 +5732,36 @@ Implemented in
 `autarkic_systems/fixed_point_construction_cases.py`, with tests in
 `tests/test_fixed_point_substitution_graph_correctness_bridge.py` and
 `tests/test_fixed_point_construction_cases.py`.
+
+## ADR-0267: Fixed-Point Bridge Equality Alignment Domain
+
+Goal: make the fourth fixed-point construction case depend on finite evidence
+that the current fixed-point equation bridge, substitution witness bridge,
+graph correctness bridge, and formula-schema witness relation align with the
+same bridge-equality target.
+
+Deliverables:
+
+- `claims/fixed_point_bridge_equality_alignment.json` with the expected
+  one-point bridge-equality alignment domain;
+- `autarkic_systems.fixed_point_bridge_equality_alignment` validation deriving
+  the current alignment from the checked construction-case map, equation
+  bridge, witness bridge, graph correctness bridge, and formula-schema relation
+  surfaces;
+- text/JSON output for alignment count, source-kind counts, bridge equation
+  length, route-alignment booleans, length-alignment booleans, failed
+  subjects, and validation results;
+- `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems.fixed_point_construction_cases` updated so the
+  `bridge-equality-proof` case requires the accepted
+  `bridge_equality_alignment` dependency; and
+- no bridge equality proof, fixed-point equation proof, arithmetized proof
+  predicate, self-consistency theorem, runtime behavior, command semantics,
+  evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in
+`docs/adr/0267-fixed-point-bridge-equality-alignment-domain.md`. Implemented
+in `autarkic_systems/fixed_point_bridge_equality_alignment.py` and
+`autarkic_systems/fixed_point_construction_cases.py`, with tests in
+`tests/test_fixed_point_bridge_equality_alignment.py` and
+`tests/test_fixed_point_construction_cases.py`.

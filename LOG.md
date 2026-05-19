@@ -5817,3 +5817,38 @@
   This is not a substitution graph correctness proof, bridge equality proof,
   fixed-point equation proof, arithmetized proof predicate, or
   self-consistency theorem.
+
+## 2026-05-19 - Fixed-Point Bridge Equality Alignment Domain
+
+- Added ADR-0267 to make the fourth fixed-point construction case depend on
+  finite alignment evidence tying the construction case to the checked
+  fixed-point equation bridge, substitution-witness bridge, graph correctness
+  bridge, and formula-schema witness relation.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.fixed_point_bridge_equality_alignment` and
+  `claims/fixed_point_bridge_equality_alignment.json` did not exist, the
+  construction-case manifest had no `bridge_equality_alignment_path`, and the
+  fourth construction case still had only three dependency subjects.
+- Added `claims/fixed_point_bridge_equality_alignment.json` with a one-point
+  finite bridge-equality alignment domain for the current fixed-point
+  construction case.
+- Added `autarkic_systems/fixed_point_bridge_equality_alignment.py`, checking
+  that the construction case remains open, requires the alignment, observes
+  the accepted bridge/witness/graph/schema dependency surfaces, matches the
+  4815-token bridge equation length to the schema witness instance, and keeps
+  target/witness route identifiers aligned.
+- Updated `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems/fixed_point_construction_cases.py` so the
+  `bridge-equality-proof` case requires the accepted
+  `bridge_equality_alignment` dependency while remaining `proof-case-open`.
+- Focused bridge-equality-alignment/construction-cases tests passed 22 tests.
+  Live bridge-equality-alignment text/JSON output reported one alignment, a
+  4815-token bridge equation, schema-instance alignment, route alignment, and
+  no failed subjects; live construction-cases JSON reported
+  `bridge_equality_alignment` as accepted for the fourth case; live
+  formal-confidence JSON remained accepted with one blocked target; live
+  project-status summary remained accepted. Adjacent fixed-point bridge
+  regression tests passed 98 tests, compileall/JSON parsing/diff checks
+  passed, and the full default suite passed 1,300 tests. This is not a bridge
+  equality proof, fixed-point equation proof, arithmetized proof predicate, or
+  self-consistency theorem.

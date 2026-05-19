@@ -18,6 +18,8 @@ blocker. ADR-0265 adds finite witness-bridge evidence for the second case,
 `substitution-representability-proof`, without claiming representability.
 ADR-0266 adds finite graph-correctness bridge evidence for the third case,
 `substitution-graph-correctness-proof`, without claiming correctness.
+ADR-0267 adds finite bridge-equality alignment evidence for the fourth case,
+`bridge-equality-proof`, without claiming equality.
 
 The checked cases are:
 
@@ -40,6 +42,8 @@ python -m autarkic_systems.fixed_point_substitution_witness_bridge
 python -m autarkic_systems.fixed_point_substitution_witness_bridge --format json
 python -m autarkic_systems.fixed_point_substitution_graph_correctness_bridge
 python -m autarkic_systems.fixed_point_substitution_graph_correctness_bridge --format json
+python -m autarkic_systems.fixed_point_bridge_equality_alignment
+python -m autarkic_systems.fixed_point_bridge_equality_alignment --format json
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.formal_confidence --format json
 python -m autarkic_systems.project_status --format summary
@@ -51,7 +55,8 @@ The validator checks that:
   substitution graph correctness target, substitution graph correctness cases,
   fixed-point equation bridge, fixed-point diagonal-instance closure,
   fixed-point substitution witness bridge, fixed-point substitution graph
-  correctness bridge, and formal codebook dependencies remain accepted;
+  correctness bridge, fixed-point bridge equality alignment, and formal
+  codebook dependencies remain accepted;
 - all five expected construction proof cases are present in order;
 - each case keeps `proof-case-open`;
 - each case names the expected checked dependency subjects;

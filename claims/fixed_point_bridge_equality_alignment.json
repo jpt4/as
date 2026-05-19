@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "alignment_set_id": "as-fixed-point-bridge-equality-alignment-v1",
+  "reviewed_at": "2026-05-19",
+  "purpose": "Finite alignment evidence tying the fixed-point construction bridge-equality proof case to the checked equation bridge, substitution witness bridge, graph correctness bridge, and formula-schema witness relation. This is not a bridge equality proof.",
+  "fixed_point_construction_cases_path": "claims/fixed_point_construction_cases.json",
+  "fixed_point_equation_bridge_targets_path": "claims/fixed_point_equation_bridge_targets.json",
+  "substitution_witness_bridge_path": "claims/fixed_point_substitution_witness_bridge.json",
+  "substitution_graph_correctness_bridge_path": "claims/fixed_point_substitution_graph_correctness_bridge.json",
+  "formula_schema_relation_path": "claims/substitution_graph_formula_schema_relation.json",
+  "expected_alignment_count": 1,
+  "expected_bridge_equation_code_length": 4815,
+  "required_source_kinds": [
+    "bridge-equality-alignment"
+  ],
+  "required_future_work": [
+    "bridge-equality-proof",
+    "fixed-point-equation-proof",
+    "self-consistency-theorem"
+  ],
+  "non_claims": [
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Prove that the checked bridge equation is true in the formal system before treating this finite alignment as a bridge equality proof."
+}
