@@ -5744,3 +5744,37 @@
   This is not a substitution representability proof, substitution graph
   correctness proof, bridge equality proof, fixed-point equation proof,
   arithmetized proof predicate, or self-consistency theorem.
+
+## 2026-05-19 - Fixed-Point Substitution Witness Bridge Domain
+
+- Added ADR-0265 to make the second fixed-point construction case depend on
+  finite evidence tying the current substitution witness, graph correctness
+  cases, fixed-point equation bridge, and diagonal-instance closure to the same
+  self-application route.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.fixed_point_substitution_witness_bridge` and
+  `claims/fixed_point_substitution_witness_bridge.json` did not exist, the
+  construction-case manifest had no `substitution_witness_bridge_path`, and the
+  second construction case still had only three dependency subjects.
+- Added `claims/fixed_point_substitution_witness_bridge.json` with a one-point
+  finite witness-bridge domain for the current substitution witness.
+- Added `autarkic_systems/fixed_point_substitution_witness_bridge.py`, deriving
+  the current witness bridge and checking route ID agreement,
+  self-application inputs, seed-code agreement, witness-output/diagonal-instance
+  agreement, bridge-observation agreement, closure-observation agreement, and
+  accepted substitution graph correctness cases.
+- Updated `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems/fixed_point_construction_cases.py` so the
+  `substitution-representability-proof` case requires the accepted
+  `substitution_witness_bridge` dependency while remaining `proof-case-open`.
+- Focused substitution-witness-bridge/construction-cases tests passed 22 tests.
+  Live substitution-witness-bridge text/JSON output reported one aligned
+  witness bridge with no failed subjects; live construction-cases JSON reported
+  `substitution_witness_bridge` as accepted for the second case; live
+  formal-confidence JSON remained accepted with one blocked target; live
+  project-status summary remained accepted. Adjacent fixed-point construction
+  regression tests passed 103 tests, compileall/JSON parsing/diff checks
+  passed, and the full default suite passed 1,278 tests. This is not a
+  substitution representability proof, substitution graph correctness proof,
+  bridge equality proof, fixed-point equation proof, arithmetized proof
+  predicate, or self-consistency theorem.

@@ -5662,3 +5662,37 @@ in `autarkic_systems/fixed_point_diagonal_instance_closure.py` and
 `autarkic_systems/fixed_point_construction_cases.py`, with tests in
 `tests/test_fixed_point_diagonal_instance_closure.py` and
 `tests/test_fixed_point_construction_cases.py`.
+
+## ADR-0265: Fixed-Point Substitution Witness Bridge Domain
+
+Goal: make the second fixed-point construction case depend on finite evidence
+that the current substitution witness, graph correctness cases, fixed-point
+equation bridge, and diagonal-instance closure name the same self-application
+route.
+
+Deliverables:
+
+- `claims/fixed_point_substitution_witness_bridge.json` with the expected
+  one-point witness-bridge domain;
+- `autarkic_systems.fixed_point_substitution_witness_bridge` validation
+  deriving the current witness bridge from the checked witness, target,
+  construction, codebook, bridge, closure, and correctness-case surfaces;
+- text/JSON output for bridge count, source-kind counts, route-alignment
+  booleans, failed subjects, and validation results;
+- `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems.fixed_point_construction_cases` updated so the
+  `substitution-representability-proof` case requires the accepted
+  `substitution_witness_bridge` dependency;
+- rejection for stale bridge counts, stale witness output length facts, and
+  missing non-claims; and
+- no substitution representability proof, substitution graph correctness
+  proof, bridge equality proof, fixed-point equation proof, arithmetized proof
+  predicate, self-consistency theorem, runtime behavior, command semantics,
+  evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in
+`docs/adr/0265-fixed-point-substitution-witness-bridge-domain.md`.
+Implemented in `autarkic_systems/fixed_point_substitution_witness_bridge.py`
+and `autarkic_systems/fixed_point_construction_cases.py`, with tests in
+`tests/test_fixed_point_substitution_witness_bridge.py` and
+`tests/test_fixed_point_construction_cases.py`.

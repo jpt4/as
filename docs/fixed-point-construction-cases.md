@@ -14,7 +14,8 @@ diagonal instance and the direct fixed-point target form. The construction
 case map records what is still missing before that bridge can become a
 fixed-point equation proof. ADR-0264 adds finite closure evidence for the
 first case, `diagonal-instance-closure`, without closing the construction
-blocker.
+blocker. ADR-0265 adds finite witness-bridge evidence for the second case,
+`substitution-representability-proof`, without claiming representability.
 
 The checked cases are:
 
@@ -33,6 +34,8 @@ python -m autarkic_systems.fixed_point_construction_cases
 python -m autarkic_systems.fixed_point_construction_cases --format json
 python -m autarkic_systems.fixed_point_diagonal_instance_closure
 python -m autarkic_systems.fixed_point_diagonal_instance_closure --format json
+python -m autarkic_systems.fixed_point_substitution_witness_bridge
+python -m autarkic_systems.fixed_point_substitution_witness_bridge --format json
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.formal_confidence --format json
 python -m autarkic_systems.project_status --format summary
@@ -42,8 +45,9 @@ The validator checks that:
 
 - the fixed-point target, diagonal construction, substitution witness,
   substitution graph correctness target, substitution graph correctness cases,
-  fixed-point equation bridge, fixed-point diagonal-instance closure, and
-  formal codebook dependencies remain accepted;
+  fixed-point equation bridge, fixed-point diagonal-instance closure,
+  fixed-point substitution witness bridge, and formal codebook dependencies
+  remain accepted;
 - all five expected construction proof cases are present in order;
 - each case keeps `proof-case-open`;
 - each case names the expected checked dependency subjects;

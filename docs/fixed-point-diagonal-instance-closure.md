@@ -42,6 +42,10 @@ The validator checks that:
 - the bridge observation names the same closed diagonal instance; and
 - future work and non-claims remain explicit.
 
+ADR-0265 builds on this closure point by checking that the current
+substitution witness and fixed-point equation bridge name the same closed
+diagonal instance.
+
 ## Boundary
 
 This is not a substitution representability proof, not a substitution graph

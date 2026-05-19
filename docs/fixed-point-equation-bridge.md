@@ -34,6 +34,8 @@ into an open construction-case map at
 `claims/fixed_point_construction_cases.json`. ADR-0264 checks that the
 diagonal instance named by this bridge is closed, codebook-stable, and aligned
 with the selected fixed-point target skeleton.
+ADR-0265 checks that the substitution witness feeding this bridge is aligned
+with the bridge observation and the diagonal-instance closure point.
 
 ## Current Surface
 
@@ -63,6 +65,8 @@ python -m autarkic_systems.fixed_point_construction_cases
 python -m autarkic_systems.fixed_point_construction_cases --format json
 python -m autarkic_systems.fixed_point_diagonal_instance_closure
 python -m autarkic_systems.fixed_point_diagonal_instance_closure --format json
+python -m autarkic_systems.fixed_point_substitution_witness_bridge
+python -m autarkic_systems.fixed_point_substitution_witness_bridge --format json
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.formal_confidence --format json
 python -m autarkic_systems.project_status --format summary

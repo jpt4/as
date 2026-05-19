@@ -12,6 +12,7 @@
   "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
   "fixed_point_equation_bridge_targets_path": "claims/fixed_point_equation_bridge_targets.json",
   "diagonal_instance_closure_path": "claims/fixed_point_diagonal_instance_closure.json",
+  "substitution_witness_bridge_path": "claims/fixed_point_substitution_witness_bridge.json",
   "cases": [
     {
       "case_id": "AS-FIXED-POINT-CONSTRUCTION-DIAGONAL-INSTANCE-CLOSURE",
@@ -49,7 +50,8 @@
       "required_dependency_subjects": [
         "substitution_representability",
         "substitution_graph_correctness_cases",
-        "fixed_point_equation_bridge"
+        "fixed_point_equation_bridge",
+        "substitution_witness_bridge"
       ],
       "required_future_work": [
         "substitution-representability-proof",

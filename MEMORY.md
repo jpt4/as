@@ -262,6 +262,11 @@
   finite closure point for the current diagonal instance and making the first
   fixed-point construction case require `diagonal_instance_closure` while
   staying open.
+- ADR-0265 adds `claims/fixed_point_substitution_witness_bridge.json` and
+  `autarkic_systems.fixed_point_substitution_witness_bridge`, checking one
+  finite alignment point for the current substitution witness and making the
+  second fixed-point construction case require `substitution_witness_bridge`
+  while staying open.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

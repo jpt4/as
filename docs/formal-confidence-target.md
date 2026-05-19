@@ -87,7 +87,8 @@ finite equality still needed between the diagonal instance and the direct
 fixed-point target form. ADR-0263 decomposes the remaining
 `fixed-point-construction` blocker into five checked open proof cases without
 claiming any of those cases are proved. ADR-0264 makes the first construction
-case depend on finite diagonal-instance closure evidence.
+case depend on finite diagonal-instance closure evidence. ADR-0265 makes the
+second construction case depend on finite substitution-witness bridge evidence.
 
 ## Current Target
 
@@ -132,7 +133,9 @@ bridge target is recorded and validated through
 `claims/fixed_point_equation_bridge_targets.json`; the fixed-point
 construction case map is recorded and validated through
 `claims/fixed_point_construction_cases.json`, including
-`claims/fixed_point_diagonal_instance_closure.json` for the first open case.
+`claims/fixed_point_diagonal_instance_closure.json` for the first open case
+and `claims/fixed_point_substitution_witness_bridge.json` for the second open
+case.
 The checked obstruction in
 `claims/fixed_point_obstructions.json` is also validated as an aggregate
 dependency and records why that naive direct embedding route is closed. The
@@ -187,6 +190,8 @@ python -m autarkic_systems.fixed_point_construction_cases
 python -m autarkic_systems.fixed_point_construction_cases --format json
 python -m autarkic_systems.fixed_point_diagonal_instance_closure
 python -m autarkic_systems.fixed_point_diagonal_instance_closure --format json
+python -m autarkic_systems.fixed_point_substitution_witness_bridge
+python -m autarkic_systems.fixed_point_substitution_witness_bridge --format json
 python -m autarkic_systems.fixed_point_obstruction
 python -m autarkic_systems.fixed_point_obstruction --format json
 python -m autarkic_systems.fixed_point
@@ -213,7 +218,8 @@ The validator checks that:
 - the referenced fixed-point equation candidate surface validates;
 - the referenced fixed-point equation bridge target validates;
 - the referenced fixed-point construction case map validates, including the
-  finite diagonal-instance closure dependency for the first case;
+  finite diagonal-instance closure dependency for the first case and the
+  finite substitution-witness bridge dependency for the second case;
 - the referenced fixed-point obstruction surface validates;
 - blocked targets name blockers; and
 - each target names a next AS action.

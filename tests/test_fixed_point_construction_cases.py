@@ -28,6 +28,7 @@ SUBSTITUTION_GRAPH_CORRECTNESS = Path("claims/substitution_graph_correctness_tar
 SUBSTITUTION_GRAPH_CORRECTNESS_CASES = Path("claims/substitution_graph_correctness_cases.json")
 FIXED_POINT_EQUATION_BRIDGE = Path("claims/fixed_point_equation_bridge_targets.json")
 DIAGONAL_INSTANCE_CLOSURE = Path("claims/fixed_point_diagonal_instance_closure.json")
+SUBSTITUTION_WITNESS_BRIDGE = Path("claims/fixed_point_substitution_witness_bridge.json")
 WILLARD_MAP = Path("sources/willard_definition_map.json")
 
 
@@ -69,6 +70,10 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
             str(DIAGONAL_INSTANCE_CLOSURE),
         )
         self.assertEqual(
+            self.manifest.substitution_witness_bridge_path,
+            str(SUBSTITUTION_WITNESS_BRIDGE),
+        )
+        self.assertEqual(
             REQUIRED_CASE_KINDS,
             (
                 "diagonal-instance-closure",
@@ -85,6 +90,15 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
                 "diagonal_construction",
                 "fixed_point_equation_bridge",
                 "diagonal_instance_closure",
+            ),
+        )
+        self.assertEqual(
+            REQUIRED_DEPENDENCIES_BY_KIND["substitution-representability-proof"],
+            (
+                "substitution_representability",
+                "substitution_graph_correctness_cases",
+                "fixed_point_equation_bridge",
+                "substitution_witness_bridge",
             ),
         )
         self.assertEqual(
@@ -151,6 +165,13 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
                 for result in report.results
             )
         )
+        self.assertTrue(
+            any(
+                result.subject == "substitution_witness_bridge"
+                and result.accepted
+                for result in report.results
+            )
+        )
 
     def test_json_payload_exposes_case_dependencies(self):
         report = validate_fixed_point_construction_cases(
@@ -166,7 +187,7 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
         self.assertEqual(payload["case_count"], 5)
         self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(payload["cases"][0]["observed_dependency_count"], 4)
-        self.assertEqual(payload["cases"][1]["observed_dependency_count"], 3)
+        self.assertEqual(payload["cases"][1]["observed_dependency_count"], 4)
         self.assertEqual(payload["cases"][2]["observed_dependency_count"], 2)
         self.assertEqual(payload["cases"][3]["observed_dependency_count"], 3)
         self.assertEqual(payload["cases"][4]["observed_dependency_count"], 3)

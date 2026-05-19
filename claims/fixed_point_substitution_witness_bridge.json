@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "bridge_set_id": "as-fixed-point-substitution-witness-bridge-v1",
+  "reviewed_at": "2026-05-19",
+  "purpose": "Finite alignment evidence tying the current substitution witness to the fixed-point bridge, diagonal-instance closure, and substitution graph correctness case map. This is not a substitution representability proof.",
+  "formal_language_path": "language/formal_arithmetic_language.json",
+  "codebook_path": "language/formal_codebook.json",
+  "fixed_point_targets_path": "claims/fixed_point_targets.json",
+  "diagonal_construction_targets_path": "claims/diagonal_construction_targets.json",
+  "substitution_representability_targets_path": "claims/substitution_representability_targets.json",
+  "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
+  "fixed_point_equation_bridge_targets_path": "claims/fixed_point_equation_bridge_targets.json",
+  "diagonal_instance_closure_path": "claims/fixed_point_diagonal_instance_closure.json",
+  "expected_bridge_count": 1,
+  "expected_witness_output_code_length": 296,
+  "required_source_kinds": [
+    "substitution-witness-bridge"
+  ],
+  "required_future_work": [
+    "substitution-representability-proof",
+    "substitution-graph-correctness-proof",
+    "bridge-equality-proof",
+    "fixed-point-equation-proof",
+    "self-consistency-theorem"
+  ],
+  "non_claims": [
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Prove substitution representability and bridge equality before treating this finite witness alignment as a construction proof."
+}

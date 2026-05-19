@@ -110,6 +110,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/fixed-point-diagonal-instance-closure.md` records finite closure
   evidence for the current diagonal instance, while leaving representability,
   bridge equality, and fixed-point equation proof open.
+- `docs/fixed-point-substitution-witness-bridge.md` records finite alignment
+  evidence tying the current substitution witness to the bridge and closure
+  surfaces, while leaving representability proof open.
 - `docs/fixed-point-obstruction.md` records the checked length-growth
   obstruction showing why the naive direct quotation-substitution route cannot
   be the fixed point.
@@ -501,6 +504,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/fixed_point_diagonal_instance_closure.py` validates finite
   closure evidence for the current diagonal instance used by the first
   construction case.
+- `autarkic_systems/fixed_point_substitution_witness_bridge.py` validates
+  finite alignment evidence for the current substitution witness used by the
+  second construction case.
 - `autarkic_systems/fixed_point_obstruction.py` validates the checked
   length-growth obstruction for that naive candidate, recording that direct
   quotation-term embedding strictly grows the encoded candidate.
@@ -604,6 +610,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   validates `claims/fixed_point_diagonal_instance_closure.json`, including the
   one finite closed diagonal-instance evidence point for the first construction
   case.
+- `python -m autarkic_systems.fixed_point_substitution_witness_bridge --format json`
+  validates `claims/fixed_point_substitution_witness_bridge.json`, including
+  the one finite substitution-witness alignment point for the second
+  construction case.
 - `python -m autarkic_systems.diagonal_construction --format json` validates
   `claims/diagonal_construction_targets.json`, including the checked
   `substitution_code(n,n)` diagonal seed and closed quoted seed instance.
