@@ -1,0 +1,11 @@
+20260519Z
+
+Another developer has a long-running fork [0] of this repo, that they have been unable to push, as documented in this issue here: https://github.com/jpt4/as/issues/1
+
+It is unlikely this will be resolved, so their efforts must be reviewed as they stand, and compared against the objectives of the Autarkic Systems research programme, in relation to the work performed in, especially, https://github.com/autarkenterprises/proflog. The developer of the AS fork incorrectly believes that Proflog is not stable as a dependency or reference, when, though it is not yet finalized, it remains the authoritative state of the art for the implementation of Willard's SJAS. Thus, the fork must be analyzed, its useful contributions (to all aspects of AS, not merely the SJAS project) extracted, and extraneous documentation or meta-commentary summarized or elided. Compatible and duplicate content must be correlated with Autarkic Systems work elsewhere, and annotated accordingly for future integration.
+
+This process will take the form of selective merging of the AS fork material to a dedicated branch of the origin AS repo, regularly revised as the AS fork updates.
+
+Conduct any research, and make any inquiries, necessary to complete this task with maximum insightfulness and fidelity to the AS mission.
+
+[0] https://github.com/Sean-Kenneth-Doherty/as

@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "distilled_at": "2026-05-19",
+  "purpose": "Correlate fork-distilled AS artifacts with subordinate and adjacent repositories for future integration.",
+  "fork": {
+    "repository": "Sean-Kenneth-Doherty/as",
+    "main": "8dc90a83b603918b3aecac6695d65fbc5c182822",
+    "adr_branch_count": 263,
+    "integration_issue": "https://github.com/jpt4/as/issues/1",
+    "latest_adr_themes": [
+      "formal-confidence (Willard anchors, substitution graph, fixed-point construction cases)",
+      "PRC Universal Cell command semantics and evidence bundles",
+      "network-sequence witnesses post neighbor-delivery"
+    ]
+  },
+  "origin_at_distillation": {
+    "repository": "jpt4/as",
+    "main": "1a2fc06b75f5d33aee6655956c2a56df07a7bfb0",
+    "note": "Upstream main was scaffold-only; fork main carries the full ADR stack."
+  },
+  "correlations": [
+    {
+      "as_domain": "afs",
+      "as_artifacts": [
+        "docs/afs-requirements.md",
+        "docs/glossary.md",
+        "docs/project-charter.md",
+        "claims/formal_confidence_targets.json",
+        "autarkic_systems/formal_*.py",
+        "language/formal_*.json"
+      ],
+      "subordinate": {
+        "id": "afs",
+        "url": "https://github.com/jpt4/afs",
+        "relationship": "subordinate-placeholder",
+        "status": "README-only at reviewed snapshot; AS supplies integrative AFS structure"
+      },
+      "integration_note": "Formal-confidence path in AS is ahead of public AFS; merge into AFS when that repo gains substance."
+    },
+    {
+      "as_domain": "prc",
+      "as_artifacts": [
+        "autarkic_systems/universal_cell.py",
+        "autarkic_systems/prc_hardware_map.py",
+        "autarkic_systems/stem_command_map.py",
+        "sources/prc_hardware_witness_map.json",
+        "sources/stem_command_buffer_map.json",
+        "sources/*_command_semantics_status.json",
+        "schematics/*.json",
+        "evidence/*_bundle.json"
+      ],
+      "subordinate": {
+        "id": "prc",
+        "url": "https://github.com/jpt4/prc",
+        "pinned_commit": "7e82c73fac8f108faac801a5c65e2c2b92653ba5",
+        "relationship": "subordinate-embodied-substrate"
+      },
+      "integration_note": "Executable UC subset and source-status boundaries track PRC formal-model and legacy simulators; official TLA remains non-authority per ADR-0064."
+    },
+    {
+      "as_domain": "sjas",
+      "as_artifacts": [
+        "sources/willard_definition_map.json",
+        "autarkic_systems/willard_map.py",
+        "docs/willard-definition-map.md",
+        "claims/diagonal_construction_targets.json",
+        "claims/substitution_graph_*.json",
+        "claims/fixed_point_*.json"
+      ],
+      "subordinate": {
+        "id": "sjas",
+        "url": "https://github.com/jpt4/sjas",
+        "relationship": "subordinate-formal-confidence"
+      },
+      "integration_note": "AS builds checked syntax and target boundaries; SJAS nachlass LOG describes Proflog ADR-006x vocabulary now implemented in authoritative Proflog."
+    },
+    {
+      "as_domain": "proflog",
+      "as_artifacts": [
+        "sources/proflog_frontier_status.json",
+        "docs/proflog-frontier-status.md",
+        "docs/proof-apparatus-options.md",
+        "docs/adr/0014-proflog-source-status.md"
+      ],
+      "adjacent_authoritative": {
+        "id": "proflog",
+        "url": "https://github.com/autarkenterprises/proflog",
+        "main": "14d3150ed3a8029347b8981d657a22a1efde2753",
+        "relationship": "authoritative-sjas-implementation-not-finalized"
+      },
+      "legacy_public_stub": {
+        "url": "https://github.com/jpt4/proflog",
+        "main": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
+        "relationship": "historical-stub-only"
+      },
+      "integration_note": "Resolved 2026-05-19: sources/proflog_pin.json, claims/proflog_sjas_witness.json, formal-confidence status integrated. jpt4/proflog stub remains do-not-depend only.",
+      "cull_status": "proflog-blockers-resolved"
+    },
+    {
+      "as_domain": "leantap",
+      "as_artifacts": [
+        "docs/proof-apparatus-options.md",
+        "docs/adr/0010-proof-apparatus-options.md"
+      ],
+      "adjacent": {
+        "id": "leantap",
+        "url": "https://github.com/namin/leanTAP",
+        "relationship": "transparency-reference-only"
+      },
+      "integration_note": "No duplicate implementation in AS; cited for predicate-result checker rationale."
+    }
+  ],
+  "duplicate_or_parallel_content": [
+    {
+      "topic": "Willard definition anchors",
+      "as": "sources/willard_definition_map.json",
+      "elsewhere": "sjas literature + autarkenterprises/proflog worked-examples/willard-sjas.md",
+      "action": "Keep AS map as integration index; align anchor IDs when Proflog predicates stabilize."
+    },
+    {
+      "topic": "Substitution / diagonal / SelfCons",
+      "as": "autarkic_systems/substitution_graph_*.py, formal_substitution.py",
+      "elsewhere": "proflog/src/proflog/willard_sjas*.clj, subst.clj",
+      "action": "AS holds checked Python target boundaries; Proflog holds executable relational proofs—do not reimplement Proflog in AS without ADR."
+    },
+    {
+      "topic": "Universal Cell behavior",
+      "as": "autarkic_systems/universal_cell.py",
+      "elsewhere": "jpt4/prc practice/legacy simulators",
+      "action": "AS predicates are evidence-oriented subset; PRC remains source of truth for full semantics."
+    }
+  ],
+  "extraneous_elided": [
+    {
+      "category": "developer-local paths",
+      "examples": ["/home/sean/Projects/_upstream/* in tests and manifest"],
+      "action": "Documented here; normalize to env-configured upstream roots in a future ADR before CI hardening."
+    },
+    {
+      "category": "fork-publication meta",
+      "examples": [
+        "autarkic_systems/github_submission.py",
+        "autarkic_systems/handoff.py",
+        "ADR-0190–0193, 0218–0222, 0256"
+      ],
+      "action": "Retained on integration branch as operator tooling; not duplicated in upstream MEMORY."
+    },
+    {
+      "category": "scratch files",
+      "examples": ["AGENTS.md~"],
+      "action": "Removed from integration branch."
+    }
+  ]
+}

@@ -63,16 +63,21 @@
     {
       "id": "proflog",
       "name": "Proflog",
-      "relationship": "adjacent",
-      "url": "https://github.com/jpt4/proflog",
-      "clone_url": "https://github.com/jpt4/proflog.git",
-      "local_path": "/home/sean/Projects/_upstream/proflog",
+      "relationship": "adjacent-authoritative",
+      "url": "https://github.com/autarkenterprises/proflog",
+      "clone_url": "https://github.com/autarkenterprises/proflog.git",
       "default_branch": "main",
-      "reviewed_commit": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
-      "public_remote_head_at_review": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
-      "public_pushed_at": "2026-02-18T18:53:40Z",
-      "status": "public main does not expose the newer Proflog ADR-006x frontier described by SJAS logs; guile proflog.scm fails with an unbound example symbol in this environment; see sources/proflog_frontier_status.json",
-      "role": "Candidate semantic-tableaux implementation background for SJAS/AFS proof apparatus work."
+      "reviewed_commit": "14d3150ed3a8029347b8981d657a22a1efde2753",
+      "public_remote_head_at_review": "14d3150ed3a8029347b8981d657a22a1efde2753",
+      "public_pushed_at": "2026-05-18T13:06:14Z",
+      "status": "authoritative Willard/SJAS implementation; pinned at sources/proflog_pin.json; fast suite passing—see claims/proflog_sjas_witness.json",
+      "role": "Authoritative SJAS proof-apparatus reference for formal-confidence integration.",
+      "legacy_public_stub": {
+        "url": "https://github.com/jpt4/proflog",
+        "reviewed_commit": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
+        "local_path": "/home/sean/Projects/_upstream/proflog",
+        "status": "legacy Scheme stub only; do-not-depend-on-public-main"
+      }
     },
     {
       "id": "leantap",

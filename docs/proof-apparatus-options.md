@@ -15,7 +15,8 @@ the later SJAS and Proflog direction open.
 
 | Candidate | Local witness | Useful evidence | Current limitation |
 | --- | --- | --- | --- |
-| Public Proflog/Fitting path | `/home/sean/Projects/_upstream/proflog/proflog.scm` and `/home/sean/Projects/_upstream/proflog/LPTableaus.pdf` | Public Proflog is explicitly Fitting-style semantic tableaux, includes equality-oriented discussion, iterative deepening, and three-valued ground-query behavior. SJAS `nachlass/LOG.md` reports much more recent Proflog work around code-level syntax, substitution, and `tableau-proof/3`. | Public `jpt4/proflog` main is not the same artifact described by the SJAS ADR-006x notes and failed the local Guile smoke test. AS should not make it a passing dependency yet. |
+| autarkenterprises/proflog | Pinned at `sources/proflog_pin.json` (`14d3150`) | Greenfield Clojure/core.logic SJAS implementation with tableau-proof/3, subst-prf/4, subst-code/2, SelfCons. | **Authoritative SJAS apparatus.** Fast suite passing; extended `lein test-proflog-sjas`. |
+| jpt4/proflog stub | `proflog.scm` + `LPTableaus.pdf` | Legacy Fitting sketch. | Background only; do not depend. |
 | LeanTAP/alphaLeanTAP | `/home/sean/Projects/_upstream/leanTAP` at `c17864a911c0c3cbd727b43743fdcb19b43714b8` | The Scheme source exposes a compact proof search relation with proof terms such as `conj`, `split`, `univ`, `savefml`, and `close`; the README describes a first-order classical theorem prover with Scheme and Clojure implementations; the tests cover Pelletier problems. | It is a useful transparent reference, but it is not Willard-specific, not an AS object-language checker, and does not by itself provide arithmetized proof codes for self-reference. |
 | Minimal AS-local checker | Current AS code and claim manifest | The current project already has named predicate claims, executable examples, and strict fast tests. A tiny local checker can be designed around the exact proof obligations AS has now. | It will initially be a deliberately small proof-certificate checker, not a general theorem prover and not a self-justifying axiom system. |
 
@@ -33,25 +34,15 @@ This decision explicitly keeps LeanTAP and Proflog in scope:
 
 - LeanTAP is the transparency reference for what a small tableaux prover can
   look like.
-- Proflog/Fitting remains the most aligned long-term direction for
-  SJAS-flavored tableaux, but AS must first recover or replace the active
-  Proflog ADR-006x frontier before depending on it.
+- **SJAS:** autarkenterprises/proflog is pinned (`sources/proflog_pin.json`);
+  former ADR-006x "missing frontier" blockers are resolved there.
 
-## Why Not Proflog First
+## Proflog as SJAS apparatus (2026-05-19)
 
-Proflog is conceptually close to SJAS because it is built around semantic
-tableaux, equality behavior, and logic-programming-style query execution. The
-visible public repository, however, is currently a gap rather than a green
-dependency:
-
-- the active SJAS log describes Proflog ADR-0063 through ADR-0068 work that is
-  not present on public `main`;
-- the local Guile smoke test did not pass;
-- adopting it first would tie AS to a missing implementation frontier before
-  AS has even named its own proof-object surface.
-
-The efficient move is to preserve Proflog as a major target while building a
-small local bridge that can be tested now.
+The fork blocked on `jpt4/proflog` main only. Authoritative Proflog at
+`14d3150` implements the SJAS surface; see `claims/proflog_sjas_witness.json`.
+AS keeps a small local UC proof-certificate bridge and delegates SJAS proofs to
+Proflog rather than reimplementing them in Python.
 
 ## Why Not LeanTAP First
 

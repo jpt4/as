@@ -1,49 +1,46 @@
 {
-  "schema_version": 1,
-  "reviewed_at": "2026-05-17",
-  "repository": "jpt4/proflog",
-  "url": "https://github.com/jpt4/proflog",
-  "clone_url": "https://github.com/jpt4/proflog.git",
-  "local_public_path": "/home/sean/Projects/_upstream/proflog",
-  "sjas_log_path": "/home/sean/Projects/_upstream/sjas/nachlass/LOG.md",
-  "public_remote_head": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
-  "local_public_head": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
-  "visible_public_branches": [
-    "main"
-  ],
-  "public_files_observed": [
-    "LPTableaus.pdf",
-    "proflog.scm"
-  ],
-  "sjas_frontier_summary": "SJAS nachlass LOG.md describes Proflog ADR-0063 through ADR-0068 work from May 2026, including arithmetized formula/system/proof codes, structural code decoding, Level-1 substitution-proof vocabulary, SelfCons1 construction, subst-prf/4, subst-code/2, tableau-proof/3, and passing focused SJAS gates.",
-  "missing_public_frontier_terms": [
-    "ADR-0063",
-    "ADR-0064",
-    "ADR-0065",
-    "ADR-0066",
-    "ADR-0067",
-    "ADR-0068",
-    "tableau-proof/3",
-    "subst-prf/4",
-    "subst-code/2",
-    "SelfCons1",
-    "IS#_D(beta)",
-    "lt(1,2)",
-    "Gamma_1(g)",
-    "wff/1",
-    "neg-pair/2",
-    "delta-star-0-code"
-  ],
-  "smoke_test": {
-    "command": "guile proflog.scm",
-    "status": "failed",
-    "failure": "/home/sean/Projects/_upstream/proflog/proflog.scm:893:5: Unbound variable: even"
+  "schema_version": 2,
+  "reviewed_at": "2026-05-19",
+  "authoritative_repository": {
+    "repository": "autarkenterprises/proflog",
+    "url": "https://github.com/autarkenterprises/proflog",
+    "clone_url": "https://github.com/autarkenterprises/proflog.git",
+    "public_remote_head": "14d3150ed3a8029347b8981d657a22a1efde2753",
+    "implementation_stack": "Clojure/core.logic greenfield",
+    "sjas_frontier_summary": "Implements SJAS/Proflog ADR-0063 through ADR-0068 and later Willard SJAS work: tableau-proof/3, subst-prf/4, subst-code/2, SelfCons checks, structural decoding—see worked-examples/willard-sjas.md and claims/proflog_sjas_witness.json.",
+    "implements_sjas_frontier_terms": true,
+    "decision": "authoritative-pinned-executable",
+    "decision_rationale": "The former fork blockers on a missing ADR-006x frontier referred only to jpt4/proflog main. autarkenterprises/proflog at the pinned commit satisfies that frontier; AS records the pin in sources/proflog_pin.json and validates integration via autarkic_systems.proflog_integration. UC transition proofs remain AS-local predicate-result certificates per ADR-0010.",
+    "pin": "sources/proflog_pin.json",
+    "witness": "claims/proflog_sjas_witness.json",
+    "next_actions": [
+      "Run extended suite lein test-proflog-sjas when validating full SelfCons regression.",
+      "Set AS_PROFLOG_ROOT to a clone at pinned_commit for live fast-suite checks."
+    ]
   },
-  "decision": "do-not-depend-on-public-main",
-  "decision_rationale": "Public Proflog main is relevant background for Fitting-style semantic tableaux, but it is not the active SJAS/Proflog frontier described by SJAS logs and it does not run under Guile in this environment. AS should not make public main a dependency until the active ADR-006x source is recovered, pushed, or deliberately replaced.",
-  "next_actions": [
-    "Ask the repository owner where the ADR-0063 through ADR-0068 Proflog work lives or whether it should be published.",
-    "If the active source is unavailable, treat AS-local proof certificates and Willard anchor work as the safe path until a replacement tableaux/code proof apparatus is chosen.",
-    "Do not cite public jpt4/proflog main as executable SJAS evidence beyond the basic Fitting-style Proflog background."
-  ]
+  "legacy_public_stub": {
+    "repository": "jpt4/proflog",
+    "url": "https://github.com/jpt4/proflog",
+    "clone_url": "https://github.com/jpt4/proflog.git",
+    "public_remote_head": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
+    "missing_public_frontier_terms": [
+      "ADR-0063",
+      "ADR-0064",
+      "ADR-0065",
+      "ADR-0066",
+      "ADR-0067",
+      "ADR-0068",
+      "tableau-proof/3",
+      "subst-prf/4",
+      "subst-code/2",
+      "SelfCons1"
+    ],
+    "smoke_test": {
+      "command": "guile proflog.scm",
+      "status": "failed",
+      "failure": "Unbound variable: even at proflog.scm:893"
+    },
+    "decision": "do-not-depend-on-public-main",
+    "decision_rationale": "Legacy stub only. Missing ADR-006x here does not block AS; use authoritative_repository."
+  }
 }

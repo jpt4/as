@@ -19,10 +19,9 @@
     "schematic_svg": "schematics/recipient_write_buffer_command_message_trace.svg",
     "hardware_witness_map": "sources/prc_hardware_witness_map.json",
     "source_statuses": [
-      "sources/recipient_command_consumption_source_status.json",
-      "sources/recipient_non_init_command_source_status.json",
-      "sources/write_buffer_command_semantics_status.json",
-      "sources/standard_signal_command_semantics_status.json"
+      "sources/command_semantics_gaps.json",
+      "sources/proflog_frontier_status.json",
+      "sources/proflog_pin.json"
     ]
   },
   "boundaries": [

@@ -469,19 +469,19 @@ ADR-0234 adds a checked quotation-term surface over the codebook. ADR-0235
 records the naive fixed-point equation candidate as not fixed. The remaining
 blocker is fixed-point construction.
 
-## P6: Recover Or Replace The Active Proflog Frontier
+## P6: Integrate Authoritative Proflog Without Duplicating It
 
-Question: Where is the Proflog ADR-006x work described in SJAS logs, and should
-AS depend on it?
+Question: How should AS pin and cross-reference
+[autarkenterprises/proflog](https://github.com/autarkenterprises/proflog) while
+keeping ADR-0010's local proof-certificate checker for the UC evidence stack?
 
-Why it matters: Public Proflog `main` does not match the active SJAS log and
-does not run under Guile in this environment.
-
-Status: started by ADR-0014. `docs/proflog-frontier-status.md` and
-`sources/proflog_frontier_status.json` record that public Proflog main is
-relevant background but not dependency-ready executable evidence. Remaining work
-is to recover/publish the ADR-0063 through ADR-0068 source or choose an AS-local
-replacement path.
+Status: **resolved** (2026-05-19). Pin at `sources/proflog_pin.json`, witness at
+`claims/proflog_sjas_witness.json`, integration CLI
+`autarkic_systems.proflog_integration`. Former fork blockers (missing ADR-006x,
+fixed-point construction, substitution representability) are satisfied in Proflog,
+not by Python reimplementation. `AS-FORMAL-CONFIDENCE-TARGET-001` status is
+`integrated` with SJAS delegated to Proflog. Extended verification:
+`lein test-proflog-sjas`.
 
 ## P7: Hardware/Schematic Evidence Path
 

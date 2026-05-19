@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-05-19",
+  "purpose": "Merged command-token semantics gaps for culled AS main. Replaces per-slice source-status JSON files; full records live on archive/sean-fork-full.",
+  "archive_branch": "archive/sean-fork-full",
+  "archive_commit": "09b00f38a50db9905dd9cbe17590b5a6ee65fda1",
+  "blocked_commands": [
+    "standard-signal"
+  ],
+  "gaps": [
+    {
+      "command": "standard-signal",
+      "decision": "do-not-implement-standard-signal-command-execution-yet",
+      "runtime_change": "none-source-status-only",
+      "as_boundary": "Command-token standard-signal execution is blocked; ordinary binary-input standard-signal on fixed cells remains implemented separately.",
+      "blocked_runtime_surfaces": [
+        "self-mailbox-command",
+        "self-target-command-buffer"
+      ],
+      "safe_next_slice": "no-standard-signal-command-token-execution-change-without-new-source-evidence"
+    },
+    {
+      "command": "write-buf-zero",
+      "decision": "implemented-recipient-and-self-paths",
+      "runtime_change": "implemented-by-adr-0169",
+      "as_boundary": "Literal 0/1 append bits for write-buffer commands on direct self-mailbox, completed self-target buffers, and single recipient command messages.",
+      "blocked_runtime_surfaces": []
+    },
+    {
+      "command": "write-buf-one",
+      "decision": "implemented-recipient-and-self-paths",
+      "runtime_change": "implemented-by-adr-0169",
+      "as_boundary": "Same as write-buf-zero.",
+      "blocked_runtime_surfaces": []
+    }
+  ],
+  "non_executable_witnesses": [
+    {
+      "id": "official-tla-universal-cell",
+      "decision": "not-executable-authority",
+      "runtime_change": "none-source-status-only",
+      "summary": "PRC official TLA files are partial, stub, or empty."
+    },
+    {
+      "id": "guile-asmsim",
+      "decision": "blocker-strengthening-only",
+      "runtime_change": "none-source-status-only",
+      "summary": "Legacy guile-asmsim.scm does not resolve command-token semantics."
+    },
+    {
+      "id": "asmsim-process-buffer",
+      "decision": "blocker-strengthening-only",
+      "runtime_change": "none-source-status-only",
+      "summary": "practice/asmsim.scm message codes remain incomplete."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-05-19",
+  "purpose": "Maps former AS Proflog blockers to satisfied witnesses in autarkenterprises/proflog at the pinned commit.",
+  "proflog_pin": "sources/proflog_pin.json",
+  "former_fork_blockers_resolved": [
+    {
+      "blocker_id": "missing-adr-006x-on-jpt4-proflog-main",
+      "resolution": "Frontier lives on autarkenterprises/proflog, not jpt4/proflog stub.",
+      "evidence": "sources/proflog_frontier_status.json authoritative_repository"
+    },
+    {
+      "blocker_id": "fixed-point-construction",
+      "resolution": "ADR-0065–0071 diagonal and SelfCons route in Proflog willard-sjas profile.",
+      "evidence": "worked-examples/willard-sjas.md",
+      "proflog_artifacts": [
+        "src/proflog/willard_sjas.clj",
+        "src/proflog/willard_sjas_code.clj",
+        "src/proflog/subst.clj"
+      ]
+    },
+    {
+      "blocker_id": "substitution-representability",
+      "resolution": "subst-code/2 and subst-prf/4 in kernel profile.",
+      "proflog_predicates": ["subst-code/2", "subst-prf/4"]
+    },
+    {
+      "blocker_id": "deduction-apparatus-selection",
+      "resolution": "SJAS tableaux and substitution proofs in Proflog; UC substrate stays AS predicate-result.",
+      "as_scope": "transition and chain proof certificates only",
+      "proflog_scope": "Willard SJAS Level-1 and tableau profiles"
+    }
+  ],
+  "crosswalk": "docs/sjas-proflog-crosswalk.md",
+  "sean_fork_correlation_map": "docs/correlation/sean-fork-sjas-proflog-map.json",
+  "proflog_contrib": "proflog-contrib/README.md"
+}

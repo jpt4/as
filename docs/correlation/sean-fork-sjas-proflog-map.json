@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-05-19",
+  "archive_branch": "archive/sean-fork-full",
+  "proflog_pin": "sources/proflog_pin.json",
+  "encoding_note": "Sean fork used AS tagged-prefix codebook integers; Proflog uses base-64 byte codes. Correlation is semantic (same Willard obligations), not bitwise code identity.",
+  "translations": [
+    {
+      "sean_fork_claim": "claims/consistency_level_targets.json",
+      "sean_id": "AS-CONSISTENCY-LEVEL-1-TARGET",
+      "proflog_surface": ":willard-sjas-level1",
+      "proflog_predicate": "Level-1 consistency / SelfCons1 generation",
+      "proflog_test": "lein test-proflog-sjas",
+      "status": "implemented-in-proflog"
+    },
+    {
+      "sean_fork_claim": "claims/deduction_apparatus_targets.json",
+      "sean_scope": "UC predicate-result certificates only",
+      "proflog_surface": "tableau-proof/3, subst-prf/4",
+      "proflog_module": "src/proflog/willard_sjas.clj",
+      "status": "sjas-in-proflog-uc-in-as"
+    },
+    {
+      "sean_fork_claim": "claims/diagonal_construction_targets.json",
+      "sean_id": "AS-FIXED-POINT-SELFCONS1-DIAGONAL-SEED",
+      "proflog_surface": "subst-code/2 on selfcons skeleton",
+      "proflog_test": "sjas-subst-code-computes-level1-fixed-point",
+      "proflog_doc": "worked-examples/willard-sjas.md ADR-0065",
+      "status": "implemented-in-proflog"
+    },
+    {
+      "sean_fork_claim": "claims/substitution_representability_targets.json",
+      "sean_id": "AS-SUBSTITUTION-REPRESENTABILITY-DIAGONAL-SEED-WITNESS",
+      "proflog_surface": "sjas/subst-code",
+      "proflog_test": "sjas-subst-code-relates-structural-substitution-codes",
+      "status": "implemented-in-proflog"
+    },
+    {
+      "sean_fork_claim": "claims/substitution_graph_targets.json",
+      "sean_id": "AS-SUBSTITUTION-GRAPH-DELTA0-TARGET",
+      "proflog_surface": "delta-star-0-code, subst-code/2",
+      "proflog_test": "sjas-subst-code-computes-general-formula-code-substitution",
+      "status": "implemented-in-proflog"
+    },
+    {
+      "sean_fork_claim": "claims/substitution_graph_formula_candidates.json",
+      "sean_id": "AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA",
+      "proflog_surface": "substitution relation via subst-code",
+      "status": "implemented-in-proflog"
+    },
+    {
+      "sean_fork_claim": "claims/substitution_graph_correctness_targets.json",
+      "proflog_surface": "kernel proof certificates + subst-prf/4",
+      "proflog_test": "sjas-tableau-proof-checks-kernel-certificates",
+      "status": "implemented-in-proflog"
+    },
+    {
+      "sean_fork_claim": "claims/substitution_graph_correctness_cases.json",
+      "proflog_surface": "decomposed in willard_sjas_test.clj",
+      "status": "implemented-in-proflog"
+    },
+    {
+      "sean_fork_claim": "claims/fixed_point_targets.json",
+      "sean_id": "AS-FIXED-POINT-SELFCONS1-TARGET",
+      "proflog_surface": "SelfCons1 / fixed-point via skeleton code",
+      "proflog_test": "sjas-u-grounding-subst-code-computes-level1-fixed-point",
+      "status": "implemented-in-proflog"
+    },
+    {
+      "sean_fork_claim": "claims/fixed_point_equation_candidates.json",
+      "sean_id": "AS-FIXED-POINT-SELFCONS1-NAIVE-QUOTE-CANDIDATE",
+      "proflog_surface": "superseded by structural diagonal (ADR-0065+)",
+      "status": "obsolete-naive-route"
+    },
+    {
+      "sean_fork_claim": "claims/fixed_point_obstructions.json",
+      "sean_id": "AS-FIXED-POINT-SELFCONS1-NAIVE-LENGTH-OBSTRUCTION",
+      "proflog_surface": "documents why naive route abandoned; Proflog uses diagonal",
+      "status": "documented-in-as-only"
+    },
+    {
+      "sean_fork_claim": "claims/fixed_point_equation_bridge_targets.json",
+      "proflog_surface": "equality on decoded codes in subst-code tests",
+      "status": "not-needed-separate-in-proflog"
+    },
+    {
+      "sean_fork_claim": "claims/fixed_point_construction_cases.json",
+      "proflog_surface": "willard_sjas_test.clj case coverage",
+      "status": "implemented-in-proflog"
+    },
+    {
+      "sean_fork_claim": "claims/fixed_point_diagonal_instance_closure.json",
+      "proflog_surface": "codebook roundtrip via willard_sjas_code",
+      "proflog_test": "structural decoder + subst-code tests",
+      "status": "implemented-in-proflog"
+    },
+    {
+      "sean_fork_claim": "claims/formal_confidence_targets.json",
+      "sean_status_was": "blocked",
+      "as_replacement": "claims/formal_confidence_boundary.json status integrated",
+      "proflog_witness": "claims/proflog_sjas_witness.json",
+      "status": "resolved-via-pin"
+    },
+    {
+      "sean_fork_module": "autarkic_systems/formal_code.py",
+      "proflog_module": "src/proflog/willard_sjas_code.clj",
+      "status": "replaced-by-proflog-codebook"
+    },
+    {
+      "sean_fork_module": "autarkic_systems/formal_substitution.py",
+      "proflog_module": "src/proflog/subst.clj",
+      "status": "replaced-by-proflog-subst"
+    },
+    {
+      "sean_fork_module": "autarkic_systems/substitution_graph_*.py",
+      "proflog_module": "willard_sjas.clj + kernel profiles",
+      "status": "replaced-do-not-duplicate"
+    }
+  ],
+  "upstream_contrib": "proflog-contrib/README.md"
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-05-19",
+  "repository": "autarkenterprises/proflog",
+  "url": "https://github.com/autarkenterprises/proflog",
+  "clone_url": "https://github.com/autarkenterprises/proflog.git",
+  "pinned_commit": "14d3150ed3a8029347b8981d657a22a1efde2753",
+  "commit_message": "Record LOPSTR SJAS verification timings",
+  "default_fast_suite": {
+    "command": "lein test-proflog-fast",
+    "last_verified": "2026-05-19",
+    "result": "passed",
+    "summary": "145 tests, 548 assertions, 0 failures"
+  },
+  "sjas_suite": {
+    "command": "lein test-proflog-sjas",
+    "profile": "willard-sjas",
+    "documentation": "worked-examples/willard-sjas.md",
+    "test_namespace": "test/proflog/willard_sjas_test.clj",
+    "suite": "extended",
+    "note": "Run in extended verification; may exceed default CI timeout."
+  },
+  "sjas_slow_suite": {
+    "command": "lein test-proflog-sjas-slow",
+    "suite": "extended",
+    "note": "Full Willard regression; extended suite only."
+  },
+  "sean_fork_correlation_suite": {
+    "command": "lein test proflog.as-sean-fork-correlation-test",
+    "source": "proflog-contrib/test/proflog/as_sean_fork_correlation_test.clj",
+    "last_verified": "2026-05-19",
+    "result": "passed",
+    "summary": "5 tests, 10 assertions, 0 failures"
+  },
+  "environment": {
+    "clone_path_env": "AS_PROFLOG_ROOT",
+    "default_clone_path": "/tmp/proflog-ae"
+  },
+  "frontier_terms_satisfied": [
+    "ADR-0063",
+    "ADR-0064",
+    "ADR-0065",
+    "ADR-0066",
+    "ADR-0067",
+    "ADR-0068",
+    "tableau-proof/3",
+    "subst-prf/4",
+    "subst-code/2",
+    "SelfCons1"
+  ]
+}

@@ -1,20 +1,14 @@
 {
   "schema_version": 1,
   "registry_id": "transition-chain-evidence-bundle-registry",
-  "reviewed_at": "2026-05-17",
-  "purpose": "Registry of transition-chain evidence bundles that can be batch-validated across chain claim, proof, language, trace, SVG, underlying transition bundles, and source-status layers.",
+  "reviewed_at": "2026-05-19",
+  "purpose": "Culled chain registry: one neighbor-delivery handoff bundle.",
   "bundles": [
     {
       "bundle_id": "neighbor-delivery-recipient-chain-evidence-bundle",
       "path": "evidence/chains/neighbor_delivery_chain_bundle.json",
       "chain_claim_id": "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-CONSUMED",
-      "expected_status": "neighbor-delivery-consumed"
-    },
-    {
-      "bundle_id": "neighbor-delivery-recipient-rejection-chain-evidence-bundle",
-      "path": "evidence/chains/neighbor_delivery_rejection_chain_bundle.json",
-      "chain_claim_id": "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED",
-      "expected_status": "recipient-not-consumed"
+      "expected_status": "neighbor-delivery-recipient-consumed"
     }
   ]
 }

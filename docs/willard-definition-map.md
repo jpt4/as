@@ -80,5 +80,5 @@ disposable `_upstream` cache to be present.
   only after the four core sources are used by a concrete ADR.
 - Decide whether the next executable slice should encode bounded formula
   classes, proof-code substitution, or a smaller transition-witness proof rule.
-- Resolve P6 before depending on Proflog: the public Proflog main branch still
+- P6 resolved via autarkenterprises/proflog pin (`sources/proflog_pin.json`); the public Proflog main branch still
   does not expose the ADR-006x work described by SJAS logs.

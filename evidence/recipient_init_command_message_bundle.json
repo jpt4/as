@@ -15,15 +15,16 @@
     "schematic_svg": "schematics/recipient_init_command_message_trace.svg",
     "hardware_witness_map": "sources/prc_hardware_witness_map.json",
     "source_statuses": [
-      "sources/recipient_command_consumption_source_status.json",
-      "sources/recipient_non_init_command_source_status.json",
-      "sources/standard_signal_command_semantics_status.json",
-      "sources/write_buffer_command_semantics_status.json"
+      "sources/command_semantics_gaps.json",
+      "sources/proflog_frontier_status.json",
+      "sources/proflog_pin.json"
     ]
   },
   "boundaries": [
     "This bundle covers only init-family recipient command-message consumption.",
     "Non-init recipient command messages remain rejected or blocked by source-status records.",
-    "standard-signal command-token execution and write-buffer command-token execution remain source-blocked."
+    "standard-signal command-token execution remains blocked per command_semantics_gaps.",
+    "write-buffer command-token execution is implemented on recipient and self paths per command_semantics_gaps.",
+    "SJAS formal-confidence is integrated via proflog_pin.json, not blocked on missing Proflog frontier."
   ]
 }
