@@ -4,9 +4,11 @@ See [docs/open-problems.md](docs/open-problems.md) for ranked problems.
 
 ## Near term
 
-1. **PRC:** Resolve `standard-signal` command-token semantics or preserve block.
-2. **SJAS:** Pin Proflog in CI; extend [sjas-proflog-crosswalk.md](sjas-proflog-crosswalk.md).
-3. **Integration:** Fast-forward `culled-main` to `main` when maintainers accept cull.
+1. **PRC:** Resolve `standard-signal` command-token semantics or preserve block
+   (`sources/command_semantics_gaps.json`).
+2. **SJAS:** Run pinned Proflog SJAS suite in CI; land `proflog-contrib/` upstream.
+3. **Integration:** Fast-forward `main` from `culled-main`; publish [guide.md](guide.md).
+4. **Docs:** Trim or redirect historical fork slice docs per [historical-fork-docs.md](historical-fork-docs.md).
 
 ## Deferred (archive branch)
 

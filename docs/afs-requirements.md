@@ -2,6 +2,12 @@
 
 Status: first working definition, 2026-05-16.
 
+> **Culled main (2026-05-19):** The requirement matrix below records the Sean fork
+> ADR trail. On `culled-main`, SJAS proof obligations are **`integrated` via
+> pinned Proflog** (`claims/formal_confidence_boundary.json`), not Python
+> `formal_*` validators. For current status, read
+> [guide.md](guide.md) and [sjas-proflog-crosswalk.md](sjas-proflog-crosswalk.md).
+
 ## Definition
 
 An Autarkic Formal System is a formal system package for cognitive sovereignty.

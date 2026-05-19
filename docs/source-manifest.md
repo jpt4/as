@@ -1,52 +1,47 @@
 # Source Manifest
 
-The machine-readable manifest is `sources/manifest.json`.
+The machine-readable manifest is [`sources/manifest.json`](../sources/manifest.json).
 
-It records the source repositories that currently define the AS working
-context:
+It records repositories that define the AS working context:
 
-- `as`: the root Autarkic Systems repository;
-- `afs`: the named Autarkic Formal Systems subordinate program;
-- `prc`: the embodied substrate and reconfigurable hardware program;
-- `sjas`: the self-justifying logic program;
-- `proflog`: an adjacent semantic-tableaux candidate referenced by current
-  SJAS notes but not yet confirmed as the active executable frontier;
-- `leantap`: an adjacent transparent tableaux reference named by ISLA notes and
-  reviewed for ADR-0010.
+| ID | Role on culled main |
+|----|---------------------|
+| `as` | Root integration repository |
+| `afs` | Named formal-systems layer (public repo placeholder) |
+| `prc` | Substrate archive; UC slice implemented in AS |
+| `sjas` | Logic program and literature |
+| `proflog` | **Authoritative** SJAS implementation (pinned) |
+| `leantap` | Transparency reference only (ADR-0010) |
+
+## Authoritative Proflog
+
+SJAS executable frontier is **autarkenterprises/proflog**, not `jpt4/proflog` main.
+Pin: `sources/proflog_pin.json`. Witness: `claims/proflog_sjas_witness.json`.
+Details: [proflog-frontier-status.md](proflog-frontier-status.md),
+[sjas-proflog-crosswalk.md](sjas-proflog-crosswalk.md).
 
 ## Verification
 
-Fast structural check:
-
 ```sh
 jq -e . sources/manifest.json
+python3 -m autarkic_systems.proflog_integration
 ```
 
-Manual source checks:
+Optional local clone check (set your paths):
 
 ```sh
-git -C /home/sean/Projects/as rev-parse HEAD
-git -C /home/sean/Projects/_upstream/afs rev-parse HEAD
-git -C /home/sean/Projects/_upstream/prc rev-parse HEAD
-git -C /home/sean/Projects/_upstream/sjas rev-parse HEAD
-git -C /home/sean/Projects/_upstream/proflog rev-parse HEAD
-git -C /home/sean/Projects/_upstream/leanTAP rev-parse HEAD
+export AS_PROFLOG_ROOT=/tmp/proflog-ae
+git -C "$AS_PROFLOG_ROOT" rev-parse HEAD   # expect pin from proflog_pin.json
+python3 -m autarkic_systems.proflog_integration --run-fast
 ```
 
 ## Notes
 
-- The current GitHub account has WRITE access to `jpt4/as`; current AS work is
-  pushed to source `origin/main` when a slice lands. The fork remote remains
-  preserved as a fallback and historical trace for earlier permission-blocked
-  submissions.
-- The AS `reviewed_commit` records the local integration baseline before
-  ADR-0003. The commit containing the manifest necessarily advances AS beyond
-  that value, so exact HEAD equality is expected only for the upstream reference
-  repositories.
-- `jpt4/proflog` is included as adjacent, not subordinate. It is relevant
-  because SJAS `nachlass/LOG.md` records recent Proflog-side SJAS work, but the
-  public Proflog main branch does not contain the newer ADR-006x material.
-- Public Proflog did not pass an execution smoke test under Guile in this
-  environment. That failure is a gap to track, not a reason to block AS work.
-- LeanTAP is included as a design witness for a compact transparent tableaux
-  prover. ADR-0010 does not make it a required runtime dependency.
+- Manifest `reviewed_commit` for `as` records a baseline before manifest edits;
+  exact HEAD equality is not expected after each commit.
+- Use environment variables (`AS_PROFLOG_ROOT`) for local Proflog paths—not
+  hard-coded developer home directories.
+- Legacy per-topic `sources/*_source_status.json` files from the fork were
+  merged or removed on cull; see `sources/command_semantics_gaps.json`.
+
+See also [guide.md](guide.md) and [correlation/subordinate-manifest.json](correlation/subordinate-manifest.json).

@@ -1,6 +1,6 @@
 # ADR index (culled main)
 
-Full ADR history (264 records) is on branch `archive/sean-fork-full` at
+New readers: start with [guide.md](guide.md). Full ADR history (264 records) is on branch `archive/sean-fork-full` at
 `09b00f38a50db9905dd9cbe17590b5a6ee65fda1`.
 
 | ADR | Decision | Outcome on culled main |

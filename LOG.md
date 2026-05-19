@@ -1,5 +1,13 @@
 # Development Log
 
+## 2026-05-19 - Repository rationalization and reader guide
+
+- Added `docs/guide.md` (primary onboarding), `docs/README.md` (doc index),
+  `docs/historical-fork-docs.md` (fork-era markdown status).
+- Rewrote root `README.md`; updated `docs/source-manifest.md`, distillation README,
+  roadmap, AFS requirements banner, `MEMORY.md`.
+- Rationalized entry points so new readers start at the guide, not scattered ADR docs.
+
 ## 2026-05-19 - Proflog integration unblocks SJAS (ADR-0002)
 
 - Pinned autarkenterprises/proflog at `14d3150`; fast suite `lein test-proflog-fast`

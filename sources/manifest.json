@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "reviewed_at": "2026-05-17",
+  "reviewed_at": "2026-05-19",
   "purpose": "Pinned source manifest for Autarkic Systems and the subordinate or adjacent repositories used to define its first working requirements.",
   "repositories": [
     {
@@ -14,7 +14,7 @@
       "reviewed_commit": "9a4c098a0b7bddf651025785ac0c59260fccb3fb",
       "public_remote_head_at_review": "1a2fc06b75f5d33aee6655956c2a56df07a7bfb0",
       "public_pushed_at": "2026-05-16T22:49:41Z",
-      "status": "local integration branch is ahead of public remote because push is denied to the current GitHub account",
+      "status": "culled-main integration branch; see docs/guide.md; merge to main pending",
       "role": "Umbrella project coordinating AFS, PRC, SJAS, and later executable artifacts.",
       "note": "The AS reviewed commit is the local integration baseline before ADR-0003. The commit containing this manifest necessarily advances the local repository beyond this value."
     },

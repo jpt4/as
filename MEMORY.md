@@ -12,4 +12,6 @@
   (`sources/proflog_pin.json`, `claims/proflog_sjas_witness.json`).
 - **Evidence:** Two transition bundles in `evidence/manifest.json`; one chain
   bundle in `evidence/chains/manifest.json`.
-- Default branch: `main`. Integration uses local merge then push per `AGENTS.md`.
+- **Reader guide:** `docs/guide.md`; doc index `docs/README.md`.
+- Default branch: `main` (may lag); active work on `culled-main`. Integration uses
+  local merge then push per `AGENTS.md`.
