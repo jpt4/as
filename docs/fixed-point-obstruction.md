@@ -13,6 +13,10 @@ ADR-0238 makes this surface a structured dependency of
 target now fails closed if the obstruction manifest is missing, invalid, or
 overclaims.
 
+ADR-0262 adds the fixed-point equation bridge target for the diagonal route.
+This obstruction remains about the old naive direct quotation-substitution
+candidate only; it does not obstruct the separate bridge equality target.
+
 ## Purpose
 
 ADR-0235 showed that the naive candidate is not fixed. ADR-0237 records the
@@ -56,6 +60,7 @@ For the current input code `[41, 1, 22, 11, 1, 13, 12]`, it checks:
 python -m autarkic_systems.fixed_point_obstruction
 python -m autarkic_systems.fixed_point_obstruction --format json
 python -m autarkic_systems.fixed_point_equation
+python -m autarkic_systems.fixed_point_equation_bridge
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.formal_confidence --format json
 python -m autarkic_systems.project_status --format summary

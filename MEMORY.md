@@ -246,6 +246,12 @@
   dependency, but the case remains open and no diagonal lemma,
   representability proof, fixed-point equation proof, or self-consistency
   theorem is claimed.
+- ADR-0262 adds `claims/fixed_point_equation_bridge_targets.json` and
+  `autarkic_systems.fixed_point_equation_bridge`, checking the bridge between
+  the 296-token diagonal instance and the 4528-token direct fixed-point target
+  form via a 4815-token equality target; aggregate formal-confidence
+  validation now requires this bridge target but remains blocked on
+  `fixed-point-construction`.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

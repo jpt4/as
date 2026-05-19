@@ -81,6 +81,9 @@ closure evidence. ADR-0259 makes the third case depend on finite graph-domain
 meta-substitution semantic evidence. ADR-0260 makes the fourth case depend on
 finite graph-domain formula-schema relation evidence. ADR-0261 makes the fifth
 case depend on finite graph-domain diagonal-witness composition evidence.
+ADR-0262 adds the fixed-point equation bridge target, naming the checked
+finite equality still needed between the diagonal instance and the direct
+fixed-point target form.
 
 ## Current Target
 
@@ -120,7 +123,9 @@ correctness case map is recorded and validated through
 codebook-roundtrip, quotation-term-closure, meta-substitution-semantics, and
 formula-schema-relation, and diagonal-witness-composition dependencies for all
 five open cases; the naive equation candidate is recorded and validated through
-`claims/fixed_point_equation_candidates.json`. The checked obstruction in
+`claims/fixed_point_equation_candidates.json`; and the fixed-point equation
+bridge target is recorded and validated through
+`claims/fixed_point_equation_bridge_targets.json`. The checked obstruction in
 `claims/fixed_point_obstructions.json` is also validated as an aggregate
 dependency and records why that naive direct embedding route is closed. The
 target also records the remaining blocker: `fixed-point-construction`.
@@ -168,6 +173,8 @@ python -m autarkic_systems.substitution_graph_correctness_cases
 python -m autarkic_systems.substitution_graph_correctness_cases --format json
 python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.fixed_point_equation --format json
+python -m autarkic_systems.fixed_point_equation_bridge
+python -m autarkic_systems.fixed_point_equation_bridge --format json
 python -m autarkic_systems.fixed_point_obstruction
 python -m autarkic_systems.fixed_point_obstruction --format json
 python -m autarkic_systems.fixed_point
@@ -192,6 +199,7 @@ The validator checks that:
   meta-substitution-semantics, formula-schema-relation, and
   diagonal-witness-composition dependencies;
 - the referenced fixed-point equation candidate surface validates;
+- the referenced fixed-point equation bridge target validates;
 - the referenced fixed-point obstruction surface validates;
 - blocked targets name blockers; and
 - each target names a next AS action.

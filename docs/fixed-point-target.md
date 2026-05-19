@@ -52,6 +52,9 @@ self-application graph witness without claiming the delta0 graph formula or
 representability proof. ADR-0246 records the delta0 graph-formula target
 boundary for that witness, and ADR-0248 records the first checked formula
 schema candidate, while still leaving formula correctness and proof open.
+ADR-0262 records the finite equality bridge target between the checked
+diagonal instance and the direct fixed-point target form, while still leaving
+that equality and the fixed-point equation unproved.
 
 ## Run
 
@@ -65,6 +68,7 @@ python -m autarkic_systems.substitution_representability
 python -m autarkic_systems.substitution_graph_target
 python -m autarkic_systems.substitution_graph_formula
 python -m autarkic_systems.fixed_point_equation
+python -m autarkic_systems.fixed_point_equation_bridge
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.project_status --format summary
 ```

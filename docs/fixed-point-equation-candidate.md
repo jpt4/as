@@ -19,6 +19,11 @@ current template, quoted-sequence embedding strictly increases encoded length.
 ADR-0238 makes that obstruction a checked aggregate formal-confidence
 dependency alongside the candidate itself.
 
+ADR-0262 adds a separate fixed-point equation bridge target for the real
+diagonal-substitution route. It records the finite equality still needed
+between `substitution_code(quote(seed), quote(seed))` and the quotation of the
+checked diagonal instance, without claiming that the equality is proved.
+
 ## Purpose
 
 ADR-0234 gave AS a formal quotation-term surface. The next risk is
@@ -47,6 +52,8 @@ It validates
 ```sh
 python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.fixed_point_equation --format json
+python -m autarkic_systems.fixed_point_equation_bridge
+python -m autarkic_systems.fixed_point_equation_bridge --format json
 python -m autarkic_systems.fixed_point_obstruction
 python -m autarkic_systems.fixed_point_obstruction --format json
 python -m autarkic_systems.fixed_point

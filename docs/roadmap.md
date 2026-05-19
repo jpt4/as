@@ -5567,3 +5567,35 @@ Implemented in
 `autarkic_systems/substitution_graph_correctness_cases.py`, with tests in
 `tests/test_substitution_graph_diagonal_witness_composition.py` and
 `tests/test_substitution_graph_correctness_cases.py`.
+
+## ADR-0262: Fixed-Point Equation Bridge Target
+
+Goal: make the remaining fixed-point-construction blocker more exact by
+checking the finite bridge between the diagonal instance and the direct
+fixed-point target form.
+
+Deliverables:
+
+- `claims/fixed_point_equation_bridge_targets.json` with one bridge target for
+  `AS-FIXED-POINT-SELFCONS1-TARGET`;
+- `autarkic_systems.fixed_point_equation_bridge` validation that computes the
+  checked diagonal instance, direct target form, and equality target
+  `substitution_code(quote(seed), quote(seed)) = quote(diagonal_instance)`;
+- text/JSON output for diagonal instance length, direct target length, bridge
+  equation length, slot checks, skeleton match, witness match, and syntactic
+  diagonal/direct gap status;
+- `claims/formal_confidence_targets.json` and
+  `autarkic_systems.formal_confidence` updated so aggregate formal-confidence
+  validation fails closed over the bridge target;
+- rejection for stale bridge length facts, proved bridge statuses, and missing
+  bridge dependencies; and
+- no substitution representability proof, substitution graph correctness
+  proof, fixed-point equation proof, arithmetized proof predicate,
+  self-consistency theorem, runtime behavior, command semantics, evidence
+  bundle, or GitHub submission logic changes.
+
+Status: accepted in `docs/adr/0262-fixed-point-equation-bridge-target.md`.
+Implemented in `autarkic_systems/fixed_point_equation_bridge.py` and
+`autarkic_systems/formal_confidence.py`, with tests in
+`tests/test_fixed_point_equation_bridge.py` and
+`tests/test_formal_confidence_target.py`.

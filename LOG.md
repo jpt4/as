@@ -5653,3 +5653,30 @@
   passed 1,232 tests. This is finite evidence for the fifth open correctness
   case, not a general diagonal lemma, substitution representability proof, or
   fixed-point equation proof.
+
+## 2026-05-19 - Fixed-Point Equation Bridge Target
+
+- Added ADR-0262 to make the remaining fixed-point-construction blocker more
+  exact: the diagonal instance and direct fixed-point target form are now
+  connected by a checked finite bridge target.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.fixed_point_equation_bridge` and
+  `claims/fixed_point_equation_bridge_targets.json` did not exist, aggregate
+  formal-confidence validation had no `fixed_point_equation_bridge`
+  configuration field, and missing bridge targets did not reject.
+- Added `claims/fixed_point_equation_bridge_targets.json`, naming
+  `AS-FIXED-POINT-SELFCONS1-DIAGONAL-EQUATION-BRIDGE` as an open bridge target.
+- Added `autarkic_systems/fixed_point_equation_bridge.py`, checking the
+  296-token diagonal instance, the 4528-token direct target form, the
+  4815-token bridge equality, shared target skeleton, diagonal and direct
+  slots, and the substitution-witness output match.
+- Updated aggregate formal-confidence validation to require and fail closed
+  over the new bridge target while preserving the
+  `fixed-point-construction` blocker.
+- Focused fixed-point-equation-bridge/formal-confidence tests passed 32 tests.
+  Adjacent fixed-point, substitution-representability, diagonal-witness
+  composition, and formal-confidence tests passed 92 tests, and the full
+  default suite passed 1,244 tests. This names the equality still needed for
+  the fixed-point equation; it is not a substitution representability proof,
+  substitution graph correctness proof, fixed-point equation proof, or
+  self-consistency theorem.
