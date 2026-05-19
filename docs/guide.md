@@ -73,7 +73,7 @@ Optional Proflog clone (extended verification):
 
 ```sh
 git clone https://github.com/autarkenterprises/proflog.git /tmp/proflog-ae
-cd /tmp/proflog-ae && git checkout 14d3150ed3a8029347b8981d657a22a1efde2753
+cd /tmp/proflog-ae && git checkout 782f620f3aca951816926bd4d8abba0b40558ede
 export AS_PROFLOG_ROOT=/tmp/proflog-ae
 cd /path/to/as
 python3 -m autarkic_systems.proflog_integration --run-fast

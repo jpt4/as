@@ -6,7 +6,7 @@
 - **PRC:** `autarkic_systems/universal_cell.py` implements a tested UC slice; not
   full `jpt4/prc` parity. Command gaps: `sources/command_semantics_gaps.json`.
 - **SJAS:** [autarkenterprises/proflog](https://github.com/autarkenterprises/proflog)
-  is authoritative (`14d3150`). `jpt4/proflog` main is legacy stub only.
+  is authoritative (`782f620`). `jpt4/proflog` main is legacy stub only.
   No Python `formal_*` / `substitution_graph_*` on culled main.
 - **Formal confidence:** `integrated` — UC in AS, SJAS in pinned Proflog
   (`sources/proflog_pin.json`, `claims/proflog_sjas_witness.json`).

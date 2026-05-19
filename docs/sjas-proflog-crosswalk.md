@@ -1,6 +1,6 @@
 # SJAS / Proflog crosswalk
 
-Status: 2026-05-19 — blockers resolved via pin at `14d3150`.
+Status: 2026-05-19 — blockers resolved via pin at `782f620` (includes Sean-fork correlation tests).
 
 [autarkenterprises/proflog](https://github.com/autarkenterprises/proflog) is the
 authoritative SJAS implementation. AS does not duplicate this machinery in Python.

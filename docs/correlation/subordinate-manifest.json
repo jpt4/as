@@ -85,7 +85,7 @@
       "adjacent_authoritative": {
         "id": "proflog",
         "url": "https://github.com/autarkenterprises/proflog",
-        "main": "14d3150ed3a8029347b8981d657a22a1efde2753",
+        "main": "782f620f3aca951816926bd4d8abba0b40558ede",
         "relationship": "authoritative-sjas-implementation-not-finalized"
       },
       "legacy_public_stub": {

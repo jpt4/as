@@ -5,7 +5,7 @@ from pathlib import Path
 
 STATUS = Path("sources/proflog_frontier_status.json")
 PIN = Path("sources/proflog_pin.json")
-AUTHORITATIVE_HEAD = "14d3150ed3a8029347b8981d657a22a1efde2753"
+AUTHORITATIVE_HEAD = "782f620f3aca951816926bd4d8abba0b40558ede"
 LEGACY_STUB_HEAD = "77af8481d9f41a439eb42e1d8268a5b39f7c5c33"
 
 

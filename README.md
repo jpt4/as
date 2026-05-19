@@ -14,7 +14,7 @@ culled, and how UC work relates to Proflog.
 | Integration branch | `culled-main` (charter-focused; merge to `main` pending) |
 | Full fork archive | `archive/sean-fork-full` @ `09b00f3` (264 ADRs) |
 | PRC in AS | `autarkic_systems/universal_cell.py` + 2 transition evidence bundles |
-| SJAS proofs | [autarkenterprises/proflog](https://github.com/autarkenterprises/proflog) pinned @ `14d3150` — not reimplemented in Python |
+| SJAS proofs | [autarkenterprises/proflog](https://github.com/autarkenterprises/proflog) pinned @ `782f620` — not reimplemented in Python |
 | Formal confidence | `integrated` — see `claims/formal_confidence_boundary.json` |
 
 ## Verify (fast)

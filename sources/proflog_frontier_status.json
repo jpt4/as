@@ -5,7 +5,7 @@
     "repository": "autarkenterprises/proflog",
     "url": "https://github.com/autarkenterprises/proflog",
     "clone_url": "https://github.com/autarkenterprises/proflog.git",
-    "public_remote_head": "14d3150ed3a8029347b8981d657a22a1efde2753",
+    "public_remote_head": "782f620f3aca951816926bd4d8abba0b40558ede",
     "implementation_stack": "Clojure/core.logic greenfield",
     "sjas_frontier_summary": "Implements SJAS/Proflog ADR-0063 through ADR-0068 and later Willard SJAS work: tableau-proof/3, subst-prf/4, subst-code/2, SelfCons checks, structural decoding—see worked-examples/willard-sjas.md and claims/proflog_sjas_witness.json.",
     "implements_sjas_frontier_terms": true,

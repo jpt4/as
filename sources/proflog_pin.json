@@ -4,8 +4,8 @@
   "repository": "autarkenterprises/proflog",
   "url": "https://github.com/autarkenterprises/proflog",
   "clone_url": "https://github.com/autarkenterprises/proflog.git",
-  "pinned_commit": "14d3150ed3a8029347b8981d657a22a1efde2753",
-  "commit_message": "Record LOPSTR SJAS verification timings",
+  "pinned_commit": "782f620f3aca951816926bd4d8abba0b40558ede",
+  "commit_message": "Add Sean fork AS SJAS correlation tests and worked example",
   "default_fast_suite": {
     "command": "lein test-proflog-fast",
     "last_verified": "2026-05-19",
@@ -27,7 +27,8 @@
   },
   "sean_fork_correlation_suite": {
     "command": "lein test proflog.as-sean-fork-correlation-test",
-    "source": "proflog-contrib/test/proflog/as_sean_fork_correlation_test.clj",
+    "upstream_path": "test/proflog/as_sean_fork_correlation_test.clj",
+    "contrib_mirror": "proflog-contrib/test/proflog/as_sean_fork_correlation_test.clj",
     "last_verified": "2026-05-19",
     "result": "passed",
     "summary": "5 tests, 10 assertions, 0 failures"

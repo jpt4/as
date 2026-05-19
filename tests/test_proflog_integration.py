@@ -14,7 +14,7 @@ class ProflogIntegrationTests(unittest.TestCase):
         self.assertTrue(report.accepted, report.failed_subjects)
         self.assertEqual(
             report.pinned_commit,
-            "14d3150ed3a8029347b8981d657a22a1efde2753",
+            "782f620f3aca951816926bd4d8abba0b40558ede",
         )
 
     def test_witness_lists_resolved_fork_blockers(self):

@@ -3,17 +3,17 @@
 These files translate Sean fork AS SJAS artifacts (on `archive/sean-fork-full`)
 into tests and documentation for [autarkenterprises/proflog](https://github.com/autarkenterprises/proflog).
 
-## Apply to Proflog
+## Upstream status
+
+Landed on `autarkenterprises/proflog` `main` at `782f620` (2026-05-19). The
+`proflog-contrib/` tree mirrors upstream for AS review; prefer the pinned commit
+in `sources/proflog_pin.json`.
+
+## Verify
 
 ```sh
-export PROFLOG_ROOT=/path/to/proflog   # checkout at sources/proflog_pin.json commit
-cp -r proflog-contrib/test/proflog/as_sean_fork_correlation_test.clj \
-  "$PROFLOG_ROOT/test/proflog/"
-cp proflog-contrib/worked-examples/as-sean-fork-correlation.md \
-  "$PROFLOG_ROOT/worked-examples/"
-# Add to project.clj test selectors if desired:
-#   :as-sean-fork-correlation (complement :slow) ...
-lein test :as-sean-fork-correlation
+export AS_PROFLOG_ROOT=/path/to/proflog   # checkout at pinned commit
+lein test proflog.as-sean-fork-correlation-test
 ```
 
 ## AS-side correlation

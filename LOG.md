@@ -1,5 +1,11 @@
 # Development Log
 
+## 2026-05-19 - Push culled-main; Proflog correlation upstream
+
+- Pushed `culled-main` to `origin` (hard cull + reader guide commits).
+- Pushed Sean-fork correlation tests to `autarkenterprises/proflog` `main` at
+  `782f620`; bumped AS pin in `sources/proflog_pin.json`.
+
 ## 2026-05-19 - Repository rationalization and reader guide
 
 - Added `docs/guide.md` (primary onboarding), `docs/README.md` (doc index),
