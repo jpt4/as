@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "status_set_id": "as-fixed-point-substitution-representability-frontier-status-v1",
+  "reviewed_at": "2026-05-20",
+  "purpose": "Compact fail-closed status surface for the fixed-point substitution representability frontier. It summarizes current finite support while preserving that the substitution-representability-proof construction case remains open.",
+  "frontier_status": "blocked",
+  "frontier_blocked_by": "substitution-representability-proof",
+  "fixed_point_construction_cases_path": "claims/fixed_point_construction_cases.json",
+  "substitution_representability_targets_path": "claims/substitution_representability_targets.json",
+  "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
+  "fixed_point_equation_bridge_targets_path": "claims/fixed_point_equation_bridge_targets.json",
+  "substitution_witness_bridge_path": "claims/fixed_point_substitution_witness_bridge.json",
+  "required_construction_case_kind": "substitution-representability-proof",
+  "required_construction_case_status": "proof-case-open",
+  "expected_support_surface_count": 5,
+  "expected_substitution_witness_bridge_count": 1,
+  "expected_witness_output_code_length": 296,
+  "non_claims": [
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Prove the substitution representability case over the checked witness, graph correctness cases, equation bridge, and witness bridge before promoting this frontier."
+}
