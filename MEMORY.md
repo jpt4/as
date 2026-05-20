@@ -213,6 +213,14 @@
   equation length 4815, evaluation output length 296, and the preserved
   `bridge-equality-proof` blocker without proving or promoting bridge
   equality.
+- ADR-0277 adds
+  `claims/fixed_point_diagonal_instance_closure_frontier_status.json` and
+  `autarkic_systems.fixed_point_diagonal_instance_closure_frontier_status`, a
+  compact status surface for the fixed-point construction
+  `diagonal-instance-closure` case. It reports the case still open, five
+  support surfaces, diagonal-instance length 296, one diagonal candidate, and
+  the preserved `diagonal-instance-closure` blocker without proving or
+  promoting the fixed-point construction.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length

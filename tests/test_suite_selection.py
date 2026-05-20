@@ -18,6 +18,7 @@ EXPECTED_EXTENDED_MODULES = {
     "tests.test_fixed_point_construction_frontier_status",
     "tests.test_fixed_point_diagonal_instance_candidate_surface",
     "tests.test_fixed_point_diagonal_instance_closure",
+    "tests.test_fixed_point_diagonal_instance_closure_frontier_status",
     "tests.test_fixed_point_equation_bridge",
     "tests.test_fixed_point_equation_candidate",
     "tests.test_fixed_point_equation_lifting_alignment",

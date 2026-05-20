@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "status_set_id": "as-fixed-point-diagonal-instance-closure-frontier-status-v1",
+  "reviewed_at": "2026-05-20",
+  "purpose": "Compact fail-closed status surface for the fixed-point diagonal-instance-closure frontier. It records that the first construction case remains open while the current fixed-point target, diagonal construction, equation bridge, diagonal-instance closure, and candidate surface support manifests remain accepted.",
+  "frontier_status": "blocked",
+  "frontier_blocked_by": "diagonal-instance-closure",
+  "fixed_point_construction_cases_path": "claims/fixed_point_construction_cases.json",
+  "fixed_point_targets_path": "claims/fixed_point_targets.json",
+  "diagonal_construction_targets_path": "claims/diagonal_construction_targets.json",
+  "fixed_point_equation_bridge_targets_path": "claims/fixed_point_equation_bridge_targets.json",
+  "diagonal_instance_closure_path": "claims/fixed_point_diagonal_instance_closure.json",
+  "diagonal_instance_candidate_surface_path": "claims/fixed_point_diagonal_instance_candidate_surface.json",
+  "required_construction_case_id": "AS-FIXED-POINT-CONSTRUCTION-DIAGONAL-INSTANCE-CLOSURE",
+  "required_construction_case_kind": "diagonal-instance-closure",
+  "required_construction_case_status": "proof-case-open",
+  "expected_support_surface_count": 5,
+  "expected_diagonal_instance_code_length": 296,
+  "expected_diagonal_candidate_count": 1,
+  "non_claims": [
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use the accepted diagonal-instance closure and candidate surfaces as the finite input for later representability, bridge-equality, and equation-lifting work; do not promote this first construction case until the remaining proof obligations are discharged."
+}

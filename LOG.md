@@ -6044,3 +6044,32 @@
 - This is a compact frontier handoff only. It does not prove substitution
   representability, substitution graph correctness, bridge equality, a
   fixed-point equation, an arithmetized proof predicate, or self-consistency.
+
+## 2026-05-20 - Fixed-Point Diagonal Instance Closure Frontier Status
+
+- Added ADR-0277 to provide a compact fixed-point diagonal-instance-closure
+  frontier status over the construction case with kind
+  `diagonal-instance-closure`.
+- Added
+  `claims/fixed_point_diagonal_instance_closure_frontier_status.json` and
+  `autarkic_systems/fixed_point_diagonal_instance_closure_frontier_status.py`,
+  checking the expected frontier manifest shape, construction-case openness,
+  fixed-point target support, diagonal construction support, fixed-point
+  equation bridge support, diagonal-instance closure support, diagonal
+  candidate support, the `blocked` frontier status, and explicit non-claims.
+- Added
+  `tests/test_fixed_point_diagonal_instance_closure_frontier_status.py`
+  before the implementation. The red run failed because
+  `autarkic_systems.fixed_point_diagonal_instance_closure_frontier_status`
+  did not exist.
+- The focused frontier-status suite passed 14 tests. Live text and JSON CLI
+  checks accepted the status surface, reporting
+  `diagonal-instance-closure` as the blocker, the construction case still
+  `proof-case-open`, five support surfaces, diagonal-instance length 296, one
+  diagonal candidate, and no failed subjects.
+- Updated the ADR-0272 suite manifest so the new
+  `tests.test_fixed_point_diagonal_instance_closure_frontier_status` module is
+  classified into `extended-fixed-point`.
+- This is a compact frontier handoff only. It does not prove substitution
+  representability, substitution graph correctness, bridge equality, a
+  fixed-point equation, an arithmetized proof predicate, or self-consistency.

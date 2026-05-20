@@ -116,6 +116,11 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/fixed-point-diagonal-instance-closure.md` records finite closure
   evidence for the current diagonal instance, while leaving representability,
   bridge equality, and fixed-point equation proof open.
+- `docs/fixed-point-diagonal-instance-closure-frontier-status.md` records the
+  compact diagonal-instance-closure frontier for fixed-point construction: the
+  first case remains open, five support surfaces are present, the
+  diagonal-instance length is 296, and the blocker remains
+  `diagonal-instance-closure`.
 - `docs/fixed-point-substitution-witness-bridge.md` records finite alignment
   evidence tying the current substitution witness to the bridge and closure
   surfaces, while leaving representability proof open.
