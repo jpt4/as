@@ -119,6 +119,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/fixed-point-substitution-witness-bridge.md` records finite alignment
   evidence tying the current substitution witness to the bridge and closure
   surfaces, while leaving representability proof open.
+- `docs/fixed-point-substitution-representability-frontier-status.md` records
+  the compact substitution-representability proof frontier for fixed-point
+  construction: the case remains open, five support surfaces are present, and
+  the blocker remains `substitution-representability-proof`.
 - `docs/fixed-point-substitution-graph-correctness-bridge.md` records finite
   dependency-coverage evidence tying the fixed-point construction graph
   correctness case to the checked graph correctness target, correctness case

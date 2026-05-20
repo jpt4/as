@@ -5988,3 +5988,32 @@
 - This is a compact frontier handoff only. It does not prove formula
   correctness, substitution representability, the diagonal lemma, a
   fixed-point equation, an arithmetized proof predicate, or self-consistency.
+
+## 2026-05-20 - Fixed-Point Substitution Representability Frontier Status
+
+- Added ADR-0275 to provide a compact fixed-point substitution
+  representability frontier status over the construction case with kind
+  `substitution-representability-proof`.
+- Added
+  `claims/fixed_point_substitution_representability_frontier_status.json` and
+  `autarkic_systems/fixed_point_substitution_representability_frontier_status.py`,
+  checking the expected frontier manifest shape, the current construction-case
+  map, substitution representability target, substitution graph correctness
+  cases, fixed-point equation bridge, substitution witness bridge, the
+  `blocked` frontier status, and explicit non-claims.
+- Added
+  `tests/test_fixed_point_substitution_representability_frontier_status.py`
+  before the implementation. The red run failed because
+  `autarkic_systems.fixed_point_substitution_representability_frontier_status`
+  did not exist.
+- Focused frontier-status tests passed 12 tests. Live text and JSON CLI checks
+  accepted the status surface, reporting
+  `substitution-representability-proof` as the blocker, the construction case
+  still `proof-case-open`, five support surfaces, one witness bridge, witness
+  output length 296, and no failed subjects.
+- Updated the ADR-0272 suite manifest so the new
+  `tests.test_fixed_point_substitution_representability_frontier_status`
+  module is classified into `extended-fixed-point`.
+- This is a compact frontier handoff only. It does not prove substitution
+  representability, substitution graph correctness, bridge equality, a
+  fixed-point equation, an arithmetized proof predicate, or self-consistency.

@@ -5957,3 +5957,30 @@ Implemented in
 `autarkic_systems/substitution_graph_correctness_frontier_status.py`, with
 tests in
 `tests/test_substitution_graph_correctness_frontier_status.py`.
+
+## ADR-0275: Fixed-Point Substitution Representability Frontier Status
+
+Goal: add a compact, fail-closed frontier/status handoff over the fixed-point
+construction `substitution-representability-proof` case without promoting it.
+
+Deliverables:
+
+- `claims/fixed_point_substitution_representability_frontier_status.json`,
+  preserving `substitution-representability-proof` as the blocker;
+- `autarkic_systems.fixed_point_substitution_representability_frontier_status`,
+  validating the compact manifest shape, construction-case openness,
+  dependency/support surface presence, witness bridge count, witness output
+  length, and explicit non-claims;
+- text/JSON output for blocked status, construction case id/kind/status,
+  support-surface count, support facts, and failed subjects; and
+- no substitution representability proof, substitution graph correctness
+  proof, bridge equality proof, fixed-point equation proof, arithmetized proof
+  predicate, self-consistency theorem, runtime behavior, command semantics, or
+  fixed-point construction frontier changes.
+
+Status: accepted in
+`docs/adr/0275-fixed-point-substitution-representability-frontier-status.md`.
+Implemented in
+`autarkic_systems/fixed_point_substitution_representability_frontier_status.py`,
+with tests in
+`tests/test_fixed_point_substitution_representability_frontier_status.py`.

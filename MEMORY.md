@@ -198,6 +198,14 @@
   five open correctness cases, eleven present support surfaces, and the
   preserved `substitution-graph-correctness` blocker without proving or
   promoting any case.
+- ADR-0275 adds
+  `claims/fixed_point_substitution_representability_frontier_status.json` and
+  `autarkic_systems.fixed_point_substitution_representability_frontier_status`,
+  a compact status surface for the fixed-point construction
+  `substitution-representability-proof` case. It reports the case still open,
+  five present support surfaces, the one-point witness bridge, and the
+  preserved `substitution-representability-proof` blocker without proving or
+  promoting representability.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length
