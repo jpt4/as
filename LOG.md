@@ -5962,6 +5962,32 @@
   representability, substitution graph correctness, bridge equality, a
   fixed-point equation, an arithmetized proof predicate, or self-consistency.
 
+## 2026-05-20 - Fixed-Point Equation Lifting Frontier Status
+
+- Added ADR-0278 to provide a compact fixed-point equation lifting frontier
+  status over the construction case with kind `fixed-point-equation-lifting`.
+- Added `claims/fixed_point_equation_lifting_frontier_status.json` and
+  `autarkic_systems/fixed_point_equation_lifting_frontier_status.py`, checking
+  the expected frontier manifest shape, construction-case openness, exact
+  dependency/support subjects, fixed-point target support, equation bridge
+  support, codebook support, equation-lifting alignment support, the
+  `blocked` frontier status, and explicit non-claims.
+- Added `tests/test_fixed_point_equation_lifting_frontier_status.py` before
+  the implementation. The red run failed because
+  `autarkic_systems.fixed_point_equation_lifting_frontier_status` did not
+  exist.
+- Focused frontier-status tests passed 14 tests. Live text and JSON CLI checks
+  accepted the status surface, reporting `fixed-point-equation-lifting` as the
+  blocker, the construction case still `proof-case-open`, four support
+  surfaces, direct target length 4528, bridge equation length 4815, and no
+  failed subjects.
+- Updated the ADR-0272 suite manifest so the new
+  `tests.test_fixed_point_equation_lifting_frontier_status` module is
+  classified into `extended-fixed-point`.
+- This is a compact frontier handoff only. It does not prove substitution
+  representability, substitution graph correctness, bridge equality, a
+  fixed-point equation, an arithmetized proof predicate, or self-consistency.
+
 ## 2026-05-20 - Substitution Graph Correctness Frontier Status
 
 - Added ADR-0274 to provide a compact substitution graph correctness frontier

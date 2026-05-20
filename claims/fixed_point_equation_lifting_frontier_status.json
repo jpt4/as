@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status_set_id": "as-fixed-point-equation-lifting-frontier-status-v1",
+  "reviewed_at": "2026-05-20",
+  "purpose": "Compact fail-closed status surface for the fixed-point equation-lifting frontier. It records that the current target, bridge, codebook, and equation-lifting alignment support surfaces accept while the fixed-point-equation-lifting construction case remains open.",
+  "frontier_status": "blocked",
+  "frontier_blocked_by": "fixed-point-equation-lifting",
+  "fixed_point_construction_cases_path": "claims/fixed_point_construction_cases.json",
+  "fixed_point_targets_path": "claims/fixed_point_targets.json",
+  "fixed_point_equation_bridge_targets_path": "claims/fixed_point_equation_bridge_targets.json",
+  "codebook_path": "language/formal_codebook.json",
+  "equation_lifting_alignment_path": "claims/fixed_point_equation_lifting_alignment.json",
+  "expected_support_surface_count": 4,
+  "expected_direct_target_code_length": 4528,
+  "expected_bridge_equation_code_length": 4815,
+  "non_claims": [
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use the accepted target, bridge, codebook, and equation-lifting alignment as compact support for the still-open fixed-point-equation-lifting case; do not promote the case until the fixed-point equation is proved."
+}

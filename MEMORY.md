@@ -221,6 +221,14 @@
   support surfaces, diagonal-instance length 296, one diagonal candidate, and
   the preserved `diagonal-instance-closure` blocker without proving or
   promoting the fixed-point construction.
+- ADR-0278 adds
+  `claims/fixed_point_equation_lifting_frontier_status.json` and
+  `autarkic_systems.fixed_point_equation_lifting_frontier_status`, a compact
+  status surface for the fixed-point construction
+  `fixed-point-equation-lifting` case. It reports the case still open, four
+  present support surfaces, direct target length 4528, bridge equation length
+  4815, and the preserved `fixed-point-equation-lifting` blocker without
+  proving or promoting a fixed-point equation.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length

@@ -149,6 +149,11 @@ proof certificates, object languages, evidence bundles, and status reports:
   evidence tying the fixed-point construction equation-lifting case to the
   selected `pi1` target context, checked equation bridge, bridge-equality
   alignment, and codebook, while leaving the fixed-point equation proof open.
+- `docs/fixed-point-equation-lifting-frontier-status.md` records the compact
+  equation-lifting frontier for fixed-point construction: the case remains
+  open, four support surfaces are present, the direct target length is 4528,
+  the bridge equation length is 4815, and the blocker remains
+  `fixed-point-equation-lifting`.
 - `docs/fixed-point-construction-frontier-status.md` records the compact
   post-ADR-0270 fixed-point construction frontier status: all five
   construction cases remain open, seven support surfaces are present, and the
@@ -685,6 +690,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   validates `claims/fixed_point_equation_lifting_alignment.json`, including
   the one finite equation-lifting alignment point for the fifth construction
   case.
+- `python -m autarkic_systems.fixed_point_equation_lifting_frontier_status --format json`
+  validates `claims/fixed_point_equation_lifting_frontier_status.json`,
+  including the compact equation-lifting frontier status for the fifth
+  construction case.
 - `python -m autarkic_systems.diagonal_construction --format json` validates
   `claims/diagonal_construction_targets.json`, including the checked
   `substitution_code(n,n)` diagonal seed and closed quoted seed instance.

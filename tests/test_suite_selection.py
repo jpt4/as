@@ -22,6 +22,7 @@ EXPECTED_EXTENDED_MODULES = {
     "tests.test_fixed_point_equation_bridge",
     "tests.test_fixed_point_equation_candidate",
     "tests.test_fixed_point_equation_lifting_alignment",
+    "tests.test_fixed_point_equation_lifting_frontier_status",
     "tests.test_fixed_point_obstruction",
     "tests.test_fixed_point_substitution_representability_frontier_status",
     "tests.test_fixed_point_substitution_graph_correctness_bridge",
