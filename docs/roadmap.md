@@ -6225,3 +6225,29 @@ Status: accepted in
 Implemented in
 `autarkic_systems/substitution_graph_correctness_frontier_status.py`, with
 tests in `tests/test_substitution_graph_correctness_frontier_status.py`.
+
+## ADR-0285: Fixed-Point Construction Case Status Rollup
+
+Goal: update the aggregate fixed-point construction frontier status so it
+rolls up the compact status handoffs for all five construction cases added in
+ADR-0275 through ADR-0278 and ADR-0284.
+
+Deliverables:
+
+- `claims/fixed_point_construction_frontier_status.json`, with
+  `case_status_paths` for diagonal-instance closure, substitution
+  representability, substitution graph correctness, bridge equality, and
+  equation lifting;
+- `autarkic_systems.fixed_point_construction_frontier_status`, importing and
+  running the existing compact case-status validators and exposing a
+  `case_status_rollup`;
+- text/JSON output for accepted compact construction-case status count,
+  compact status paths, expected blockers, observed blockers, construction
+  case statuses, and failed subjects; and
+- no proof promotion, no changes to the raw finite support summary, and no
+  changes to the compact case-status modules.
+
+Status: accepted in
+`docs/adr/0285-fixed-point-construction-case-status-rollup.md`. Implemented
+in `autarkic_systems/fixed_point_construction_frontier_status.py`, with tests
+in `tests/test_fixed_point_construction_frontier_status.py`.

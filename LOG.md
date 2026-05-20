@@ -6262,3 +6262,33 @@
 - This remains a handoff/status surface only. It does not promote formula
   correctness, substitution representability, the diagonal lemma, a
   fixed-point equation, an arithmetized proof predicate, or self-consistency.
+
+## 2026-05-20 - Fixed-Point Construction Case Status Rollup
+
+- Added ADR-0285 to roll the five compact fixed-point construction case-status
+  handoffs into the existing aggregate fixed-point construction frontier
+  status.
+- Updated `claims/fixed_point_construction_frontier_status.json` with
+  `case_status_paths` for `diagonal-instance-closure`,
+  `substitution-representability-proof`,
+  `substitution-graph-correctness-proof`, `bridge-equality-proof`, and
+  `fixed-point-equation-lifting`.
+- Updated
+  `autarkic_systems/fixed_point_construction_frontier_status.py` so the
+  aggregate validator imports and runs the existing compact status validators,
+  then exposes a `case_status_rollup` with accepted status, frontier status,
+  expected blocker, observed blocker, construction-case status, path, and
+  failed subjects.
+- The rollup uses an explicit expected-blocker map because the fixed-point
+  construction case kind `substitution-graph-correctness-proof` is owned by
+  the compact status blocked by `substitution-graph-correctness`.
+- Extended `tests/test_fixed_point_construction_frontier_status.py` before
+  implementation. The red run failed because the aggregate manifest/report did
+  not yet expose `case_status_paths`, `case_status_count`, or the text rollup.
+- Focused frontier-status tests passed 16 tests. Live JSON checks accepted the
+  aggregate status with five accepted compact construction-case statuses and
+  no failed subjects.
+- This remains a handoff/status surface only. It does not promote
+  substitution representability, substitution graph correctness, bridge
+  equality, a fixed-point equation, an arithmetized proof predicate, or
+  self-consistency.

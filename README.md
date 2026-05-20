@@ -173,8 +173,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   `fixed-point-equation-lifting`.
 - `docs/fixed-point-construction-frontier-status.md` records the compact
   post-ADR-0270 fixed-point construction frontier status: all five
-  construction cases remain open, seven support surfaces are present, and the
-  blocker remains `fixed-point-construction`.
+  construction cases remain open, seven support surfaces are present, five
+  compact construction-case status handoffs accept, and the blocker remains
+  `fixed-point-construction`.
 - `docs/fixed-point-obstruction.md` records the checked length-growth
   obstruction showing why the naive direct quotation-substitution route cannot
   be the fixed point.

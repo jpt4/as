@@ -15,6 +15,10 @@ import json
 from pathlib import Path
 from typing import Any, Callable
 
+from autarkic_systems.fixed_point_bridge_equality_frontier_status import (
+    load_fixed_point_bridge_equality_frontier_status,
+    validate_fixed_point_bridge_equality_frontier_status,
+)
 from autarkic_systems.fixed_point_bridge_equality_alignment import (
     load_fixed_point_bridge_equality_alignment,
 )
@@ -24,17 +28,33 @@ from autarkic_systems.fixed_point_bridge_equality_evaluation import (
 from autarkic_systems.fixed_point_construction_cases import (
     load_fixed_point_construction_cases,
 )
+from autarkic_systems.fixed_point_diagonal_instance_closure_frontier_status import (
+    load_fixed_point_diagonal_instance_closure_frontier_status,
+    validate_fixed_point_diagonal_instance_closure_frontier_status,
+)
 from autarkic_systems.fixed_point_diagonal_instance_candidate_surface import (
     load_fixed_point_diagonal_instance_candidate_surface,
 )
+from autarkic_systems.fixed_point_equation_lifting_frontier_status import (
+    load_fixed_point_equation_lifting_frontier_status,
+    validate_fixed_point_equation_lifting_frontier_status,
+)
 from autarkic_systems.fixed_point_equation_lifting_alignment import (
     load_fixed_point_equation_lifting_alignment,
+)
+from autarkic_systems.fixed_point_substitution_representability_frontier_status import (
+    load_fixed_point_substitution_representability_frontier_status,
+    validate_fixed_point_substitution_representability_frontier_status,
 )
 from autarkic_systems.fixed_point_substitution_graph_correctness_bridge import (
     load_fixed_point_substitution_graph_correctness_bridge,
 )
 from autarkic_systems.fixed_point_substitution_witness_bridge import (
     load_fixed_point_substitution_witness_bridge,
+)
+from autarkic_systems.substitution_graph_correctness_frontier_status import (
+    load_substitution_graph_correctness_frontier_status,
+    validate_substitution_graph_correctness_frontier_status,
 )
 
 
@@ -43,6 +63,7 @@ DEFAULT_WILLARD_MAP = Path("sources/willard_definition_map.json")
 
 REQUIRED_FRONTIER_STATUS = "blocked"
 REQUIRED_FRONTIER_BLOCKER = "fixed-point-construction"
+REQUIRED_CASE_STATUS = "proof-case-open"
 REQUIRED_DEPENDENCY_SUBJECTS = (
     "fixed_point_construction_cases",
     "diagonal_instance_candidate_surface",
@@ -93,6 +114,55 @@ SUPPORT_BY_CASE_KIND = {
     ),
     "fixed-point-equation-lifting": ("equation_lifting_alignment",),
 }
+REQUIRED_CASE_STATUS_PATHS = {
+    "diagonal-instance-closure": (
+        "claims/fixed_point_diagonal_instance_closure_frontier_status.json"
+    ),
+    "substitution-representability-proof": (
+        "claims/fixed_point_substitution_representability_frontier_status.json"
+    ),
+    "substitution-graph-correctness-proof": (
+        "claims/substitution_graph_correctness_frontier_status.json"
+    ),
+    "bridge-equality-proof": (
+        "claims/fixed_point_bridge_equality_frontier_status.json"
+    ),
+    "fixed-point-equation-lifting": (
+        "claims/fixed_point_equation_lifting_frontier_status.json"
+    ),
+}
+EXPECTED_CASE_STATUS_BLOCKERS = {
+    "diagonal-instance-closure": "diagonal-instance-closure",
+    "substitution-representability-proof": "substitution-representability-proof",
+    "substitution-graph-correctness-proof": "substitution-graph-correctness",
+    "bridge-equality-proof": "bridge-equality-proof",
+    "fixed-point-equation-lifting": "fixed-point-equation-lifting",
+}
+_CASE_STATUS_VALIDATORS: dict[
+    str,
+    tuple[Callable[[Path | str], Any], Callable[[Any], Any]],
+] = {
+    "diagonal-instance-closure": (
+        load_fixed_point_diagonal_instance_closure_frontier_status,
+        validate_fixed_point_diagonal_instance_closure_frontier_status,
+    ),
+    "substitution-representability-proof": (
+        load_fixed_point_substitution_representability_frontier_status,
+        validate_fixed_point_substitution_representability_frontier_status,
+    ),
+    "substitution-graph-correctness-proof": (
+        load_substitution_graph_correctness_frontier_status,
+        validate_substitution_graph_correctness_frontier_status,
+    ),
+    "bridge-equality-proof": (
+        load_fixed_point_bridge_equality_frontier_status,
+        validate_fixed_point_bridge_equality_frontier_status,
+    ),
+    "fixed-point-equation-lifting": (
+        load_fixed_point_equation_lifting_frontier_status,
+        validate_fixed_point_equation_lifting_frontier_status,
+    ),
+}
 
 
 @dataclass(frozen=True)
@@ -113,8 +183,32 @@ class FixedPointConstructionFrontierStatusManifest:
     bridge_equality_alignment_path: str
     bridge_equality_evaluation_path: str
     equation_lifting_alignment_path: str
+    case_status_paths: dict[str, str]
     non_claims: tuple[str, ...]
     next_as_action: str
+
+    def __hash__(self) -> int:
+        """Hash manifests with dict-valued status paths for validation caching."""
+
+        return hash((
+            self.path,
+            self.schema_version,
+            self.status_set_id,
+            self.reviewed_at,
+            self.purpose,
+            self.frontier_status,
+            self.frontier_blocked_by,
+            self.fixed_point_construction_cases_path,
+            self.diagonal_instance_candidate_surface_path,
+            self.substitution_witness_bridge_path,
+            self.substitution_graph_correctness_bridge_path,
+            self.bridge_equality_alignment_path,
+            self.bridge_equality_evaluation_path,
+            self.equation_lifting_alignment_path,
+            tuple(sorted(self.case_status_paths.items())),
+            self.non_claims,
+            self.next_as_action,
+        ))
 
 
 @dataclass(frozen=True)
@@ -150,6 +244,22 @@ class FixedPointConstructionFrontierCaseSupport:
 
 
 @dataclass(frozen=True)
+class FixedPointConstructionFrontierCaseStatusRollup:
+    """One compact construction-case status observed by the aggregate status."""
+
+    case_kind: str
+    path: Path
+    accepted: bool
+    frontier_status: str
+    expected_frontier_blocker: str
+    frontier_blocked_by: str
+    construction_case_id: str
+    construction_case_status: str
+    failed_subjects: tuple[str, ...]
+    detail: str
+
+
+@dataclass(frozen=True)
 class FixedPointConstructionFrontierStatusReport:
     """Validation report for the compact construction frontier status."""
 
@@ -165,6 +275,10 @@ class FixedPointConstructionFrontierStatusReport:
     results: tuple[FixedPointConstructionFrontierStatusValidation, ...]
     support_surfaces: tuple[FixedPointConstructionFrontierSupportSurface, ...]
     case_supports: tuple[FixedPointConstructionFrontierCaseSupport, ...]
+    case_status_rollup: tuple[
+        FixedPointConstructionFrontierCaseStatusRollup,
+        ...
+    ]
 
     @property
     def accepted(self) -> bool:
@@ -201,6 +315,18 @@ class FixedPointConstructionFrontierStatusReport:
         """Return the number of required support surfaces inspected."""
 
         return len(self.support_surfaces)
+
+    @property
+    def case_status_count(self) -> int:
+        """Return the number of observed compact case-status handoffs."""
+
+        return len(self.case_status_rollup)
+
+    @property
+    def accepted_case_status_count(self) -> int:
+        """Return the number of compact case-status handoffs that accepted."""
+
+        return sum(1 for status in self.case_status_rollup if status.accepted)
 
     @property
     def failed_subjects(self) -> tuple[str, ...]:
@@ -267,6 +393,7 @@ def load_fixed_point_construction_frontier_status(
             data,
             "equation_lifting_alignment_path",
         ),
+        case_status_paths=_required_text_map(data, "case_status_paths"),
         non_claims=tuple(_required_text_list(data, "non_claims")),
         next_as_action=_required_text(data, "next_as_action"),
     )
@@ -341,6 +468,11 @@ def validate_fixed_point_construction_frontier_status(
         ),
     )
     results.extend(case_results)
+    case_status_rollup, case_status_results = _case_status_rollup(
+        manifest.case_status_paths,
+        {case.case_kind: case for case in case_supports},
+    )
+    results.extend(case_status_results)
 
     return FixedPointConstructionFrontierStatusReport(
         manifest=manifest,
@@ -359,6 +491,7 @@ def validate_fixed_point_construction_frontier_status(
         results=tuple(results),
         support_surfaces=tuple(support_surfaces),
         case_supports=tuple(case_supports),
+        case_status_rollup=tuple(case_status_rollup),
     )
 
 
@@ -392,11 +525,14 @@ def fixed_point_construction_frontier_status_payload(
         "bridge_equality_alignment_path": str(report.bridge_equality_alignment_path),
         "bridge_equality_evaluation_path": str(report.bridge_equality_evaluation_path),
         "equation_lifting_alignment_path": str(report.equation_lifting_alignment_path),
+        "case_status_paths": dict(report.manifest.case_status_paths),
         "non_claims": list(report.manifest.non_claims),
         "next_as_action": report.manifest.next_as_action,
         "support_surface_count": report.support_surface_count,
         "case_count": report.case_count,
         "open_case_count": report.open_case_count,
+        "case_status_count": report.case_status_count,
+        "accepted_case_status_count": report.accepted_case_status_count,
         "failed_subjects": list(report.failed_subjects),
         "support_surfaces": [
             {
@@ -418,6 +554,21 @@ def fixed_point_construction_frontier_status_payload(
                 "finite_support_accepted": case.finite_support_accepted,
             }
             for case in report.case_supports
+        ],
+        "case_status_rollup": [
+            {
+                "case_kind": status.case_kind,
+                "path": str(status.path),
+                "accepted": status.accepted,
+                "frontier_status": status.frontier_status,
+                "expected_frontier_blocker": status.expected_frontier_blocker,
+                "frontier_blocked_by": status.frontier_blocked_by,
+                "construction_case_id": status.construction_case_id,
+                "construction_case_status": status.construction_case_status,
+                "failed_subjects": list(status.failed_subjects),
+                "detail": status.detail,
+            }
+            for status in report.case_status_rollup
         ],
         "result_count": len(report.results),
         "results": [
@@ -444,6 +595,10 @@ def format_fixed_point_construction_frontier_status_report(
         f"Blocked by: {report.frontier_blocked_by}",
         f"Open construction cases: {report.open_case_count}/{report.case_count}",
         f"Support surfaces: {report.support_surface_count}",
+        (
+            "Compact construction-case status rollup: "
+            f"{report.accepted_case_status_count}/{report.case_status_count}"
+        ),
         "Non-claims: " + _joined_or_none(report.manifest.non_claims),
         f"Failed subjects: {_joined_or_none(report.failed_subjects)}",
     ]
@@ -451,6 +606,21 @@ def format_fixed_point_construction_frontier_status_report(
     for surface in report.support_surfaces:
         prefix = "accepted" if surface.accepted else "rejected"
         lines.append(f"- {surface.subject}: {prefix} ({surface.path})")
+    lines.append("Compact construction-case statuses:")
+    for status_report in report.case_status_rollup:
+        prefix = "accepted" if status_report.accepted else "rejected"
+        lines.append(f"- {status_report.case_kind}: {prefix} ({status_report.path})")
+        lines.append(f"  Frontier status: {status_report.frontier_status}")
+        lines.append(f"  Expected blocker: {status_report.expected_frontier_blocker}")
+        lines.append(f"  Blocked by: {status_report.frontier_blocked_by}")
+        lines.append(f"  Construction case: {status_report.construction_case_id}")
+        lines.append(
+            f"  Construction case status: "
+            f"{status_report.construction_case_status}"
+        )
+        lines.append(
+            f"  Failed subjects: {_joined_or_none(status_report.failed_subjects)}"
+        )
     lines.append("Construction cases:")
     for case in report.case_supports:
         lines.extend([
@@ -793,6 +963,8 @@ def _validate_manifest(
         else:
             results.append(_rejected(field, f"expected {expected} but found {actual}"))
 
+    results.extend(_validate_case_status_paths(manifest.case_status_paths))
+
     missing_non_claims = [
         item for item in REQUIRED_NON_CLAIMS if item not in manifest.non_claims
     ]
@@ -810,6 +982,46 @@ def _validate_manifest(
         results.append(_accepted("next_as_action", "next action present"))
     else:
         results.append(_rejected("next_as_action", "missing next action"))
+    return results
+
+
+def _validate_case_status_paths(
+    paths: dict[str, str],
+) -> list[FixedPointConstructionFrontierStatusValidation]:
+    results: list[FixedPointConstructionFrontierStatusValidation] = []
+    missing = [
+        case_kind for case_kind in REQUIRED_CASE_STATUS_PATHS if case_kind not in paths
+    ]
+    extra = [
+        case_kind for case_kind in paths if case_kind not in REQUIRED_CASE_STATUS_PATHS
+    ]
+    mismatched = [
+        (
+            case_kind,
+            REQUIRED_CASE_STATUS_PATHS[case_kind],
+            paths[case_kind],
+        )
+        for case_kind in REQUIRED_CASE_STATUS_PATHS
+        if case_kind in paths
+        and paths[case_kind] != REQUIRED_CASE_STATUS_PATHS[case_kind]
+    ]
+    if not missing and not extra and not mismatched:
+        return [_accepted("case_status_paths", "compact case-status paths match")]
+
+    detail: list[str] = []
+    if missing:
+        detail.append("missing case-status paths: " + ", ".join(missing))
+    if extra:
+        detail.append("unexpected case-status paths: " + ", ".join(extra))
+    if mismatched:
+        detail.append(
+            "case-status path mismatches: "
+            + "; ".join(
+                f"{case_kind} expected {expected} but found {actual}"
+                for case_kind, expected, actual in mismatched
+            )
+        )
+    results.append(_rejected("case_status_paths", "; ".join(detail)))
     return results
 
 
@@ -894,6 +1106,236 @@ def _case_supports(
     return case_supports, results
 
 
+def _case_status_rollup(
+    paths: dict[str, str],
+    construction_cases_by_kind: dict[str, FixedPointConstructionFrontierCaseSupport],
+) -> tuple[
+    list[FixedPointConstructionFrontierCaseStatusRollup],
+    list[FixedPointConstructionFrontierStatusValidation],
+]:
+    rollup: list[FixedPointConstructionFrontierCaseStatusRollup] = []
+    results: list[FixedPointConstructionFrontierStatusValidation] = []
+
+    # The compact handoffs own their local validation. The aggregate only
+    # enforces the cross-status contract: accepted, blocked, and still open.
+    for case_kind, expected_path in REQUIRED_CASE_STATUS_PATHS.items():
+        subject = f"case_status.{case_kind}"
+        expected_blocker = EXPECTED_CASE_STATUS_BLOCKERS[case_kind]
+        construction_case = construction_cases_by_kind.get(case_kind)
+        construction_case_id = _aggregate_case_value(construction_case, "case_id")
+        construction_case_status = _aggregate_case_value(construction_case, "status")
+        path_text = paths.get(case_kind)
+        if not path_text:
+            results.append(_rejected(f"{subject}.path", "missing case-status path"))
+            rollup.append(
+                FixedPointConstructionFrontierCaseStatusRollup(
+                    case_kind=case_kind,
+                    path=Path("<missing>"),
+                    accepted=False,
+                    frontier_status="missing",
+                    expected_frontier_blocker=expected_blocker,
+                    frontier_blocked_by="missing",
+                    construction_case_id=construction_case_id,
+                    construction_case_status=construction_case_status,
+                    failed_subjects=("case-status-path-missing",),
+                    detail=f"missing case-status path: expected {expected_path}",
+                )
+            )
+            continue
+
+        path = Path(path_text)
+        load_status, validate_status = _CASE_STATUS_VALIDATORS[case_kind]
+        try:
+            status_manifest = load_status(path)
+            status_report = validate_status(status_manifest)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            detail = f"case status missing or invalid: {exc}"
+            results.append(_rejected(f"{subject}.load", detail))
+            rollup.append(
+                FixedPointConstructionFrontierCaseStatusRollup(
+                    case_kind=case_kind,
+                    path=path,
+                    accepted=False,
+                    frontier_status="missing",
+                    expected_frontier_blocker=expected_blocker,
+                    frontier_blocked_by="missing",
+                    construction_case_id=construction_case_id,
+                    construction_case_status=construction_case_status,
+                    failed_subjects=("case-status-load",),
+                    detail=detail,
+                )
+            )
+            continue
+
+        compact_case = _case_status_report_case(status_report)
+        if compact_case is not None:
+            construction_case_id = _case_status_case_value(compact_case, "case_id")
+            construction_case_status = _case_status_case_value(
+                compact_case,
+                "status",
+            )
+        compact_case_kind = _case_status_case_value(compact_case, "case_kind")
+        failed_subjects = tuple(getattr(status_report, "failed_subjects", ()))
+        frontier_status = str(getattr(status_report, "frontier_status", "missing"))
+        frontier_blocked_by = str(
+            getattr(status_report, "frontier_blocked_by", "missing")
+        )
+
+        case_results = _validate_case_status_report(
+            case_kind=case_kind,
+            expected_blocker=expected_blocker,
+            report=status_report,
+            frontier_status=frontier_status,
+            frontier_blocked_by=frontier_blocked_by,
+            compact_case_kind=compact_case_kind,
+            construction_case_status=construction_case_status,
+            failed_subjects=failed_subjects,
+        )
+        results.extend(case_results)
+        accepted = all(result.accepted for result in case_results)
+        if accepted:
+            detail = "accepted compact construction-case status"
+        else:
+            detail = "rejected compact construction-case status"
+        rollup.append(
+            FixedPointConstructionFrontierCaseStatusRollup(
+                case_kind=case_kind,
+                path=path,
+                accepted=accepted,
+                frontier_status=frontier_status,
+                expected_frontier_blocker=expected_blocker,
+                frontier_blocked_by=frontier_blocked_by,
+                construction_case_id=construction_case_id,
+                construction_case_status=construction_case_status,
+                failed_subjects=failed_subjects,
+                detail=detail,
+            )
+        )
+    return rollup, results
+
+
+def _validate_case_status_report(
+    *,
+    case_kind: str,
+    expected_blocker: str,
+    report: Any,
+    frontier_status: str,
+    frontier_blocked_by: str,
+    compact_case_kind: str,
+    construction_case_status: str,
+    failed_subjects: tuple[str, ...],
+) -> list[FixedPointConstructionFrontierStatusValidation]:
+    subject = f"case_status.{case_kind}"
+    results: list[FixedPointConstructionFrontierStatusValidation] = []
+    if bool(getattr(report, "accepted", False)):
+        results.append(_accepted(f"{subject}.accepted", "case status accepted"))
+    else:
+        results.append(
+            _rejected(
+                f"{subject}.accepted",
+                "case status validator rejected: "
+                + _case_status_failure_detail(failed_subjects),
+            )
+        )
+
+    if frontier_status == REQUIRED_FRONTIER_STATUS:
+        results.append(_accepted(f"{subject}.frontier_status", "frontier blocked"))
+    else:
+        results.append(
+            _rejected(
+                f"{subject}.frontier_status",
+                f"expected blocked but found {frontier_status}",
+            )
+        )
+
+    if frontier_blocked_by == expected_blocker:
+        results.append(
+            _accepted(f"{subject}.frontier_blocked_by", "blocker matches handoff")
+        )
+    else:
+        results.append(
+            _rejected(
+                f"{subject}.frontier_blocked_by",
+                f"expected {expected_blocker} blocker but found {frontier_blocked_by}",
+            )
+        )
+
+    if compact_case_kind in {"missing", case_kind}:
+        results.append(_accepted(f"{subject}.case_kind", "case kind matches"))
+    else:
+        results.append(
+            _rejected(
+                f"{subject}.case_kind",
+                f"expected {case_kind} case kind but found {compact_case_kind}",
+            )
+        )
+
+    if construction_case_status == REQUIRED_CASE_STATUS:
+        results.append(
+            _accepted(
+                f"{subject}.construction_case_status",
+                "construction case remains open",
+            )
+        )
+    else:
+        results.append(
+            _rejected(
+                f"{subject}.construction_case_status",
+                f"expected proof-case-open but found {construction_case_status}",
+            )
+        )
+
+    if compact_case_kind == "missing":
+        open_case_count = getattr(report, "open_case_count", None)
+        case_count = getattr(report, "case_count", None)
+        if open_case_count == case_count and case_count:
+            results.append(
+                _accepted(
+                    f"{subject}.open_cases",
+                    "compact handoff cases remain open",
+                )
+            )
+        else:
+            results.append(
+                _rejected(
+                    f"{subject}.open_cases",
+                    "compact handoff does not expose all cases open",
+                )
+            )
+    return results
+
+
+def _case_status_report_case(report: Any) -> Any | None:
+    construction_case = getattr(report, "construction_case", None)
+    if construction_case is not None:
+        return construction_case
+    proof_case = getattr(report, "proof_case", None)
+    if proof_case is not None:
+        return proof_case
+    return getattr(report, "case", None)
+
+
+def _case_status_case_value(case: Any | None, field: str) -> str:
+    if case is None:
+        return "missing"
+    return str(getattr(case, field, "missing"))
+
+
+def _aggregate_case_value(
+    case: FixedPointConstructionFrontierCaseSupport | None,
+    field: str,
+) -> str:
+    if case is None:
+        return "missing"
+    return str(getattr(case, field, "missing"))
+
+
+def _case_status_failure_detail(failed_subjects: tuple[str, ...]) -> str:
+    if failed_subjects:
+        return ", ".join(failed_subjects)
+    return "unknown failure"
+
+
 def _failed_subject_for_result(subject: str) -> str:
     if subject == "frontier_status":
         return "fixed-point-construction-frontier-status"
@@ -901,6 +1343,8 @@ def _failed_subject_for_result(subject: str) -> str:
         return "fixed-point-construction-frontier-case-status"
     if subject == "non_claims":
         return "fixed-point-construction-frontier-non-claim"
+    if subject == "case_status_paths" or subject.startswith("case_status."):
+        return "fixed-point-construction-frontier-case-status-rollup"
     if subject in REQUIRED_DEPENDENCY_SUBJECTS or subject.endswith("_path"):
         return "fixed-point-construction-frontier-dependency"
     if subject.endswith(".finite_support") or subject in {"cases", "support_surfaces"}:
@@ -927,6 +1371,20 @@ def _required_list(item: dict[str, Any], key: str) -> list[Any]:
     if not isinstance(value, list) or not value:
         raise ValueError(f"required list field missing: {key}")
     return value
+
+
+def _required_text_map(item: dict[str, Any], key: str) -> dict[str, str]:
+    value = item.get(key)
+    if not isinstance(value, dict) or not value:
+        raise ValueError(f"required object field missing: {key}")
+    result: dict[str, str] = {}
+    for map_key, map_value in value.items():
+        if not isinstance(map_key, str) or not map_key.strip():
+            raise ValueError(f"{key} contains non-text key")
+        if not isinstance(map_value, str) or not map_value.strip():
+            raise ValueError(f"{key} contains non-text value")
+        result[map_key] = map_value
+    return result
 
 
 def _required_text_list(item: dict[str, Any], key: str) -> list[str]:

@@ -30,6 +30,30 @@ BRIDGE_EQUALITY_ALIGNMENT = Path("claims/fixed_point_bridge_equality_alignment.j
 BRIDGE_EQUALITY_EVALUATION = Path("claims/fixed_point_bridge_equality_evaluation.json")
 EQUATION_LIFTING_ALIGNMENT = Path("claims/fixed_point_equation_lifting_alignment.json")
 WILLARD_MAP = Path("sources/willard_definition_map.json")
+EXPECTED_CASE_STATUS_PATHS = {
+    "diagonal-instance-closure": (
+        "claims/fixed_point_diagonal_instance_closure_frontier_status.json"
+    ),
+    "substitution-representability-proof": (
+        "claims/fixed_point_substitution_representability_frontier_status.json"
+    ),
+    "substitution-graph-correctness-proof": (
+        "claims/substitution_graph_correctness_frontier_status.json"
+    ),
+    "bridge-equality-proof": (
+        "claims/fixed_point_bridge_equality_frontier_status.json"
+    ),
+    "fixed-point-equation-lifting": (
+        "claims/fixed_point_equation_lifting_frontier_status.json"
+    ),
+}
+EXPECTED_CASE_STATUS_BLOCKERS = {
+    "diagonal-instance-closure": "diagonal-instance-closure",
+    "substitution-representability-proof": "substitution-representability-proof",
+    "substitution-graph-correctness-proof": "substitution-graph-correctness",
+    "bridge-equality-proof": "bridge-equality-proof",
+    "fixed-point-equation-lifting": "fixed-point-equation-lifting",
+}
 
 
 class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
@@ -72,6 +96,7 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
             self.status.equation_lifting_alignment_path,
             str(EQUATION_LIFTING_ALIGNMENT),
         )
+        self.assertEqual(self.status.case_status_paths, EXPECTED_CASE_STATUS_PATHS)
         self.assertEqual(
             REQUIRED_DEPENDENCY_SUBJECTS,
             (
@@ -117,13 +142,31 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
         self.assertEqual(report.case_count, 5)
         self.assertEqual(report.open_case_count, 5)
         self.assertEqual(report.support_surface_count, 7)
+        self.assertEqual(report.case_status_count, 5)
+        self.assertEqual(report.accepted_case_status_count, 5)
         self.assertTrue(all(surface.accepted for surface in report.support_surfaces))
+        self.assertTrue(all(status.accepted for status in report.case_status_rollup))
         self.assertEqual(
             tuple(case.status for case in report.case_supports),
             ("proof-case-open",) * 5,
         )
+        self.assertEqual(
+            tuple(status.case_kind for status in report.case_status_rollup),
+            tuple(EXPECTED_CASE_STATUS_PATHS),
+        )
+        self.assertEqual(
+            {
+                status.case_kind: status.frontier_blocked_by
+                for status in report.case_status_rollup
+            },
+            EXPECTED_CASE_STATUS_BLOCKERS,
+        )
+        self.assertEqual(
+            tuple(status.construction_case_status for status in report.case_status_rollup),
+            ("proof-case-open",) * 5,
+        )
 
-    def test_json_payload_exposes_per_case_finite_support(self):
+    def test_json_payload_exposes_per_case_finite_support_and_status_rollup(self):
         report = validate_fixed_point_construction_frontier_status(
             self.status,
             WILLARD_MAP,
@@ -141,6 +184,8 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
         self.assertEqual(payload["support_surface_count"], 7)
         self.assertEqual(payload["case_count"], 5)
         self.assertEqual(payload["open_case_count"], 5)
+        self.assertEqual(payload["case_status_count"], 5)
+        self.assertEqual(payload["accepted_case_status_count"], 5)
         self.assertEqual(
             [surface["subject"] for surface in payload["support_surfaces"]],
             list(REQUIRED_DEPENDENCY_SUBJECTS),
@@ -173,6 +218,28 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
             supports["fixed-point-equation-lifting"],
             ["equation_lifting_alignment"],
         )
+        rollup = {
+            status["case_kind"]: status
+            for status in payload["case_status_rollup"]
+        }
+        self.assertEqual(set(rollup), set(EXPECTED_CASE_STATUS_PATHS))
+        for case_kind, expected_path in EXPECTED_CASE_STATUS_PATHS.items():
+            self.assertTrue(rollup[case_kind]["accepted"])
+            self.assertEqual(rollup[case_kind]["path"], expected_path)
+            self.assertEqual(rollup[case_kind]["frontier_status"], "blocked")
+            self.assertEqual(
+                rollup[case_kind]["expected_frontier_blocker"],
+                EXPECTED_CASE_STATUS_BLOCKERS[case_kind],
+            )
+            self.assertEqual(
+                rollup[case_kind]["frontier_blocked_by"],
+                EXPECTED_CASE_STATUS_BLOCKERS[case_kind],
+            )
+            self.assertEqual(
+                rollup[case_kind]["construction_case_status"],
+                "proof-case-open",
+            )
+            self.assertEqual(rollup[case_kind]["failed_subjects"], [])
 
     def test_text_report_exposes_blocked_boundary(self):
         report = validate_fixed_point_construction_frontier_status(
@@ -190,6 +257,13 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
         self.assertIn("Blocked by: fixed-point-construction", text)
         self.assertIn("Open construction cases: 5/5", text)
         self.assertIn("Support surfaces: 7", text)
+        self.assertIn("Compact construction-case status rollup: 5/5", text)
+        self.assertIn(
+            "- substitution-graph-correctness-proof: accepted "
+            "(claims/substitution_graph_correctness_frontier_status.json)",
+            text,
+        )
+        self.assertIn("Expected blocker: substitution-graph-correctness", text)
         self.assertIn("bridge-equality-proof", text)
         self.assertIn(
             "Finite support: bridge_equality_alignment, bridge_equality_evaluation",
@@ -274,6 +348,142 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
             )
         )
 
+    def test_missing_compact_case_status_path_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "status.json"
+            data = json.loads(STATUS.read_text(encoding="utf-8"))
+            data["case_status_paths"].pop("bridge-equality-proof")
+            path.write_text(json.dumps(data), encoding="utf-8")
+            status = load_fixed_point_construction_frontier_status(path)
+
+            report = validate_fixed_point_construction_frontier_status(
+                status,
+                WILLARD_MAP,
+            )
+
+        self.assertFalse(report.accepted)
+        self.assertIn(
+            "fixed-point-construction-frontier-case-status-rollup",
+            report.failed_subjects,
+        )
+        self.assertTrue(
+            any("missing case-status paths" in result.detail for result in report.results)
+        )
+
+    def test_compact_case_status_blocker_mismatch_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            compact_path = Path(tmp) / "substitution_graph_status.json"
+            compact_data = json.loads(
+                Path(
+                    EXPECTED_CASE_STATUS_PATHS[
+                        "substitution-graph-correctness-proof"
+                    ]
+                ).read_text(encoding="utf-8")
+            )
+            compact_data["frontier_blocked_by"] = "substitution-graph-correctness-proof"
+            compact_path.write_text(json.dumps(compact_data), encoding="utf-8")
+
+            status_path = Path(tmp) / "status.json"
+            status_data = json.loads(STATUS.read_text(encoding="utf-8"))
+            status_data["case_status_paths"][
+                "substitution-graph-correctness-proof"
+            ] = str(compact_path)
+            status_path.write_text(json.dumps(status_data), encoding="utf-8")
+            status = load_fixed_point_construction_frontier_status(status_path)
+
+            report = validate_fixed_point_construction_frontier_status(
+                status,
+                WILLARD_MAP,
+            )
+
+        self.assertFalse(report.accepted)
+        self.assertIn(
+            "fixed-point-construction-frontier-case-status-rollup",
+            report.failed_subjects,
+        )
+        self.assertTrue(
+            any(
+                "expected substitution-graph-correctness blocker" in result.detail
+                for result in report.results
+            )
+        )
+
+    def test_closed_compact_construction_case_status_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            case_path = Path(tmp) / "cases.json"
+            case_data = json.loads(CONSTRUCTION_CASES.read_text(encoding="utf-8"))
+            case_data["cases"][1]["status"] = "fixed-point-equation-proved"
+            case_path.write_text(json.dumps(case_data), encoding="utf-8")
+
+            compact_path = Path(tmp) / "substitution_status.json"
+            compact_data = json.loads(
+                Path(
+                    EXPECTED_CASE_STATUS_PATHS[
+                        "substitution-representability-proof"
+                    ]
+                ).read_text(encoding="utf-8")
+            )
+            compact_data["fixed_point_construction_cases_path"] = str(case_path)
+            compact_path.write_text(json.dumps(compact_data), encoding="utf-8")
+
+            status_path = Path(tmp) / "status.json"
+            status_data = json.loads(STATUS.read_text(encoding="utf-8"))
+            status_data["case_status_paths"][
+                "substitution-representability-proof"
+            ] = str(compact_path)
+            status_path.write_text(json.dumps(status_data), encoding="utf-8")
+            status = load_fixed_point_construction_frontier_status(status_path)
+
+            report = validate_fixed_point_construction_frontier_status(
+                status,
+                WILLARD_MAP,
+            )
+
+        self.assertFalse(report.accepted)
+        self.assertIn(
+            "fixed-point-construction-frontier-case-status-rollup",
+            report.failed_subjects,
+        )
+        self.assertTrue(
+            any("expected proof-case-open" in result.detail for result in report.results)
+        )
+
+    def test_unaccepted_compact_case_status_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            compact_path = Path(tmp) / "bridge_status.json"
+            compact_data = json.loads(
+                Path(
+                    EXPECTED_CASE_STATUS_PATHS["bridge-equality-proof"]
+                ).read_text(encoding="utf-8")
+            )
+            compact_data["non_claims"] = compact_data["non_claims"][:-1]
+            compact_path.write_text(json.dumps(compact_data), encoding="utf-8")
+
+            status_path = Path(tmp) / "status.json"
+            status_data = json.loads(STATUS.read_text(encoding="utf-8"))
+            status_data["case_status_paths"]["bridge-equality-proof"] = str(
+                compact_path
+            )
+            status_path.write_text(json.dumps(status_data), encoding="utf-8")
+            status = load_fixed_point_construction_frontier_status(status_path)
+
+            report = validate_fixed_point_construction_frontier_status(
+                status,
+                WILLARD_MAP,
+            )
+
+        self.assertFalse(report.accepted)
+        self.assertIn(
+            "fixed-point-construction-frontier-case-status-rollup",
+            report.failed_subjects,
+        )
+        self.assertTrue(
+            any(
+                "case status validator rejected" in result.detail
+                for result in report.results
+            )
+        )
+
     def test_missing_non_claim_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "status.json"
@@ -338,6 +548,7 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["frontier_blocked_by"], "fixed-point-construction")
+        self.assertEqual(payload["case_status_count"], 5)
 
     def test_module_execution_runs_frontier_status_validation(self):
         completed = subprocess.run(
@@ -380,6 +591,7 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
             payload["status_set_id"],
             "as-fixed-point-construction-frontier-status-v1",
         )
+        self.assertEqual(payload["case_status_count"], 5)
 
 
 if __name__ == "__main__":
