@@ -6116,3 +6116,30 @@ Implemented in
 `autarkic_systems/substitution_graph_quotation_term_closure_frontier_status.py`,
 with tests in
 `tests/test_substitution_graph_quotation_term_closure_frontier_status.py`.
+
+## ADR-0281: Substitution Graph Meta-Substitution Semantics Frontier Status
+
+Goal: add a compact, fail-closed frontier/status handoff over the substitution
+graph correctness `meta-substitution-semantics` case without promoting it.
+
+Deliverables:
+
+- `claims/substitution_graph_meta_substitution_semantics_frontier_status.json`,
+  preserving `meta-substitution-semantics` as the blocker;
+- `autarkic_systems.substitution_graph_meta_substitution_semantics_frontier_status`,
+  validating the compact manifest shape, matching correctness-case openness,
+  required support paths, the accepted meta-substitution-semantics support
+  surface, six semantic subjects, explicit non-claims, and no failed subjects;
+- text/JSON output for blocked status, case id/kind/status, support-surface
+  count, semantics support facts, and failed subjects; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma proof, fixed-point equation proof, arithmetized proof predicate,
+  self-consistency theorem, runtime behavior, command semantics, aggregate
+  correctness frontier, or fixed-point construction frontier changes.
+
+Status: accepted in
+`docs/adr/0281-substitution-graph-meta-substitution-semantics-frontier-status.md`.
+Implemented in
+`autarkic_systems/substitution_graph_meta_substitution_semantics_frontier_status.py`,
+with tests in
+`tests/test_substitution_graph_meta_substitution_semantics_frontier_status.py`.

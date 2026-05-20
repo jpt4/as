@@ -101,6 +101,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   compact codebook-roundtrip proof-case frontier status: the correctness case
   remains open, the finite roundtrip support surface has 12 accepted subjects,
   and the blocker remains `codebook-roundtrip`.
+- `docs/substitution-graph-meta-substitution-semantics-frontier-status.md`
+  records the compact meta-substitution-semantics proof-case frontier status:
+  the correctness case remains open, the finite semantics support surface has
+  6 accepted subjects, and the blocker remains `meta-substitution-semantics`.
 - `docs/consistency-level-target.md` records Level-1 consistency as the first
   selected AS formal-confidence target notion.
 - `docs/deduction-apparatus-target.md` records the AS-local

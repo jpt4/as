@@ -245,6 +245,15 @@
   finite quotation-term-closure support surface with 12 closure subjects and
   no failed subjects, and the preserved `quotation-term-closure` blocker
   without proving or promoting the case.
+- ADR-0281 adds
+  `claims/substitution_graph_meta_substitution_semantics_frontier_status.json`
+  and
+  `autarkic_systems.substitution_graph_meta_substitution_semantics_frontier_status`,
+  a compact status surface for the substitution graph correctness
+  `meta-substitution-semantics` case. It reports the case still open, the
+  accepted finite meta-substitution-semantics support surface with 6 semantic
+  subjects and no failed subjects, and the preserved
+  `meta-substitution-semantics` blocker without proving or promoting the case.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length

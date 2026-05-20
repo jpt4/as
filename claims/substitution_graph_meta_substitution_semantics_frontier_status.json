@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "status_set_id": "as-substitution-graph-meta-substitution-semantics-frontier-status-v1",
+  "reviewed_at": "2026-05-20",
+  "purpose": "Compact fail-closed status surface for the substitution graph correctness meta-substitution-semantics frontier. It checks the matching open proof case and the existing finite meta-substitution semantics support surface while preserving the blocker.",
+  "frontier_status": "blocked",
+  "frontier_blocked_by": "meta-substitution-semantics",
+  "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
+  "meta_substitution_semantics_path": "claims/substitution_graph_meta_substitution_semantics.json",
+  "formal_language_path": "language/formal_arithmetic_language.json",
+  "codebook_path": "language/formal_codebook.json",
+  "formal_substitution_examples_path": "language/formal_substitution_examples.json",
+  "formula_candidates_path": "claims/substitution_graph_formula_candidates.json",
+  "evaluation_examples_path": "claims/substitution_graph_evaluation_examples.json",
+  "required_case_kind": "meta-substitution-semantics",
+  "required_case_status": "proof-case-open",
+  "expected_support_surface_count": 1,
+  "expected_semantics_subject_count": 6,
+  "non_claims": [
+    "no formula correctness proof",
+    "no substitution representability proof",
+    "no diagonal lemma proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this compact status as the current meta-substitution-semantics handoff: the finite semantics support validates, the correctness case remains open, and the general capture-avoiding substitution semantics proof is still required before promotion."
+}

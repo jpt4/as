@@ -6153,3 +6153,31 @@
 - This is a compact frontier handoff only. It does not prove formula
   correctness, substitution representability, the diagonal lemma, a
   fixed-point equation, an arithmetized proof predicate, or self-consistency.
+
+## 2026-05-20 - Substitution Graph Meta-Substitution Semantics Frontier Status
+
+- Added ADR-0281 to provide a compact substitution graph
+  meta-substitution-semantics frontier status over the existing correctness
+  proof case and finite support surface.
+- Added
+  `claims/substitution_graph_meta_substitution_semantics_frontier_status.json`
+  and
+  `autarkic_systems/substitution_graph_meta_substitution_semantics_frontier_status.py`,
+  checking the expected frontier manifest shape, the matching
+  `meta-substitution-semantics` correctness case, required support paths, the
+  existing meta-substitution-semantics support validator, the `blocked`
+  frontier status, and explicit non-claims.
+- Added
+  `tests/test_substitution_graph_meta_substitution_semantics_frontier_status.py`
+  before the implementation. The red run failed because
+  `autarkic_systems.substitution_graph_meta_substitution_semantics_frontier_status`
+  did not exist.
+- Focused frontier-status tests passed 15 tests. The focused suite plus
+  `tests.test_suite_selection` passed 20 tests. Live text and JSON CLI checks
+  accepted the status surface, reporting `meta-substitution-semantics` as the
+  blocker, the correctness case still `proof-case-open`, one accepted support
+  surface, six semantic subjects, and no failed subjects. Compileall, JSON
+  parsing, and diff whitespace checks passed.
+- This is a compact frontier handoff only. It does not prove formula
+  correctness, substitution representability, the diagonal lemma, a
+  fixed-point equation, an arithmetized proof predicate, or self-consistency.
