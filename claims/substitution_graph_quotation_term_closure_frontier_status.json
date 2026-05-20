@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "status_set_id": "as-substitution-graph-quotation-term-closure-frontier-status-v1",
+  "reviewed_at": "2026-05-20",
+  "purpose": "Compact fail-closed status surface for the substitution graph correctness quotation-term-closure frontier. It checks the matching open proof case and the existing finite quotation-term-closure support surface while preserving the blocker.",
+  "frontier_status": "blocked",
+  "frontier_blocked_by": "quotation-term-closure",
+  "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
+  "quotation_term_closure_path": "claims/substitution_graph_quotation_term_closure.json",
+  "expected_support_surface_count": 1,
+  "expected_closure_subject_count": 12,
+  "non_claims": [
+    "no formula correctness proof",
+    "no substitution representability proof",
+    "no diagonal lemma proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this compact status as the current quotation-term-closure handoff: the finite closure support validates, the correctness case remains open, and the general closure proof is still required before promotion."
+}

@@ -518,6 +518,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/substitution_graph_quotation_term_closure.py` validates
   and runs finite quotation-term closure evidence for those same graph-domain
   codes, while keeping the general proof obligation open.
+- `autarkic_systems/substitution_graph_quotation_term_closure_frontier_status.py`
+  validates and runs the compact quotation-term-closure frontier handoff,
+  checking the existing open correctness case and finite closure support
+  surface without promoting the case to proved.
 - `autarkic_systems/substitution_graph_meta_substitution_semantics.py`
   validates and runs finite semantic evidence for the current graph-domain
   substitutions, while keeping the general proof obligation open.
@@ -727,6 +731,11 @@ proof certificates, object languages, evidence bundles, and status reports:
   validates `claims/substitution_graph_quotation_term_closure.json`, including
   12 finite graph-domain code subjects that quote to closed nested sequence
   terms, recover their tokens, and round-trip through the formal codebook.
+- `python -m autarkic_systems.substitution_graph_quotation_term_closure_frontier_status --format json`
+  validates
+  `claims/substitution_graph_quotation_term_closure_frontier_status.json`,
+  including the matching open `quotation-term-closure` correctness case and
+  the accepted finite closure support surface with no failed subjects.
 - `python -m autarkic_systems.substitution_graph_meta_substitution_semantics --format json`
   validates `claims/substitution_graph_meta_substitution_semantics.json`,
   including 6 finite graph-domain substitution subjects whose closed

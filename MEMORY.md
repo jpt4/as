@@ -237,6 +237,14 @@
   support surfaces, 12 finite roundtrip subjects, and the preserved
   `codebook-roundtrip` blocker without proving or promoting formula
   correctness.
+- ADR-0280 adds
+  `claims/substitution_graph_quotation_term_closure_frontier_status.json` and
+  `autarkic_systems.substitution_graph_quotation_term_closure_frontier_status`,
+  a compact status surface for the substitution graph correctness
+  `quotation-term-closure` case. It reports the case still open, the accepted
+  finite quotation-term-closure support surface with 12 closure subjects and
+  no failed subjects, and the preserved `quotation-term-closure` blocker
+  without proving or promoting the case.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length

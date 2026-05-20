@@ -6089,3 +6089,30 @@ Implemented in
 `autarkic_systems/substitution_graph_codebook_roundtrip_frontier_status.py`,
 with tests in
 `tests/test_substitution_graph_codebook_roundtrip_frontier_status.py`.
+
+## ADR-0280: Substitution Graph Quotation Term Closure Frontier Status
+
+Goal: add a compact, fail-closed frontier/status handoff over the substitution
+graph correctness `quotation-term-closure` case without promoting it.
+
+Deliverables:
+
+- `claims/substitution_graph_quotation_term_closure_frontier_status.json`,
+  preserving `quotation-term-closure` as the blocker;
+- `autarkic_systems.substitution_graph_quotation_term_closure_frontier_status`,
+  validating the compact manifest shape, matching correctness-case openness,
+  required support paths, the accepted quotation-term-closure support surface,
+  twelve closure subjects, explicit non-claims, and no failed subjects;
+- text/JSON output for blocked status, case id/kind/status, support-surface
+  count, closure support facts, and failed subjects; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma proof, fixed-point equation proof, arithmetized proof predicate,
+  self-consistency theorem, runtime behavior, command semantics, aggregate
+  correctness frontier, or fixed-point construction frontier changes.
+
+Status: accepted in
+`docs/adr/0280-substitution-graph-quotation-term-closure-frontier-status.md`.
+Implemented in
+`autarkic_systems/substitution_graph_quotation_term_closure_frontier_status.py`,
+with tests in
+`tests/test_substitution_graph_quotation_term_closure_frontier_status.py`.

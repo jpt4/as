@@ -5988,6 +5988,33 @@
   representability, substitution graph correctness, bridge equality, a
   fixed-point equation, an arithmetized proof predicate, or self-consistency.
 
+## 2026-05-20 - Substitution Graph Quotation Term Closure Frontier Status
+
+- Added ADR-0280 to provide a compact substitution graph
+  quotation-term-closure frontier status over the existing correctness proof
+  case and finite support surface.
+- Added
+  `claims/substitution_graph_quotation_term_closure_frontier_status.json` and
+  `autarkic_systems/substitution_graph_quotation_term_closure_frontier_status.py`,
+  checking the expected frontier manifest shape, the matching
+  `quotation-term-closure` correctness case, required support paths, the
+  existing quotation-term-closure support validator, the `blocked` frontier
+  status, and explicit non-claims.
+- Added
+  `tests/test_substitution_graph_quotation_term_closure_frontier_status.py`
+  before the implementation. The red run failed because
+  `autarkic_systems.substitution_graph_quotation_term_closure_frontier_status`
+  did not exist.
+- Focused frontier-status tests passed 14 tests. The focused suite plus
+  `tests.test_suite_selection` passed 19 tests. Live text and JSON CLI checks
+  accepted the status surface, reporting `quotation-term-closure` as the
+  blocker, the correctness case still `proof-case-open`, one accepted support
+  surface, twelve closure subjects, and no failed subjects. Compileall, JSON
+  parsing, and diff whitespace checks passed.
+- This is a compact frontier handoff only. It does not prove formula
+  correctness, substitution representability, the diagonal lemma, a
+  fixed-point equation, an arithmetized proof predicate, or self-consistency.
+
 ## 2026-05-20 - Substitution Graph Correctness Frontier Status
 
 - Added ADR-0274 to provide a compact substitution graph correctness frontier
