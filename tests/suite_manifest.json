@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "manifest_id": "as-test-suite-selection-v1",
+  "adr": "ADR-0272",
+  "leaf_suites": {
+    "extended-fixed-point": {
+      "kind": "explicit",
+      "description": "Deliberate fixed-point/status regressions: all current fixed-point unittest modules plus aggregate formal-confidence, project-status, handoff, and vertical-demo checks.",
+      "modules": [
+        "tests.test_fixed_point_bridge_equality_alignment",
+        "tests.test_fixed_point_bridge_equality_evaluation",
+        "tests.test_fixed_point_construction_cases",
+        "tests.test_fixed_point_diagonal_instance_candidate_surface",
+        "tests.test_fixed_point_diagonal_instance_closure",
+        "tests.test_fixed_point_equation_bridge",
+        "tests.test_fixed_point_equation_candidate",
+        "tests.test_fixed_point_equation_lifting_alignment",
+        "tests.test_fixed_point_obstruction",
+        "tests.test_fixed_point_substitution_graph_correctness_bridge",
+        "tests.test_fixed_point_substitution_witness_bridge",
+        "tests.test_fixed_point_target",
+        "tests.test_fixed_point_validation_cache",
+        "tests.test_formal_confidence_target",
+        "tests.test_handoff_status",
+        "tests.test_project_status_report",
+        "tests.test_vertical_demo_digest"
+      ]
+    },
+    "fast": {
+      "kind": "discovered-minus",
+      "description": "Default feedback path: every discovered unittest module except the explicit extended fixed-point suite.",
+      "exclude_suites": [
+        "extended-fixed-point"
+      ]
+    }
+  },
+  "aggregate_suites": {
+    "all": {
+      "kind": "union",
+      "description": "Complete discovered unittest surface, assembled from leaf suites rather than re-listed by hand.",
+      "suites": [
+        "fast",
+        "extended-fixed-point"
+      ]
+    }
+  },
+  "rationale": [
+    "Keep ordinary feature work on a fast default unittest path.",
+    "Preserve explicit operator access to the deeper fixed-point and status regressions.",
+    "Fail closed when a hand-maintained suite entry goes stale or discovery finds an unclassified test module.",
+    "Compute the all suite from leaf suites so the aggregate cannot drift separately."
+  ],
+  "non_goals": [
+    "Do not change proof validators, claim manifests, mathematical semantics, or existing test skip behavior.",
+    "Do not replace unittest discovery as the project test substrate.",
+    "Do not classify substitution-graph finite-domain, quotation, or other formal-language tests as extended merely because fixed-point validators depend on them; this suite boundary is the current fixed-point campaign surface plus aggregate status/handoff/vertical-demo checks."
+  ]
+}

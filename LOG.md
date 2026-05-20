@@ -5913,3 +5913,25 @@
   so the new finite evaluation dependency is visible without overclaiming it.
   This is not a bridge equality proof, fixed-point equation proof,
   arithmetized proof predicate, or self-consistency theorem.
+
+## 2026-05-20 - Test Suite Selection Manifest
+
+- Added ADR-0272 to separate the default fast unittest path from explicit
+  extended fixed-point/status regressions without changing validators,
+  manifests, mathematical semantics, or existing skip decorators.
+- Wrote `tests/test_suite_selection.py` before implementation. The red run of
+  `python -m unittest tests.test_suite_selection` failed because
+  `autarkic_systems.test_suite_selection` did not exist.
+- Added `tests/suite_manifest.json` with schema/version/id, two leaf suites
+  (`fast` and `extended-fixed-point`), the aggregate `all` suite, rationale,
+  and non-goals. A live first fast run with only the initial expected extended
+  candidates passed but took 927.401 seconds and still spent substantial time
+  in other fixed-point modules, so the extended suite was tightened to all
+  current `tests.test_fixed_point_*` modules plus formal-confidence,
+  project-status, handoff, and vertical-demo aggregate checks. The boundary
+  intentionally leaves substitution-graph finite-domain tests on the fast path.
+- Added `autarkic_systems/test_suite_selection.py`, a stdlib-only selector
+  that discovers `tests/test_*.py`, validates that every discovered module is
+  classified exactly once into one leaf suite, fails closed over stale explicit
+  module names, lists suites without running tests, and runs selected modules
+  through `unittest` when not listing.

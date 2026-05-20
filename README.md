@@ -1054,8 +1054,22 @@ proof certificates, object languages, evidence bundles, and status reports:
 ## Fast Verification
 
 ```sh
-python -m unittest discover
+python -m autarkic_systems.test_suite_selection --suite fast
 ```
+
+The suite selector is defined by `tests/suite_manifest.json`. It keeps the
+default feedback path separate from the explicit fixed-point/status extended
+suite:
+
+```sh
+python -m autarkic_systems.test_suite_selection --suite fast --list
+python -m autarkic_systems.test_suite_selection --suite extended-fixed-point --list
+python -m autarkic_systems.test_suite_selection --suite extended-fixed-point
+python -m autarkic_systems.test_suite_selection --suite all
+```
+
+`python -m unittest discover` remains the plain unittest discovery command, but
+it does not separate the extended fixed-point regressions from the fast path.
 
 The current executable probes live in `autarkic_systems/universal_cell.py` and
 `autarkic_systems/transition_predicates.py`, with claim-manifest,

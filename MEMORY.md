@@ -179,6 +179,13 @@
   structured fail-closed dependency of `autarkic_systems.formal_confidence`;
   missing or invalid substitution graph formula references now reject
   formal-confidence validation as `target-substitution-graph-formula`.
+- ADR-0272 adds `tests/suite_manifest.json` and
+  `autarkic_systems.test_suite_selection`; use
+  `python -m autarkic_systems.test_suite_selection --suite fast` for the
+  default fast path and `--suite extended-fixed-point` for the explicit
+  fixed-point/status regression suite, which covers all current
+  `tests.test_fixed_point_*` modules plus formal-confidence, project-status,
+  handoff, and vertical-demo aggregate checks.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length
