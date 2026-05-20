@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status_set_id": "as-fixed-point-bridge-equality-frontier-status-v1",
+  "reviewed_at": "2026-05-20",
+  "purpose": "Compact fail-closed status surface for the fixed-point bridge-equality proof frontier. It records that current alignment and evaluation support surfaces accept while the bridge-equality-proof construction case remains open.",
+  "frontier_status": "blocked",
+  "frontier_blocked_by": "bridge-equality-proof",
+  "fixed_point_construction_cases_path": "claims/fixed_point_construction_cases.json",
+  "fixed_point_equation_bridge_targets_path": "claims/fixed_point_equation_bridge_targets.json",
+  "substitution_representability_targets_path": "claims/substitution_representability_targets.json",
+  "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
+  "bridge_equality_alignment_path": "claims/fixed_point_bridge_equality_alignment.json",
+  "bridge_equality_evaluation_path": "claims/fixed_point_bridge_equality_evaluation.json",
+  "expected_bridge_equation_code_length": 4815,
+  "expected_evaluation_output_code_length": 296,
+  "non_claims": [
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use the accepted alignment and evaluation surfaces as compact support for the still-open bridge-equality proof case; do not promote the case until the bridge equality is proved."
+}
