@@ -6199,3 +6199,29 @@ Implemented in
 `autarkic_systems/substitution_graph_diagonal_witness_composition_frontier_status.py`,
 with tests in
 `tests/test_substitution_graph_diagonal_witness_composition_frontier_status.py`.
+
+## ADR-0284: Substitution Graph Correctness Case Status Rollup
+
+Goal: update the aggregate substitution graph correctness frontier status so
+it rolls up the five compact per-case frontier status surfaces added in
+ADR-0279 through ADR-0283.
+
+Deliverables:
+
+- `claims/substitution_graph_correctness_frontier_status.json`, with
+  `case_status_paths` for codebook roundtrip, quotation term closure,
+  meta-substitution semantics, formula schema relation, and diagonal witness
+  composition;
+- `autarkic_systems.substitution_graph_correctness_frontier_status`, importing
+  and running the existing compact case-status validators and exposing a
+  `case_status_rollup`;
+- text/JSON output for accepted compact case-status count, per-case status
+  paths, blockers, proof-case statuses, and failed subjects; and
+- no proof promotion, no changes to the raw support-surface summary, and no
+  changes to the per-case status modules.
+
+Status: accepted in
+`docs/adr/0284-substitution-graph-correctness-case-status-rollup.md`.
+Implemented in
+`autarkic_systems/substitution_graph_correctness_frontier_status.py`, with
+tests in `tests/test_substitution_graph_correctness_frontier_status.py`.

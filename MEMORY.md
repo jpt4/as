@@ -271,6 +271,14 @@
   compact support surfaces, one finite composition subject, no failed
   subjects, and the preserved `diagonal-witness-composition` blocker without
   proving or promoting the case.
+- ADR-0284 extends `claims/substitution_graph_correctness_frontier_status.json`
+  and `autarkic_systems.substitution_graph_correctness_frontier_status` with a
+  compact `case_status_rollup` over the five ADR-0279 through ADR-0283
+  substitution graph correctness case-status handoffs. The aggregate now
+  requires each compact case status path, acceptance, `blocked` frontier
+  status, matching case-kind blocker, and `proof-case-open` case status while
+  preserving the original raw support-surface summary and non-promotion
+  boundary.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length

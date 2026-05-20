@@ -10,15 +10,36 @@ reports the blocked frontier without running expensive proof derivations.
 from __future__ import annotations
 
 import argparse
+from collections.abc import Callable
 from dataclasses import dataclass
 import json
 from pathlib import Path
 from typing import Any
 
+from autarkic_systems.substitution_graph_codebook_roundtrip_frontier_status import (
+    load_substitution_graph_codebook_roundtrip_frontier_status,
+    validate_substitution_graph_codebook_roundtrip_frontier_status,
+)
 from autarkic_systems.substitution_graph_correctness_cases import (
     REQUIRED_CASE_KINDS,
     REQUIRED_DEPENDENCIES_BY_KIND,
     load_substitution_graph_correctness_cases,
+)
+from autarkic_systems.substitution_graph_diagonal_witness_composition_frontier_status import (
+    load_substitution_graph_diagonal_witness_composition_frontier_status,
+    validate_substitution_graph_diagonal_witness_composition_frontier_status,
+)
+from autarkic_systems.substitution_graph_formula_schema_relation_frontier_status import (
+    load_substitution_graph_formula_schema_relation_frontier_status,
+    validate_substitution_graph_formula_schema_relation_frontier_status,
+)
+from autarkic_systems.substitution_graph_meta_substitution_semantics_frontier_status import (
+    load_substitution_graph_meta_substitution_semantics_frontier_status,
+    validate_substitution_graph_meta_substitution_semantics_frontier_status,
+)
+from autarkic_systems.substitution_graph_quotation_term_closure_frontier_status import (
+    load_substitution_graph_quotation_term_closure_frontier_status,
+    validate_substitution_graph_quotation_term_closure_frontier_status,
 )
 
 
@@ -26,6 +47,7 @@ DEFAULT_STATUS = Path("claims/substitution_graph_correctness_frontier_status.jso
 
 REQUIRED_FRONTIER_STATUS = "blocked"
 REQUIRED_FRONTIER_BLOCKER = "substitution-graph-correctness"
+REQUIRED_CASE_STATUS = "proof-case-open"
 REQUIRED_NON_CLAIMS = (
     "no formula correctness proof",
     "no substitution representability proof",
@@ -63,6 +85,23 @@ PROOF_PROMOTION_STATUSES = {
     "self-consistency-theorem-proved",
 }
 EXPECTED_CASES_PATH = "claims/substitution_graph_correctness_cases.json"
+REQUIRED_CASE_STATUS_PATHS = {
+    "codebook-roundtrip": (
+        "claims/substitution_graph_codebook_roundtrip_frontier_status.json"
+    ),
+    "quotation-term-closure": (
+        "claims/substitution_graph_quotation_term_closure_frontier_status.json"
+    ),
+    "meta-substitution-semantics": (
+        "claims/substitution_graph_meta_substitution_semantics_frontier_status.json"
+    ),
+    "formula-schema-relation": (
+        "claims/substitution_graph_formula_schema_relation_frontier_status.json"
+    ),
+    "diagonal-witness-composition": (
+        "claims/substitution_graph_diagonal_witness_composition_frontier_status.json"
+    ),
+}
 EXPECTED_CASE_PATHS = {
     "formal_language_path": "language/formal_arithmetic_language.json",
     "codebook_path": "language/formal_codebook.json",
@@ -85,6 +124,32 @@ EXPECTED_CASE_PATHS = {
     ),
     "diagonal_witness_composition_path": (
         "claims/substitution_graph_diagonal_witness_composition.json"
+    ),
+}
+
+_CASE_STATUS_VALIDATORS: dict[
+    str,
+    tuple[Callable[[Path | str], Any], Callable[[Any], Any]],
+] = {
+    "codebook-roundtrip": (
+        load_substitution_graph_codebook_roundtrip_frontier_status,
+        validate_substitution_graph_codebook_roundtrip_frontier_status,
+    ),
+    "quotation-term-closure": (
+        load_substitution_graph_quotation_term_closure_frontier_status,
+        validate_substitution_graph_quotation_term_closure_frontier_status,
+    ),
+    "meta-substitution-semantics": (
+        load_substitution_graph_meta_substitution_semantics_frontier_status,
+        validate_substitution_graph_meta_substitution_semantics_frontier_status,
+    ),
+    "formula-schema-relation": (
+        load_substitution_graph_formula_schema_relation_frontier_status,
+        validate_substitution_graph_formula_schema_relation_frontier_status,
+    ),
+    "diagonal-witness-composition": (
+        load_substitution_graph_diagonal_witness_composition_frontier_status,
+        validate_substitution_graph_diagonal_witness_composition_frontier_status,
     ),
 }
 SUPPORT_PATH_FIELDS = {
@@ -151,6 +216,7 @@ class SubstitutionGraphCorrectnessFrontierStatusManifest:
     frontier_status: str
     frontier_blocked_by: str
     substitution_graph_correctness_cases_path: str
+    case_status_paths: dict[str, str]
     non_claims: tuple[str, ...]
     next_as_action: str
 
@@ -190,6 +256,21 @@ class SubstitutionGraphCorrectnessFrontierCaseSupport:
 
 
 @dataclass(frozen=True)
+class SubstitutionGraphCorrectnessFrontierCaseStatusRollup:
+    """One compact per-case status surface observed by the aggregate status."""
+
+    case_kind: str
+    path: Path
+    accepted: bool
+    frontier_status: str
+    frontier_blocked_by: str
+    proof_case_id: str
+    proof_case_status: str
+    failed_subjects: tuple[str, ...]
+    detail: str
+
+
+@dataclass(frozen=True)
 class SubstitutionGraphCorrectnessFrontierStatusReport:
     """Compact validation report for the correctness frontier."""
 
@@ -201,6 +282,10 @@ class SubstitutionGraphCorrectnessFrontierStatusReport:
         ...,
     ]
     case_supports: tuple[SubstitutionGraphCorrectnessFrontierCaseSupport, ...]
+    case_status_rollup: tuple[
+        SubstitutionGraphCorrectnessFrontierCaseStatusRollup,
+        ...
+    ]
 
     @property
     def accepted(self) -> bool:
@@ -239,6 +324,18 @@ class SubstitutionGraphCorrectnessFrontierStatusReport:
         return len(self.support_surfaces)
 
     @property
+    def case_status_count(self) -> int:
+        """Return the number of observed compact case-status surfaces."""
+
+        return len(self.case_status_rollup)
+
+    @property
+    def accepted_case_status_count(self) -> int:
+        """Return the number of accepted compact case-status surfaces."""
+
+        return sum(1 for status in self.case_status_rollup if status.accepted)
+
+    @property
     def failed_subjects(self) -> tuple[str, ...]:
         """Return compact failure subjects for automation and handoff reports."""
 
@@ -271,6 +368,7 @@ def load_substitution_graph_correctness_frontier_status(
             data,
             "substitution_graph_correctness_cases_path",
         ),
+        case_status_paths=_required_text_map(data, "case_status_paths"),
         non_claims=tuple(_required_text_list(data, "non_claims")),
         next_as_action=_required_text(data, "next_as_action"),
     )
@@ -307,6 +405,10 @@ def validate_substitution_graph_correctness_frontier_status(
         SubstitutionGraphCorrectnessFrontierSupportSurface
     ] = []
     case_supports: list[SubstitutionGraphCorrectnessFrontierCaseSupport] = []
+    case_status_rollup, case_status_results = _case_status_rollup(
+        manifest.case_status_paths
+    )
+    results.extend(case_status_results)
     if cases_manifest is None:
         results.append(_rejected("cases", "no correctness cases observed"))
     else:
@@ -328,6 +430,7 @@ def validate_substitution_graph_correctness_frontier_status(
         results=tuple(results),
         support_surfaces=tuple(support_surfaces),
         case_supports=tuple(case_supports),
+        case_status_rollup=tuple(case_status_rollup),
     )
 
 
@@ -348,11 +451,14 @@ def substitution_graph_correctness_frontier_status_payload(
         "substitution_graph_correctness_cases_path": str(
             report.substitution_graph_correctness_cases_path
         ),
+        "case_status_paths": dict(report.manifest.case_status_paths),
         "non_claims": list(report.manifest.non_claims),
         "next_as_action": report.manifest.next_as_action,
         "support_surface_count": report.support_surface_count,
         "case_count": report.case_count,
         "open_case_count": report.open_case_count,
+        "case_status_count": report.case_status_count,
+        "accepted_case_status_count": report.accepted_case_status_count,
         "failed_subjects": list(report.failed_subjects),
         "support_surfaces": [
             {
@@ -376,6 +482,20 @@ def substitution_graph_correctness_frontier_status_payload(
                 "finite_support_accepted": case.finite_support_accepted,
             }
             for case in report.case_supports
+        ],
+        "case_status_rollup": [
+            {
+                "case_kind": status.case_kind,
+                "path": str(status.path),
+                "accepted": status.accepted,
+                "frontier_status": status.frontier_status,
+                "frontier_blocked_by": status.frontier_blocked_by,
+                "proof_case_id": status.proof_case_id,
+                "proof_case_status": status.proof_case_status,
+                "failed_subjects": list(status.failed_subjects),
+                "detail": status.detail,
+            }
+            for status in report.case_status_rollup
         ],
         "result_count": len(report.results),
         "results": [
@@ -402,6 +522,10 @@ def format_substitution_graph_correctness_frontier_status_report(
         f"Blocked by: {report.frontier_blocked_by}",
         f"Open correctness cases: {report.open_case_count}/{report.case_count}",
         f"Support surfaces: {report.support_surface_count}",
+        (
+            "Compact case-status rollup: "
+            f"{report.accepted_case_status_count}/{report.case_status_count}"
+        ),
         "Non-claims: " + _joined_or_none(report.manifest.non_claims),
         f"Failed subjects: {_joined_or_none(report.failed_subjects)}",
     ]
@@ -409,6 +533,17 @@ def format_substitution_graph_correctness_frontier_status_report(
     for surface in report.support_surfaces:
         prefix = "accepted" if surface.accepted else "rejected"
         lines.append(f"- {surface.subject}: {prefix} ({surface.path})")
+    lines.append("Compact case statuses:")
+    for status_report in report.case_status_rollup:
+        prefix = "accepted" if status_report.accepted else "rejected"
+        lines.append(f"- {status_report.case_kind}: {prefix} ({status_report.path})")
+        lines.append(f"  Frontier status: {status_report.frontier_status}")
+        lines.append(f"  Blocked by: {status_report.frontier_blocked_by}")
+        lines.append(f"  Proof case: {status_report.proof_case_id}")
+        lines.append(f"  Proof case status: {status_report.proof_case_status}")
+        lines.append(
+            f"  Failed subjects: {_joined_or_none(status_report.failed_subjects)}"
+        )
     lines.append("Correctness cases:")
     for case in report.case_supports:
         lines.extend([
@@ -533,6 +668,8 @@ def _validate_manifest(
             )
         )
 
+    results.extend(_validate_case_status_paths(manifest.case_status_paths))
+
     missing_non_claims = [
         item for item in REQUIRED_NON_CLAIMS if item not in manifest.non_claims
     ]
@@ -551,6 +688,231 @@ def _validate_manifest(
     else:
         results.append(_rejected("next_as_action", "missing next action"))
     return results
+
+
+def _validate_case_status_paths(
+    paths: dict[str, str],
+) -> list[SubstitutionGraphCorrectnessFrontierStatusValidation]:
+    results: list[SubstitutionGraphCorrectnessFrontierStatusValidation] = []
+    missing = [
+        case_kind for case_kind in REQUIRED_CASE_KINDS if case_kind not in paths
+    ]
+    extra = [
+        case_kind for case_kind in paths if case_kind not in REQUIRED_CASE_STATUS_PATHS
+    ]
+    mismatched = [
+        (
+            case_kind,
+            REQUIRED_CASE_STATUS_PATHS[case_kind],
+            paths[case_kind],
+        )
+        for case_kind in REQUIRED_CASE_KINDS
+        if case_kind in paths
+        and paths[case_kind] != REQUIRED_CASE_STATUS_PATHS[case_kind]
+    ]
+    if not missing and not extra and not mismatched:
+        return [_accepted("case_status_paths", "compact case-status paths match")]
+
+    detail: list[str] = []
+    if missing:
+        detail.append("missing case-status paths: " + ", ".join(missing))
+    if extra:
+        detail.append("unexpected case-status paths: " + ", ".join(extra))
+    if mismatched:
+        detail.append(
+            "case-status path mismatches: "
+            + "; ".join(
+                f"{case_kind} expected {expected} but found {actual}"
+                for case_kind, expected, actual in mismatched
+            )
+        )
+    results.append(_rejected("case_status_paths", "; ".join(detail)))
+    return results
+
+
+def _case_status_rollup(
+    paths: dict[str, str],
+) -> tuple[
+    list[SubstitutionGraphCorrectnessFrontierCaseStatusRollup],
+    list[SubstitutionGraphCorrectnessFrontierStatusValidation],
+]:
+    rollup: list[SubstitutionGraphCorrectnessFrontierCaseStatusRollup] = []
+    results: list[SubstitutionGraphCorrectnessFrontierStatusValidation] = []
+
+    # This is a status-of-status check: the per-case modules remain the owners
+    # of their compact validation logic, while the aggregate enforces the
+    # cross-status blocker/open-case contract.
+    for case_kind in REQUIRED_CASE_KINDS:
+        subject = f"case_status.{case_kind}"
+        path_text = paths.get(case_kind)
+        if not path_text:
+            results.append(
+                _rejected(f"{subject}.path", "missing case-status path")
+            )
+            rollup.append(
+                SubstitutionGraphCorrectnessFrontierCaseStatusRollup(
+                    case_kind=case_kind,
+                    path=Path("<missing>"),
+                    accepted=False,
+                    frontier_status="missing",
+                    frontier_blocked_by="missing",
+                    proof_case_id="missing",
+                    proof_case_status="missing",
+                    failed_subjects=("case-status-path-missing",),
+                    detail="missing case-status path",
+                )
+            )
+            continue
+
+        path = Path(path_text)
+        load_status, validate_status = _CASE_STATUS_VALIDATORS[case_kind]
+        try:
+            status_manifest = load_status(path)
+            status_report = validate_status(status_manifest)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            detail = f"case status missing or invalid: {exc}"
+            results.append(_rejected(f"{subject}.load", detail))
+            rollup.append(
+                SubstitutionGraphCorrectnessFrontierCaseStatusRollup(
+                    case_kind=case_kind,
+                    path=path,
+                    accepted=False,
+                    frontier_status="missing",
+                    frontier_blocked_by="missing",
+                    proof_case_id="missing",
+                    proof_case_status="missing",
+                    failed_subjects=("case-status-load",),
+                    detail=detail,
+                )
+            )
+            continue
+
+        proof_case = _case_status_report_case(status_report)
+        proof_case_id = _case_status_case_value(proof_case, "case_id")
+        proof_case_kind = _case_status_case_value(proof_case, "case_kind")
+        proof_case_status = _case_status_case_value(proof_case, "status")
+        failed_subjects = tuple(getattr(status_report, "failed_subjects", ()))
+        frontier_status = str(getattr(status_report, "frontier_status", "missing"))
+        frontier_blocked_by = str(
+            getattr(status_report, "frontier_blocked_by", "missing")
+        )
+
+        case_results = _validate_case_status_report(
+            case_kind=case_kind,
+            report=status_report,
+            frontier_status=frontier_status,
+            frontier_blocked_by=frontier_blocked_by,
+            proof_case_kind=proof_case_kind,
+            proof_case_status=proof_case_status,
+            failed_subjects=failed_subjects,
+        )
+        results.extend(case_results)
+        accepted = all(result.accepted for result in case_results)
+        detail = "accepted compact case status" if accepted else (
+            "rejected compact case status"
+        )
+        rollup.append(
+            SubstitutionGraphCorrectnessFrontierCaseStatusRollup(
+                case_kind=case_kind,
+                path=path,
+                accepted=accepted,
+                frontier_status=frontier_status,
+                frontier_blocked_by=frontier_blocked_by,
+                proof_case_id=proof_case_id,
+                proof_case_status=proof_case_status,
+                failed_subjects=failed_subjects,
+                detail=detail,
+            )
+        )
+    return rollup, results
+
+
+def _validate_case_status_report(
+    *,
+    case_kind: str,
+    report: Any,
+    frontier_status: str,
+    frontier_blocked_by: str,
+    proof_case_kind: str,
+    proof_case_status: str,
+    failed_subjects: tuple[str, ...],
+) -> list[SubstitutionGraphCorrectnessFrontierStatusValidation]:
+    subject = f"case_status.{case_kind}"
+    results: list[SubstitutionGraphCorrectnessFrontierStatusValidation] = []
+    if bool(getattr(report, "accepted", False)):
+        results.append(_accepted(f"{subject}.accepted", "case status accepted"))
+    else:
+        results.append(
+            _rejected(
+                f"{subject}.accepted",
+                "case status validator rejected: "
+                + _case_status_failure_detail(failed_subjects),
+            )
+        )
+
+    if frontier_status == REQUIRED_FRONTIER_STATUS:
+        results.append(_accepted(f"{subject}.frontier_status", "frontier blocked"))
+    else:
+        results.append(
+            _rejected(
+                f"{subject}.frontier_status",
+                f"expected blocked but found {frontier_status}",
+            )
+        )
+
+    if frontier_blocked_by == case_kind:
+        results.append(
+            _accepted(f"{subject}.frontier_blocked_by", "blocker matches case kind")
+        )
+    else:
+        results.append(
+            _rejected(
+                f"{subject}.frontier_blocked_by",
+                f"expected {case_kind} blocker but found {frontier_blocked_by}",
+            )
+        )
+
+    if proof_case_kind == case_kind:
+        results.append(_accepted(f"{subject}.case_kind", "proof case kind matches"))
+    else:
+        results.append(
+            _rejected(
+                f"{subject}.case_kind",
+                f"expected {case_kind} case kind but found {proof_case_kind}",
+            )
+        )
+
+    if proof_case_status == REQUIRED_CASE_STATUS:
+        results.append(
+            _accepted(f"{subject}.proof_case_status", "proof case remains open")
+        )
+    else:
+        results.append(
+            _rejected(
+                f"{subject}.proof_case_status",
+                f"expected proof-case-open but found {proof_case_status}",
+            )
+        )
+    return results
+
+
+def _case_status_report_case(report: Any) -> Any | None:
+    proof_case = getattr(report, "proof_case", None)
+    if proof_case is not None:
+        return proof_case
+    return getattr(report, "case", None)
+
+
+def _case_status_case_value(case: Any | None, field: str) -> str:
+    if case is None:
+        return "missing"
+    return str(getattr(case, field, "missing"))
+
+
+def _case_status_failure_detail(failed_subjects: tuple[str, ...]) -> str:
+    if failed_subjects:
+        return ", ".join(failed_subjects)
+    return "unknown failure"
 
 
 def _validate_case_manifest(
@@ -798,6 +1160,8 @@ def _failed_subject_for_result(subject: str) -> str:
         return "substitution-graph-correctness-frontier-status"
     if subject == "non_claims":
         return "substitution-graph-correctness-frontier-non-claim"
+    if subject == "case_status_paths" or subject.startswith("case_status."):
+        return "substitution-graph-correctness-frontier-case-status-rollup"
     if subject.endswith(".status"):
         return "substitution-graph-correctness-frontier-case-status"
     if subject.endswith(".non_claims"):
@@ -838,6 +1202,20 @@ def _required_list(item: dict[str, Any], key: str) -> list[Any]:
     if not isinstance(value, list) or not value:
         raise ValueError(f"required list field missing: {key}")
     return value
+
+
+def _required_text_map(item: dict[str, Any], key: str) -> dict[str, str]:
+    value = item.get(key)
+    if not isinstance(value, dict) or not value:
+        raise ValueError(f"required object field missing: {key}")
+    result: dict[str, str] = {}
+    for map_key, map_value in value.items():
+        if not isinstance(map_key, str) or not map_key.strip():
+            raise ValueError(f"{key} contains non-text key")
+        if not isinstance(map_value, str) or not map_value.strip():
+            raise ValueError(f"{key} contains non-text value")
+        result[map_key] = map_value
+    return result
 
 
 def _required_text_list(item: dict[str, Any], key: str) -> list[str]:

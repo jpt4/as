@@ -2,10 +2,17 @@
   "schema_version": 1,
   "status_set_id": "as-substitution-graph-correctness-frontier-status-v1",
   "reviewed_at": "2026-05-20",
-  "purpose": "Compact fail-closed status surface for the substitution graph correctness frontier. It summarizes the current open correctness proof cases and their referenced support surfaces while preserving the aggregate substitution-graph-correctness blocker.",
+  "purpose": "Compact fail-closed status surface for the substitution graph correctness frontier. It summarizes the current open correctness proof cases, their referenced support surfaces, and the compact per-case frontier status rollup while preserving the aggregate substitution-graph-correctness blocker.",
   "frontier_status": "blocked",
   "frontier_blocked_by": "substitution-graph-correctness",
   "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
+  "case_status_paths": {
+    "codebook-roundtrip": "claims/substitution_graph_codebook_roundtrip_frontier_status.json",
+    "quotation-term-closure": "claims/substitution_graph_quotation_term_closure_frontier_status.json",
+    "meta-substitution-semantics": "claims/substitution_graph_meta_substitution_semantics_frontier_status.json",
+    "formula-schema-relation": "claims/substitution_graph_formula_schema_relation_frontier_status.json",
+    "diagonal-witness-composition": "claims/substitution_graph_diagonal_witness_composition_frontier_status.json"
+  },
   "non_claims": [
     "no formula correctness proof",
     "no substitution representability proof",
@@ -13,5 +20,5 @@
     "no fixed-point equation proof",
     "no self-consistency theorem"
   ],
-  "next_as_action": "Use this compact status surface as the current substitution graph correctness handoff: support surfaces are present, all correctness cases remain open, and the correctness blocker is not discharged."
+  "next_as_action": "Use this compact status surface as the current substitution graph correctness handoff: support surfaces are present, all correctness cases and compact case-status handoffs remain open and accepted, and the correctness blocker is not discharged."
 }

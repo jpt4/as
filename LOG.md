@@ -6236,3 +6236,29 @@
 - This is a compact frontier handoff only. It does not prove formula
   correctness, substitution representability, the diagonal lemma, a
   fixed-point equation, an arithmetized proof predicate, or self-consistency.
+
+## 2026-05-20 - Substitution Graph Correctness Case Status Rollup
+
+- Added ADR-0284 to roll the five compact substitution graph correctness
+  per-case frontier status surfaces into the existing aggregate correctness
+  frontier status.
+- Updated `claims/substitution_graph_correctness_frontier_status.json` with
+  `case_status_paths` for `codebook-roundtrip`, `quotation-term-closure`,
+  `meta-substitution-semantics`, `formula-schema-relation`, and
+  `diagonal-witness-composition`.
+- Updated
+  `autarkic_systems/substitution_graph_correctness_frontier_status.py` so the
+  aggregate validator imports and runs the existing compact per-case status
+  validators, then exposes a `case_status_rollup` with accepted status,
+  blocker, proof-case status, path, and failed subjects.
+- Extended
+  `tests/test_substitution_graph_correctness_frontier_status.py` before
+  implementation. The red run failed because the aggregate manifest/report did
+  not yet expose `case_status_paths`, `case_status_count`, or the text rollup.
+- Focused frontier-status tests passed 17 tests. The focused suite plus
+  `tests.test_suite_selection` passed 22 tests. Live JSON checks accepted the
+  aggregate status with five accepted compact case statuses and no failed
+  subjects.
+- This remains a handoff/status surface only. It does not promote formula
+  correctness, substitution representability, the diagonal lemma, a
+  fixed-point equation, an arithmetized proof predicate, or self-consistency.

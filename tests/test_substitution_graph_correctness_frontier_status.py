@@ -21,6 +21,23 @@ from autarkic_systems.substitution_graph_correctness_frontier_status import (
 
 STATUS = Path("claims/substitution_graph_correctness_frontier_status.json")
 CASES = Path("claims/substitution_graph_correctness_cases.json")
+EXPECTED_CASE_STATUS_PATHS = {
+    "codebook-roundtrip": (
+        "claims/substitution_graph_codebook_roundtrip_frontier_status.json"
+    ),
+    "quotation-term-closure": (
+        "claims/substitution_graph_quotation_term_closure_frontier_status.json"
+    ),
+    "meta-substitution-semantics": (
+        "claims/substitution_graph_meta_substitution_semantics_frontier_status.json"
+    ),
+    "formula-schema-relation": (
+        "claims/substitution_graph_formula_schema_relation_frontier_status.json"
+    ),
+    "diagonal-witness-composition": (
+        "claims/substitution_graph_diagonal_witness_composition_frontier_status.json"
+    ),
+}
 
 
 class SubstitutionGraphCorrectnessFrontierStatusTests(unittest.TestCase):
@@ -39,6 +56,7 @@ class SubstitutionGraphCorrectnessFrontierStatusTests(unittest.TestCase):
             self.status.substitution_graph_correctness_cases_path,
             str(CASES),
         )
+        self.assertEqual(self.status.case_status_paths, EXPECTED_CASE_STATUS_PATHS)
         self.assertEqual(
             REQUIRED_SUPPORT_SUBJECTS,
             (
@@ -87,9 +105,24 @@ class SubstitutionGraphCorrectnessFrontierStatusTests(unittest.TestCase):
         self.assertEqual(report.case_count, 5)
         self.assertEqual(report.open_case_count, 5)
         self.assertEqual(report.support_surface_count, 11)
+        self.assertEqual(report.case_status_count, 5)
+        self.assertEqual(report.accepted_case_status_count, 5)
         self.assertTrue(all(surface.accepted for surface in report.support_surfaces))
+        self.assertTrue(all(status.accepted for status in report.case_status_rollup))
         self.assertEqual(
             tuple(case.status for case in report.case_supports),
+            ("proof-case-open",) * 5,
+        )
+        self.assertEqual(
+            tuple(status.case_kind for status in report.case_status_rollup),
+            tuple(EXPECTED_CASE_STATUS_PATHS),
+        )
+        self.assertEqual(
+            tuple(status.frontier_blocked_by for status in report.case_status_rollup),
+            tuple(EXPECTED_CASE_STATUS_PATHS),
+        )
+        self.assertEqual(
+            tuple(status.proof_case_status for status in report.case_status_rollup),
             ("proof-case-open",) * 5,
         )
 
@@ -111,6 +144,8 @@ class SubstitutionGraphCorrectnessFrontierStatusTests(unittest.TestCase):
         self.assertEqual(payload["case_count"], 5)
         self.assertEqual(payload["open_case_count"], 5)
         self.assertEqual(payload["support_surface_count"], 11)
+        self.assertEqual(payload["case_status_count"], 5)
+        self.assertEqual(payload["accepted_case_status_count"], 5)
         self.assertEqual(
             [surface["subject"] for surface in payload["support_surfaces"]],
             list(REQUIRED_SUPPORT_SUBJECTS),
@@ -164,6 +199,18 @@ class SubstitutionGraphCorrectnessFrontierStatusTests(unittest.TestCase):
             finite_supports["formula-schema-relation"],
             ["formula_schema_relation"],
         )
+        rollup = {
+            status["case_kind"]: status
+            for status in payload["case_status_rollup"]
+        }
+        self.assertEqual(set(rollup), set(EXPECTED_CASE_STATUS_PATHS))
+        for case_kind, expected_path in EXPECTED_CASE_STATUS_PATHS.items():
+            self.assertTrue(rollup[case_kind]["accepted"])
+            self.assertEqual(rollup[case_kind]["path"], expected_path)
+            self.assertEqual(rollup[case_kind]["frontier_status"], "blocked")
+            self.assertEqual(rollup[case_kind]["frontier_blocked_by"], case_kind)
+            self.assertEqual(rollup[case_kind]["proof_case_status"], "proof-case-open")
+            self.assertEqual(rollup[case_kind]["failed_subjects"], [])
 
     def test_text_report_exposes_blocked_boundary(self):
         report = validate_substitution_graph_correctness_frontier_status(self.status)
@@ -181,6 +228,12 @@ class SubstitutionGraphCorrectnessFrontierStatusTests(unittest.TestCase):
         self.assertIn("Blocked by: substitution-graph-correctness", text)
         self.assertIn("Open correctness cases: 5/5", text)
         self.assertIn("Support surfaces: 11", text)
+        self.assertIn("Compact case-status rollup: 5/5", text)
+        self.assertIn(
+            "- codebook-roundtrip: accepted "
+            "(claims/substitution_graph_codebook_roundtrip_frontier_status.json)",
+            text,
+        )
         self.assertIn("Case kind: formula-schema-relation", text)
         self.assertIn(
             "Support: correctness_target, formula_candidate, formula_schema_relation",
@@ -258,6 +311,120 @@ class SubstitutionGraphCorrectnessFrontierStatusTests(unittest.TestCase):
                 result.subject == "codebook_roundtrip"
                 and not result.accepted
                 and "support artifact missing or invalid" in result.detail
+                for result in report.results
+            )
+        )
+
+    def test_missing_compact_case_status_path_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            status_path = Path(tmp) / "status.json"
+            status_data = json.loads(STATUS.read_text(encoding="utf-8"))
+            status_data["case_status_paths"].pop("codebook-roundtrip")
+            status_path.write_text(json.dumps(status_data), encoding="utf-8")
+            status = load_substitution_graph_correctness_frontier_status(status_path)
+
+            report = validate_substitution_graph_correctness_frontier_status(status)
+
+        self.assertFalse(report.accepted)
+        self.assertIn(
+            "substitution-graph-correctness-frontier-case-status-rollup",
+            report.failed_subjects,
+        )
+        self.assertTrue(
+            any("missing case-status paths" in result.detail for result in report.results)
+        )
+
+    def test_compact_case_status_blocker_mismatch_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            compact_path = Path(tmp) / "codebook_status.json"
+            compact_data = json.loads(
+                Path(
+                    EXPECTED_CASE_STATUS_PATHS["codebook-roundtrip"]
+                ).read_text(encoding="utf-8")
+            )
+            compact_data["frontier_blocked_by"] = "quotation-term-closure"
+            compact_path.write_text(json.dumps(compact_data), encoding="utf-8")
+
+            status_path = Path(tmp) / "status.json"
+            status_data = json.loads(STATUS.read_text(encoding="utf-8"))
+            status_data["case_status_paths"]["codebook-roundtrip"] = str(compact_path)
+            status_path.write_text(json.dumps(status_data), encoding="utf-8")
+            status = load_substitution_graph_correctness_frontier_status(status_path)
+
+            report = validate_substitution_graph_correctness_frontier_status(status)
+
+        self.assertFalse(report.accepted)
+        self.assertIn(
+            "substitution-graph-correctness-frontier-case-status-rollup",
+            report.failed_subjects,
+        )
+        self.assertTrue(
+            any(
+                "expected codebook-roundtrip blocker" in result.detail
+                for result in report.results
+            )
+        )
+
+    def test_closed_compact_case_status_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            case_path = Path(tmp) / "cases.json"
+            case_data = json.loads(CASES.read_text(encoding="utf-8"))
+            case_data["cases"][0]["status"] = "formula-correctness-proved"
+            case_path.write_text(json.dumps(case_data), encoding="utf-8")
+
+            compact_path = Path(tmp) / "codebook_status.json"
+            compact_data = json.loads(
+                Path(
+                    EXPECTED_CASE_STATUS_PATHS["codebook-roundtrip"]
+                ).read_text(encoding="utf-8")
+            )
+            compact_data["substitution_graph_correctness_cases_path"] = str(case_path)
+            compact_path.write_text(json.dumps(compact_data), encoding="utf-8")
+
+            status_path = Path(tmp) / "status.json"
+            status_data = json.loads(STATUS.read_text(encoding="utf-8"))
+            status_data["case_status_paths"]["codebook-roundtrip"] = str(compact_path)
+            status_path.write_text(json.dumps(status_data), encoding="utf-8")
+            status = load_substitution_graph_correctness_frontier_status(status_path)
+
+            report = validate_substitution_graph_correctness_frontier_status(status)
+
+        self.assertFalse(report.accepted)
+        self.assertIn(
+            "substitution-graph-correctness-frontier-case-status-rollup",
+            report.failed_subjects,
+        )
+        self.assertTrue(
+            any("expected proof-case-open" in result.detail for result in report.results)
+        )
+
+    def test_unaccepted_compact_case_status_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            compact_path = Path(tmp) / "codebook_status.json"
+            compact_data = json.loads(
+                Path(
+                    EXPECTED_CASE_STATUS_PATHS["codebook-roundtrip"]
+                ).read_text(encoding="utf-8")
+            )
+            compact_data["non_claims"] = compact_data["non_claims"][:-1]
+            compact_path.write_text(json.dumps(compact_data), encoding="utf-8")
+
+            status_path = Path(tmp) / "status.json"
+            status_data = json.loads(STATUS.read_text(encoding="utf-8"))
+            status_data["case_status_paths"]["codebook-roundtrip"] = str(compact_path)
+            status_path.write_text(json.dumps(status_data), encoding="utf-8")
+            status = load_substitution_graph_correctness_frontier_status(status_path)
+
+            report = validate_substitution_graph_correctness_frontier_status(status)
+
+        self.assertFalse(report.accepted)
+        self.assertIn(
+            "substitution-graph-correctness-frontier-case-status-rollup",
+            report.failed_subjects,
+        )
+        self.assertTrue(
+            any(
+                "case status validator rejected" in result.detail
                 for result in report.results
             )
         )
@@ -387,6 +554,7 @@ class SubstitutionGraphCorrectnessFrontierStatusTests(unittest.TestCase):
         self.assertEqual(json_run.returncode, 0, json_run.stderr)
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["case_count"], 5)
+        self.assertEqual(payload["case_status_count"], 5)
 
 
 if __name__ == "__main__":
