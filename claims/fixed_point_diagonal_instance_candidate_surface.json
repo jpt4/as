@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "candidate_surface_set_id": "as-fixed-point-diagonal-instance-candidate-surface-v1",
+  "reviewed_at": "2026-05-20",
+  "purpose": "Finite candidate-surface evidence for the current fixed-point diagonal instance. This checks that the closed diagonal instance is the current fixed-point candidate surface carried by the first construction case without claiming bridge equality, a fixed-point equation, an arithmetized proof predicate, or self-consistency.",
+  "fixed_point_construction_cases_path": "claims/fixed_point_construction_cases.json",
+  "formal_language_path": "language/formal_arithmetic_language.json",
+  "codebook_path": "language/formal_codebook.json",
+  "fixed_point_targets_path": "claims/fixed_point_targets.json",
+  "diagonal_construction_targets_path": "claims/diagonal_construction_targets.json",
+  "fixed_point_equation_bridge_targets_path": "claims/fixed_point_equation_bridge_targets.json",
+  "diagonal_instance_closure_path": "claims/fixed_point_diagonal_instance_closure.json",
+  "expected_candidate_count": 1,
+  "expected_candidate_code_length": 296,
+  "expected_candidate_code_prefix": [41, 1, 22, 11, 1, 18, 17, 13, 13, 13, 13, 13],
+  "required_source_kinds": [
+    "diagonal-instance-candidate"
+  ],
+  "required_future_work": [
+    "substitution-representability-proof",
+    "substitution-graph-correctness-proof",
+    "bridge-equality-proof",
+    "fixed-point-equation-proof",
+    "self-consistency-theorem"
+  ],
+  "non_claims": [
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this finite candidate surface as the named diagonal-instance input for later representability, bridge-equality, and equation-lifting work without treating it as any of those proofs."
+}

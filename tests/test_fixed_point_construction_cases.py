@@ -28,6 +28,9 @@ SUBSTITUTION_GRAPH_CORRECTNESS = Path("claims/substitution_graph_correctness_tar
 SUBSTITUTION_GRAPH_CORRECTNESS_CASES = Path("claims/substitution_graph_correctness_cases.json")
 FIXED_POINT_EQUATION_BRIDGE = Path("claims/fixed_point_equation_bridge_targets.json")
 DIAGONAL_INSTANCE_CLOSURE = Path("claims/fixed_point_diagonal_instance_closure.json")
+DIAGONAL_INSTANCE_CANDIDATE_SURFACE = Path(
+    "claims/fixed_point_diagonal_instance_candidate_surface.json"
+)
 SUBSTITUTION_WITNESS_BRIDGE = Path("claims/fixed_point_substitution_witness_bridge.json")
 SUBSTITUTION_GRAPH_CORRECTNESS_BRIDGE = Path(
     "claims/fixed_point_substitution_graph_correctness_bridge.json"
@@ -80,6 +83,10 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
             str(DIAGONAL_INSTANCE_CLOSURE),
         )
         self.assertEqual(
+            self.manifest.diagonal_instance_candidate_surface_path,
+            str(DIAGONAL_INSTANCE_CANDIDATE_SURFACE),
+        )
+        self.assertEqual(
             self.manifest.substitution_witness_bridge_path,
             str(SUBSTITUTION_WITNESS_BRIDGE),
         )
@@ -116,6 +123,7 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
                 "diagonal_construction",
                 "fixed_point_equation_bridge",
                 "diagonal_instance_closure",
+                "diagonal_instance_candidate_surface",
             ),
         )
         self.assertEqual(
@@ -212,6 +220,13 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
+                result.subject == "diagonal_instance_candidate_surface"
+                and result.accepted
+                for result in report.results
+            )
+        )
+        self.assertTrue(
+            any(
                 result.subject == "substitution_witness_bridge"
                 and result.accepted
                 for result in report.results
@@ -259,11 +274,15 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["case_count"], 5)
         self.assertEqual(payload["failed_subjects"], [])
-        self.assertEqual(payload["cases"][0]["observed_dependency_count"], 4)
+        self.assertEqual(payload["cases"][0]["observed_dependency_count"], 5)
         self.assertEqual(payload["cases"][1]["observed_dependency_count"], 4)
         self.assertEqual(payload["cases"][2]["observed_dependency_count"], 3)
         self.assertEqual(payload["cases"][3]["observed_dependency_count"], 5)
         self.assertEqual(payload["cases"][4]["observed_dependency_count"], 4)
+        self.assertIn(
+            "diagonal_instance_candidate_surface",
+            payload["cases"][0]["required_dependency_subjects"],
+        )
         self.assertIn(
             "bridge_equality_evaluation",
             payload["cases"][3]["required_dependency_subjects"],
@@ -286,6 +305,10 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
         self.assertIn("Fixed-point construction cases: accepted", text)
         self.assertIn("Cases: 5", text)
         self.assertIn("bridge-equality-proof", text)
+        self.assertIn(
+            "Dependencies: fixed_point, diagonal_construction, fixed_point_equation_bridge, diagonal_instance_closure, diagonal_instance_candidate_surface",
+            text,
+        )
         self.assertIn(
             "Dependencies: fixed_point_equation_bridge, substitution_representability, substitution_graph_correctness_cases, bridge_equality_alignment, bridge_equality_evaluation",
             text,
@@ -337,6 +360,33 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
                 result.subject == "bridge_equality_evaluation"
                 and not result.accepted
                 and "fixed-point-bridge-equality-evaluation-load" in result.detail
+                for result in report.results
+            )
+        )
+
+    def test_missing_diagonal_instance_candidate_surface_dependency_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "cases.json"
+            data = json.loads(CASES.read_text(encoding="utf-8"))
+            data["diagonal_instance_candidate_surface_path"] = (
+                str(Path(tmp) / "missing.json")
+            )
+            path.write_text(json.dumps(data), encoding="utf-8")
+            manifest = load_fixed_point_construction_cases(path)
+
+            report = validate_fixed_point_construction_cases(
+                manifest,
+                WILLARD_MAP,
+            )
+
+        self.assertFalse(report.accepted)
+        self.assertIn("fixed-point-construction-case-dependency", report.failed_subjects)
+        self.assertTrue(
+            any(
+                result.subject == "diagonal_instance_candidate_surface"
+                and not result.accepted
+                and "fixed-point-diagonal-instance-candidate-surface-load"
+                in result.detail
                 for result in report.results
             )
         )

@@ -12,6 +12,7 @@
   "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
   "fixed_point_equation_bridge_targets_path": "claims/fixed_point_equation_bridge_targets.json",
   "diagonal_instance_closure_path": "claims/fixed_point_diagonal_instance_closure.json",
+  "diagonal_instance_candidate_surface_path": "claims/fixed_point_diagonal_instance_candidate_surface.json",
   "substitution_witness_bridge_path": "claims/fixed_point_substitution_witness_bridge.json",
   "substitution_graph_correctness_bridge_path": "claims/fixed_point_substitution_graph_correctness_bridge.json",
   "bridge_equality_alignment_path": "claims/fixed_point_bridge_equality_alignment.json",
@@ -27,7 +28,8 @@
         "fixed_point",
         "diagonal_construction",
         "fixed_point_equation_bridge",
-        "diagonal_instance_closure"
+        "diagonal_instance_closure",
+        "diagonal_instance_candidate_surface"
       ],
       "required_future_work": [
         "substitution-representability-proof",
@@ -44,7 +46,7 @@
         "no arithmetized proof predicate",
         "no self-consistency theorem"
       ],
-      "next_as_action": "Prove that the checked closed diagonal instance can be used as the fixed-point candidate surface rather than only as a finite code observation."
+      "next_as_action": "Use the checked diagonal-instance candidate surface as the finite input for later representability, bridge-equality, and equation-lifting work."
     },
     {
       "case_id": "AS-FIXED-POINT-CONSTRUCTION-SUBSTITUTION-REPRESENTABILITY",

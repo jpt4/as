@@ -69,6 +69,7 @@ REQUIRED_DEPENDENCIES_BY_KIND = {
         "diagonal_construction",
         "fixed_point_equation_bridge",
         "diagonal_instance_closure",
+        "diagonal_instance_candidate_surface",
     ),
     "substitution-representability-proof": (
         "substitution_representability",
@@ -144,6 +145,7 @@ class FixedPointConstructionCaseManifest:
     substitution_graph_correctness_cases_path: str
     fixed_point_equation_bridge_targets_path: str
     diagonal_instance_closure_path: str
+    diagonal_instance_candidate_surface_path: str
     substitution_witness_bridge_path: str
     substitution_graph_correctness_bridge_path: str
     bridge_equality_alignment_path: str
@@ -187,6 +189,7 @@ class FixedPointConstructionCaseReport:
     substitution_graph_correctness_cases_path: Path
     fixed_point_equation_bridge_targets_path: Path
     diagonal_instance_closure_path: Path
+    diagonal_instance_candidate_surface_path: Path
     substitution_witness_bridge_path: Path
     substitution_graph_correctness_bridge_path: Path
     bridge_equality_alignment_path: Path
@@ -270,6 +273,10 @@ def load_fixed_point_construction_cases(
             data,
             "diagonal_instance_closure_path",
         ),
+        diagonal_instance_candidate_surface_path=_required_text(
+            data,
+            "diagonal_instance_candidate_surface_path",
+        ),
         substitution_witness_bridge_path=_required_text(
             data,
             "substitution_witness_bridge_path",
@@ -319,6 +326,9 @@ def validate_fixed_point_construction_cases(
     checked_graph_cases_path = Path(manifest.substitution_graph_correctness_cases_path)
     checked_bridge_path = Path(manifest.fixed_point_equation_bridge_targets_path)
     checked_diagonal_closure_path = Path(manifest.diagonal_instance_closure_path)
+    checked_diagonal_candidate_surface_path = Path(
+        manifest.diagonal_instance_candidate_surface_path
+    )
     checked_witness_bridge_path = Path(manifest.substitution_witness_bridge_path)
     checked_graph_correctness_bridge_path = Path(
         manifest.substitution_graph_correctness_bridge_path
@@ -382,6 +392,26 @@ def validate_fixed_point_construction_cases(
         diagonal_closure,
         checked_willard_map_path,
     )
+    from autarkic_systems.fixed_point_diagonal_instance_candidate_surface import (
+        load_fixed_point_diagonal_instance_candidate_surface,
+        validate_fixed_point_diagonal_instance_candidate_surface,
+    )
+
+    try:
+        diagonal_candidate_surface = load_fixed_point_diagonal_instance_candidate_surface(
+            checked_diagonal_candidate_surface_path
+        )
+        diagonal_candidate_surface_report: Any = (
+            validate_fixed_point_diagonal_instance_candidate_surface(
+                diagonal_candidate_surface,
+                checked_willard_map_path,
+            )
+        )
+    except (OSError, ValueError, json.JSONDecodeError):
+        diagonal_candidate_surface_report = _DependencyFailure(
+            False,
+            ("fixed-point-diagonal-instance-candidate-surface-load",),
+        )
     witness_bridge = load_fixed_point_substitution_witness_bridge(
         checked_witness_bridge_path
     )
@@ -464,6 +494,7 @@ def validate_fixed_point_construction_cases(
         graph_case_report,
         bridge_report,
         diagonal_closure_report,
+        diagonal_candidate_surface_report,
         witness_bridge_report,
         graph_correctness_bridge_report,
         bridge_equality_alignment_report,
@@ -485,6 +516,9 @@ def validate_fixed_point_construction_cases(
         substitution_graph_correctness_cases_path=checked_graph_cases_path,
         fixed_point_equation_bridge_targets_path=checked_bridge_path,
         diagonal_instance_closure_path=checked_diagonal_closure_path,
+        diagonal_instance_candidate_surface_path=(
+            checked_diagonal_candidate_surface_path
+        ),
         substitution_witness_bridge_path=checked_witness_bridge_path,
         substitution_graph_correctness_bridge_path=(
             checked_graph_correctness_bridge_path
@@ -530,6 +564,9 @@ def fixed_point_construction_cases_payload(
             report.fixed_point_equation_bridge_targets_path
         ),
         "diagonal_instance_closure_path": str(report.diagonal_instance_closure_path),
+        "diagonal_instance_candidate_surface_path": str(
+            report.diagonal_instance_candidate_surface_path
+        ),
         "substitution_witness_bridge_path": str(report.substitution_witness_bridge_path),
         "substitution_graph_correctness_bridge_path": str(
             report.substitution_graph_correctness_bridge_path
@@ -705,6 +742,11 @@ def _validate_references(
             "claims/fixed_point_diagonal_instance_closure.json",
         ),
         (
+            "diagonal_instance_candidate_surface_path",
+            manifest.diagonal_instance_candidate_surface_path,
+            "claims/fixed_point_diagonal_instance_candidate_surface.json",
+        ),
+        (
             "substitution_witness_bridge_path",
             manifest.substitution_witness_bridge_path,
             "claims/fixed_point_substitution_witness_bridge.json",
@@ -750,6 +792,7 @@ def _validate_dependency_reports(
     graph_case_report: Any,
     bridge_report: Any,
     diagonal_closure_report: Any,
+    diagonal_candidate_surface_report: Any,
     witness_bridge_report: Any,
     graph_correctness_bridge_report: Any,
     bridge_equality_alignment_report: Any,
@@ -780,6 +823,11 @@ def _validate_dependency_reports(
             "diagonal_instance_closure",
             diagonal_closure_report,
             "fixed-point diagonal instance closure",
+        ),
+        (
+            "diagonal_instance_candidate_surface",
+            diagonal_candidate_surface_report,
+            "fixed-point diagonal instance candidate surface",
         ),
         (
             "substitution_witness_bridge",
@@ -998,6 +1046,7 @@ def _failed_subject_for_result(subject: str) -> str:
         "substitution_graph_correctness_cases",
         "fixed_point_equation_bridge",
         "diagonal_instance_closure",
+        "diagonal_instance_candidate_surface",
         "substitution_witness_bridge",
         "bridge_equality_alignment",
         "bridge_equality_evaluation",
