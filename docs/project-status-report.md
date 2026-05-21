@@ -105,7 +105,7 @@ the compact accepted fixed-point frontier dependency, blocked commands, and
 safe next slice.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 22`. If a registry file is missing, the corresponding registry
+`schema_version: 23`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -317,6 +317,10 @@ ADR-0288 preserves `schema_version: 22` and the formal-confidence JSON shape
 while deriving text/summary validation counts and the accepted
 `fixed_point_construction_frontier_status` subject from existing
 `formal_confidence.results`.
+ADR-0291 adds top-level `formal_confidence_validation` JSON derived from the
+same nested `formal_confidence.results` list, reporting accepted/failed
+validation counts plus accepted frontier subjects and compact labels for
+automation, and bumps project status to `schema_version: 23`.
 
 ## Boundary
 

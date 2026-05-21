@@ -88,7 +88,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 22
+PROJECT_STATUS_SCHEMA_VERSION = 23
 PROOF_RULE_TEXT_ORDER = (
     PREDICATE_RESULT_RULE,
     MANIFEST_EXAMPLE_RULE,
@@ -164,6 +164,9 @@ def build_project_status_report(
         formal_confidence_targets_path,
         willard_map_path,
     )
+    formal_confidence_validation = _formal_confidence_validation_summary(
+        formal_confidence
+    )
     frontier = _frontier_summary(source_status_paths)
     accepted = (
         transition_summary["accepted"]
@@ -196,6 +199,7 @@ def build_project_status_report(
         "chain_language": chain_language,
         "sequence_language": sequence_language,
         "formal_confidence": formal_confidence,
+        "formal_confidence_validation": formal_confidence_validation,
         "frontier": frontier,
     }
 
@@ -1464,6 +1468,24 @@ def _formal_confidence_validation_counts(summary: dict[str, Any]) -> tuple[int, 
     accepted_count = sum(1 for result in results if result.get("accepted"))
     failed_count = len(results) - accepted_count
     return accepted_count, failed_count
+
+
+def _formal_confidence_validation_summary(
+    summary: dict[str, Any],
+) -> dict[str, Any]:
+    """Derive machine-readable validation highlights from formal confidence."""
+
+    accepted_count, failed_count = _formal_confidence_validation_counts(summary)
+    frontier_subjects = _formal_confidence_accepted_frontier_subjects(summary)
+    return {
+        "accepted_validation_count": accepted_count,
+        "failed_validation_count": failed_count,
+        "accepted_frontier_subjects": frontier_subjects,
+        "accepted_frontier_labels": [
+            _compact_formal_confidence_subject(subject)
+            for subject in frontier_subjects
+        ],
+    }
 
 
 def _formal_confidence_accepted_frontier_subjects(

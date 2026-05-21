@@ -6373,3 +6373,28 @@ Status: accepted in
 Implemented in
 `autarkic_systems/substitution_graph_correctness_frontier_status.py`, with
 tests in `tests/test_substitution_graph_correctness_frontier_status.py`.
+
+## ADR-0291: Project Status Formal Confidence Validation JSON Summary
+
+Goal: let automation read accepted formal-confidence frontier validation
+subjects from a derived top-level project-status JSON field instead of scanning
+`formal_confidence.results`.
+
+Deliverables:
+
+- project-status schema version `23`;
+- top-level `formal_confidence_validation` JSON derived from the existing
+  nested formal-confidence payload;
+- accepted and failed validation counts;
+- accepted frontier subject list containing
+  `AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_frontier_status`;
+- compact accepted frontier labels containing
+  `fixed_point_construction_frontier_status`; and
+- no changes to the nested `formal_confidence` payload shape, text output,
+  target semantics, blockers, proof status, fixed-point validators,
+  substitution graph validators, or project-status acceptance semantics.
+
+Status: accepted in
+`docs/adr/0291-project-status-formal-confidence-validation-json-summary.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

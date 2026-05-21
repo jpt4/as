@@ -1343,3 +1343,8 @@
   `case_status_paths` immutable/hashable while preserving mapping access and
   JSON payload behavior. Equivalent default manifests now hit the cache, while
   temp case-status path changes remain separate fail-closed cache misses.
+- ADR-0291 bumps project status to schema version `23` and adds top-level
+  `formal_confidence_validation` JSON derived from existing
+  `formal_confidence.results`, exposing accepted/failed validation counts plus
+  accepted frontier subjects and compact labels without changing the nested
+  formal-confidence payload, text output, or validation semantics.

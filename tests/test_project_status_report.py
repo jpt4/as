@@ -36,7 +36,7 @@ RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
     "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle"
 )
 SAFE_NEXT_SLICE = ""
-PROJECT_STATUS_SCHEMA_VERSION = 22
+PROJECT_STATUS_SCHEMA_VERSION = 23
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
     "self-target-command-buffer",
@@ -302,6 +302,32 @@ FORMAL_CONFIDENCE_SUMMARY = {
     "target_count": 1,
     "failed_subjects": [],
     "status_counts": {"blocked": 1},
+}
+FORMAL_CONFIDENCE_PAYLOAD_KEYS = {
+    "accepted",
+    "schema_version",
+    "reviewed_at",
+    "target_manifest",
+    "willard_map",
+    "target_count",
+    "failed_subjects",
+    "targets",
+    "result_count",
+    "results",
+    "status_counts",
+}
+FORMAL_CONFIDENCE_VALIDATION_SUMMARY = {
+    "accepted_validation_count": 19,
+    "failed_validation_count": 0,
+    "accepted_frontier_subjects": [
+        (
+            "AS-FORMAL-CONFIDENCE-TARGET-001."
+            "fixed_point_construction_frontier_status"
+        ),
+    ],
+    "accepted_frontier_labels": [
+        "fixed_point_construction_frontier_status",
+    ],
 }
 PROJECT_STATUS_SUMMARY = "\n".join(
     [
@@ -810,6 +836,10 @@ class ProjectStatusReportTests(unittest.TestCase):
         for key, expected in FORMAL_CONFIDENCE_SUMMARY.items():
             self.assertEqual(report["formal_confidence"][key], expected)
         self.assertEqual(
+            set(report["formal_confidence"]),
+            FORMAL_CONFIDENCE_PAYLOAD_KEYS,
+        )
+        self.assertEqual(
             report["formal_confidence"]["targets"][0]["target_id"],
             "AS-FORMAL-CONFIDENCE-TARGET-001",
         )
@@ -947,6 +977,43 @@ class ProjectStatusReportTests(unittest.TestCase):
                 STANDARD_SIGNAL_LATEST_SOURCE_REVIEW,
                 {},
             ],
+        )
+
+    def test_status_payload_exposes_derived_formal_confidence_validation_summary(self):
+        report = build_project_status_report()
+
+        self.assertIn("formal_confidence_validation", report)
+        validation = report["formal_confidence_validation"]
+        formal_confidence = report["formal_confidence"]
+        accepted_results = [
+            result for result in formal_confidence["results"] if result["accepted"]
+        ]
+        failed_results = [
+            result for result in formal_confidence["results"] if not result["accepted"]
+        ]
+
+        self.assertEqual(validation, FORMAL_CONFIDENCE_VALIDATION_SUMMARY)
+        self.assertEqual(
+            validation["accepted_validation_count"],
+            len(accepted_results),
+        )
+        self.assertEqual(validation["failed_validation_count"], len(failed_results))
+        self.assertEqual(
+            set(formal_confidence),
+            FORMAL_CONFIDENCE_PAYLOAD_KEYS,
+        )
+        self.assertEqual(
+            validation["accepted_frontier_subjects"],
+            [
+                (
+                    "AS-FORMAL-CONFIDENCE-TARGET-001."
+                    "fixed_point_construction_frontier_status"
+                ),
+            ],
+        )
+        self.assertEqual(
+            validation["accepted_frontier_labels"],
+            ["fixed_point_construction_frontier_status"],
         )
 
     def test_text_status_names_green_evidence_and_blocked_commands(self):
@@ -1716,6 +1783,14 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertEqual(payload["proof_rule_audit"], PROOF_RULE_AUDIT)
         for key, expected in FORMAL_CONFIDENCE_SUMMARY.items():
             self.assertEqual(payload["formal_confidence"][key], expected)
+        self.assertEqual(
+            set(payload["formal_confidence"]),
+            FORMAL_CONFIDENCE_PAYLOAD_KEYS,
+        )
+        self.assertEqual(
+            payload["formal_confidence_validation"],
+            FORMAL_CONFIDENCE_VALIDATION_SUMMARY,
+        )
         self.assertEqual(
             payload["formal_confidence"]["targets"][0]["target_id"],
             "AS-FORMAL-CONFIDENCE-TARGET-001",

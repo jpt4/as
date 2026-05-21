@@ -955,6 +955,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   formal-confidence target manifest, includes it in aggregate acceptance,
   renders formal-confidence status and failures in text and summary output,
   and adds `--formal-confidence-targets` / `--willard-map`.
+  Schema version `23` adds a top-level `formal_confidence_validation` JSON
+  summary derived from `formal_confidence.results`, exposing accepted/failed
+  validation counts plus accepted frontier subjects and compact labels for
+  automation without changing the nested formal-confidence payload.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

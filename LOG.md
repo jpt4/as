@@ -6459,3 +6459,35 @@
 - This is a recomputation guard only. It does not change substitution graph
   correctness frontier semantics, report payload shape, text format, blockers,
   proof status, fixed-point semantics, or formal-confidence semantics.
+
+## 2026-05-20 - Project Status Formal Confidence Validation JSON Summary
+
+- Added ADR-0291 to expose a derived top-level
+  `formal_confidence_validation` JSON field so automation can read accepted
+  formal-confidence frontier validation subjects without scanning
+  `formal_confidence.results`.
+- Updated `autarkic_systems/project_status.py` to bump
+  `PROJECT_STATUS_SCHEMA_VERSION` from 22 to 23 and derive accepted/failed
+  validation counts, accepted frontier subjects, and compact accepted frontier
+  labels from the existing nested formal-confidence payload.
+- Preserved the nested `formal_confidence` payload shape/content and the
+  ADR-0288 text/summary output; this does not change validation semantics,
+  proof status, blockers, fixed-point validators, substitution graph
+  validators, or project-status acceptance semantics.
+- Extended `tests/test_project_status_report.py` before implementation. The
+  focused red run failed because the payload and JSON CLI still reported
+  schema version 22 and the report lacked top-level
+  `formal_confidence_validation`.
+- The exact red run passed after implementation: 3 tests in 176.689s.
+- Focused verification passed:
+  `tests.test_project_status_report` plus `tests.test_suite_selection` ran 93
+  tests in 349.269s.
+- Live project-status JSON assertion accepted in 176.65s and confirmed schema
+  23, accepted project status, no formal-confidence failed subjects, 19
+  accepted validations, 0 failed validations, the accepted
+  `AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_frontier_status`
+  subject, and compact label `fixed_point_construction_frontier_status`.
+- `compileall` passed in 0.69s, `git diff --check` passed, and no JSON files
+  changed in this slice.
+- The fast suite passed 1171 tests in 233.412s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 129 selected modules.
