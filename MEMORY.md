@@ -1338,3 +1338,8 @@
   now accepts optional `project_status=...`; direct CLI/default use still builds
   project status internally, and no handoff or vertical-demo output schema
   changes.
+- ADR-0290 adds process-local cache telemetry to
+  `validate_substitution_graph_correctness_frontier_status` and makes loaded
+  `case_status_paths` immutable/hashable while preserving mapping access and
+  JSON payload behavior. Equivalent default manifests now hit the cache, while
+  temp case-status path changes remain separate fail-closed cache misses.

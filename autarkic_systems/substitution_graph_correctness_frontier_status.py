@@ -10,8 +10,9 @@ reports the blocked frontier without running expensive proof derivations.
 from __future__ import annotations
 
 import argparse
-from collections.abc import Callable
+from collections.abc import Callable, Iterator, Mapping
 from dataclasses import dataclass
+from functools import lru_cache
 import json
 from pathlib import Path
 from typing import Any
@@ -204,6 +205,45 @@ SUPPORT_ID_FIELDS = {
 }
 
 
+class _FrozenTextMapping(Mapping[str, str]):
+    """Immutable hashable mapping for loaded status path fields.
+
+    ADR-0290 makes the loaded frontier-status manifest a cache key. The
+    checked-in JSON naturally loads `case_status_paths` as a mutable `dict`,
+    but callers still expect ordinary mapping operations when validating,
+    formatting, and producing JSON. This adapter stores validated text pairs in
+    file order, exposes read-only `Mapping` access, and hashes by the same
+    key/value content so equivalent manifests share a cache entry.
+    """
+
+    __slots__ = ("_data", "_hash", "_items")
+
+    def __init__(self, items: Mapping[str, str]) -> None:
+        self._items = tuple(items.items())
+        self._data = dict(self._items)
+        self._hash = hash(tuple(sorted(self._items)))
+
+    def __getitem__(self, key: str) -> str:
+        return self._data[key]
+
+    def __iter__(self) -> Iterator[str]:
+        return (key for key, _value in self._items)
+
+    def __len__(self) -> int:
+        return len(self._items)
+
+    def __contains__(self, key: object) -> bool:
+        return key in self._data
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, Mapping):
+            return self._data == dict(other.items())
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return self._hash
+
+
 @dataclass(frozen=True)
 class SubstitutionGraphCorrectnessFrontierStatusManifest:
     """Loaded manifest for the compact correctness frontier status."""
@@ -216,7 +256,7 @@ class SubstitutionGraphCorrectnessFrontierStatusManifest:
     frontier_status: str
     frontier_blocked_by: str
     substitution_graph_correctness_cases_path: str
-    case_status_paths: dict[str, str]
+    case_status_paths: _FrozenTextMapping
     non_claims: tuple[str, ...]
     next_as_action: str
 
@@ -374,10 +414,17 @@ def load_substitution_graph_correctness_frontier_status(
     )
 
 
+@lru_cache(maxsize=32)
 def validate_substitution_graph_correctness_frontier_status(
     manifest: SubstitutionGraphCorrectnessFrontierStatusManifest,
 ) -> SubstitutionGraphCorrectnessFrontierStatusReport:
-    """Validate the compact correctness frontier without deep derivations."""
+    """Validate the compact correctness frontier without deep derivations.
+
+    This aggregate check fans out through the five compact case-status
+    validators. A process-local cache avoids recomputing that stable default
+    stack when equivalent manifests are loaded more than once, while changed
+    manifests remain distinct immutable inputs and still fail closed.
+    """
 
     cases_path = Path(manifest.substitution_graph_correctness_cases_path)
     cases_manifest = None
@@ -691,7 +738,7 @@ def _validate_manifest(
 
 
 def _validate_case_status_paths(
-    paths: dict[str, str],
+    paths: Mapping[str, str],
 ) -> list[SubstitutionGraphCorrectnessFrontierStatusValidation]:
     results: list[SubstitutionGraphCorrectnessFrontierStatusValidation] = []
     missing = [
@@ -731,7 +778,7 @@ def _validate_case_status_paths(
 
 
 def _case_status_rollup(
-    paths: dict[str, str],
+    paths: Mapping[str, str],
 ) -> tuple[
     list[SubstitutionGraphCorrectnessFrontierCaseStatusRollup],
     list[SubstitutionGraphCorrectnessFrontierStatusValidation],
@@ -1204,7 +1251,7 @@ def _required_list(item: dict[str, Any], key: str) -> list[Any]:
     return value
 
 
-def _required_text_map(item: dict[str, Any], key: str) -> dict[str, str]:
+def _required_text_map(item: dict[str, Any], key: str) -> _FrozenTextMapping:
     value = item.get(key)
     if not isinstance(value, dict) or not value:
         raise ValueError(f"required object field missing: {key}")
@@ -1215,7 +1262,7 @@ def _required_text_map(item: dict[str, Any], key: str) -> dict[str, str]:
         if not isinstance(map_value, str) or not map_value.strip():
             raise ValueError(f"{key} contains non-text value")
         result[map_key] = map_value
-    return result
+    return _FrozenTextMapping(result)
 
 
 def _required_text_list(item: dict[str, Any], key: str) -> list[str]:

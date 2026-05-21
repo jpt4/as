@@ -6350,3 +6350,26 @@ Status: accepted in
 Implemented in `autarkic_systems/handoff.py` and
 `autarkic_systems/vertical_demo.py`, with tests in
 `tests/test_handoff_status.py` and `tests/test_vertical_demo_digest.py`.
+
+## ADR-0290: Substitution Graph Correctness Frontier Validation Cache
+
+Goal: keep repeated default substitution graph correctness frontier checks from
+recomputing the compact case-status stack in the same process.
+
+Deliverables:
+
+- `validate_substitution_graph_correctness_frontier_status.cache_clear()` and
+  `cache_info()` expose the same process-local telemetry convention as the
+  cached fixed-point and formal-confidence validators;
+- loaded `case_status_paths` is immutable and hashable while preserving
+  mapping-style access and JSON payload behavior;
+- focused regression coverage proves two separately loaded equivalent default
+  manifests reuse one cached report; and
+- a changed temp manifest receives a separate cache miss and still fails closed
+  under the existing case-status rollup failure subject.
+
+Status: accepted in
+`docs/adr/0290-substitution-graph-correctness-frontier-validation-cache.md`.
+Implemented in
+`autarkic_systems/substitution_graph_correctness_frontier_status.py`, with
+tests in `tests/test_substitution_graph_correctness_frontier_status.py`.

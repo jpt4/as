@@ -6424,3 +6424,38 @@
   formal-confidence semantics, project-status schema or acceptance, GitHub
   submission semantics, vertical-demo validation rules, or handoff output
   shape.
+
+## 2026-05-20 - Substitution Graph Correctness Frontier Validation Cache
+
+- Added ADR-0290 to make repeated default
+  `validate_substitution_graph_correctness_frontier_status` checks reuse a
+  process-local validation report instead of recomputing the compact
+  case-status stack every time.
+- Added cache telemetry to
+  `autarkic_systems.substitution_graph_correctness_frontier_status.validate_substitution_graph_correctness_frontier_status`
+  via `cache_clear()` and `cache_info()`, matching the fixed-point and
+  formal-confidence validator convention.
+- Made loaded `case_status_paths` immutable and hashable while preserving
+  mapping-style access through `[]`, `.get()`, membership checks, `.items()`,
+  and `dict(...)`.
+- Extended `tests/test_substitution_graph_correctness_frontier_status.py`
+  before implementation. The red run failed because
+  `validate_substitution_graph_correctness_frontier_status.cache_clear` did not
+  exist.
+- The focused cache regression passed 1 test in 7.485s. It proved that two
+  separately loaded default manifests reuse the same cached report, while a
+  temp manifest with a missing compact case-status path receives a separate
+  miss and fails closed as
+  `substitution-graph-correctness-frontier-case-status-rollup`.
+- Focused verification passed:
+  `tests.test_substitution_graph_correctness_frontier_status` plus
+  `tests.test_suite_selection` ran 23 tests in 52.658s.
+- Live substitution graph correctness frontier JSON assertion accepted in
+  3.950s with no failed subjects, `case_status_count: 5`, and
+  `accepted_case_status_count: 5`.
+- `compileall` passed in 0.816s, and no JSON files changed in this slice.
+- The fast suite passed 1171 tests in 236.708s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 129 selected modules.
+- This is a recomputation guard only. It does not change substitution graph
+  correctness frontier semantics, report payload shape, text format, blockers,
+  proof status, fixed-point semantics, or formal-confidence semantics.

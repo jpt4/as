@@ -44,6 +44,82 @@ class SubstitutionGraphCorrectnessFrontierStatusTests(unittest.TestCase):
     def setUp(self):
         self.status = load_substitution_graph_correctness_frontier_status(STATUS)
 
+    def test_default_frontier_status_validation_reuses_cached_report_and_tracks_temp_manifest(self):
+        validate_substitution_graph_correctness_frontier_status.cache_clear()
+        first_manifest = load_substitution_graph_correctness_frontier_status(STATUS)
+        second_manifest = load_substitution_graph_correctness_frontier_status(STATUS)
+
+        first_report = validate_substitution_graph_correctness_frontier_status(
+            first_manifest
+        )
+        after_first = (
+            validate_substitution_graph_correctness_frontier_status.cache_info()
+        )
+        second_report = validate_substitution_graph_correctness_frontier_status(
+            second_manifest
+        )
+        after_second = (
+            validate_substitution_graph_correctness_frontier_status.cache_info()
+        )
+
+        self.assertTrue(first_report.accepted, first_report.results)
+        self.assertIs(first_report, second_report)
+        self.assertEqual(after_first.misses, 1)
+        self.assertEqual(after_first.hits, 0)
+        self.assertEqual(after_second.misses, 1)
+        self.assertEqual(after_second.hits, 1)
+        self.assertIn("codebook-roundtrip", first_manifest.case_status_paths)
+        self.assertEqual(
+            first_manifest.case_status_paths.get("codebook-roundtrip"),
+            EXPECTED_CASE_STATUS_PATHS["codebook-roundtrip"],
+        )
+        self.assertEqual(
+            dict(first_manifest.case_status_paths),
+            EXPECTED_CASE_STATUS_PATHS,
+        )
+        self.assertEqual(
+            tuple(first_manifest.case_status_paths.items()),
+            tuple(EXPECTED_CASE_STATUS_PATHS.items()),
+        )
+
+        with tempfile.TemporaryDirectory() as tmp:
+            status_path = Path(tmp) / "status.json"
+            status_data = json.loads(STATUS.read_text(encoding="utf-8"))
+            status_data["case_status_paths"]["codebook-roundtrip"] = (
+                "claims/missing_substitution_graph_codebook_roundtrip_status.json"
+            )
+            status_path.write_text(json.dumps(status_data), encoding="utf-8")
+            modified_manifest = load_substitution_graph_correctness_frontier_status(
+                status_path
+            )
+
+            modified_report = validate_substitution_graph_correctness_frontier_status(
+                modified_manifest
+            )
+            after_modified = (
+                validate_substitution_graph_correctness_frontier_status.cache_info()
+            )
+
+        self.assertIsNot(first_report, modified_report)
+        self.assertFalse(modified_report.accepted)
+        self.assertIn(
+            "substitution-graph-correctness-frontier-case-status-rollup",
+            modified_report.failed_subjects,
+        )
+        self.assertEqual(after_modified.misses, 2)
+        self.assertEqual(after_modified.hits, 1)
+
+        final_report = validate_substitution_graph_correctness_frontier_status(
+            load_substitution_graph_correctness_frontier_status(STATUS)
+        )
+        after_final = (
+            validate_substitution_graph_correctness_frontier_status.cache_info()
+        )
+
+        self.assertIs(first_report, final_report)
+        self.assertEqual(after_final.misses, 2)
+        self.assertEqual(after_final.hits, 2)
+
     def test_checked_in_manifest_names_frontier_boundary(self):
         self.assertEqual(self.status.schema_version, 1)
         self.assertEqual(
