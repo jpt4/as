@@ -6276,3 +6276,26 @@ Status: accepted in
 `docs/adr/0286-formal-confidence-fixed-point-frontier-dependency.md`.
 Implemented in `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0287: Formal Confidence Validation Cache
+
+Goal: keep repeated default formal-confidence and project-status checks from
+recomputing the expensive fixed-point frontier stack in the same process.
+
+Deliverables:
+
+- `autarkic_systems.formal_confidence`, exposing process-local
+  `validate_formal_confidence_targets.cache_clear()` and `cache_info()`
+  telemetry;
+- hashable loaded formal-confidence target configuration that preserves
+  mapping-style access and JSON payload behavior;
+- a focused regression proving repeated equivalent default manifests reuse the
+  cached report; and
+- a fail-closed temp-manifest regression proving a missing
+  `fixed_point_construction_frontier_status` is a separate cache miss and
+  still rejects.
+
+Status: accepted in
+`docs/adr/0287-formal-confidence-validation-cache.md`. Implemented in
+`autarkic_systems/formal_confidence.py`, with tests in
+`tests/test_formal_confidence_target.py`.

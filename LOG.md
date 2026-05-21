@@ -6323,3 +6323,39 @@
   substitution representability, substitution graph correctness, bridge
   equality, a fixed-point equation, an arithmetized proof predicate, or
   self-consistency.
+
+## 2026-05-20 - Formal Confidence Validation Cache
+
+- Added ADR-0287 to make repeated default aggregate formal-confidence checks
+  reuse a process-local validation report instead of recomputing the fixed-point
+  frontier dependency stack every time.
+- Added cache telemetry to
+  `autarkic_systems.formal_confidence.validate_formal_confidence_targets` via
+  `cache_clear()` and `cache_info()`, matching the existing fixed-point
+  validator convention.
+- Made loaded formal-confidence target configuration immutable and hashable
+  while preserving mapping-style access through
+  `target.configuration["field"]`, membership checks, `.items()`, and
+  `dict(target.configuration)`.
+- Extended `tests/test_formal_confidence_target.py` before implementation. The
+  red run failed because `validate_formal_confidence_targets.cache_clear` did
+  not exist.
+- The focused cache regression passed 1 test in 320.359s. It proved that two
+  separately loaded default manifests reuse the same cached report, while a
+  temp manifest with a missing
+  `fixed_point_construction_frontier_status` receives a separate miss and
+  fails closed as `target-fixed-point-construction-frontier-status`.
+- Focused verification passed: `tests.test_formal_confidence_target` plus
+  `tests.test_suite_selection` ran 30 tests in 1093.469s.
+- The requested ADR-0286 aggregate path passed:
+  `tests.test_formal_confidence_target`, `tests.test_project_status_report`,
+  and `tests.test_suite_selection` ran 117 tests in 1237.461s.
+- Live formal-confidence JSON assertion accepted in 3m25.235s with no failed
+  subjects and with accepted subject
+  `AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_frontier_status`.
+- `compileall` passed in 1.149s, `git diff --check` passed, and no JSON files
+  changed in this slice.
+- The fast suite passed 1170 tests in 263.098s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 129 selected modules.
+- This is a recomputation guard only. It does not change formal-confidence
+  target semantics, proof promotion, or JSON payload shape.

@@ -297,6 +297,15 @@
   `fixed-point-construction`, and expose five accepted construction-case
   status rollups, while keeping the raw `fixed_point_construction_cases`
   dependency and still not claiming the fixed point.
+- ADR-0287 adds a process-local cache to
+  `validate_formal_confidence_targets`, exposing `cache_clear()` and
+  `cache_info()` like the fixed-point validators. Loaded target configuration
+  is now an immutable hashable mapping that preserves
+  `target.configuration["field"]`, membership checks, `.items()`, and
+  `dict(target.configuration)`. Repeated default manifests reuse the cached
+  aggregate report, while temp manifests with changed/missing
+  `fixed_point_construction_frontier_status` remain separate cache misses and
+  fail closed.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length

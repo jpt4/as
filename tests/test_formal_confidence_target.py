@@ -51,6 +51,70 @@ class FormalConfidenceTargetTests(unittest.TestCase):
     def setUp(self):
         self.manifest = load_formal_confidence_targets(TARGETS)
 
+    def test_default_formal_confidence_validation_reuses_cached_report_and_tracks_temp_manifest(self):
+        validate_formal_confidence_targets.cache_clear()
+        first_manifest = load_formal_confidence_targets(TARGETS)
+        second_manifest = load_formal_confidence_targets(TARGETS)
+
+        first_report = validate_formal_confidence_targets(
+            first_manifest,
+            WILLARD_MAP,
+        )
+        after_first = validate_formal_confidence_targets.cache_info()
+        second_report = validate_formal_confidence_targets(
+            second_manifest,
+            WILLARD_MAP,
+        )
+        after_second = validate_formal_confidence_targets.cache_info()
+
+        self.assertTrue(first_report.accepted, first_report.results)
+        self.assertIs(first_report, second_report)
+        self.assertEqual(after_first.misses, 1)
+        self.assertEqual(after_first.hits, 0)
+        self.assertEqual(after_second.misses, 1)
+        self.assertEqual(after_second.hits, 1)
+
+        target = first_manifest.targets[0]
+        self.assertIn("fixed_point_construction_frontier_status", target.configuration)
+        self.assertEqual(
+            dict(target.configuration)["fixed_point_construction_frontier_status"],
+            str(FIXED_POINT_CONSTRUCTION_FRONTIER_STATUS),
+        )
+
+        with tempfile.TemporaryDirectory() as tmp:
+            target_path = Path(tmp) / "targets.json"
+            data = json.loads(TARGETS.read_text(encoding="utf-8"))
+            data["targets"][0]["configuration"][
+                "fixed_point_construction_frontier_status"
+            ] = "claims/missing_fixed_point_construction_frontier_status.json"
+            target_path.write_text(json.dumps(data), encoding="utf-8")
+            modified_manifest = load_formal_confidence_targets(target_path)
+
+            modified_report = validate_formal_confidence_targets(
+                modified_manifest,
+                WILLARD_MAP,
+            )
+            after_modified = validate_formal_confidence_targets.cache_info()
+
+        self.assertIsNot(first_report, modified_report)
+        self.assertFalse(modified_report.accepted)
+        self.assertIn(
+            "target-fixed-point-construction-frontier-status",
+            modified_report.failed_subjects,
+        )
+        self.assertEqual(after_modified.misses, 2)
+        self.assertEqual(after_modified.hits, 1)
+
+        final_report = validate_formal_confidence_targets(
+            load_formal_confidence_targets(TARGETS),
+            WILLARD_MAP,
+        )
+        after_final = validate_formal_confidence_targets.cache_info()
+
+        self.assertIs(first_report, final_report)
+        self.assertEqual(after_final.misses, 2)
+        self.assertEqual(after_final.hits, 2)
+
     def test_checked_in_target_names_current_formal_confidence_boundary(self):
         target = self.manifest.targets[0]
 

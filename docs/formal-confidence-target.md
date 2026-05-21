@@ -103,6 +103,9 @@ structured, fail-closed dependency of the aggregate formal-confidence
 validator. That handoff reports seven accepted finite support surfaces and
 five accepted construction-case status rollups while preserving that the
 fixed-point construction frontier is still blocked.
+ADR-0287 adds a process-local cache to that aggregate validator so repeated
+default formal-confidence and project-status checks reuse the same checked
+report without changing the target semantics or JSON payload shape.
 
 ## Current Target
 
@@ -268,6 +271,10 @@ The validator checks that:
 ADR-0225 folds this validator into aggregate project status, so missing or
 drifted formal-confidence targets now make the main status and inherited
 handoff path reject instead of remaining invisible.
+ADR-0287 keeps that fail-closed behavior while exposing
+`validate_formal_confidence_targets.cache_clear()` and
+`validate_formal_confidence_targets.cache_info()` for regression tests and
+operator diagnostics.
 
 ## Boundary
 

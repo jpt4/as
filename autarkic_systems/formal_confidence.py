@@ -10,6 +10,8 @@ and records the blockers that prevent overclaiming.
 from __future__ import annotations
 
 import argparse
+from collections.abc import Iterator, Mapping
+from functools import lru_cache
 import json
 from dataclasses import dataclass
 from pathlib import Path
@@ -108,6 +110,44 @@ VALID_TARGET_STATUSES = {
 }
 
 
+class _FrozenTextMapping(Mapping[str, str]):
+    """Immutable hashable mapping for loaded manifest configuration fields.
+
+    The formal-confidence manifest is a cache key after ADR-0287. A mutable
+    ``dict`` cannot serve that role, but callers still need ordinary mapping
+    behavior for validation and JSON payload construction. This small adapter
+    stores the checked text items in file order, exposes read-only
+    ``Mapping`` access, and hashes by the same key/value content.
+    """
+
+    __slots__ = ("_data", "_hash", "_items")
+
+    def __init__(self, items: Mapping[str, str]) -> None:
+        self._items = tuple(items.items())
+        self._data = dict(self._items)
+        self._hash = hash(tuple(sorted(self._items)))
+
+    def __getitem__(self, key: str) -> str:
+        return self._data[key]
+
+    def __iter__(self) -> Iterator[str]:
+        return (key for key, _value in self._items)
+
+    def __len__(self) -> int:
+        return len(self._items)
+
+    def __contains__(self, key: object) -> bool:
+        return key in self._data
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, Mapping):
+            return self._data == dict(other.items())
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return self._hash
+
+
 @dataclass(frozen=True)
 class FormalConfidenceTarget:
     """One scoped AS formal-confidence target or boundary."""
@@ -116,7 +156,7 @@ class FormalConfidenceTarget:
     status: str
     summary: str
     willard_anchor_ids: tuple[str, ...]
-    configuration: dict[str, str]
+    configuration: _FrozenTextMapping
     blocked_by: tuple[str, ...]
     next_as_action: str
 
@@ -194,11 +234,18 @@ def load_formal_confidence_targets(
     )
 
 
+@lru_cache(maxsize=32)
 def validate_formal_confidence_targets(
     manifest: FormalConfidenceTargetManifest,
     willard_map_path: Path | str = DEFAULT_WILLARD_MAP,
 ) -> FormalConfidenceReport:
-    """Validate formal-confidence targets against the Willard anchor map."""
+    """Validate formal-confidence targets against the Willard anchor map.
+
+    The aggregate validator fans out into the fixed-point frontier stack. The
+    process-local cache keeps repeated equivalent default manifest checks from
+    recomputing that stack while distinct loaded manifests, including temp
+    fail-closed regressions, keep separate cache entries.
+    """
 
     map_path = Path(willard_map_path)
     willard_map = load_willard_definition_map(map_path)
@@ -883,7 +930,7 @@ def _required_text_list(
     return text_values
 
 
-def _required_text_mapping(item: dict[str, Any], key: str) -> dict[str, str]:
+def _required_text_mapping(item: dict[str, Any], key: str) -> _FrozenTextMapping:
     value = item.get(key)
     if not isinstance(value, dict):
         raise ValueError(f"required mapping field missing: {key}")
@@ -894,7 +941,7 @@ def _required_text_mapping(item: dict[str, Any], key: str) -> dict[str, str]:
         if not isinstance(map_value, str):
             raise ValueError(f"{key} contains non-text value")
         result[map_key] = map_value
-    return result
+    return _FrozenTextMapping(result)
 
 
 def _duplicates(values: list[str]) -> list[str]:
