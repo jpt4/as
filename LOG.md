@@ -6522,3 +6522,39 @@
   accepted/submission-state semantics, refresh behavior, handoff readiness,
   project-status behavior, formal-confidence semantics, source-status records,
   or command-token/runtime behavior.
+
+## 2026-05-20 - Test Suite Selection JSON List
+
+- Added ADR-0293 to expose machine-readable JSON list output from the existing
+  fail-closed unittest suite selector, so automation can consume selected
+  module plans without parsing ADR-0272 text.
+- Extended `tests/test_suite_selection.py` before implementation. The focused
+  red run failed as intended: both JSON-list tests errored with `SystemExit: 2`
+  because argparse did not recognize `--format json`.
+- Updated `autarkic_systems/test_suite_selection.py` to carry manifest schema
+  version into `SuitePlan`, derive a JSON payload from the already validated
+  selected module plan, and route `--list --format json` through a JSON
+  formatter while leaving text list mode as the default.
+- Added text compatibility coverage preserving the ADR-0272 line format:
+  `manifest: ...`, `suite: ...`, `module_count: ...`, `modules:`, then
+  `- tests.test_...` bullets.
+- After `main` advanced to `db2b4fa`, rebased this branch with
+  `git rebase --autostash origin/main` before final verification. ADR-0292
+  GitHub submission and handoff files were not edited in this lane.
+- Focused verification passed on the rebased branch:
+  `python -m unittest tests.test_suite_selection` ran 8 tests in 0.061s.
+- Live JSON list smokes passed:
+  `fast` reported manifest `as-test-suite-selection-v1`, schema 1, 129
+  selected modules, 151 discovered modules, and command metadata for 129
+  modules; `extended-fixed-point` reported the same manifest/schema, 22
+  selected modules, 151 discovered modules, and command metadata for 22
+  modules.
+- Live text list smoke preserved the ADR-0272 opening labels for `fast`.
+- `compileall` passed, `git diff --check` passed, and no JSON files changed in
+  this slice.
+- The fast suite passed 1176 tests in 305.396s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 129 selected modules.
+- This is a suite-list serialization change only. It does not change suite
+  membership, run-mode loading, proof validators, claim manifests,
+  mathematical semantics, GitHub submission/handoff freshness semantics, or
+  skip decorators.

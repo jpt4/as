@@ -23,6 +23,7 @@ DEFAULT_MANIFEST_PATH = DEFAULT_TESTS_ROOT / "suite_manifest.json"
 EXPECTED_LEAF_SUITES = frozenset({"fast", "extended-fixed-point"})
 EXPECTED_AGGREGATE_SUITES = frozenset({"all"})
 SELECTABLE_SUITES = ("fast", "extended-fixed-point", "all")
+LIST_FORMATS = ("text", "json")
 
 
 class SuiteManifestError(ValueError):
@@ -47,6 +48,7 @@ class SuitePlan:
     """Validated module selections derived from live discovery."""
 
     manifest_id: str
+    manifest_schema_version: int
     discovered_modules: tuple[str, ...]
     leaf_suites: Mapping[str, tuple[str, ...]]
     aggregate_suites: Mapping[str, tuple[str, ...]]
@@ -302,10 +304,32 @@ def build_suite_plan(
 
     return SuitePlan(
         manifest_id=manifest.manifest_id,
+        manifest_schema_version=manifest.schema_version,
         discovered_modules=discovered,
         leaf_suites=leaf_suites,
         aggregate_suites=aggregate_suites,
     )
+
+
+def build_suite_list_payload(plan: SuitePlan, suite_name: str) -> Mapping[str, Any]:
+    """Return the machine-readable list payload for one validated suite."""
+
+    module_names = plan.selected_modules(suite_name)
+    unittest_argv = ["python", "-m", "unittest", *module_names]
+    return {
+        "manifest_id": plan.manifest_id,
+        "manifest_schema_version": plan.manifest_schema_version,
+        "suite": suite_name,
+        "module_count": len(module_names),
+        "modules": list(module_names),
+        "discovered_module_count": len(plan.discovered_modules),
+        "command": {
+            "program": "python",
+            "module": "unittest",
+            "argv": unittest_argv,
+            "module_count": len(module_names),
+        },
+    }
 
 
 def format_suite_list(
@@ -322,6 +346,18 @@ def format_suite_list(
     print("modules:", file=stream)
     for module_name in module_names:
         print(f"- {module_name}", file=stream)
+
+
+def format_suite_list_json(
+    plan: SuitePlan,
+    suite_name: str,
+    stream: IO[str],
+) -> None:
+    """Print a stable JSON module list for one validated suite."""
+
+    payload = build_suite_list_payload(plan, suite_name)
+    json.dump(payload, stream, indent=2)
+    print(file=stream)
 
 
 def run_selected_modules(
@@ -354,6 +390,12 @@ def _build_argument_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="list selected modules without running unittest",
     )
+    parser.add_argument(
+        "--format",
+        choices=LIST_FORMATS,
+        default="text",
+        help="output format for --list",
+    )
     return parser
 
 
@@ -382,7 +424,10 @@ def run_cli(
         return 2
 
     if args.list:
-        format_suite_list(plan, args.suite, stdout)
+        if args.format == "json":
+            format_suite_list_json(plan, args.suite, stdout)
+        else:
+            format_suite_list(plan, args.suite, stdout)
         return 0
 
     print(

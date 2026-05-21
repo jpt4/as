@@ -6420,3 +6420,25 @@ Deliverables:
 Status: accepted in `docs/adr/0292-origin-main-ref-freshness.md`.
 Implemented in `autarkic_systems/github_submission.py`, with tests in
 `tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.
+
+## ADR-0293: Test Suite Selection JSON List
+
+Goal: let automation and future agents consume selected unittest module plans
+without parsing ADR-0272's human-readable list output.
+
+Deliverables:
+
+- explicit `--format json` support for
+  `python -m autarkic_systems.test_suite_selection --list`;
+- JSON payloads containing manifest id/version, suite name, module count,
+  selected modules, discovered module count, and the selected `unittest`
+  command metadata;
+- focused coverage for `fast` and `extended-fixed-point` JSON list output;
+- text-list compatibility coverage preserving ADR-0272 line labels and module
+  bullets; and
+- no changes to suite membership, run-mode loading, proof validators, claim
+  manifests, mathematical semantics, or skip decorators.
+
+Status: accepted in `docs/adr/0293-test-suite-selection-json-list.md`.
+Implemented in `autarkic_systems/test_suite_selection.py`, with tests in
+`tests/test_suite_selection.py`.

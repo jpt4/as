@@ -1150,7 +1150,9 @@ suite:
 
 ```sh
 python -m autarkic_systems.test_suite_selection --suite fast --list
+python -m autarkic_systems.test_suite_selection --suite fast --list --format json
 python -m autarkic_systems.test_suite_selection --suite extended-fixed-point --list
+python -m autarkic_systems.test_suite_selection --suite extended-fixed-point --list --format json
 python -m autarkic_systems.test_suite_selection --suite extended-fixed-point
 python -m autarkic_systems.test_suite_selection --suite all
 ```

@@ -1354,3 +1354,8 @@
   `fork_main.remote_ref_freshness` shape, text renders
   `origin/main freshness: ...`, and accepted/submission-state semantics remain
   unchanged.
+- ADR-0293 adds machine-readable suite-list output:
+  `python -m autarkic_systems.test_suite_selection --suite fast --list
+  --format json` and the same command for `extended-fixed-point` emit manifest
+  id/version, suite, counts, modules, and selected `unittest` command metadata
+  without changing text list mode or run mode.

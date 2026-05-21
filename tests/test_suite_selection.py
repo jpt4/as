@@ -71,6 +71,11 @@ class _RecordingRunner:
 class TestSuiteSelectionTests(unittest.TestCase):
     """Coverage for the repo-native fast/extended test selector."""
 
+    def _current_plan(self):
+        manifest = selector.load_suite_manifest(MANIFEST_PATH)
+        discovered = selector.discover_test_modules(TESTS_ROOT)
+        return manifest, selector.build_suite_plan(manifest, discovered)
+
     def _write_temp_manifest(self, data):
         temp_dir = tempfile.TemporaryDirectory()
         self.addCleanup(temp_dir.cleanup)
@@ -151,6 +156,79 @@ class TestSuiteSelectionTests(unittest.TestCase):
         self.assertNotIn("Ran ", output)
         for module_name in EXPECTED_EXTENDED_MODULES:
             self.assertIn(module_name, output)
+
+    def test_text_list_mode_keeps_adr0272_line_format(self):
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        manifest, plan = self._current_plan()
+        expected_modules = plan.selected_modules("fast")
+
+        exit_code = selector.run_cli(
+            ["--suite", "fast", "--list"],
+            stdout=stdout,
+            stderr=stderr,
+        )
+
+        self.assertEqual(exit_code, 0, stderr.getvalue())
+        lines = stdout.getvalue().splitlines()
+        self.assertEqual(lines[0], f"manifest: {manifest.manifest_id}")
+        self.assertEqual(lines[1], "suite: fast")
+        self.assertEqual(lines[2], f"module_count: {len(expected_modules)}")
+        self.assertEqual(lines[3], "modules:")
+        self.assertEqual(lines[4:], [f"- {name}" for name in expected_modules])
+
+    def test_json_list_mode_emits_fast_suite_plan(self):
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        manifest, plan = self._current_plan()
+        expected_modules = plan.selected_modules("fast")
+
+        exit_code = selector.run_cli(
+            ["--suite", "fast", "--list", "--format", "json"],
+            stdout=stdout,
+            stderr=stderr,
+        )
+
+        self.assertEqual(exit_code, 0, stderr.getvalue())
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(payload["manifest_id"], manifest.manifest_id)
+        self.assertEqual(payload["manifest_schema_version"], manifest.schema_version)
+        self.assertEqual(payload["suite"], "fast")
+        self.assertEqual(payload["module_count"], len(expected_modules))
+        self.assertEqual(payload["modules"], list(expected_modules))
+        self.assertEqual(
+            payload["discovered_module_count"],
+            len(plan.discovered_modules),
+        )
+        self.assertIn("tests.test_suite_selection", payload["modules"])
+        self.assertEqual(payload["command"]["program"], "python")
+        self.assertEqual(payload["command"]["module"], "unittest")
+        self.assertEqual(payload["command"]["module_count"], len(expected_modules))
+        self.assertEqual(payload["command"]["argv"][:3], ["python", "-m", "unittest"])
+        self.assertEqual(payload["command"]["argv"][3:], list(expected_modules))
+
+    def test_json_list_mode_emits_extended_suite_plan(self):
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        manifest, plan = self._current_plan()
+        expected_modules = plan.selected_modules("extended-fixed-point")
+
+        exit_code = selector.run_cli(
+            ["--suite", "extended-fixed-point", "--list", "--format", "json"],
+            stdout=stdout,
+            stderr=stderr,
+        )
+
+        self.assertEqual(exit_code, 0, stderr.getvalue())
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(payload["manifest_id"], manifest.manifest_id)
+        self.assertEqual(payload["manifest_schema_version"], manifest.schema_version)
+        self.assertEqual(payload["suite"], "extended-fixed-point")
+        self.assertEqual(payload["module_count"], len(expected_modules))
+        self.assertEqual(payload["modules"], list(expected_modules))
+        self.assertTrue(EXPECTED_EXTENDED_MODULES <= set(payload["modules"]))
+        self.assertEqual(payload["command"]["module_count"], len(expected_modules))
+        self.assertEqual(payload["command"]["argv"][3:], list(expected_modules))
 
     def test_run_mode_loads_selected_modules_through_unittest(self):
         stdout = io.StringIO()
