@@ -35,6 +35,10 @@ from autarkic_systems.fixed_point_construction_cases import (
     load_fixed_point_construction_cases,
     validate_fixed_point_construction_cases,
 )
+from autarkic_systems.fixed_point_construction_frontier_status import (
+    load_fixed_point_construction_frontier_status,
+    validate_fixed_point_construction_frontier_status,
+)
 from autarkic_systems.fixed_point_obstruction import (
     load_fixed_point_obstructions,
     validate_fixed_point_obstructions,
@@ -83,6 +87,7 @@ REQUIRED_CONFIGURATION_FIELDS = (
     "fixed_point_equation_candidate",
     "fixed_point_equation_bridge",
     "fixed_point_construction_cases",
+    "fixed_point_construction_frontier_status",
     "fixed_point_obstruction",
     "substrate_bridge",
 )
@@ -435,6 +440,9 @@ def _validate_target(
     if "fixed_point_construction_cases" in target.configuration:
         results.extend(_validate_fixed_point_construction_cases(target))
 
+    if "fixed_point_construction_frontier_status" in target.configuration:
+        results.extend(_validate_fixed_point_construction_frontier_status(target))
+
     if "fixed_point_obstruction" in target.configuration:
         results.extend(_validate_fixed_point_obstruction(target))
 
@@ -748,6 +756,64 @@ def _validate_fixed_point_construction_cases(
     ]
 
 
+def _validate_fixed_point_construction_frontier_status(
+    target: FormalConfidenceTarget,
+) -> list[FormalConfidenceValidation]:
+    subject = f"{target.target_id}.fixed_point_construction_frontier_status"
+    status_path = target.configuration["fixed_point_construction_frontier_status"]
+    try:
+        manifest = load_fixed_point_construction_frontier_status(status_path)
+        report = validate_fixed_point_construction_frontier_status(manifest)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return [
+            _rejected(
+                subject,
+                "fixed-point construction frontier status rejected: " + str(exc),
+            )
+        ]
+
+    failures: list[str] = []
+    if not report.accepted:
+        failures.append(
+            "frontier report failed subjects: "
+            + _joined_or_none(report.failed_subjects)
+        )
+    if report.frontier_status != "blocked":
+        failures.append("frontier status is " + report.frontier_status)
+    if report.frontier_blocked_by != "fixed-point-construction":
+        failures.append(
+            "frontier blocked by " + report.frontier_blocked_by
+        )
+    if report.case_status_count != 5:
+        failures.append(
+            f"expected 5 case-status rollups but found {report.case_status_count}"
+        )
+    if report.accepted_case_status_count != 5:
+        failures.append(
+            "accepted case-status rollups: "
+            + str(report.accepted_case_status_count)
+        )
+
+    if not failures:
+        return [
+            _accepted(
+                subject,
+                (
+                    "fixed-point construction frontier status accepted: "
+                    "blocked by fixed-point-construction with 5 accepted "
+                    "case-status rollups"
+                ),
+            )
+        ]
+    return [
+        _rejected(
+            subject,
+            "fixed-point construction frontier status rejected: "
+            + "; ".join(failures),
+        )
+    ]
+
+
 def _failed_subject_for_result(subject: str) -> str:
     if subject.endswith(".willard_anchors"):
         return "target-willard-anchor"
@@ -773,6 +839,8 @@ def _failed_subject_for_result(subject: str) -> str:
         return "target-fixed-point-equation-bridge"
     if subject.endswith(".fixed_point_construction_cases"):
         return "target-fixed-point-construction-cases"
+    if subject.endswith(".fixed_point_construction_frontier_status"):
+        return "target-fixed-point-construction-frontier-status"
     if subject.endswith(".fixed_point_obstruction"):
         return "target-fixed-point-obstruction"
     if subject.endswith(".blockers"):

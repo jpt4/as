@@ -9,7 +9,9 @@ substitution graph correctness target, substitution graph correctness case
 map, fixed-point construction case map with finite diagonal-instance closure,
 substitution-witness bridge, substitution graph correctness bridge, and
 bridge-equality alignment, bridge-equality evaluation, and equation-lifting
-alignment dependencies, and obstruction dependencies, 2026-05-19.
+alignment dependencies, compact fixed-point construction frontier status with
+five accepted construction-case status rollups, and obstruction dependencies,
+2026-05-20.
 
 ADR-0224 adds `claims/formal_confidence_targets.json` and
 `autarkic_systems/formal_confidence.py`. The target records what AS would need
@@ -96,7 +98,11 @@ correctness bridge evidence. ADR-0267 makes the fourth construction case
 depend on finite bridge-equality alignment evidence. ADR-0268 makes the fifth
 construction case depend on finite equation-lifting alignment evidence.
 ADR-0269 then adds finite bridge-equality evaluation evidence for the fourth
-case.
+case. ADR-0286 makes the compact fixed-point construction frontier status a
+structured, fail-closed dependency of the aggregate formal-confidence
+validator. That handoff reports seven accepted finite support surfaces and
+five accepted construction-case status rollups while preserving that the
+fixed-point construction frontier is still blocked.
 
 ## Current Target
 
@@ -149,6 +155,11 @@ for the fourth open case, and
 `claims/fixed_point_bridge_equality_evaluation.json` for that same fourth open
 case, and
 `claims/fixed_point_equation_lifting_alignment.json` for the fifth open case.
+The compact frontier handoff in
+`claims/fixed_point_construction_frontier_status.json` is also recorded and
+validated: it reports all five construction cases still open, seven accepted
+support surfaces, five accepted compact construction-case status rollups, and
+the preserved `fixed-point-construction` blocker.
 The checked obstruction in
 `claims/fixed_point_obstructions.json` is also validated as an aggregate
 dependency and records why that naive direct embedding route is closed. The
@@ -213,6 +224,8 @@ python -m autarkic_systems.fixed_point_bridge_equality_evaluation
 python -m autarkic_systems.fixed_point_bridge_equality_evaluation --format json
 python -m autarkic_systems.fixed_point_equation_lifting_alignment
 python -m autarkic_systems.fixed_point_equation_lifting_alignment --format json
+python -m autarkic_systems.fixed_point_construction_frontier_status
+python -m autarkic_systems.fixed_point_construction_frontier_status --format json
 python -m autarkic_systems.fixed_point_obstruction
 python -m autarkic_systems.fixed_point_obstruction --format json
 python -m autarkic_systems.fixed_point
@@ -245,6 +258,9 @@ The validator checks that:
   and the finite bridge-equality alignment dependency for the fourth case and
   the finite bridge-equality evaluation dependency for the fourth case and the
   finite equation-lifting alignment dependency for the fifth case;
+- the referenced compact fixed-point construction frontier status validates,
+  remains blocked by `fixed-point-construction`, and reports five accepted
+  construction-case status rollups;
 - the referenced fixed-point obstruction surface validates;
 - blocked targets name blockers; and
 - each target names a next AS action.

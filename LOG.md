@@ -6292,3 +6292,34 @@
   substitution representability, substitution graph correctness, bridge
   equality, a fixed-point equation, an arithmetized proof predicate, or
   self-consistency.
+
+## 2026-05-20 - Formal Confidence Fixed-Point Frontier Dependency
+
+- Added ADR-0286 to make aggregate formal-confidence validation consume the
+  compact fixed-point construction frontier handoff from ADR-0273/ADR-0285,
+  while preserving the raw `fixed_point_construction_cases` dependency.
+- Updated `claims/formal_confidence_targets.json` with
+  `fixed_point_construction_frontier_status` pointing at
+  `claims/fixed_point_construction_frontier_status.json`.
+- Updated `autarkic_systems/formal_confidence.py` so the aggregate validator
+  loads and validates
+  `autarkic_systems.fixed_point_construction_frontier_status`, accepting the
+  dependency only when the frontier report accepts, remains `blocked`, remains
+  blocked by `fixed-point-construction`, and reports five accepted compact
+  construction-case status rollups.
+- Extended `tests/test_formal_confidence_target.py` before implementation.
+  The targeted red run failed because `REQUIRED_CONFIGURATION_FIELDS` did not
+  yet contain `fixed_point_construction_frontier_status`.
+- Focused green verification passed: the boundary target test passed 1 test,
+  the checked-in validation test passed 1 test in 322.073s, the missing and
+  promoted frontier-status tests passed 2 tests in 341.632s, and the required
+  focused suite passed 116 tests in 2629.104s.
+- Live formal-confidence JSON assertion accepted with no failed subjects and
+  with accepted subject
+  `AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_frontier_status`.
+  `json.tool`, `compileall`, and `git diff --check` passed. The fast suite
+  also passed 1170 tests in 355.356s.
+- This remains a dependency/status handoff only. It does not prove or promote
+  substitution representability, substitution graph correctness, bridge
+  equality, a fixed-point equation, an arithmetized proof predicate, or
+  self-consistency.

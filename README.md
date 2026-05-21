@@ -38,9 +38,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   substitution graph target, substitution graph formula,
   substitution graph correctness target, substitution graph correctness case
   map, fixed-point equation bridge target, fixed-point construction case map,
-  fixed-point bridge-equality alignment, fixed-point bridge-equality
-  evaluation, fixed-point equation lifting alignment, and fixed-point
-  obstruction dependencies.
+  compact fixed-point construction frontier handoff with five accepted
+  construction-case status rollups, fixed-point bridge-equality alignment,
+  fixed-point bridge-equality evaluation, fixed-point equation lifting
+  alignment, and fixed-point obstruction dependencies.
 - `docs/formal-arithmetic-language.md` records the first checked syntax-only
   Type-NS arithmetic language surface for the formal-confidence path.
 - `docs/formal-codebook.md` records the first checked proof-code encoding
@@ -576,6 +577,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/fixed_point_construction_cases.py` validates the open case
   decomposition for the remaining fixed-point construction blocker, tying each
   case to its checked dependency surface without claiming proof.
+- `autarkic_systems/fixed_point_construction_frontier_status.py` validates the
+  compact fixed-point construction frontier handoff: five open construction
+  cases, seven support surfaces, five accepted construction-case status
+  rollups, and the preserved `fixed-point-construction` blocker.
 - `autarkic_systems/fixed_point_diagonal_instance_closure.py` validates finite
   closure evidence for the current diagonal instance used by the first
   construction case.
@@ -610,8 +615,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   diagonal-witness-composition dependencies, fixed-point construction case map
   including diagonal-instance closure, substitution-witness bridge, and
   substitution graph correctness bridge, bridge-equality alignment, and
-  bridge-equality evaluation, and equation-lifting alignment dependencies, and
-  obstruction dependencies.
+  bridge-equality evaluation, and equation-lifting alignment dependencies,
+  the compact fixed-point construction frontier handoff with five accepted
+  construction-case status rollups, and obstruction dependencies.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -645,7 +651,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   construction, substitution-representability witness, fixed-point equation
   candidate, substitution graph target, substitution graph formula,
   substitution graph correctness target, substitution graph correctness case
-  map, fixed-point construction case map, and fixed-point obstruction.
+  map, fixed-point construction case map, compact fixed-point construction
+  frontier status, and fixed-point obstruction.
 - `python -m autarkic_systems.formal_arithmetic --format json` validates
   `language/formal_arithmetic_language.json`, including required Willard
   anchors, the Type-NS profile, `delta0`, `pi1`, `sigma1`, and the
@@ -697,6 +704,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   validates `claims/fixed_point_construction_cases.json`, including the five
   open proof cases for the fixed-point construction blocker and their checked
   dependency subjects.
+- `python -m autarkic_systems.fixed_point_construction_frontier_status --format json`
+  validates `claims/fixed_point_construction_frontier_status.json`, including
+  seven support surfaces, five accepted compact construction-case status
+  rollups, and the preserved `fixed-point-construction` blocker.
 - `python -m autarkic_systems.fixed_point_diagonal_instance_closure --format json`
   validates `claims/fixed_point_diagonal_instance_closure.json`, including the
   one finite closed diagonal-instance evidence point for the first construction

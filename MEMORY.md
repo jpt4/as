@@ -289,6 +289,14 @@
   expected blocker for construction case
   `substitution-graph-correctness-proof` is explicitly
   `substitution-graph-correctness`.
+- ADR-0286 adds `fixed_point_construction_frontier_status` to
+  `claims/formal_confidence_targets.json` and makes
+  `autarkic_systems.formal_confidence` fail closed over the compact
+  fixed-point construction frontier handoff. Formal-confidence validation now
+  requires the frontier report to accept, remain `blocked`, remain blocked by
+  `fixed-point-construction`, and expose five accepted construction-case
+  status rollups, while keeping the raw `fixed_point_construction_cases`
+  dependency and still not claiming the fixed point.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length

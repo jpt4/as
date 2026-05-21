@@ -41,6 +41,9 @@ SUBSTITUTION_GRAPH_CORRECTNESS_CASES = Path(
 FIXED_POINT_EQUATION_CANDIDATES = Path("claims/fixed_point_equation_candidates.json")
 FIXED_POINT_EQUATION_BRIDGE = Path("claims/fixed_point_equation_bridge_targets.json")
 FIXED_POINT_CONSTRUCTION_CASES = Path("claims/fixed_point_construction_cases.json")
+FIXED_POINT_CONSTRUCTION_FRONTIER_STATUS = Path(
+    "claims/fixed_point_construction_frontier_status.json"
+)
 FIXED_POINT_OBSTRUCTIONS = Path("claims/fixed_point_obstructions.json")
 
 
@@ -72,6 +75,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
                 "fixed_point_equation_candidate",
                 "fixed_point_equation_bridge",
                 "fixed_point_construction_cases",
+                "fixed_point_construction_frontier_status",
                 "fixed_point_obstruction",
                 "substrate_bridge",
             ),
@@ -152,6 +156,10 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertEqual(
             target.configuration["fixed_point_construction_cases"],
             str(FIXED_POINT_CONSTRUCTION_CASES),
+        )
+        self.assertEqual(
+            target.configuration["fixed_point_construction_frontier_status"],
+            str(FIXED_POINT_CONSTRUCTION_FRONTIER_STATUS),
         )
         self.assertEqual(
             target.configuration["fixed_point_obstruction"],
@@ -244,6 +252,16 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertTrue(
             any(
                 result.subject == "AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_cases"
+                and result.accepted
+                for result in report.results
+            )
+        )
+        self.assertTrue(
+            any(
+                result.subject == (
+                    "AS-FORMAL-CONFIDENCE-TARGET-001."
+                    "fixed_point_construction_frontier_status"
+                )
                 and result.accepted
                 for result in report.results
             )
@@ -372,6 +390,15 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
+                result["subject"].endswith(
+                    ".fixed_point_construction_frontier_status"
+                )
+                and result["accepted"]
+                for result in payload["results"]
+            )
+        )
+        self.assertTrue(
+            any(
                 result["subject"].endswith(".fixed_point_obstruction")
                 and result["accepted"]
                 for result in payload["results"]
@@ -403,6 +430,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertIn("fixed-point equation candidate accepted", text)
         self.assertIn("fixed-point equation bridge accepted", text)
         self.assertIn("fixed-point construction cases accepted", text)
+        self.assertIn("fixed-point construction frontier status accepted", text)
         self.assertIn("fixed-point obstruction accepted", text)
         self.assertNotIn("FAIL", text)
 
@@ -508,6 +536,62 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertIn("target-fixed-point-construction-cases", report.failed_subjects)
         self.assertTrue(
             any("fixed-point construction cases rejected" in result.detail for result in report.results)
+        )
+
+    def test_missing_fixed_point_construction_frontier_status_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target_path = Path(tmp) / "targets.json"
+            data = json.loads(TARGETS.read_text(encoding="utf-8"))
+            data["targets"][0]["configuration"][
+                "fixed_point_construction_frontier_status"
+            ] = "claims/missing_fixed_point_construction_frontier_status.json"
+            target_path.write_text(json.dumps(data), encoding="utf-8")
+            manifest = load_formal_confidence_targets(target_path)
+
+            report = validate_formal_confidence_targets(manifest, WILLARD_MAP)
+
+        self.assertFalse(report.accepted)
+        self.assertIn(
+            "target-fixed-point-construction-frontier-status",
+            report.failed_subjects,
+        )
+        self.assertTrue(
+            any(
+                "fixed-point construction frontier status rejected" in result.detail
+                for result in report.results
+            )
+        )
+
+    def test_promoted_fixed_point_construction_frontier_status_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target_path = Path(tmp) / "targets.json"
+            status_path = Path(tmp) / "frontier-status.json"
+            data = json.loads(TARGETS.read_text(encoding="utf-8"))
+            status_data = json.loads(
+                FIXED_POINT_CONSTRUCTION_FRONTIER_STATUS.read_text(
+                    encoding="utf-8"
+                )
+            )
+            status_data["frontier_status"] = "fixed-point-equation-proved"
+            status_path.write_text(json.dumps(status_data), encoding="utf-8")
+            data["targets"][0]["configuration"][
+                "fixed_point_construction_frontier_status"
+            ] = str(status_path)
+            target_path.write_text(json.dumps(data), encoding="utf-8")
+            manifest = load_formal_confidence_targets(target_path)
+
+            report = validate_formal_confidence_targets(manifest, WILLARD_MAP)
+
+        self.assertFalse(report.accepted)
+        self.assertIn(
+            "target-fixed-point-construction-frontier-status",
+            report.failed_subjects,
+        )
+        self.assertTrue(
+            any(
+                "fixed-point construction frontier status rejected" in result.detail
+                for result in report.results
+            )
         )
 
     def test_missing_consistency_level_target_is_rejected(self):

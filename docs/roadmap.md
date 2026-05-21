@@ -6251,3 +6251,28 @@ Status: accepted in
 `docs/adr/0285-fixed-point-construction-case-status-rollup.md`. Implemented
 in `autarkic_systems/fixed_point_construction_frontier_status.py`, with tests
 in `tests/test_fixed_point_construction_frontier_status.py`.
+
+## ADR-0286: Formal Confidence Fixed-Point Frontier Dependency
+
+Goal: make aggregate formal-confidence validation depend on the compact
+fixed-point construction frontier status added by ADR-0273 and extended by
+ADR-0285, not only on the raw construction case map.
+
+Deliverables:
+
+- `claims/formal_confidence_targets.json`, with
+  `fixed_point_construction_frontier_status` pointing at
+  `claims/fixed_point_construction_frontier_status.json`;
+- `autarkic_systems.formal_confidence`, loading and validating the compact
+  frontier status as an accepted dependency only while it remains blocked by
+  `fixed-point-construction` and reports five accepted construction-case
+  status rollups;
+- formal-confidence text/JSON output exposing the accepted dependency
+  subject; and
+- no proof promotion and no removal of the existing raw
+  `fixed_point_construction_cases` dependency.
+
+Status: accepted in
+`docs/adr/0286-formal-confidence-fixed-point-frontier-dependency.md`.
+Implemented in `autarkic_systems/formal_confidence.py`, with tests in
+`tests/test_formal_confidence_target.py`.
