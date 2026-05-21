@@ -34,13 +34,29 @@ STANDARD_SIGNAL_LATEST_SOURCE_REVIEW = {
     "decision": "no-new-standard-signal-command-token-execution-evidence",
     "execution_change_allowed": False,
 }
+CLOSED_FRONTIER_CLOSURE_SUMMARY = {
+    "safe_next_slice_state": "closed",
+    "remaining_blocked_commands": ["standard-signal"],
+    "preserved_unsupported_commands": ["standard-signal"],
+    "implemented_commands": ["write-buf-zero", "write-buf-one"],
+    "execution_change_allowed": False,
+    "reason": "standard-signal requires new source evidence",
+}
+REJECTED_FRONTIER_CLOSURE_SUMMARY = {
+    "safe_next_slice_state": "unknown",
+    "remaining_blocked_commands": [],
+    "preserved_unsupported_commands": [],
+    "implemented_commands": [],
+    "execution_change_allowed": False,
+    "reason": "frontier rejected; closure summary unavailable",
+}
 
 
 class SourceStatusFrontierCliTests(unittest.TestCase):
     def test_default_report_accepts_checked_in_source_status_frontier(self):
         report = build_source_status_frontier_report()
 
-        self.assertEqual(SOURCE_STATUS_SCHEMA_VERSION, 3)
+        self.assertEqual(SOURCE_STATUS_SCHEMA_VERSION, 4)
         self.assertEqual(report["schema_version"], SOURCE_STATUS_SCHEMA_VERSION)
         self.assertTrue(report["accepted"])
         frontier = report["frontier"]
@@ -65,6 +81,15 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
                 STANDARD_SIGNAL_LATEST_SOURCE_REVIEW,
                 {},
             ],
+        )
+
+    def test_default_report_exposes_closure_summary(self):
+        report = build_source_status_frontier_report()
+
+        self.assertTrue(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["closure_summary"],
+            CLOSED_FRONTIER_CLOSURE_SUMMARY,
         )
 
     def test_text_report_renders_source_frontier_details(self):
@@ -150,6 +175,20 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
         self.assertIn("Missing source-status files: none", text)
         self.assertIn("Invalid source-status files: none", text)
 
+    def test_text_report_renders_closure_summary_line(self):
+        report = build_source_status_frontier_report()
+
+        text = format_source_status_frontier_report(report)
+
+        self.assertIn(
+            "Closure summary: safe-next queue closed; remaining blocked "
+            "commands: standard-signal; preserved unsupported: "
+            "standard-signal; implemented commands: write-buf-zero, "
+            "write-buf-one; execution changes allowed: no; reason: "
+            "standard-signal requires new source evidence",
+            text,
+        )
+
     def test_report_rejects_missing_source_status_path(self):
         with tempfile.TemporaryDirectory() as tmp:
             missing = Path(tmp) / "missing-source-status.json"
@@ -188,6 +227,30 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
             "command fields must include at least one command token",
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
+
+    def test_rejected_report_does_not_claim_closed_closure_summary(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing = Path(tmp) / "missing-source-status.json"
+            invalid = Path(tmp) / "invalid-source-status.json"
+            invalid.write_text(
+                json.dumps(
+                    {
+                        "decision": "drifted-source-status",
+                        "safe_next_slice": "repair-source-status",
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            for source_status_paths in ([missing], [invalid]):
+                with self.subTest(source_status_paths=source_status_paths):
+                    report = build_source_status_frontier_report(source_status_paths)
+
+                    self.assertFalse(report["accepted"])
+                    self.assertEqual(
+                        report["frontier"]["closure_summary"],
+                        REJECTED_FRONTIER_CLOSURE_SUMMARY,
+                    )
 
     def test_report_rejects_missing_latest_source_review_path(self):
         with tempfile.TemporaryDirectory() as tmp:

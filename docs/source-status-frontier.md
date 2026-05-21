@@ -37,6 +37,9 @@ The report names:
 - blocked runtime surfaces;
 - AS boundaries;
 - execution-readiness decisions, allowed-change flags, blockers, and summaries;
+- closure summary state for the safe-next queue, remaining blocked commands,
+  preserved unsupported commands, implemented commands, execution-change
+  allowance, and stable closure reason;
 - unresolved resolution questions and summaries;
 - source evidence explaining why unresolved questions remain open;
 - resolved resolution questions and details;
@@ -45,7 +48,7 @@ The report names:
 - the safe next slice; and
 - missing or invalid source-status paths.
 
-JSON mode emits the same surface with top-level `schema_version: 3`.
+JSON mode emits the same surface with top-level `schema_version: 4`.
 
 ADR-0146 tightens the shared validation contract: source evidence question IDs
 must match unresolved question IDs in the same source-status record. A typo or
@@ -139,6 +142,12 @@ frontier field, validates that the linked review JSON exists and agrees with
 the source-status review ID, decision, and execution-change flag, renders a
 `Latest source reviews:` text section, and bumps the focused frontier schema
 to `3`.
+ADR-0295 adds `frontier.closure_summary` to the focused report and bumps the
+focused frontier schema to `4`. The summary distinguishes the intentionally
+closed safe-next queue from rejected source-status input, reports remaining
+blocked `standard-signal` execution as preserved unsupported pending new source
+evidence, and reports implemented `write-buf-zero` / `write-buf-one` command
+surfaces from the existing readiness data.
 
 ## Boundary
 

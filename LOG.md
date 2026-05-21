@@ -6597,3 +6597,42 @@
   project-status schema or acceptance semantics, formal-confidence validation
   semantics, proof status, blockers, transition/chain/sequence evidence,
   reproduction commands, boundary text, or command-token/runtime behavior.
+
+## 2026-05-21 - Source Status Frontier Closure Summary
+
+- Added ADR-0295 to make the focused source-status frontier distinguish the
+  intentionally closed safe-next queue from missing or invalid source-status
+  data.
+- Extended `tests/test_source_status_frontier_cli.py` before implementation.
+  The focused red run failed as intended: accepted and rejected JSON checks
+  raised `KeyError: 'closure_summary'`, and text output lacked the concise
+  `Closure summary:` line. A follow-up schema red check failed because the
+  focused source-status schema was still `3` instead of `4`.
+- Updated `autarkic_systems/source_status.py` to derive
+  `frontier.closure_summary` from the existing focused frontier payload. The
+  checked-in default report now marks the safe-next queue closed, reports
+  remaining blocked `standard-signal`, preserves unsupported
+  `standard-signal`, reports implemented `write-buf-zero` / `write-buf-one`,
+  disallows execution changes, and explains that `standard-signal` requires
+  new source evidence.
+- Rejected missing or schema-invalid source-status input now reports unknown
+  closure state with no blocked, preserved, or implemented command claims.
+- Text output now renders a compact `Closure summary:` line after execution
+  readiness while keeping the existing source-status sections intact.
+- The exact closure red run passed after implementation: 3 tests in 0.019s.
+- Focused verification passed:
+  `python -m unittest tests.test_source_status_frontier_cli tests.test_suite_selection`
+  ran 24 tests in 1.990s.
+- Live source-status JSON assertion ran
+  `python -m autarkic_systems.source_status --format json` and confirmed
+  accepted schema `4`, closed safe-next state, remaining blocked
+  `standard-signal`, preserved unsupported `standard-signal`, implemented
+  `write-buf-zero` / `write-buf-one`, execution changes disallowed, and reason
+  `standard-signal requires new source evidence`.
+- `compileall` passed, `git diff --check` passed, and no source-status JSON
+  records changed in this slice.
+- The fast suite passed 1179 tests in 263.869s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 129 selected modules.
+- This is a focused reporting change only. It does not change project-status
+  schema or acceptance semantics, runtime behavior, command-token semantics,
+  GitHub submission, vertical demo, or suite-selection source.

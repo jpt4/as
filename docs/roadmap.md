@@ -6464,3 +6464,31 @@ Status: accepted in
 `docs/adr/0294-vertical-demo-formal-confidence-summary.md`.
 Implemented in `autarkic_systems/vertical_demo.py`, with tests in
 `tests/test_vertical_demo_digest.py`.
+
+## ADR-0295: Source Status Frontier Closure Summary
+
+Goal: make the focused source-status frontier expose that the safe-next queue
+is intentionally closed while `standard-signal` command-token execution
+remains preserved unsupported pending new source evidence and write-buffer
+command surfaces are implemented.
+
+Deliverables:
+
+- focused source-status schema version `4`;
+- `frontier.closure_summary` derived from the existing focused frontier
+  payload;
+- accepted default JSON reporting closed safe-next state, remaining blocked
+  command `standard-signal`, preserved unsupported command `standard-signal`,
+  implemented commands `write-buf-zero` and `write-buf-one`, execution changes
+  disallowed, and reason `standard-signal requires new source evidence`;
+- fail-closed closure summary for missing or schema-invalid source-status
+  inputs so rejected reports do not claim closed or implemented state;
+- concise focused text closure line; and
+- no source-status JSON record changes, project-status schema changes,
+  runtime behavior changes, command-semantics changes, GitHub submission
+  changes, vertical-demo changes, or suite-selection changes.
+
+Status: accepted in
+`docs/adr/0295-source-status-frontier-closure-summary.md`. Implemented in
+`autarkic_systems/source_status.py`, with tests in
+`tests/test_source_status_frontier_cli.py`.

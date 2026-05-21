@@ -1364,3 +1364,10 @@
   validation counts and `fixed_point_construction_frontier_status accepted`,
   while preserving project-status/formal-confidence semantics, evidence
   counts, reproduction commands, and boundary text.
+- ADR-0295 bumps the focused source-status frontier schema to `4` and adds
+  `frontier.closure_summary`, derived from existing frontier readiness data.
+  The checked-in focused report now distinguishes the closed safe-next queue
+  from rejected source-status input, keeps `standard-signal` remaining blocked
+  and preserved unsupported pending new source evidence, and reports
+  `write-buf-zero` / `write-buf-one` as implemented without changing
+  source-status records or runtime behavior.

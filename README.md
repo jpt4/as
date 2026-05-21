@@ -336,7 +336,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   blocked command-token frontier.
 - `docs/source-status-frontier.md` records the focused source-status frontier
   command for inspecting blocked command-token semantics without the full
-  project status surface.
+  project status surface, including the closed safe-next queue summary for the
+  current `standard-signal` boundary.
 - `docs/evidence-bundle-registry.md` records the registry for discovering and
   batch-validating transition evidence bundles.
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
@@ -995,7 +996,11 @@ proof certificates, object languages, evidence bundles, and status reports:
   per-source decisions, blocked runtime surfaces, AS boundaries, unresolved
   questions, source evidence for those questions, resolved decisions,
   execution-readiness gates, latest source-review gates, source-status
-  cross-links, missing/invalid source-status paths, and the safe next slice.
+  cross-links, closure summary, missing/invalid source-status paths, and the
+  safe next slice. The closure summary reports schema version `4` state for the
+  safe-next queue, remaining blocked commands, preserved unsupported commands,
+  implemented commands, execution-change allowance, and the stable reason for
+  the closed current queue.
   The shared validator rejects
   frontier records whose question IDs are simultaneously unresolved and
   resolved, and rejects execution-readiness blockers that do not match live

@@ -21,7 +21,7 @@ from autarkic_systems.project_status import (
 )
 
 
-SOURCE_STATUS_SCHEMA_VERSION = 3
+SOURCE_STATUS_SCHEMA_VERSION = 4
 
 
 def build_source_status_frontier_report(
@@ -36,6 +36,7 @@ def build_source_status_frontier_report(
         not frontier["missing_source_statuses"]
         and not frontier["invalid_source_statuses"]
     )
+    frontier["closure_summary"] = _closure_summary(frontier, accepted)
     return {
         "schema_version": SOURCE_STATUS_SCHEMA_VERSION,
         "accepted": accepted,
@@ -65,6 +66,7 @@ def format_source_status_frontier_report(report: dict[str, Any]) -> str:
         *_blocked_runtime_surface_text_lines(frontier),
         *_as_boundary_text_lines(frontier),
         *_execution_readiness_text_lines(frontier),
+        *_closure_summary_text_lines(frontier),
         *_resolution_question_text_lines(frontier),
         *_resolution_question_evidence_text_lines(frontier),
         *_resolved_resolution_question_text_lines(frontier),
@@ -122,6 +124,103 @@ def _source_status_file_text_lines(frontier: dict[str, Any]) -> list[str]:
         decision = source_status["decision"] or "no decision"
         lines.append(f"  {source_status['path']}: {decision}")
     return lines
+
+
+def _closure_summary(frontier: dict[str, Any], accepted: bool) -> dict[str, Any]:
+    """Derive the focused queue-closure state from the accepted frontier payload."""
+
+    if not accepted:
+        return {
+            "safe_next_slice_state": "unknown",
+            "remaining_blocked_commands": [],
+            "preserved_unsupported_commands": [],
+            "implemented_commands": [],
+            "execution_change_allowed": False,
+            "reason": "frontier rejected; closure summary unavailable",
+        }
+
+    preserved_unsupported_commands: list[str] = []
+    implemented_commands: list[str] = []
+    execution_change_allowed = False
+    for source_status in frontier["source_statuses"]:
+        readiness = source_status["execution_readiness"]
+        if not readiness:
+            continue
+        if readiness["execution_change_allowed"]:
+            execution_change_allowed = True
+        if readiness["decision"] == "preserved-unsupported":
+            _append_unique_commands(
+                preserved_unsupported_commands,
+                source_status["commands"],
+            )
+        if readiness["decision"] == "implemented":
+            _append_unique_commands(implemented_commands, source_status["commands"])
+
+    safe_next_slice_state = "open" if frontier["safe_next_slice"] else "closed"
+    reason = _closure_summary_reason(
+        safe_next_slice_state=safe_next_slice_state,
+        blocked_commands=frontier["blocked_commands"],
+        preserved_unsupported_commands=preserved_unsupported_commands,
+        execution_change_allowed=execution_change_allowed,
+    )
+    return {
+        "safe_next_slice_state": safe_next_slice_state,
+        "remaining_blocked_commands": list(frontier["blocked_commands"]),
+        "preserved_unsupported_commands": preserved_unsupported_commands,
+        "implemented_commands": implemented_commands,
+        "execution_change_allowed": execution_change_allowed,
+        "reason": reason,
+    }
+
+
+def _closure_summary_reason(
+    *,
+    safe_next_slice_state: str,
+    blocked_commands: list[str],
+    preserved_unsupported_commands: list[str],
+    execution_change_allowed: bool,
+) -> str:
+    """Keep the common closed standard-signal boundary stable for automation."""
+
+    if (
+        safe_next_slice_state == "closed"
+        and "standard-signal" in blocked_commands
+        and "standard-signal" in preserved_unsupported_commands
+        and not execution_change_allowed
+    ):
+        return "standard-signal requires new source evidence"
+    if safe_next_slice_state == "closed":
+        return "safe-next queue closed"
+    return "safe-next slice remains active"
+
+
+def _append_unique_commands(target: list[str], commands: list[str]) -> None:
+    """Preserve source-status command order while removing duplicates."""
+
+    for command in commands:
+        if command not in target:
+            target.append(command)
+
+
+def _closure_summary_text_lines(frontier: dict[str, Any]) -> list[str]:
+    summary = frontier["closure_summary"]
+    allowed = "yes" if summary["execution_change_allowed"] else "no"
+    return [
+        "Closure summary: "
+        f"safe-next queue {summary['safe_next_slice_state']}; "
+        "remaining blocked commands: "
+        f"{_command_text(summary['remaining_blocked_commands'])}; "
+        "preserved unsupported: "
+        f"{_command_text(summary['preserved_unsupported_commands'])}; "
+        "implemented commands: "
+        f"{_command_text(summary['implemented_commands'])}; "
+        f"execution changes allowed: {allowed}; "
+        f"reason: {summary['reason']}"
+    ]
+
+
+def _command_text(commands: list[str]) -> str:
+    return ", ".join(commands) if commands else "none"
 
 
 if __name__ == "__main__":  # pragma: no cover - exercised by subprocess tests.
