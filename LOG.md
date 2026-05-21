@@ -6359,3 +6359,38 @@
   `as-test-suite-selection-v1`, suite `fast`, and 129 selected modules.
 - This is a recomputation guard only. It does not change formal-confidence
   target semantics, proof promotion, or JSON payload shape.
+
+## 2026-05-20 - Project Status Formal Confidence Validation Summary
+
+- Added ADR-0288 to make project-status text and compact handoff summary
+  expose the ADR-0286 formal-confidence validation surface without changing
+  formal-confidence validation, fixed-point validators, project-status
+  acceptance, or JSON payload shape.
+- Updated `autarkic_systems/project_status.py` so full text derives
+  formal-confidence accepted/failed validation counts from
+  `formal_confidence.results` and names the accepted
+  `AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_frontier_status`
+  subject.
+- Updated compact project-status summary, inherited by handoff text, to render
+  `Formal confidence validation: 19 accepted, 0 failed;
+  fixed_point_construction_frontier_status accepted`.
+- Extended `tests/test_project_status_report.py` and
+  `tests/test_handoff_status.py` before implementation. The focused red run
+  failed in the full text, compact summary, and handoff summary assertions
+  because the formatter still omitted the validation count/frontier dependency
+  line.
+- The exact red trio passed after implementation: 3 tests in 175.006s. The
+  requested focused suite passed 100 tests in 501.972s.
+- Live project-status text accepted in 2m36.797s and rendered the new
+  validation line. Live project-status JSON accepted in 2m45.518s; a JSON
+  assertion confirmed `schema_version: 22`, unchanged `formal_confidence`
+  keys, `result_count: 19`, no failed subjects, and the accepted frontier
+  subject.
+- `compileall` passed in 0.871s, `git diff --check` passed, and no JSON files
+  changed in this slice.
+- The fast suite passed 1170 tests in 239.525s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 129 selected modules.
+- This remains a presentation/status improvement only. It does not prove or
+  promote substitution representability, substitution graph correctness,
+  bridge equality, a fixed-point equation, an arithmetized proof predicate, or
+  self-consistency.

@@ -313,6 +313,10 @@ PROJECT_STATUS_SUMMARY = "\n".join(
         ),
         "Proof rules: predicate-result=52, manifest-example=0",
         "Formal confidence: 1 target; blocked=1",
+        (
+            "Formal confidence validation: 19 accepted, 0 failed; "
+            "fixed_point_construction_frontier_status accepted"
+        ),
         "Blocked commands: standard-signal",
         "Safe next slice: none",
     ]
@@ -984,6 +988,13 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn("Formal confidence: accepted (1 target; blocked=1)", text)
+        self.assertIn(
+            "Formal confidence validation: 19 accepted, 0 failed; "
+            "accepted frontier subject: "
+            "AS-FORMAL-CONFIDENCE-TARGET-001."
+            "fixed_point_construction_frontier_status",
+            text,
+        )
         self.assertIn("Formal confidence failures: none", text)
         self.assertIn("Language failures: none", text)
         self.assertIn("Transition evidence bundles:", text)

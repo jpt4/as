@@ -6299,3 +6299,29 @@ Status: accepted in
 `docs/adr/0287-formal-confidence-validation-cache.md`. Implemented in
 `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0288: Project Status Formal Confidence Validation Summary
+
+Goal: make project-status text and compact handoff summary expose the
+formal-confidence validation surface added by ADR-0286 without changing
+formal-confidence semantics or project-status JSON shape.
+
+Deliverables:
+
+- `autarkic_systems.project_status` text output derives accepted and failed
+  formal-confidence validation counts from the existing
+  `formal_confidence.results` payload;
+- full text output names the accepted
+  `AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_frontier_status`
+  subject;
+- compact summary output, and therefore handoff text, names the same accepted
+  frontier dependency as `fixed_point_construction_frontier_status accepted`;
+  and
+- no changes to target semantics, blockers, proof status, fixed-point
+  validators, project-status acceptance, `PROJECT_STATUS_SCHEMA_VERSION`, or
+  formal-confidence JSON payload shape.
+
+Status: accepted in
+`docs/adr/0288-project-status-formal-confidence-validation-summary.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py` and `tests/test_handoff_status.py`.

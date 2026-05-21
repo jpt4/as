@@ -306,6 +306,12 @@
   aggregate report, while temp manifests with changed/missing
   `fixed_point_construction_frontier_status` remain separate cache misses and
   fail closed.
+- ADR-0288 keeps project-status JSON at schema version `22` but makes text and
+  compact summary output derive formal-confidence validation counts from
+  `formal_confidence.results`. Full text names the accepted
+  `AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_frontier_status`
+  subject, while summary/handoff text uses the compact
+  `fixed_point_construction_frontier_status accepted` note.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length

@@ -260,6 +260,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         _language_text_line("Chain language", chain_language),
         _language_text_line("Network sequence language", sequence_language),
         _formal_confidence_text_line(formal_confidence),
+        _formal_confidence_validation_text_line(formal_confidence),
         *_formal_confidence_failure_text_lines(formal_confidence),
         *_language_failure_text_lines(
             transition_language,
@@ -326,6 +327,10 @@ def format_project_status_summary(report: dict[str, Any]) -> str:
         ),
         f"Proof rules: {_proof_rule_counts_text(proof_rule_audit)}",
         f"Formal confidence: {_formal_confidence_summary_text(formal_confidence)}",
+        (
+            "Formal confidence validation: "
+            f"{_formal_confidence_validation_summary_text(formal_confidence)}"
+        ),
         "Blocked commands: "
         + (", ".join(blocked_commands) if blocked_commands else "none"),
         f"Safe next slice: {frontier['safe_next_slice'] or 'none'}",
@@ -1429,6 +1434,56 @@ def _formal_confidence_summary_text(summary: dict[str, Any]) -> str:
         f"{target_count} {_count_noun(target_count, 'target', 'targets')}; "
         f"{_formal_confidence_status_text(summary)}"
     )
+
+
+def _formal_confidence_validation_text_line(summary: dict[str, Any]) -> str:
+    accepted_count, failed_count = _formal_confidence_validation_counts(summary)
+    frontier_subjects = _formal_confidence_accepted_frontier_subjects(summary)
+    frontier_text = ", ".join(frontier_subjects) if frontier_subjects else "none"
+    return (
+        f"Formal confidence validation: {accepted_count} accepted, "
+        f"{failed_count} failed; accepted frontier subject: {frontier_text}"
+    )
+
+
+def _formal_confidence_validation_summary_text(summary: dict[str, Any]) -> str:
+    accepted_count, failed_count = _formal_confidence_validation_counts(summary)
+    frontier_subjects = _formal_confidence_accepted_frontier_subjects(summary)
+    if frontier_subjects:
+        frontier_text = ", ".join(
+            f"{_compact_formal_confidence_subject(subject)} accepted"
+            for subject in frontier_subjects
+        )
+    else:
+        frontier_text = "frontier subject none"
+    return f"{accepted_count} accepted, {failed_count} failed; {frontier_text}"
+
+
+def _formal_confidence_validation_counts(summary: dict[str, Any]) -> tuple[int, int]:
+    results = summary.get("results", [])
+    accepted_count = sum(1 for result in results if result.get("accepted"))
+    failed_count = len(results) - accepted_count
+    return accepted_count, failed_count
+
+
+def _formal_confidence_accepted_frontier_subjects(
+    summary: dict[str, Any],
+) -> list[str]:
+    subjects: list[str] = []
+    for result in summary.get("results", []):
+        subject = result.get("subject")
+        if (
+            result.get("accepted")
+            and isinstance(subject, str)
+            and _compact_formal_confidence_subject(subject)
+            == "fixed_point_construction_frontier_status"
+        ):
+            subjects.append(subject)
+    return subjects
+
+
+def _compact_formal_confidence_subject(subject: str) -> str:
+    return subject.rsplit(".", 1)[-1]
 
 
 def _formal_confidence_status_text(summary: dict[str, Any]) -> str:

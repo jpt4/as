@@ -29,6 +29,23 @@ class FakeGitRunner:
         return self.outputs[command]
 
 
+FORMAL_CONFIDENCE_RESULTS = [
+    {
+        "subject": "AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_frontier_status",
+        "accepted": True,
+        "detail": "fixed-point construction frontier status accepted",
+    },
+    *[
+        {
+            "subject": f"formal-confidence-validation-{index}",
+            "accepted": True,
+            "detail": "validation accepted",
+        }
+        for index in range(18)
+    ],
+]
+
+
 PROJECT_REPORT = {
     "accepted": True,
     "transition_evidence": {"bundle_count": 11},
@@ -48,6 +65,7 @@ PROJECT_REPORT = {
     "formal_confidence": {
         "target_count": 1,
         "status_counts": {"blocked": 1},
+        "results": FORMAL_CONFIDENCE_RESULTS,
     },
     "frontier": {
         "blocked_commands": ["standard-signal"],
@@ -303,6 +321,11 @@ class HandoffStatusTests(unittest.TestCase):
         )
         self.assertIn(
             "Formal confidence: 1 target; blocked=1",
+            payload["project_summary"],
+        )
+        self.assertIn(
+            "Formal confidence validation: 19 accepted, 0 failed; "
+            "fixed_point_construction_frontier_status accepted",
             payload["project_summary"],
         )
         self.assertEqual(payload["project_status"], PROJECT_REPORT)

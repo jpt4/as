@@ -49,6 +49,9 @@ The report validates:
   language and checked chain claim/proof surface;
 - `language/network_sequence_claim_language.json`, the network-sequence claim
   language and checked sequence claim/proof surface;
+- `claims/formal_confidence_targets.json` against
+  `sources/willard_definition_map.json`, the checked formal-confidence target
+  and validation surface;
 - `sources/recipient_non_init_command_source_status.json`;
 - `sources/standard_signal_command_semantics_status.json`; and
 - `sources/write_buffer_command_semantics_status.json`.
@@ -81,6 +84,8 @@ The text report names:
 - transition bundle primary positive examples and covered examples;
 - formal-confidence target accepted or rejected state, target count, target
   status mix, and failed subjects;
+- formal-confidence validation accepted/failed counts and the accepted
+  `fixed_point_construction_frontier_status` dependency subject from ADR-0286;
 - blocked command tokens;
 - blocked runtime surfaces;
 - source-status AS boundaries;
@@ -95,7 +100,9 @@ The text report names:
 
 Summary mode renders the same project-status payload as a compact operator
 digest: accepted state, evidence counts, claim counts, proof-rule counts,
-formal-confidence target status mix, blocked commands, and safe next slice.
+formal-confidence target status mix, formal-confidence validation counts plus
+the compact accepted fixed-point frontier dependency, blocked commands, and
+safe next slice.
 
 JSON mode emits the same surface for automation and includes top-level
 `schema_version: 22`. If a registry file is missing, the corresponding registry
@@ -306,6 +313,10 @@ ADR-0225 adds `formal_confidence` from the checked formal-confidence target
 manifest, includes it in aggregate acceptance, renders formal-confidence status
 and failures in text and summary output, adds `--formal-confidence-targets`
 and `--willard-map`, and bumps project status to `schema_version: 22`.
+ADR-0288 preserves `schema_version: 22` and the formal-confidence JSON shape
+while deriving text/summary validation counts and the accepted
+`fixed_point_construction_frontier_status` subject from existing
+`formal_confidence.results`.
 
 ## Boundary
 
