@@ -6586,3 +6586,31 @@ Deliverables:
 Status: accepted in `docs/adr/0299-command-runtime-frontier-summary.md`.
 Implemented in `autarkic_systems/command_runtime_frontier.py`, with tests in
 `tests/test_command_runtime_frontier.py`.
+
+## ADR-0300: Fixed-Point Bridge Equality Certificate
+
+Goal: expose the accepted finite bridge-equality evaluation route as a compact
+certificate support surface without discharging the bridge-equality blocker.
+
+Deliverables:
+
+- `python -m autarkic_systems.fixed_point_bridge_equality_certificate`
+  text/JSON CLI;
+- checked manifest at `claims/fixed_point_bridge_equality_certificate.json`;
+- one accepted finite certificate support object for
+  `AS-FIXED-POINT-CONSTRUCTION-BRIDGE-EQUALITY`;
+- six named certificate steps:
+  `decode-left-formula`, `decode-self-argument`,
+  `evaluate-substitution-code`, `match-witness-output`, `match-right-quote`,
+  and `bridge-equation-formed`;
+- bridge-equality frontier support count raised to six while remaining blocked
+  by `bridge-equality-proof`;
+- aggregate fixed-point construction frontier support count raised to eight
+  while all five construction cases remain open; and
+- no fixed-point equation, bridge equality, proof-predicate,
+  formal-confidence, handoff, suite-selection, or self-consistency promotion.
+
+Status: accepted in
+`docs/adr/0300-fixed-point-bridge-equality-certificate.md`.
+Implemented in `autarkic_systems/fixed_point_bridge_equality_certificate.py`,
+with tests in `tests/test_fixed_point_bridge_equality_certificate.py`.

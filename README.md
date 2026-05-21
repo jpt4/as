@@ -40,8 +40,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   map, fixed-point equation bridge target, fixed-point construction case map,
   compact fixed-point construction frontier handoff with five accepted
   construction-case status rollups, fixed-point bridge-equality alignment,
-  fixed-point bridge-equality evaluation, fixed-point equation lifting
-  alignment, and fixed-point obstruction dependencies.
+  fixed-point bridge-equality evaluation, fixed-point bridge-equality
+  certificate support, fixed-point equation lifting alignment, and fixed-point
+  obstruction dependencies.
 - `docs/formal-arithmetic-language.md` records the first checked syntax-only
   Type-NS arithmetic language surface for the formal-confidence path.
 - `docs/formal-codebook.md` records the first checked proof-code encoding
@@ -158,9 +159,12 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/fixed-point-bridge-equality-evaluation.md` records finite evaluation
   evidence that the current left bridge term evaluates to the right quoted
   diagonal-instance term, while leaving equality proof open.
+- `docs/fixed-point-bridge-equality-certificate.md` records one finite
+  six-step bridge-equality certificate support surface derived from the
+  accepted alignment and evaluation reports, while leaving equality proof open.
 - `docs/fixed-point-bridge-equality-frontier-status.md` records the compact
   bridge-equality proof frontier for fixed-point construction: the case
-  remains open, five support surfaces are present, the bridge equation length
+  remains open, six support surfaces are present, the bridge equation length
   is 4815, the evaluation output length is 296, and the blocker remains
   `bridge-equality-proof`.
 - `docs/fixed-point-equation-lifting-alignment.md` records finite alignment
@@ -174,7 +178,7 @@ proof certificates, object languages, evidence bundles, and status reports:
   `fixed-point-equation-lifting`.
 - `docs/fixed-point-construction-frontier-status.md` records the compact
   post-ADR-0270 fixed-point construction frontier status: all five
-  construction cases remain open, seven support surfaces are present, five
+  construction cases remain open, eight support surfaces are present, five
   compact construction-case status handoffs accept, and the blocker remains
   `fixed-point-construction`.
 - `docs/fixed-point-obstruction.md` records the checked length-growth

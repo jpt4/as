@@ -14,13 +14,15 @@ The surface loads the current bridge-equality frontier dependencies:
 - `claims/substitution_representability_targets.json`;
 - `claims/substitution_graph_correctness_cases.json`;
 - `claims/fixed_point_bridge_equality_alignment.json`; and
-- `claims/fixed_point_bridge_equality_evaluation.json`.
+- `claims/fixed_point_bridge_equality_evaluation.json`; and
+- `claims/fixed_point_bridge_equality_certificate.json`.
 
 It requires the `bridge-equality-proof` construction case to remain
 `proof-case-open`. The frontier remains `blocked` by `bridge-equality-proof`.
-The compact support facts require the accepted alignment and evaluation
-surfaces to expose the 4815-token bridge equation and the evaluation surface to
-expose the 296-token output.
+The compact support facts require the accepted alignment, evaluation, and
+certificate surfaces to expose the 4815-token bridge equation, the evaluation
+surface to expose the 296-token output, and the certificate surface to expose
+one six-step finite certificate support object.
 
 This surface is intentionally non-promotional. It does not prove substitution
 representability, substitution graph correctness, bridge equality, a

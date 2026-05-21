@@ -1406,3 +1406,20 @@
   claims. Adding `tests.test_command_runtime_frontier` moves the live suite
   index to 152 discovered modules: `fast=130`, `extended-fixed-point=22`,
   and `all=152`; the fast suite passed 1188 tests in 300.178s.
+- ADR-0300 adds
+  `python -m autarkic_systems.fixed_point_bridge_equality_certificate`, a
+  finite six-step certificate support surface for
+  `AS-FIXED-POINT-CONSTRUCTION-BRIDGE-EQUALITY`. It derives accepted steps from
+  the existing bridge-equality evaluation/alignment route and records one
+  certificate with bridge equation length 4815 and evaluation output length
+  296. The bridge frontier now has six support surfaces and remains blocked by
+  `bridge-equality-proof`; the aggregate fixed-point construction frontier now
+  has eight support surfaces, five open cases, and remains blocked by
+  `fixed-point-construction`. Adding
+  `tests.test_fixed_point_bridge_equality_certificate` moves the live suite
+  index to 153 discovered modules: `fast=130`, `extended-fixed-point=23`, and
+  `all=153`. The first extended run caught stale project-status test
+  expectations for the already-live nested
+  `formal_confidence.validation_summary` key; admitting that key in
+  `FORMAL_CONFIDENCE_PAYLOAD_KEYS` made the exact failing project-status tests
+  pass, and the extended suite then passed 354 tests in 4900.538s.

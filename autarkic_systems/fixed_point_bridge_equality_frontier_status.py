@@ -19,6 +19,10 @@ from typing import Any, Callable
 from autarkic_systems.fixed_point_bridge_equality_alignment import (
     load_fixed_point_bridge_equality_alignment,
 )
+from autarkic_systems.fixed_point_bridge_equality_certificate import (
+    REQUIRED_CERTIFICATE_STEP_IDS,
+    load_fixed_point_bridge_equality_certificate,
+)
 from autarkic_systems.fixed_point_bridge_equality_evaluation import (
     load_fixed_point_bridge_equality_evaluation,
 )
@@ -44,12 +48,16 @@ REQUIRED_CASE_KIND = "bridge-equality-proof"
 REQUIRED_CASE_STATUS = "proof-case-open"
 EXPECTED_BRIDGE_EQUATION_CODE_LENGTH = 4815
 EXPECTED_EVALUATION_OUTPUT_CODE_LENGTH = 296
-REQUIRED_SUPPORT_SUBJECTS = (
+REQUIRED_CASE_DEPENDENCY_SUBJECTS = (
     "fixed_point_equation_bridge",
     "substitution_representability",
     "substitution_graph_correctness_cases",
     "bridge_equality_alignment",
     "bridge_equality_evaluation",
+)
+REQUIRED_SUPPORT_SUBJECTS = (
+    *REQUIRED_CASE_DEPENDENCY_SUBJECTS,
+    "bridge_equality_certificate",
 )
 REQUIRED_NON_CLAIMS = (
     "no substitution representability proof",
@@ -75,6 +83,9 @@ EXPECTED_DEPENDENCY_PATHS = {
     ),
     "bridge_equality_evaluation_path": (
         "claims/fixed_point_bridge_equality_evaluation.json"
+    ),
+    "bridge_equality_certificate_path": (
+        "claims/fixed_point_bridge_equality_certificate.json"
     ),
 }
 PROOF_PROMOTION_STATUSES = {
@@ -111,6 +122,7 @@ class FixedPointBridgeEqualityFrontierStatusManifest:
     substitution_graph_correctness_cases_path: str
     bridge_equality_alignment_path: str
     bridge_equality_evaluation_path: str
+    bridge_equality_certificate_path: str
     expected_bridge_equation_code_length: int
     expected_evaluation_output_code_length: int
     non_claims: tuple[str, ...]
@@ -159,6 +171,7 @@ class FixedPointBridgeEqualityFrontierStatusReport:
     substitution_graph_correctness_cases_path: Path
     bridge_equality_alignment_path: Path
     bridge_equality_evaluation_path: Path
+    bridge_equality_certificate_path: Path
     construction_case: FixedPointBridgeEqualityFrontierConstructionCase
     support_surfaces: tuple[FixedPointBridgeEqualityFrontierSupportSurface, ...]
     support_facts: dict[str, dict[str, Any]]
@@ -250,6 +263,10 @@ def load_fixed_point_bridge_equality_frontier_status(
             data,
             "bridge_equality_evaluation_path",
         ),
+        bridge_equality_certificate_path=_required_text(
+            data,
+            "bridge_equality_certificate_path",
+        ),
         expected_bridge_equation_code_length=_required_int(
             data,
             "expected_bridge_equation_code_length",
@@ -328,6 +345,16 @@ def validate_fixed_point_bridge_equality_frontier_status(
             ),
             "fixed-point-bridge-equality-evaluation-load",
         )[1],
+        "bridge_equality_certificate": _load_support(
+            paths["bridge_equality_certificate_path"],
+            load_fixed_point_bridge_equality_certificate,
+            lambda loaded: _validate_bridge_equality_certificate(
+                loaded,
+                manifest.expected_bridge_equation_code_length,
+                manifest.expected_evaluation_output_code_length,
+            ),
+            "fixed-point-bridge-equality-certificate-load",
+        )[1],
     }
 
     support_surfaces = _support_surfaces(paths, support_loads)
@@ -358,6 +385,7 @@ def validate_fixed_point_bridge_equality_frontier_status(
         ],
         bridge_equality_alignment_path=paths["bridge_equality_alignment_path"],
         bridge_equality_evaluation_path=paths["bridge_equality_evaluation_path"],
+        bridge_equality_certificate_path=paths["bridge_equality_certificate_path"],
         construction_case=bridge_case,
         support_surfaces=tuple(support_surfaces),
         support_facts={
@@ -395,6 +423,9 @@ def fixed_point_bridge_equality_frontier_status_payload(
         ),
         "bridge_equality_alignment_path": str(report.bridge_equality_alignment_path),
         "bridge_equality_evaluation_path": str(report.bridge_equality_evaluation_path),
+        "bridge_equality_certificate_path": str(
+            report.bridge_equality_certificate_path
+        ),
         "expected_bridge_equation_code_length": (
             report.manifest.expected_bridge_equation_code_length
         ),
@@ -527,6 +558,9 @@ def _manifest_paths(
         ),
         "bridge_equality_evaluation_path": Path(
             manifest.bridge_equality_evaluation_path
+        ),
+        "bridge_equality_certificate_path": Path(
+            manifest.bridge_equality_certificate_path
         ),
     }
 
@@ -862,6 +896,49 @@ def _validate_bridge_equality_evaluation(
     return _SupportLoad(not failures, tuple(failures), facts)
 
 
+def _validate_bridge_equality_certificate(
+    loaded: Any,
+    expected_bridge_length: int,
+    expected_output_length: int,
+) -> _SupportLoad:
+    failures: list[str] = []
+    facts = {
+        "certificate_count": getattr(loaded, "expected_certificate_count", None),
+        "certificate_step_count": len(getattr(loaded, "expected_step_ids", ())),
+        "bridge_equation_code_length": getattr(
+            loaded,
+            "expected_bridge_equation_code_length",
+            None,
+        ),
+        "evaluation_output_code_length": getattr(
+            loaded,
+            "expected_evaluation_output_code_length",
+            None,
+        ),
+    }
+    if getattr(loaded, "certificate_set_id", None) != (
+        "as-fixed-point-bridge-equality-certificate-v1"
+    ):
+        failures.append("fixed-point-bridge-equality-certificate-id")
+    if getattr(loaded, "expected_certificate_count", None) != 1:
+        failures.append("fixed-point-bridge-equality-certificate-count")
+    if tuple(getattr(loaded, "expected_step_ids", ())) != REQUIRED_CERTIFICATE_STEP_IDS:
+        failures.append("fixed-point-bridge-equality-certificate-steps")
+    if (
+        getattr(loaded, "expected_bridge_equation_code_length", None)
+        != expected_bridge_length
+    ):
+        failures.append("fixed-point-bridge-equality-certificate-bridge-length")
+    if (
+        getattr(loaded, "expected_evaluation_output_code_length", None)
+        != expected_output_length
+    ):
+        failures.append("fixed-point-bridge-equality-certificate-output-length")
+    if not _has_non_claims(loaded):
+        failures.append("fixed-point-bridge-equality-certificate-non-claim")
+    return _SupportLoad(not failures, tuple(failures), facts)
+
+
 def _support_surfaces(
     paths: dict[str, Path],
     support_loads: dict[str, _SupportLoad],
@@ -878,6 +955,7 @@ def _support_surfaces(
         ],
         "bridge_equality_alignment": paths["bridge_equality_alignment_path"],
         "bridge_equality_evaluation": paths["bridge_equality_evaluation_path"],
+        "bridge_equality_certificate": paths["bridge_equality_certificate_path"],
     }
     surfaces: list[FixedPointBridgeEqualityFrontierSupportSurface] = []
     for subject in REQUIRED_SUPPORT_SUBJECTS:
@@ -922,6 +1000,13 @@ def _support_detail(subject: str, load: _SupportLoad) -> str:
             + ", evaluation output length "
             + str(load.facts.get("evaluation_output_code_length"))
         )
+    if subject == "bridge_equality_certificate":
+        return (
+            "certificate count "
+            + str(load.facts.get("certificate_count"))
+            + ", certificate steps "
+            + str(load.facts.get("certificate_step_count"))
+        )
     return "accepted"
 
 
@@ -948,7 +1033,7 @@ def _validate_case_dependencies(
     surfaces: list[FixedPointBridgeEqualityFrontierSupportSurface],
 ) -> list[FixedPointBridgeEqualityFrontierStatusValidation]:
     results: list[FixedPointBridgeEqualityFrontierStatusValidation] = []
-    if tuple(case.required_dependency_subjects) == REQUIRED_SUPPORT_SUBJECTS:
+    if tuple(case.required_dependency_subjects) == REQUIRED_CASE_DEPENDENCY_SUBJECTS:
         results.append(
             _accepted(
                 "construction_case.required_dependency_subjects",
@@ -960,7 +1045,7 @@ def _validate_case_dependencies(
             _rejected(
                 "construction_case.required_dependency_subjects",
                 "expected "
-                + ", ".join(REQUIRED_SUPPORT_SUBJECTS)
+                + ", ".join(REQUIRED_CASE_DEPENDENCY_SUBJECTS)
                 + " but found "
                 + _joined_or_none(case.required_dependency_subjects),
             )

@@ -22,6 +22,9 @@ from autarkic_systems.fixed_point_bridge_equality_frontier_status import (
 from autarkic_systems.fixed_point_bridge_equality_alignment import (
     load_fixed_point_bridge_equality_alignment,
 )
+from autarkic_systems.fixed_point_bridge_equality_certificate import (
+    load_fixed_point_bridge_equality_certificate,
+)
 from autarkic_systems.fixed_point_bridge_equality_evaluation import (
     load_fixed_point_bridge_equality_evaluation,
 )
@@ -71,6 +74,7 @@ REQUIRED_DEPENDENCY_SUBJECTS = (
     "substitution_graph_correctness_bridge",
     "bridge_equality_alignment",
     "bridge_equality_evaluation",
+    "bridge_equality_certificate",
     "equation_lifting_alignment",
 )
 REQUIRED_NON_CLAIMS = (
@@ -98,6 +102,9 @@ EXPECTED_DEPENDENCY_PATHS = {
     "bridge_equality_evaluation_path": (
         "claims/fixed_point_bridge_equality_evaluation.json"
     ),
+    "bridge_equality_certificate_path": (
+        "claims/fixed_point_bridge_equality_certificate.json"
+    ),
     "equation_lifting_alignment_path": (
         "claims/fixed_point_equation_lifting_alignment.json"
     ),
@@ -111,6 +118,7 @@ SUPPORT_BY_CASE_KIND = {
     "bridge-equality-proof": (
         "bridge_equality_alignment",
         "bridge_equality_evaluation",
+        "bridge_equality_certificate",
     ),
     "fixed-point-equation-lifting": ("equation_lifting_alignment",),
 }
@@ -182,6 +190,7 @@ class FixedPointConstructionFrontierStatusManifest:
     substitution_graph_correctness_bridge_path: str
     bridge_equality_alignment_path: str
     bridge_equality_evaluation_path: str
+    bridge_equality_certificate_path: str
     equation_lifting_alignment_path: str
     case_status_paths: dict[str, str]
     non_claims: tuple[str, ...]
@@ -204,6 +213,7 @@ class FixedPointConstructionFrontierStatusManifest:
             self.substitution_graph_correctness_bridge_path,
             self.bridge_equality_alignment_path,
             self.bridge_equality_evaluation_path,
+            self.bridge_equality_certificate_path,
             self.equation_lifting_alignment_path,
             tuple(sorted(self.case_status_paths.items())),
             self.non_claims,
@@ -271,6 +281,7 @@ class FixedPointConstructionFrontierStatusReport:
     substitution_graph_correctness_bridge_path: Path
     bridge_equality_alignment_path: Path
     bridge_equality_evaluation_path: Path
+    bridge_equality_certificate_path: Path
     equation_lifting_alignment_path: Path
     results: tuple[FixedPointConstructionFrontierStatusValidation, ...]
     support_surfaces: tuple[FixedPointConstructionFrontierSupportSurface, ...]
@@ -389,6 +400,10 @@ def load_fixed_point_construction_frontier_status(
             data,
             "bridge_equality_evaluation_path",
         ),
+        bridge_equality_certificate_path=_required_text(
+            data,
+            "bridge_equality_certificate_path",
+        ),
         equation_lifting_alignment_path=_required_text(
             data,
             "equation_lifting_alignment_path",
@@ -447,6 +462,12 @@ def validate_fixed_point_construction_frontier_status(
             load_fixed_point_bridge_equality_evaluation,
             "fixed-point-bridge-equality-evaluation-load",
         )[1],
+        "bridge_equality_certificate": _load_dependency_manifest(
+            "bridge_equality_certificate",
+            paths["bridge_equality_certificate_path"],
+            load_fixed_point_bridge_equality_certificate,
+            "fixed-point-bridge-equality-certificate-load",
+        )[1],
         "equation_lifting_alignment": _load_dependency_manifest(
             "equation_lifting_alignment",
             paths["equation_lifting_alignment_path"],
@@ -487,6 +508,7 @@ def validate_fixed_point_construction_frontier_status(
         ],
         bridge_equality_alignment_path=paths["bridge_equality_alignment_path"],
         bridge_equality_evaluation_path=paths["bridge_equality_evaluation_path"],
+        bridge_equality_certificate_path=paths["bridge_equality_certificate_path"],
         equation_lifting_alignment_path=paths["equation_lifting_alignment_path"],
         results=tuple(results),
         support_surfaces=tuple(support_surfaces),
@@ -524,6 +546,9 @@ def fixed_point_construction_frontier_status_payload(
         ),
         "bridge_equality_alignment_path": str(report.bridge_equality_alignment_path),
         "bridge_equality_evaluation_path": str(report.bridge_equality_evaluation_path),
+        "bridge_equality_certificate_path": str(
+            report.bridge_equality_certificate_path
+        ),
         "equation_lifting_alignment_path": str(report.equation_lifting_alignment_path),
         "case_status_paths": dict(report.manifest.case_status_paths),
         "non_claims": list(report.manifest.non_claims),
@@ -701,6 +726,9 @@ def _manifest_paths(
         "bridge_equality_evaluation_path": Path(
             manifest.bridge_equality_evaluation_path
         ),
+        "bridge_equality_certificate_path": Path(
+            manifest.bridge_equality_certificate_path
+        ),
         "equation_lifting_alignment_path": Path(
             manifest.equation_lifting_alignment_path
         ),
@@ -829,6 +857,29 @@ def _validate_loaded_support_manifest(subject: str, loaded: Any) -> _DependencyF
             failures,
         )
         _require_non_claims(loaded, failures, "fixed-point-bridge-equality-evaluation-non-claim")
+    elif subject == "bridge_equality_certificate":
+        _require_attr_value(
+            loaded,
+            "certificate_set_id",
+            "as-fixed-point-bridge-equality-certificate-v1",
+            "fixed-point-bridge-equality-certificate-id",
+            failures,
+        )
+        _require_attr_value(
+            loaded,
+            "expected_certificate_count",
+            1,
+            "fixed-point-bridge-equality-certificate-count",
+            failures,
+        )
+        _require_attr_value(
+            loaded,
+            "expected_evaluation_output_code_length",
+            296,
+            "fixed-point-bridge-equality-certificate-output-length",
+            failures,
+        )
+        _require_non_claims(loaded, failures, "fixed-point-bridge-equality-certificate-non-claim")
     elif subject == "equation_lifting_alignment":
         _require_attr_value(
             loaded,
@@ -893,6 +944,7 @@ def _support_surfaces(
         ],
         "bridge_equality_alignment": paths["bridge_equality_alignment_path"],
         "bridge_equality_evaluation": paths["bridge_equality_evaluation_path"],
+        "bridge_equality_certificate": paths["bridge_equality_certificate_path"],
         "equation_lifting_alignment": paths["equation_lifting_alignment_path"],
     }
     surfaces: list[FixedPointConstructionFrontierSupportSurface] = []

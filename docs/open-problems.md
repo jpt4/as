@@ -466,7 +466,9 @@ consistency as the first target notion. ADR-0230 removes the
 deduction-apparatus selection blocker by selecting the AS-local
 `predicate-result` certificate checker as the current apparatus target.
 ADR-0234 adds a checked quotation-term surface over the codebook. ADR-0235
-records the naive fixed-point equation candidate as not fixed. The remaining
+records the naive fixed-point equation candidate as not fixed. ADR-0300 adds a
+finite bridge-equality certificate support surface while keeping the
+bridge-equality and fixed-point construction blockers open. The remaining
 blocker is fixed-point construction.
 
 ## P6: Recover Or Replace The Active Proflog Frontier

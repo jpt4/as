@@ -6766,3 +6766,51 @@
   transition predicates, evidence bundles, formal-confidence files,
   project-status, vertical-demo, handoff behavior, suite selection, claim
   manifests, or mathematical semantics.
+
+## 2026-05-21 - Fixed-Point Bridge Equality Certificate
+
+- Added ADR-0300 to expose the accepted finite bridge-equality evaluation route
+  as a compact certificate support surface without discharging the
+  `bridge-equality-proof` blocker.
+- Added `tests/test_fixed_point_bridge_equality_certificate.py` and frontier
+  rollup assertions before implementation. The red run failed as intended
+  because the certificate module, required bridge-frontier constant, and
+  aggregate certificate path did not exist.
+- Added `autarkic_systems.fixed_point_bridge_equality_certificate` and
+  `claims/fixed_point_bridge_equality_certificate.json`. The validator derives
+  one support certificate for
+  `AS-FIXED-POINT-CONSTRUCTION-BRIDGE-EQUALITY` from the existing fixed-point
+  equation bridge, bridge-equality alignment, bridge-equality evaluation, and
+  codebook surfaces.
+- The focused certificate suite passed 7 tests in 185.175s.
+- The bridge-equality frontier status suite passed 13 tests in 0.712s.
+- The aggregate fixed-point construction frontier status suite passed 16 tests
+  in 78.713s.
+- The wider certificate/evaluation/alignment/frontier seam passed 60 tests in
+  963.565s.
+- Live JSON passed for the certificate, bridge-equality frontier, and aggregate
+  fixed-point construction frontier commands. The certificate reported one
+  accepted six-step certificate support object with bridge equation length 4815
+  and evaluation output length 296; the bridge frontier remained blocked by
+  `bridge-equality-proof`; the aggregate construction frontier remained blocked
+  by `fixed-point-construction` with all five construction cases open.
+- The live suite index reflected the new extended test module: 153 discovered
+  modules with `fast=130`, `extended-fixed-point=23`, and `all=153`.
+- `python -m compileall autarkic_systems tests` passed and
+  `git diff --check` passed.
+- The fast suite passed 1188 tests in 274.534s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 130 selected modules.
+- The first extended suite run caught a stale project-status test key contract:
+  the live formal-confidence payload includes `validation_summary`, but
+  `FORMAL_CONFIDENCE_PAYLOAD_KEYS` had not admitted it. The run reported
+  354 tests in 4847.508s with 3 failures, all from that stale key set.
+- Updated `tests/test_project_status_report.py` to include
+  `validation_summary` in `FORMAL_CONFIDENCE_PAYLOAD_KEYS`. The exact three
+  failing project-status assertions then passed in 173.263s.
+- The extended suite then passed 354 tests in 4900.538s with manifest
+  `as-test-suite-selection-v1`, suite `extended-fixed-point`, and 23 selected
+  modules.
+- This is finite certificate support only. It does not prove bridge equality,
+  prove the fixed-point equation, introduce an arithmetized proof predicate,
+  discharge the fixed-point construction blocker, change formal-confidence
+  status, or claim self-consistency.

@@ -9,6 +9,7 @@ from pathlib import Path
 
 from autarkic_systems import fixed_point_bridge_equality_frontier_status
 from autarkic_systems.fixed_point_bridge_equality_frontier_status import (
+    REQUIRED_CASE_DEPENDENCY_SUBJECTS,
     REQUIRED_NON_CLAIMS,
     REQUIRED_SUPPORT_SUBJECTS,
     load_fixed_point_bridge_equality_frontier_status,
@@ -25,6 +26,7 @@ SUBSTITUTION_GRAPH_CORRECTNESS_CASES = Path(
 )
 BRIDGE_EQUALITY_ALIGNMENT = Path("claims/fixed_point_bridge_equality_alignment.json")
 BRIDGE_EQUALITY_EVALUATION = Path("claims/fixed_point_bridge_equality_evaluation.json")
+BRIDGE_EQUALITY_CERTIFICATE = Path("claims/fixed_point_bridge_equality_certificate.json")
 
 
 class FixedPointBridgeEqualityFrontierStatusTests(unittest.TestCase):
@@ -60,8 +62,22 @@ class FixedPointBridgeEqualityFrontierStatusTests(unittest.TestCase):
             self.status.bridge_equality_evaluation_path,
             str(BRIDGE_EQUALITY_EVALUATION),
         )
+        self.assertEqual(
+            self.status.bridge_equality_certificate_path,
+            str(BRIDGE_EQUALITY_CERTIFICATE),
+        )
         self.assertEqual(self.status.expected_bridge_equation_code_length, 4815)
         self.assertEqual(self.status.expected_evaluation_output_code_length, 296)
+        self.assertEqual(
+            REQUIRED_CASE_DEPENDENCY_SUBJECTS,
+            (
+                "fixed_point_equation_bridge",
+                "substitution_representability",
+                "substitution_graph_correctness_cases",
+                "bridge_equality_alignment",
+                "bridge_equality_evaluation",
+            ),
+        )
         self.assertEqual(
             REQUIRED_SUPPORT_SUBJECTS,
             (
@@ -70,6 +86,7 @@ class FixedPointBridgeEqualityFrontierStatusTests(unittest.TestCase):
                 "substitution_graph_correctness_cases",
                 "bridge_equality_alignment",
                 "bridge_equality_evaluation",
+                "bridge_equality_certificate",
             ),
         )
         self.assertEqual(
@@ -93,7 +110,7 @@ class FixedPointBridgeEqualityFrontierStatusTests(unittest.TestCase):
         self.assertEqual(report.frontier_blocked_by, "bridge-equality-proof")
         self.assertEqual(report.construction_case.case_kind, "bridge-equality-proof")
         self.assertEqual(report.construction_case.status, "proof-case-open")
-        self.assertEqual(report.support_surface_count, 5)
+        self.assertEqual(report.support_surface_count, 6)
         self.assertTrue(all(surface.accepted for surface in report.support_surfaces))
 
     def test_json_payload_exposes_compact_frontier_status(self):
@@ -108,13 +125,17 @@ class FixedPointBridgeEqualityFrontierStatusTests(unittest.TestCase):
         self.assertEqual(payload["frontier_status"], "blocked")
         self.assertEqual(payload["frontier_blocked_by"], "bridge-equality-proof")
         self.assertEqual(payload["failed_subjects"], [])
-        self.assertEqual(payload["support_surface_count"], 5)
+        self.assertEqual(payload["support_surface_count"], 6)
         self.assertEqual(
             payload["construction_case"]["case_id"],
             "AS-FIXED-POINT-CONSTRUCTION-BRIDGE-EQUALITY",
         )
         self.assertEqual(payload["construction_case"]["case_kind"], "bridge-equality-proof")
         self.assertEqual(payload["construction_case"]["status"], "proof-case-open")
+        self.assertEqual(
+            payload["construction_case"]["required_dependency_subjects"],
+            list(REQUIRED_CASE_DEPENDENCY_SUBJECTS),
+        )
         self.assertEqual(
             [surface["subject"] for surface in payload["support_surfaces"]],
             list(REQUIRED_SUPPORT_SUBJECTS),
@@ -131,6 +152,18 @@ class FixedPointBridgeEqualityFrontierStatusTests(unittest.TestCase):
             ],
             296,
         )
+        self.assertEqual(
+            payload["support_facts"]["bridge_equality_certificate"][
+                "certificate_count"
+            ],
+            1,
+        )
+        self.assertEqual(
+            payload["support_facts"]["bridge_equality_certificate"][
+                "certificate_step_count"
+            ],
+            6,
+        )
 
     def test_text_report_exposes_blocked_bridge_equality_boundary(self):
         report = validate_fixed_point_bridge_equality_frontier_status(self.status)
@@ -146,11 +179,13 @@ class FixedPointBridgeEqualityFrontierStatusTests(unittest.TestCase):
         self.assertIn("Construction case: AS-FIXED-POINT-CONSTRUCTION-BRIDGE-EQUALITY", text)
         self.assertIn("Case kind: bridge-equality-proof", text)
         self.assertIn("Case status: proof-case-open", text)
-        self.assertIn("Support surfaces: 5", text)
+        self.assertIn("Support surfaces: 6", text)
         self.assertIn("bridge_equality_alignment: accepted", text)
         self.assertIn("bridge equation length 4815", text)
         self.assertIn("bridge_equality_evaluation: accepted", text)
         self.assertIn("evaluation output length 296", text)
+        self.assertIn("bridge_equality_certificate: accepted", text)
+        self.assertIn("certificate steps 6", text)
         self.assertIn("Non-claims: no substitution representability proof", text)
         self.assertNotIn("FAIL", text)
 

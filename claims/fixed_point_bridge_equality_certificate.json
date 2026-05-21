@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "certificate_set_id": "as-fixed-point-bridge-equality-certificate-v1",
+  "reviewed_at": "2026-05-21",
+  "purpose": "Finite certificate support for the fixed-point bridge-equality construction case. This names the checked finite steps already derived by the accepted alignment and evaluation surfaces without claiming a bridge equality proof.",
+  "fixed_point_equation_bridge_targets_path": "claims/fixed_point_equation_bridge_targets.json",
+  "bridge_equality_alignment_path": "claims/fixed_point_bridge_equality_alignment.json",
+  "bridge_equality_evaluation_path": "claims/fixed_point_bridge_equality_evaluation.json",
+  "codebook_path": "language/formal_codebook.json",
+  "expected_certificate_count": 1,
+  "expected_step_ids": [
+    "decode-left-formula",
+    "decode-self-argument",
+    "evaluate-substitution-code",
+    "match-witness-output",
+    "match-right-quote",
+    "bridge-equation-formed"
+  ],
+  "expected_bridge_equation_code_length": 4815,
+  "expected_evaluation_output_code_length": 296,
+  "non_claims": [
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this finite certificate support without discharging the bridge-equality-proof blocker."
+}

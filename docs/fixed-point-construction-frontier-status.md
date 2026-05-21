@@ -15,7 +15,8 @@ The surface loads the current construction/frontier dependencies:
 - `claims/fixed_point_substitution_witness_bridge.json`;
 - `claims/fixed_point_substitution_graph_correctness_bridge.json`;
 - `claims/fixed_point_bridge_equality_alignment.json`;
-- `claims/fixed_point_bridge_equality_evaluation.json`; and
+- `claims/fixed_point_bridge_equality_evaluation.json`;
+- `claims/fixed_point_bridge_equality_certificate.json`; and
 - `claims/fixed_point_equation_lifting_alignment.json`.
 
 It also loads the compact status handoffs for the five construction cases:

@@ -315,6 +315,7 @@ FORMAL_CONFIDENCE_PAYLOAD_KEYS = {
     "result_count",
     "results",
     "status_counts",
+    "validation_summary",
 }
 FORMAL_CONFIDENCE_VALIDATION_SUMMARY = {
     "accepted_validation_count": 19,

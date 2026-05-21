@@ -28,6 +28,7 @@ SUBSTITUTION_GRAPH_CORRECTNESS_BRIDGE = Path(
 )
 BRIDGE_EQUALITY_ALIGNMENT = Path("claims/fixed_point_bridge_equality_alignment.json")
 BRIDGE_EQUALITY_EVALUATION = Path("claims/fixed_point_bridge_equality_evaluation.json")
+BRIDGE_EQUALITY_CERTIFICATE = Path("claims/fixed_point_bridge_equality_certificate.json")
 EQUATION_LIFTING_ALIGNMENT = Path("claims/fixed_point_equation_lifting_alignment.json")
 WILLARD_MAP = Path("sources/willard_definition_map.json")
 EXPECTED_CASE_STATUS_PATHS = {
@@ -93,6 +94,10 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
             str(BRIDGE_EQUALITY_EVALUATION),
         )
         self.assertEqual(
+            self.status.bridge_equality_certificate_path,
+            str(BRIDGE_EQUALITY_CERTIFICATE),
+        )
+        self.assertEqual(
             self.status.equation_lifting_alignment_path,
             str(EQUATION_LIFTING_ALIGNMENT),
         )
@@ -106,6 +111,7 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
                 "substitution_graph_correctness_bridge",
                 "bridge_equality_alignment",
                 "bridge_equality_evaluation",
+                "bridge_equality_certificate",
                 "equation_lifting_alignment",
             ),
         )
@@ -115,7 +121,11 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             SUPPORT_BY_CASE_KIND["bridge-equality-proof"],
-            ("bridge_equality_alignment", "bridge_equality_evaluation"),
+            (
+                "bridge_equality_alignment",
+                "bridge_equality_evaluation",
+                "bridge_equality_certificate",
+            ),
         )
         self.assertEqual(
             REQUIRED_NON_CLAIMS,
@@ -141,7 +151,7 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
         self.assertEqual(report.frontier_blocked_by, "fixed-point-construction")
         self.assertEqual(report.case_count, 5)
         self.assertEqual(report.open_case_count, 5)
-        self.assertEqual(report.support_surface_count, 7)
+        self.assertEqual(report.support_surface_count, 8)
         self.assertEqual(report.case_status_count, 5)
         self.assertEqual(report.accepted_case_status_count, 5)
         self.assertTrue(all(surface.accepted for surface in report.support_surfaces))
@@ -181,7 +191,7 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
         self.assertEqual(payload["frontier_status"], "blocked")
         self.assertEqual(payload["frontier_blocked_by"], "fixed-point-construction")
         self.assertEqual(payload["failed_subjects"], [])
-        self.assertEqual(payload["support_surface_count"], 7)
+        self.assertEqual(payload["support_surface_count"], 8)
         self.assertEqual(payload["case_count"], 5)
         self.assertEqual(payload["open_case_count"], 5)
         self.assertEqual(payload["case_status_count"], 5)
@@ -212,7 +222,11 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             supports["bridge-equality-proof"],
-            ["bridge_equality_alignment", "bridge_equality_evaluation"],
+            [
+                "bridge_equality_alignment",
+                "bridge_equality_evaluation",
+                "bridge_equality_certificate",
+            ],
         )
         self.assertEqual(
             supports["fixed-point-equation-lifting"],
@@ -256,7 +270,7 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
         self.assertIn("Frontier status: blocked", text)
         self.assertIn("Blocked by: fixed-point-construction", text)
         self.assertIn("Open construction cases: 5/5", text)
-        self.assertIn("Support surfaces: 7", text)
+        self.assertIn("Support surfaces: 8", text)
         self.assertIn("Compact construction-case status rollup: 5/5", text)
         self.assertIn(
             "- substitution-graph-correctness-proof: accepted "
@@ -266,7 +280,8 @@ class FixedPointConstructionFrontierStatusTests(unittest.TestCase):
         self.assertIn("Expected blocker: substitution-graph-correctness", text)
         self.assertIn("bridge-equality-proof", text)
         self.assertIn(
-            "Finite support: bridge_equality_alignment, bridge_equality_evaluation",
+            "Finite support: bridge_equality_alignment, "
+            "bridge_equality_evaluation, bridge_equality_certificate",
             text,
         )
         self.assertIn("Non-claims: no substitution representability proof", text)
