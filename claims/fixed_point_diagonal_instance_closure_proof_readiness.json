@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "readiness_id": "as-fixed-point-diagonal-instance-closure-proof-readiness-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Certificate-ready but proof-open readiness surface for the fixed-point diagonal-instance-closure root proof case.",
+  "diagonal_instance_closure_frontier_status_path": "claims/fixed_point_diagonal_instance_closure_frontier_status.json",
+  "diagonal_instance_closure_certificate_path": "claims/fixed_point_diagonal_instance_closure_certificate.json",
+  "expected_readiness_case_id": "AS-FIXED-POINT-CONSTRUCTION-DIAGONAL-INSTANCE-CLOSURE",
+  "expected_readiness_case_kind": "diagonal-instance-closure",
+  "expected_readiness_status": "blocked-certificate-ready-proof-open",
+  "expected_construction_case_status": "proof-case-open",
+  "expected_frontier_status": "blocked",
+  "expected_frontier_blocker": "diagonal-instance-closure",
+  "expected_support_surface_count": 5,
+  "expected_certificate_count": 1,
+  "expected_certificate_step_count": 7,
+  "expected_diagonal_instance_code_length": 296,
+  "non_claims": [
+    "no diagonal-instance closure proof",
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this certificate-ready proof-open diagonal-instance closure readiness surface as the first root proof blocker handoff before promoting bridge equality or the fixed-point equation."
+}

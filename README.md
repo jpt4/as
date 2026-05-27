@@ -144,6 +144,11 @@ proof certificates, object languages, evidence bundles, and status reports:
   first case remains open, five support surfaces are present, the
   diagonal-instance length is 296, and the blocker remains
   `diagonal-instance-closure`.
+- `docs/fixed-point-diagonal-instance-closure-proof-readiness.md` records that
+  the diagonal-instance-closure root is certificate-ready while still
+  proof-open: one finite certificate, seven steps, five frontier support
+  surfaces, and the 296-token diagonal instance are accepted without promoting
+  the proof case.
 - `docs/fixed-point-substitution-witness-bridge.md` records finite alignment
   evidence tying the current substitution witness to the bridge and closure
   surfaces, while leaving representability proof open.

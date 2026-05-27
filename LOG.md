@@ -7285,3 +7285,44 @@
   substitution graph correctness, prove bridge equality, prove the fixed-point
   equation, introduce an arithmetized proof predicate, or claim
   self-consistency.
+
+## 2026-05-27 - Fixed-Point Diagonal Instance Closure Proof Readiness
+
+- Added ADR-0312 to expose the selected `diagonal-instance-closure` root case
+  as certificate-ready but proof-open after ADR-0303 certificate support and
+  ADR-0277 frontier status.
+- Added
+  `tests/test_fixed_point_diagonal_instance_closure_proof_readiness.py` before
+  implementation. The red run failed as intended with `ImportError` because
+  `autarkic_systems.fixed_point_diagonal_instance_closure_proof_readiness` did
+  not exist.
+- Added
+  `claims/fixed_point_diagonal_instance_closure_proof_readiness.json`,
+  `autarkic_systems.fixed_point_diagonal_instance_closure_proof_readiness`,
+  and `docs/fixed-point-diagonal-instance-closure-proof-readiness.md`. The
+  validator derives one readiness entry from the diagonal-instance closure
+  frontier status and finite certificate support reports.
+- The focused proof-readiness suite passed 7 tests in 115.359s.
+- The focused readiness/frontier/certificate seam passed 27 tests in
+  175.307s.
+- Live JSON validation passed with `accepted=true`, frontier status `blocked`,
+  frontier blocker `diagonal-instance-closure`, five support surfaces, one
+  certificate, seven certificate steps, diagonal instance code length 296,
+  `observed_frontier_accepted=true`, `observed_certificate_accepted=true`,
+  `observed_proof_boundary_preserved=true`, readiness case
+  `AS-FIXED-POINT-CONSTRUCTION-DIAGONAL-INSTANCE-CLOSURE`, readiness status
+  `blocked-certificate-ready-proof-open`, and `failed_subjects=[]`.
+- Suite selection listed 165 discovered modules: 130 fast, 35
+  extended-fixed-point, and 165 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 149.219s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 430 tests in 2661.142s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 35`.
+- This is diagonal-instance closure proof-readiness metadata only. It does not
+  prove diagonal-instance closure, prove substitution representability, prove
+  substitution graph correctness, prove bridge equality, prove the fixed-point
+  equation, introduce an arithmetized proof predicate, or claim
+  self-consistency.
