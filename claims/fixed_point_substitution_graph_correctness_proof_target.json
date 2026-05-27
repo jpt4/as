@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "target_id": "as-fixed-point-substitution-graph-correctness-proof-target-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Blocked proof-closure target for the selected substitution-graph-correctness-proof root obligation, tying accepted finite support and proof-readiness surfaces to explicit missing proof artifacts.",
+  "substitution_graph_correctness_certificate_path": "claims/fixed_point_substitution_graph_correctness_certificate.json",
+  "substitution_graph_correctness_readiness_path": "claims/fixed_point_substitution_graph_correctness_proof_readiness.json",
+  "selected_root_readiness_coverage_path": "claims/fixed_point_selected_root_proof_readiness_coverage.json",
+  "expected_case_id": "AS-FIXED-POINT-CONSTRUCTION-SUBSTITUTION-GRAPH-CORRECTNESS",
+  "expected_case_kind": "substitution-graph-correctness-proof",
+  "expected_proof_target_status": "blocked-proof-closure-targeted",
+  "expected_readiness_status": "blocked-certificate-ready-proof-open",
+  "expected_certificate_count": 1,
+  "expected_certificate_step_count": 7,
+  "expected_correctness_case_count": 5,
+  "expected_finite_dependency_count": 5,
+  "expected_missing_proof_artifacts": [
+    "formal graph-correctness derivation",
+    "proof-rule derivation from certificate steps",
+    "construction-case promotion rule"
+  ],
+  "expected_missing_proof_artifact_count": 3,
+  "non_claims": [
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no fixed-point construction proof",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this blocked proof target as the substitution graph correctness proof-closure gate: do not promote the root obligation until the missing proof artifacts are supplied and checked."
+}

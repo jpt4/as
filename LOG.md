@@ -7637,3 +7637,52 @@
   representability, bridge equality, the fixed-point equation, introduce an
   arithmetized proof predicate, prove fixed-point construction, or claim
   self-consistency.
+
+## 2026-05-27 - Fixed-Point Substitution Graph Correctness Proof Target
+
+- Added ADR-0320 to expose a checked blocked proof-closure target for the
+  selected `substitution-graph-correctness-proof` root obligation.
+- Added
+  `tests/test_fixed_point_substitution_graph_correctness_proof_target.py`
+  before implementation. The red run failed as intended with `ImportError`
+  because
+  `autarkic_systems.fixed_point_substitution_graph_correctness_proof_target`
+  did not exist.
+- Added
+  `claims/fixed_point_substitution_graph_correctness_proof_target.json`,
+  `autarkic_systems.fixed_point_substitution_graph_correctness_proof_target`,
+  and `docs/fixed-point-substitution-graph-correctness-proof-target.md`. The
+  validator derives the target from the accepted substitution graph correctness
+  certificate, substitution graph correctness proof-readiness report, and
+  selected-root proof-readiness coverage report.
+- The first focused implementation run found that the target was reading
+  correctness-case and finite-dependency counts from the certificate report
+  rather than the derived certificate object; the validator now reads those
+  counts from the accepted certificate and rejects stale count metadata.
+- The focused proof-target suite passed 8 tests in 168.598s.
+- The focused certificate/readiness/selected-root seam passed 28 tests in
+  184.139s.
+- Live JSON validation passed with `accepted=true`, target id
+  `as-fixed-point-substitution-graph-correctness-proof-target-v1`, case id
+  `AS-FIXED-POINT-CONSTRUCTION-SUBSTITUTION-GRAPH-CORRECTNESS`, case kind
+  `substitution-graph-correctness-proof`, proof target status
+  `blocked-proof-closure-targeted`, readiness status
+  `blocked-certificate-ready-proof-open`, one accepted certificate, seven
+  certificate steps, five correctness cases, five finite dependencies, three
+  missing proof artifacts, `proof_closure_ready=false`,
+  `observed_certificate_accepted=true`, `observed_readiness_accepted=true`,
+  `observed_selected_root_coverage_accepted=true`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Suite selection listed 173 discovered modules: 130 fast, 43
+  extended-fixed-point, and 173 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 189.560s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 488 tests in 3281.686s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 43`.
+- This is a blocked proof-closure target only. It does not prove substitution
+  graph correctness, bridge equality, the fixed-point equation, introduce an
+  arithmetized proof predicate, prove fixed-point construction, or claim
+  self-consistency.
