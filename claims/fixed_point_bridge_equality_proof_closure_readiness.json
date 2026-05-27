@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "readiness_id": "as-fixed-point-bridge-equality-proof-closure-readiness-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Certificate-ready but proof-open readiness surface for the fixed-point bridge-equality proof case after expanded predecessor certificate coverage.",
+  "expanded_available_predecessor_certificate_coverage_path": "claims/fixed_point_expanded_available_predecessor_certificate_coverage.json",
+  "bridge_equality_frontier_status_path": "claims/fixed_point_bridge_equality_frontier_status.json",
+  "bridge_equality_certificate_path": "claims/fixed_point_bridge_equality_certificate.json",
+  "expected_readiness_case_kind": "bridge-equality-proof",
+  "expected_readiness_status": "blocked-certificate-ready-proof-open",
+  "expected_predecessor_case_kinds": [
+    "diagonal-instance-closure",
+    "substitution-representability-proof",
+    "substitution-graph-correctness-proof"
+  ],
+  "expected_certificate_covered_predecessor_case_kinds": [
+    "diagonal-instance-closure",
+    "substitution-representability-proof",
+    "substitution-graph-correctness-proof"
+  ],
+  "expected_missing_certificate_predecessor_case_kinds": [],
+  "expected_open_proof_blocker_case_kinds": [
+    "diagonal-instance-closure",
+    "substitution-representability-proof",
+    "substitution-graph-correctness-proof"
+  ],
+  "expected_available_predecessor_certificate_count": 3,
+  "expected_missing_certificate_predecessor_count": 0,
+  "expected_open_proof_blocker_count": 3,
+  "expected_bridge_equality_certificate_step_count": 6,
+  "expected_bridge_equality_frontier_status": "blocked",
+  "expected_bridge_equality_frontier_blocker": "bridge-equality-proof",
+  "non_claims": [
+    "no diagonal-instance closure proof",
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this certificate-ready proof-open bridge-equality readiness surface to focus proof work on the three still-open predecessor proof blockers before promoting bridge equality."
+}

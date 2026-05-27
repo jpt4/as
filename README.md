@@ -181,6 +181,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   records expanded available finite predecessor certificate coverage for
   deferred fixed-point proof cases after adding the substitution
   representability certificate, while preserving open proof blockers.
+- `docs/fixed-point-bridge-equality-proof-closure-readiness.md` records the
+  bridge-equality proof case as certificate-ready but proof-open after
+  expanded predecessor certificate coverage, preserving the three open
+  predecessor proof blockers.
 - `docs/fixed-point-bridge-equality-alignment.md` records finite alignment
   evidence tying the fixed-point construction bridge-equality case to the
   checked equation bridge, witness bridge, graph correctness bridge, and

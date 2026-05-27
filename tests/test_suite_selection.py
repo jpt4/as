@@ -16,6 +16,7 @@ EXPECTED_EXTENDED_MODULES = {
     "tests.test_fixed_point_bridge_equality_alignment",
     "tests.test_fixed_point_bridge_equality_evaluation",
     "tests.test_fixed_point_bridge_equality_frontier_status",
+    "tests.test_fixed_point_bridge_equality_proof_closure_readiness",
     "tests.test_fixed_point_construction_cases",
     "tests.test_fixed_point_construction_frontier_status",
     "tests.test_fixed_point_construction_obligation_graph",

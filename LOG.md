@@ -7241,3 +7241,47 @@
   not prove substitution representability, prove substitution graph
   correctness, prove bridge equality, prove the fixed-point equation,
   introduce an arithmetized proof predicate, or claim self-consistency.
+
+## 2026-05-27 - Fixed-Point Bridge Equality Proof-Closure Readiness
+
+- Added ADR-0311 to expose the `bridge-equality-proof` construction case as
+  certificate-ready but proof-open after ADR-0310 expanded predecessor
+  certificate coverage.
+- Added
+  `tests/test_fixed_point_bridge_equality_proof_closure_readiness.py` before
+  implementation. The red run failed as intended with `ImportError` because
+  `autarkic_systems.fixed_point_bridge_equality_proof_closure_readiness` did
+  not exist.
+- Added
+  `claims/fixed_point_bridge_equality_proof_closure_readiness.json`,
+  `autarkic_systems.fixed_point_bridge_equality_proof_closure_readiness`, and
+  `docs/fixed-point-bridge-equality-proof-closure-readiness.md`. The validator
+  derives one readiness entry from expanded predecessor certificate coverage,
+  bridge-equality frontier status, and the bridge-equality finite certificate.
+- The focused proof-closure readiness suite passed 7 tests in 137.397s.
+- The focused readiness/expanded-coverage/bridge-frontier/bridge-certificate
+  seam passed 35 tests in 199.205s.
+- Live JSON validation passed with `accepted=true`, readiness case
+  `bridge-equality-proof`, readiness status
+  `blocked-certificate-ready-proof-open`, three available predecessor
+  certificates, zero missing predecessor certificates, three open proof
+  blockers, blocked bridge-equality frontier status, bridge frontier blocker
+  `bridge-equality-proof`, six bridge certificate steps,
+  `observed_expanded_coverage_accepted=true`,
+  `observed_bridge_frontier_accepted=true`,
+  `observed_bridge_certificate_accepted=true`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Suite selection listed 164 discovered modules: 130 fast, 34
+  extended-fixed-point, and 164 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 152.440s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 423 tests in 2613.156s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 34`.
+- This is bridge-equality proof-closure readiness only. It does not prove
+  diagonal-instance closure, prove substitution representability, prove
+  substitution graph correctness, prove bridge equality, prove the fixed-point
+  equation, introduce an arithmetized proof predicate, or claim
+  self-consistency.
