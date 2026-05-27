@@ -7189,3 +7189,55 @@
   representability, prove substitution graph correctness, prove bridge
   equality, prove the fixed-point equation, introduce an arithmetized proof
   predicate, or claim self-consistency.
+
+## 2026-05-27 - Fixed-Point Expanded Available Predecessor Certificate Coverage
+
+- Added ADR-0310 to expose expanded available predecessor certificate coverage
+  for the three deferred downstream fixed-point construction proof cases after
+  adding the ADR-0309 substitution-representability certificate.
+- Added
+  `tests/test_fixed_point_expanded_available_predecessor_certificate_coverage.py`
+  before implementation. The red run failed as intended with `ImportError`
+  because
+  `autarkic_systems.fixed_point_expanded_available_predecessor_certificate_coverage`
+  did not exist.
+- Added
+  `claims/fixed_point_expanded_available_predecessor_certificate_coverage.json`,
+  `autarkic_systems.fixed_point_expanded_available_predecessor_certificate_coverage`,
+  and
+  `docs/fixed-point-expanded-available-predecessor-certificate-coverage.md`.
+  The validator derives an expanded coverage view from the accepted ADR-0308
+  available predecessor certificate coverage and ADR-0309
+  substitution-representability certificate surfaces.
+- Added dependency-failure hardening after review. The red hardening run
+  exposed a `KeyError` for a missing base-coverage dependency and an
+  incorrectly preserved proof boundary for a missing
+  substitution-certificate dependency. Both now report structured rejections.
+- The focused expanded-coverage suite passed 8 tests in 134.350s.
+- The focused expanded-coverage/available-coverage/substitution-certificate
+  seam passed 20 tests in 136.610s.
+- Live JSON validation passed with `accepted=true`,
+  `coverage_entry_count=3`, available certificate subjects
+  `diagonal-instance-closure`, `substitution-graph-correctness-proof`,
+  `substitution-representability-proof`, and `bridge-equality-proof`,
+  `total_available_certificate_step_count=27`,
+  `observed_base_coverage_accepted=true`,
+  `observed_substitution_certificate_accepted=true`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Expanded coverage reports no missing certificate predecessor support for
+  `bridge-equality-proof`, while preserving its open proof blockers:
+  `diagonal-instance-closure`, `substitution-representability-proof`, and
+  `substitution-graph-correctness-proof`.
+- Suite selection listed 163 discovered modules: 130 fast, 33
+  extended-fixed-point, and 163 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 151.437s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 416 tests in 2622.617s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 33`.
+- This is expanded available predecessor certificate coverage only. It does
+  not prove substitution representability, prove substitution graph
+  correctness, prove bridge equality, prove the fixed-point equation,
+  introduce an arithmetized proof predicate, or claim self-consistency.

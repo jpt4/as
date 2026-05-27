@@ -12,6 +12,7 @@ MANIFEST_PATH = Path("tests/suite_manifest.json")
 TESTS_ROOT = Path("tests")
 EXPECTED_EXTENDED_MODULES = {
     "tests.test_fixed_point_available_predecessor_certificate_coverage",
+    "tests.test_fixed_point_expanded_available_predecessor_certificate_coverage",
     "tests.test_fixed_point_bridge_equality_alignment",
     "tests.test_fixed_point_bridge_equality_evaluation",
     "tests.test_fixed_point_bridge_equality_frontier_status",
