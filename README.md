@@ -166,6 +166,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/fixed-point-deferred-case-certificate-readiness.md` records compact
   readiness for the three deferred downstream fixed-point proof cases, showing
   selected-root certificate coverage without promoting any deferred proof case.
+- `docs/fixed-point-deferred-case-certificate-gap-analysis.md` records compact
+  gap analysis over the deferred fixed-point proof cases, separating missing
+  predecessor certificate support from open proof blockers.
 - `docs/fixed-point-bridge-equality-alignment.md` records finite alignment
   evidence tying the fixed-point construction bridge-equality case to the
   checked equation bridge, witness bridge, graph correctness bridge, and

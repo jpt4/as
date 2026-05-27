@@ -7056,3 +7056,39 @@
 - This is deferred-case readiness only. It does not prove substitution
   representability, prove bridge equality, prove the fixed-point equation,
   introduce an arithmetized proof predicate, or claim self-consistency.
+
+## 2026-05-27 - Fixed-Point Deferred Case Certificate Gap Analysis
+
+- Added ADR-0307 to expose compact certificate gap analysis for the three
+  deferred downstream fixed-point construction proof cases.
+- Added `tests/test_fixed_point_deferred_case_certificate_gap_analysis.py`
+  before implementation. The red run failed as intended with `ImportError`
+  because
+  `autarkic_systems.fixed_point_deferred_case_certificate_gap_analysis` did not
+  exist.
+- Added `claims/fixed_point_deferred_case_certificate_gap_analysis.json`,
+  `autarkic_systems.fixed_point_deferred_case_certificate_gap_analysis`, and
+  `docs/fixed-point-deferred-case-certificate-gap-analysis.md`. The validator
+  derives certificate-support gaps from the accepted deferred-case readiness
+  surface.
+- The focused gap-analysis suite passed 6 tests in 112.432s.
+- The focused gap/readiness/coverage seam passed 18 tests in 113.083s.
+- Live JSON validation passed with `accepted=true`, `gap_entry_count=3`,
+  certificate gap counts 0, 1, and 1 for
+  `substitution-representability-proof`, `bridge-equality-proof`, and
+  `fixed-point-equation-lifting`, missing certificate predecessors `none`,
+  `substitution-representability-proof`, and `bridge-equality-proof`,
+  `observed_readiness_accepted=true`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Suite selection listed 160 discovered modules: 130 fast, 30
+  extended-fixed-point, and 160 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 159.890s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 396 tests in 2559.252s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 30`.
+- This is certificate gap analysis only. It does not prove substitution
+  representability, prove bridge equality, prove the fixed-point equation,
+  introduce an arithmetized proof predicate, or claim self-consistency.

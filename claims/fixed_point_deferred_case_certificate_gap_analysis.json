@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "gap_analysis_id": "as-fixed-point-deferred-case-certificate-gap-analysis-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Compact gap analysis over deferred fixed-point construction cases, separating missing predecessor certificate support from open predecessor proof blockers without promoting any proof case.",
+  "deferred_case_certificate_readiness_path": "claims/fixed_point_deferred_case_certificate_readiness.json",
+  "expected_gap_entry_count": 3,
+  "expected_deferred_case_kinds": [
+    "substitution-representability-proof",
+    "bridge-equality-proof",
+    "fixed-point-equation-lifting"
+  ],
+  "expected_certificate_gap_counts": {
+    "substitution-representability-proof": 0,
+    "bridge-equality-proof": 1,
+    "fixed-point-equation-lifting": 1
+  },
+  "expected_missing_certificate_predecessors": {
+    "substitution-representability-proof": [],
+    "bridge-equality-proof": [
+      "substitution-representability-proof"
+    ],
+    "fixed-point-equation-lifting": [
+      "bridge-equality-proof"
+    ]
+  },
+  "expected_open_proof_blocker_counts": {
+    "substitution-representability-proof": 2,
+    "bridge-equality-proof": 3,
+    "fixed-point-equation-lifting": 1
+  },
+  "non_claims": [
+    "no substitution representability proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this gap analysis to prioritize certificate support for downstream predecessor cases while keeping every deferred proof case blocked until proof closure evidence exists."
+}
