@@ -7,6 +7,7 @@
       "kind": "explicit",
       "description": "Deliberate fixed-point/status regressions: all current fixed-point unittest modules plus aggregate formal-confidence, project-status, handoff, and vertical-demo checks.",
       "modules": [
+        "tests.test_fixed_point_available_predecessor_certificate_coverage",
         "tests.test_fixed_point_bridge_equality_alignment",
         "tests.test_fixed_point_bridge_equality_certificate",
         "tests.test_fixed_point_bridge_equality_evaluation",

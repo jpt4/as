@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "coverage_id": "as-fixed-point-available-predecessor-certificate-coverage-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Compact coverage over all currently available finite predecessor certificates for deferred fixed-point construction cases, preserving that certificate support is not proof closure.",
+  "deferred_case_certificate_readiness_path": "claims/fixed_point_deferred_case_certificate_readiness.json",
+  "selected_root_certificate_coverage_path": "claims/fixed_point_selected_root_certificate_coverage.json",
+  "bridge_equality_certificate_path": "claims/fixed_point_bridge_equality_certificate.json",
+  "expected_deferred_case_count": 3,
+  "expected_deferred_case_kinds": [
+    "substitution-representability-proof",
+    "bridge-equality-proof",
+    "fixed-point-equation-lifting"
+  ],
+  "expected_available_certificate_subjects": [
+    "diagonal-instance-closure",
+    "substitution-graph-correctness-proof",
+    "bridge-equality-proof"
+  ],
+  "expected_total_available_certificate_step_count": 20,
+  "expected_missing_certificate_predecessors": {
+    "substitution-representability-proof": [],
+    "bridge-equality-proof": [
+      "substitution-representability-proof"
+    ],
+    "fixed-point-equation-lifting": []
+  },
+  "expected_open_proof_blocker_counts": {
+    "substitution-representability-proof": 2,
+    "bridge-equality-proof": 3,
+    "fixed-point-equation-lifting": 1
+  },
+  "non_claims": [
+    "no substitution representability proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this available predecessor certificate coverage to prioritize the remaining substitution-representability certificate support gap while keeping all deferred proof cases blocked until proof closure evidence exists."
+}

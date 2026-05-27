@@ -169,6 +169,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/fixed-point-deferred-case-certificate-gap-analysis.md` records compact
   gap analysis over the deferred fixed-point proof cases, separating missing
   predecessor certificate support from open proof blockers.
+- `docs/fixed-point-available-predecessor-certificate-coverage.md` records
+  available finite predecessor certificate coverage for deferred fixed-point
+  proof cases, including the bridge-equality certificate while preserving
+  open proof blockers.
 - `docs/fixed-point-bridge-equality-alignment.md` records finite alignment
   evidence tying the fixed-point construction bridge-equality case to the
   checked equation bridge, witness bridge, graph correctness bridge, and
