@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "certificate_set_id": "as-fixed-point-substitution-graph-correctness-certificate-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Finite certificate support for the selected substitution-graph-correctness-proof root obligation. This derives a compact certificate from the accepted selector, graph-correctness target, correctness case rollup, and fixed-point graph-correctness bridge without claiming that the proof case is complete.",
+  "substitution_graph_correctness_targets_path": "claims/substitution_graph_correctness_targets.json",
+  "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
+  "substitution_graph_correctness_bridge_path": "claims/fixed_point_substitution_graph_correctness_bridge.json",
+  "frontier_selector_path": "claims/fixed_point_frontier_selector.json",
+  "expected_certificate_count": 1,
+  "expected_step_ids": [
+    "select-open-root-obligation",
+    "accept-correctness-target",
+    "accept-correctness-case-rollup",
+    "accept-bridge-report",
+    "check-correctness-case-count",
+    "check-finite-dependency-coverage",
+    "preserve-open-proof-boundary"
+  ],
+  "expected_selected_case_kind": "substitution-graph-correctness-proof",
+  "expected_correctness_case_count": 5,
+  "expected_finite_dependency_count": 5,
+  "non_claims": [
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this certificate as finite support for the selected substitution-graph-correctness-proof root obligation while keeping the proof case open until graph correctness, bridge equality, and equation lifting are proved."
+}

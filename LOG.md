@@ -6931,3 +6931,46 @@
   prove substitution graph correctness, prove bridge equality, prove the
   fixed-point equation, introduce an arithmetized proof predicate, or claim
   self-consistency.
+
+## 2026-05-27 - Fixed-Point Substitution Graph Correctness Certificate
+
+- Added ADR-0304 to expose finite certificate support for the selected
+  `substitution-graph-correctness-proof` root obligation.
+- Added `tests/test_fixed_point_substitution_graph_correctness_certificate.py`
+  before implementation. The red run failed as intended with `ImportError`
+  because
+  `autarkic_systems.fixed_point_substitution_graph_correctness_certificate`
+  did not exist.
+- Added `claims/fixed_point_substitution_graph_correctness_certificate.json`,
+  `autarkic_systems.fixed_point_substitution_graph_correctness_certificate`,
+  and `docs/fixed-point-substitution-graph-correctness-certificate.md`. The
+  validator derives one finite certificate from the accepted frontier
+  selector, substitution graph correctness target, correctness case rollup,
+  and fixed-point graph-correctness bridge.
+- The focused certificate suite passed 6 tests in 123.202s.
+- The first focused seam attempt caught a test-plan naming error:
+  `tests.test_substitution_graph_correctness` does not exist. The corrected
+  certificate/bridge/selector/correctness seam passed 47 tests in 214.501s.
+- Live JSON validation passed for one accepted seven-step finite certificate:
+  `accepted=true`, `certificate_count=1`, `certificate_step_count=7`,
+  `observed_correctness_case_count=5`,
+  `observed_finite_dependency_count=5`,
+  `observed_selector_accepts_root=true`,
+  `observed_correctness_target_accepted=true`,
+  `observed_correctness_cases_accepted=true`,
+  `observed_bridge_report_accepted=true`,
+  `observed_bridge_links_construction_case=true`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Suite selection listed 157 discovered modules: 130 fast, 27
+  extended-fixed-point, and 157 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 146.035s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 378 tests in 2502.146s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 27`.
+- This is finite certificate support only. It does not close the
+  `substitution-graph-correctness-proof` proof case, prove bridge equality,
+  prove the fixed-point equation, introduce an arithmetized proof predicate,
+  or claim self-consistency.

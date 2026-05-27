@@ -156,6 +156,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   correctness case to the checked graph correctness target, correctness case
   map, and finite graph-domain dependencies, while leaving correctness proof
   open.
+- `docs/fixed-point-substitution-graph-correctness-certificate.md` records a
+  compact finite certificate support object for the selected
+  `substitution-graph-correctness-proof` root obligation while keeping the
+  proof case open.
 - `docs/fixed-point-bridge-equality-alignment.md` records finite alignment
   evidence tying the fixed-point construction bridge-equality case to the
   checked equation bridge, witness bridge, graph correctness bridge, and
