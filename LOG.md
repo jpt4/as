@@ -6814,3 +6814,39 @@
   prove the fixed-point equation, introduce an arithmetized proof predicate,
   discharge the fixed-point construction blocker, change formal-confidence
   status, or claim self-consistency.
+
+## 2026-05-27 - Fixed-Point Construction Obligation Graph
+
+- Added ADR-0301 to expose the remaining fixed-point construction proof cases
+  as a checked dependency graph while preserving the aggregate
+  `fixed-point-construction` blocker.
+- Added `tests/test_fixed_point_construction_obligation_graph.py` before
+  implementation. The red run failed as intended with `ImportError` because
+  `autarkic_systems.fixed_point_construction_obligation_graph` did not exist.
+- Added `claims/fixed_point_construction_obligation_graph.json`,
+  `autarkic_systems.fixed_point_construction_obligation_graph`, and
+  `docs/fixed-point-construction-obligation-graph.md`. The validator derives
+  five open obligation nodes from the existing construction-case manifest,
+  cross-checks the aggregate construction frontier, rejects stale edge lists,
+  and checks acyclicity.
+- The focused graph suite passed 6 tests in 99.063s.
+- The focused graph/cases/frontier seam passed 35 tests in 573.689s.
+- Live JSON passed:
+  `python -m autarkic_systems.fixed_point_construction_obligation_graph --format json`
+  returned `accepted=true`, five open nodes, six edges, `acyclic=true`, root
+  cases `diagonal-instance-closure` and
+  `substitution-graph-correctness-proof`, terminal case
+  `fixed-point-equation-lifting`, and blocker
+  `fixed-point-construction`.
+- The live suite index reflected the new extended test module: 154 discovered
+  modules with `fast=130`, `extended-fixed-point=24`, and `all=154`.
+- `python -m compileall autarkic_systems tests` passed and
+  `git diff --check` passed.
+- The fast suite passed 1188 tests in 133.398s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 130 selected modules.
+- The extended suite passed 360 tests in 2320.644s with manifest
+  `as-test-suite-selection-v1`, suite `extended-fixed-point`, and 24 selected
+  modules.
+- This is an obligation-routing surface only. It does not prove substitution
+  representability, substitution graph correctness, bridge equality, the
+  fixed-point equation, an arithmetized proof predicate, or self-consistency.

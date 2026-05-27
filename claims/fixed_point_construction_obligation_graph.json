@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "graph_id": "as-fixed-point-construction-obligation-graph-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Checked dependency graph over the five open fixed-point construction proof obligations. This graph orders existing open proof cases and their finite support frontiers without promoting any case to a proof.",
+  "frontier_status": "blocked",
+  "frontier_blocked_by": "fixed-point-construction",
+  "fixed_point_construction_cases_path": "claims/fixed_point_construction_cases.json",
+  "fixed_point_construction_frontier_status_path": "claims/fixed_point_construction_frontier_status.json",
+  "expected_node_count": 5,
+  "expected_edge_count": 6,
+  "required_edges": [
+    {
+      "from": "diagonal-instance-closure",
+      "to": "substitution-representability-proof"
+    },
+    {
+      "from": "diagonal-instance-closure",
+      "to": "bridge-equality-proof"
+    },
+    {
+      "from": "substitution-graph-correctness-proof",
+      "to": "substitution-representability-proof"
+    },
+    {
+      "from": "substitution-representability-proof",
+      "to": "bridge-equality-proof"
+    },
+    {
+      "from": "substitution-graph-correctness-proof",
+      "to": "bridge-equality-proof"
+    },
+    {
+      "from": "bridge-equality-proof",
+      "to": "fixed-point-equation-lifting"
+    }
+  ],
+  "non_claims": [
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this graph to select the next proof-frontier slice while keeping all five construction obligations open and the aggregate fixed-point construction frontier blocked."
+}

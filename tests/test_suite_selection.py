@@ -16,6 +16,7 @@ EXPECTED_EXTENDED_MODULES = {
     "tests.test_fixed_point_bridge_equality_frontier_status",
     "tests.test_fixed_point_construction_cases",
     "tests.test_fixed_point_construction_frontier_status",
+    "tests.test_fixed_point_construction_obligation_graph",
     "tests.test_fixed_point_diagonal_instance_candidate_surface",
     "tests.test_fixed_point_diagonal_instance_closure",
     "tests.test_fixed_point_diagonal_instance_closure_frontier_status",
