@@ -184,6 +184,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/fixed-point-construction-obligation-graph.md` records the checked
   dependency graph over the five open fixed-point construction proof
   obligations, preserving the aggregate `fixed-point-construction` blocker.
+- `docs/fixed-point-frontier-selector.md` records the checked selector for the
+  current open fixed-point construction root obligations, while deferring
+  dependent proof cases and preserving the aggregate blocker.
 - `docs/fixed-point-obstruction.md` records the checked length-growth
   obstruction showing why the naive direct quotation-substitution route cannot
   be the fixed point.

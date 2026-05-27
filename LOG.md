@@ -6850,3 +6850,43 @@
 - This is an obligation-routing surface only. It does not prove substitution
   representability, substitution graph correctness, bridge equality, the
   fixed-point equation, an arithmetized proof predicate, or self-consistency.
+
+## 2026-05-27 - Fixed-Point Frontier Selector
+
+- Added ADR-0302 to expose the currently selectable fixed-point construction
+  proof-frontier candidates from the checked obligation graph.
+- Added `tests/test_fixed_point_frontier_selector.py` before implementation.
+  The red run failed as intended with `ImportError` because
+  `autarkic_systems.fixed_point_frontier_selector` did not exist.
+- Added `claims/fixed_point_frontier_selector.json`,
+  `autarkic_systems.fixed_point_frontier_selector`, and
+  `docs/fixed-point-frontier-selector.md`. The validator loads the ADR-0301
+  obligation graph, selects open root obligations, defers open obligations with
+  open predecessors, and rejects stale selected/deferred metadata.
+- The first green attempt caught an integration mismatch: the obligation graph
+  stores frontier status on its manifest rather than as direct report fields.
+  The selector was corrected to read the graph report's existing shape instead
+  of changing ADR-0301.
+- The focused selector suite passed 6 tests in 89.672s.
+- The focused selector/graph/frontier seam passed 28 tests in 125.193s.
+- Live JSON passed:
+  `python -m autarkic_systems.fixed_point_frontier_selector --format json`
+  returned `accepted=true`, selected open roots `diagonal-instance-closure`
+  and `substitution-graph-correctness-proof`, three deferred downstream open
+  obligations with predecessor blockers, and blocker
+  `fixed-point-construction`.
+- The live suite index reflected the new extended test module: 155 discovered
+  modules with `fast=130`, `extended-fixed-point=25`, and `all=155`.
+- `python -m compileall autarkic_systems tests` passed and
+  `git diff --check` passed.
+- The fast suite passed 1188 tests in 135.551s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 130 selected modules.
+- The extended suite passed 366 tests in 2338.976s with manifest
+  `as-test-suite-selection-v1`, suite `extended-fixed-point`, and 25 selected
+  modules.
+- This is a scheduling surface only. It selects
+  `diagonal-instance-closure` and `substitution-graph-correctness-proof` as
+  open root obligations, defers the three downstream open cases, and does not
+  prove substitution representability, substitution graph correctness, bridge
+  equality, the fixed-point equation, an arithmetized proof predicate, or
+  self-consistency.

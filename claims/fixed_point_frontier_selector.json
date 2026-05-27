@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "selector_id": "as-fixed-point-frontier-selector-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Checked selector for the currently actionable fixed-point construction frontier. It selects open root obligations from the checked obligation graph and defers dependent open obligations without claiming any proof case is complete.",
+  "selection_policy": "open-root-obligations-before-dependent-cases",
+  "frontier_status": "blocked",
+  "frontier_blocked_by": "fixed-point-construction",
+  "fixed_point_construction_obligation_graph_path": "claims/fixed_point_construction_obligation_graph.json",
+  "expected_selected_count": 2,
+  "expected_deferred_count": 3,
+  "expected_selected_case_kinds": [
+    "diagonal-instance-closure",
+    "substitution-graph-correctness-proof"
+  ],
+  "expected_deferred_case_kinds": [
+    "substitution-representability-proof",
+    "bridge-equality-proof",
+    "fixed-point-equation-lifting"
+  ],
+  "non_claims": [
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use the two selected open root obligations as the current proof-frontier candidates: diagonal-instance closure and substitution graph correctness. Keep downstream obligations deferred until their predecessor proof cases are no longer open."
+}
