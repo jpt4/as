@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "coverage_id": "as-fixed-point-selected-root-proof-readiness-coverage-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Coverage surface showing that the currently selected fixed-point construction root proof obligations have accepted certificate-ready but proof-open readiness handoffs.",
+  "fixed_point_frontier_selector_path": "claims/fixed_point_frontier_selector.json",
+  "readiness_paths": {
+    "diagonal-instance-closure": "claims/fixed_point_diagonal_instance_closure_proof_readiness.json",
+    "substitution-graph-correctness-proof": "claims/fixed_point_substitution_graph_correctness_proof_readiness.json"
+  },
+  "expected_selected_case_kinds": [
+    "diagonal-instance-closure",
+    "substitution-graph-correctness-proof"
+  ],
+  "expected_deferred_case_kinds": [
+    "substitution-representability-proof",
+    "bridge-equality-proof",
+    "fixed-point-equation-lifting"
+  ],
+  "expected_selected_count": 2,
+  "expected_deferred_count": 3,
+  "expected_readiness_count": 2,
+  "expected_missing_readiness_count": 0,
+  "expected_certificate_ready_count": 2,
+  "expected_readiness_status": "blocked-certificate-ready-proof-open",
+  "non_claims": [
+    "no diagonal-instance closure proof",
+    "no substitution graph correctness proof",
+    "no substitution representability proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no fixed-point construction proof",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this selected-root proof-readiness coverage surface as the current actionable root handoff while keeping both selected roots proof-open and downstream construction cases deferred."
+}

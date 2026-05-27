@@ -7548,3 +7548,43 @@
   prove any of the five construction proof cases, prove the fixed-point
   equation, introduce an arithmetized proof predicate, prove fixed-point
   construction, or claim self-consistency.
+
+## 2026-05-27 - Fixed-Point Selected Root Proof Readiness Coverage
+
+- Added ADR-0318 to expose one focused selected-root proof-readiness coverage
+  surface for the two actionable fixed-point construction root obligations:
+  `diagonal-instance-closure` and
+  `substitution-graph-correctness-proof`.
+- Added
+  `tests/test_fixed_point_selected_root_proof_readiness_coverage.py` before
+  implementation. The red run failed as intended with `ImportError` because
+  `autarkic_systems.fixed_point_selected_root_proof_readiness_coverage` did not
+  exist.
+- Added
+  `claims/fixed_point_selected_root_proof_readiness_coverage.json`,
+  `autarkic_systems.fixed_point_selected_root_proof_readiness_coverage`, and
+  `docs/fixed-point-selected-root-proof-readiness-coverage.md`. The validator
+  derives coverage from the fixed-point frontier selector plus the two
+  selected-root readiness reports.
+- The focused selected-root proof-readiness coverage suite passed 7 tests in
+  145.854s.
+- The focused selector/selected-root readiness seam passed 27 tests in
+  159.342s.
+- Live JSON validation passed with `accepted=true`, coverage id
+  `as-fixed-point-selected-root-proof-readiness-coverage-v1`, two selected
+  roots, three deferred cases, two readiness entries, zero missing readiness
+  entries, two certificate-ready handoffs, `observed_selector_accepted=true`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Suite selection listed 171 discovered modules: 130 fast, 41
+  extended-fixed-point, and 171 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 186.614s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 473 tests in 3015.617s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 41`.
+- This is selected-root proof-readiness coverage only. It does not prove the
+  selected root obligations, prove any downstream construction case, prove the
+  fixed-point equation, introduce an arithmetized proof predicate, prove
+  fixed-point construction, or claim self-consistency.

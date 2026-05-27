@@ -242,6 +242,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   construction proof cases: every case has an accepted certificate-ready but
   proof-open readiness handoff while the aggregate construction blocker
   remains open.
+- `docs/fixed-point-selected-root-proof-readiness-coverage.md` records
+  proof-readiness coverage for the two currently selected fixed-point
+  construction root obligations while the dependent construction cases remain
+  deferred and proof-open.
 - `docs/fixed-point-construction-obligation-graph.md` records the checked
   dependency graph over the five open fixed-point construction proof
   obligations, preserving the aggregate `fixed-point-construction` blocker.
