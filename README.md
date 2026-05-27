@@ -174,6 +174,11 @@ proof certificates, object languages, evidence bundles, and status reports:
   compact finite certificate support object for the selected
   `substitution-graph-correctness-proof` root obligation while keeping the
   proof case open.
+- `docs/fixed-point-substitution-graph-correctness-proof-readiness.md` records
+  that the fixed-point substitution-graph-correctness proof case is
+  certificate-ready while still proof-open: one finite certificate, seven
+  steps, five correctness cases, and five finite dependencies are accepted
+  without promoting the proof case.
 - `docs/fixed-point-selected-root-certificate-coverage.md` records compact
   coverage showing both selected fixed-point root obligations have accepted
   finite certificate support while keeping the proof cases open.

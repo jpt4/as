@@ -7373,3 +7373,49 @@
   not prove substitution representability, prove substitution graph
   correctness, prove bridge equality, prove the fixed-point equation,
   introduce an arithmetized proof predicate, or claim self-consistency.
+
+## 2026-05-27 - Fixed-Point Substitution Graph Correctness Proof Readiness
+
+- Added ADR-0314 to expose the selected
+  `substitution-graph-correctness-proof` construction case as
+  certificate-ready but proof-open after ADR-0304 certificate support and
+  ADR-0274 frontier status.
+- Added
+  `tests/test_fixed_point_substitution_graph_correctness_proof_readiness.py`
+  before implementation. The red run failed as intended with `ImportError`
+  because
+  `autarkic_systems.fixed_point_substitution_graph_correctness_proof_readiness`
+  did not exist.
+- Added
+  `claims/fixed_point_substitution_graph_correctness_proof_readiness.json`,
+  `autarkic_systems.fixed_point_substitution_graph_correctness_proof_readiness`,
+  and
+  `docs/fixed-point-substitution-graph-correctness-proof-readiness.md`. The
+  validator derives one readiness entry from the substitution graph
+  correctness frontier status and fixed-point graph-correctness finite
+  certificate support reports.
+- The focused proof-readiness suite passed 7 tests in 117.770s.
+- The focused readiness/frontier/certificate seam passed 31 tests in
+  192.671s.
+- Live JSON validation passed with `accepted=true`, frontier status `blocked`,
+  frontier blocker `substitution-graph-correctness`, one certificate, seven
+  certificate steps, five correctness cases, five finite dependencies,
+  `observed_frontier_accepted=true`, `observed_certificate_accepted=true`,
+  `observed_proof_boundary_preserved=true`, readiness case
+  `AS-FIXED-POINT-CONSTRUCTION-SUBSTITUTION-GRAPH-CORRECTNESS`, readiness
+  status `blocked-certificate-ready-proof-open`, open proof blocker
+  `substitution-graph-correctness-proof`, and `failed_subjects=[]`.
+- Suite selection listed 167 discovered modules: 130 fast, 37
+  extended-fixed-point, and 167 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests`,
+  `python -m py_compile autarkic_systems/fixed_point_substitution_graph_correctness_proof_readiness.py tests/test_fixed_point_substitution_graph_correctness_proof_readiness.py`,
+  and `git diff --check`.
+- The fast suite passed 1188 tests in 148.942s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 444 tests in 2715.508s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 37`.
+- This is substitution-graph-correctness proof-readiness metadata only. It
+  does not prove substitution graph correctness, prove bridge equality, prove
+  the fixed-point equation, introduce an arithmetized proof predicate, or
+  claim self-consistency.

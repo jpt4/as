@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "readiness_id": "as-fixed-point-substitution-graph-correctness-proof-readiness-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Certificate-ready but proof-open readiness surface for the fixed-point substitution-graph-correctness proof case.",
+  "substitution_graph_correctness_frontier_status_path": "claims/substitution_graph_correctness_frontier_status.json",
+  "substitution_graph_correctness_certificate_path": "claims/fixed_point_substitution_graph_correctness_certificate.json",
+  "expected_readiness_case_id": "AS-FIXED-POINT-CONSTRUCTION-SUBSTITUTION-GRAPH-CORRECTNESS",
+  "expected_readiness_case_kind": "substitution-graph-correctness-proof",
+  "expected_readiness_status": "blocked-certificate-ready-proof-open",
+  "expected_construction_case_status": "proof-case-open",
+  "expected_frontier_status": "blocked",
+  "expected_frontier_blocker": "substitution-graph-correctness",
+  "expected_certificate_count": 1,
+  "expected_certificate_step_count": 7,
+  "expected_correctness_case_count": 5,
+  "expected_finite_dependency_count": 5,
+  "non_claims": [
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this certificate-ready proof-open substitution graph correctness readiness surface as a predecessor proof blocker handoff before promoting bridge equality or the fixed-point equation."
+}
