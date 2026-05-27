@@ -6890,3 +6890,44 @@
   prove substitution representability, substitution graph correctness, bridge
   equality, the fixed-point equation, an arithmetized proof predicate, or
   self-consistency.
+
+## 2026-05-27 - Fixed-Point Diagonal Instance Closure Certificate
+
+- Added ADR-0303 to expose finite certificate support for the selected
+  `diagonal-instance-closure` root obligation.
+- Added `tests/test_fixed_point_diagonal_instance_closure_certificate.py`
+  before implementation. The red run failed as intended with `ImportError`
+  because `autarkic_systems.fixed_point_diagonal_instance_closure_certificate`
+  did not exist.
+- Added `claims/fixed_point_diagonal_instance_closure_certificate.json`,
+  `autarkic_systems.fixed_point_diagonal_instance_closure_certificate`, and
+  `docs/fixed-point-diagonal-instance-closure-certificate.md`. The validator
+  derives one finite certificate from the accepted frontier selector,
+  diagonal-instance closure report, and candidate-surface report.
+- The first green attempt caught a report-shape mismatch: future-work
+  guardrails live on the candidate manifest rather than the derived candidate
+  object. The certificate now reads that manifest-level boundary.
+- The focused certificate suite passed 6 tests in 102.073s.
+- The focused certificate/closure/candidate/selector seam passed 35 tests in
+  170.429s.
+- Live JSON validation passed for one accepted seven-step finite certificate:
+  `accepted=true`, `certificate_count=1`, `certificate_step_count=7`,
+  `observed_candidate_code_length=296`,
+  `observed_selector_accepts_root=true`, `observed_closure_accepted=true`,
+  `observed_candidate_surface_accepted=true`,
+  `observed_candidate_matches_closure=true`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Suite selection listed 156 discovered modules: 130 fast, 26
+  extended-fixed-point, and 156 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 140.246s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 372 tests in 2441.532s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 26`.
+- This is finite certificate support only. It does not close the
+  `diagonal-instance-closure` proof case, prove substitution representability,
+  prove substitution graph correctness, prove bridge equality, prove the
+  fixed-point equation, introduce an arithmetized proof predicate, or claim
+  self-consistency.

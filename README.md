@@ -135,6 +135,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/fixed-point-diagonal-instance-closure.md` records finite closure
   evidence for the current diagonal instance, while leaving representability,
   bridge equality, and fixed-point equation proof open.
+- `docs/fixed-point-diagonal-instance-closure-certificate.md` records a compact
+  finite certificate support object for the selected
+  `diagonal-instance-closure` root obligation while keeping the proof case
+  open.
 - `docs/fixed-point-diagonal-instance-closure-frontier-status.md` records the
   compact diagonal-instance-closure frontier for fixed-point construction: the
   first case remains open, five support surfaces are present, the
