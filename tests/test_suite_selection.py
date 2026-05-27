@@ -28,6 +28,7 @@ EXPECTED_EXTENDED_MODULES = {
     "tests.test_fixed_point_diagonal_instance_closure",
     "tests.test_fixed_point_diagonal_instance_closure_certificate",
     "tests.test_fixed_point_diagonal_instance_closure_frontier_status",
+    "tests.test_fixed_point_diagonal_instance_closure_proof_target",
     "tests.test_fixed_point_diagonal_instance_closure_proof_readiness",
     "tests.test_fixed_point_equation_bridge",
     "tests.test_fixed_point_equation_candidate",

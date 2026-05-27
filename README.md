@@ -139,6 +139,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   finite certificate support object for the selected
   `diagonal-instance-closure` root obligation while keeping the proof case
   open.
+- `docs/fixed-point-diagonal-instance-closure-proof-target.md` records the
+  blocked proof-closure target for the selected diagonal-instance closure root
+  obligation and the missing proof artifacts required before promotion.
 - `docs/fixed-point-diagonal-instance-closure-frontier-status.md` records the
   compact diagonal-instance-closure frontier for fixed-point construction: the
   first case remains open, five support surfaces are present, the

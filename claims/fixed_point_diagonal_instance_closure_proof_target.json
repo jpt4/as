@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "target_id": "as-fixed-point-diagonal-instance-closure-proof-target-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Blocked proof-closure target for the selected diagonal-instance-closure root obligation, tying accepted finite support and proof-readiness surfaces to explicit missing proof artifacts.",
+  "diagonal_instance_closure_certificate_path": "claims/fixed_point_diagonal_instance_closure_certificate.json",
+  "diagonal_instance_closure_readiness_path": "claims/fixed_point_diagonal_instance_closure_proof_readiness.json",
+  "selected_root_readiness_coverage_path": "claims/fixed_point_selected_root_proof_readiness_coverage.json",
+  "expected_case_id": "AS-FIXED-POINT-CONSTRUCTION-DIAGONAL-INSTANCE-CLOSURE",
+  "expected_case_kind": "diagonal-instance-closure",
+  "expected_proof_target_status": "blocked-proof-closure-targeted",
+  "expected_readiness_status": "blocked-certificate-ready-proof-open",
+  "expected_certificate_count": 1,
+  "expected_certificate_step_count": 7,
+  "expected_missing_proof_artifacts": [
+    "formal diagonal-instance closure derivation",
+    "proof-rule derivation from certificate steps",
+    "construction-case promotion rule"
+  ],
+  "expected_missing_proof_artifact_count": 3,
+  "non_claims": [
+    "no diagonal-instance closure proof",
+    "no substitution graph correctness proof",
+    "no substitution representability proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no fixed-point construction proof",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this blocked proof target as the diagonal-instance closure proof-closure gate: do not promote the root obligation until the missing proof artifacts are supplied and checked."
+}

@@ -7588,3 +7588,52 @@
   selected root obligations, prove any downstream construction case, prove the
   fixed-point equation, introduce an arithmetized proof predicate, prove
   fixed-point construction, or claim self-consistency.
+
+## 2026-05-27 - Fixed-Point Diagonal Instance Closure Proof Target
+
+- Added ADR-0319 to expose a checked blocked proof-closure target for the
+  selected `diagonal-instance-closure` root obligation.
+- Added
+  `tests/test_fixed_point_diagonal_instance_closure_proof_target.py` before
+  implementation. The red run failed as intended with `ImportError` because
+  `autarkic_systems.fixed_point_diagonal_instance_closure_proof_target` did
+  not exist.
+- Added
+  `claims/fixed_point_diagonal_instance_closure_proof_target.json`,
+  `autarkic_systems.fixed_point_diagonal_instance_closure_proof_target`, and
+  `docs/fixed-point-diagonal-instance-closure-proof-target.md`. The validator
+  derives the target from the accepted diagonal-instance closure certificate,
+  diagonal-instance closure proof-readiness report, and selected-root
+  proof-readiness coverage report.
+- The first focused implementation run found a stale missing-proof-artifact
+  rejection subject mismatch; the manifest expected-artifact subjects now
+  route to
+  `fixed-point-diagonal-instance-closure-proof-target-artifacts`.
+- The focused proof-target suite passed 7 tests in 143.841s.
+- The focused certificate/readiness/selected-root seam passed 27 tests in
+  159.473s.
+- Live JSON validation passed with `accepted=true`, target id
+  `as-fixed-point-diagonal-instance-closure-proof-target-v1`, case id
+  `AS-FIXED-POINT-CONSTRUCTION-DIAGONAL-INSTANCE-CLOSURE`, case kind
+  `diagonal-instance-closure`, proof target status
+  `blocked-proof-closure-targeted`, readiness status
+  `blocked-certificate-ready-proof-open`, one accepted certificate, seven
+  certificate steps, three missing proof artifacts,
+  `proof_closure_ready=false`, `observed_certificate_accepted=true`,
+  `observed_readiness_accepted=true`,
+  `observed_selected_root_coverage_accepted=true`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Suite selection listed 172 discovered modules: 130 fast, 42
+  extended-fixed-point, and 172 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 197.077s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 480 tests in 3392.408s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 42`.
+- This is a blocked proof-closure target only. It does not prove
+  diagonal-instance closure, substitution graph correctness, substitution
+  representability, bridge equality, the fixed-point equation, introduce an
+  arithmetized proof predicate, prove fixed-point construction, or claim
+  self-consistency.
