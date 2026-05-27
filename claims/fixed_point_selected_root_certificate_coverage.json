@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "coverage_set_id": "as-fixed-point-selected-root-certificate-coverage-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Compact coverage surface requiring both currently selected fixed-point construction root obligations to have accepted finite certificate support while preserving that all proof cases remain open.",
+  "frontier_selector_path": "claims/fixed_point_frontier_selector.json",
+  "diagonal_instance_closure_certificate_path": "claims/fixed_point_diagonal_instance_closure_certificate.json",
+  "substitution_graph_correctness_certificate_path": "claims/fixed_point_substitution_graph_correctness_certificate.json",
+  "expected_selected_certificate_count": 2,
+  "expected_total_certificate_step_count": 14,
+  "expected_selected_case_kinds": [
+    "diagonal-instance-closure",
+    "substitution-graph-correctness-proof"
+  ],
+  "expected_deferred_case_kinds": [
+    "substitution-representability-proof",
+    "bridge-equality-proof",
+    "fixed-point-equation-lifting"
+  ],
+  "non_claims": [
+    "no diagonal-instance closure proof",
+    "no substitution graph correctness proof",
+    "no substitution representability proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this selected-root certificate coverage handoff as finite support evidence for the two actionable root obligations while keeping dependent proof cases deferred until the root proof cases are actually closed."
+}

@@ -6974,3 +6974,46 @@
   `substitution-graph-correctness-proof` proof case, prove bridge equality,
   prove the fixed-point equation, introduce an arithmetized proof predicate,
   or claim self-consistency.
+
+## 2026-05-27 - Fixed-Point Selected Root Certificate Coverage
+
+- Added ADR-0305 to expose compact selected-root certificate coverage for the
+  two fixed-point construction root obligations selected by the frontier
+  selector.
+- Added `tests/test_fixed_point_selected_root_certificate_coverage.py` before
+  implementation. The red run failed as intended with `ImportError` because
+  `autarkic_systems.fixed_point_selected_root_certificate_coverage` did not
+  exist.
+- Added `claims/fixed_point_selected_root_certificate_coverage.json`,
+  `autarkic_systems.fixed_point_selected_root_certificate_coverage`, and
+  `docs/fixed-point-selected-root-certificate-coverage.md`. The validator
+  derives coverage from the accepted frontier selector plus the two accepted
+  finite certificates for `diagonal-instance-closure` and
+  `substitution-graph-correctness-proof`.
+- The focused coverage suite passed 6 tests in 114.903s.
+- The focused coverage/certificate/selector seam passed 24 tests in 134.375s.
+- Live JSON validation passed with `accepted=true`, `coverage_count=2`,
+  `total_certificate_step_count=14`, selected roots
+  `diagonal-instance-closure` and
+  `substitution-graph-correctness-proof`, deferred downstream cases
+  `substitution-representability-proof`, `bridge-equality-proof`, and
+  `fixed-point-equation-lifting`, `failed_subjects=[]`, and preserved proof
+  boundary.
+- Suite selection listed 158 discovered modules: 130 fast, 28
+  extended-fixed-point, and 158 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- Tightened the manifest `next_as_action` wording to avoid proof-closure
+  language. The focused coverage suite then passed 6 tests in 109.348s, and
+  live JSON still accepted the manifest with the same coverage counts and
+  proof boundary.
+- The fast suite passed 1188 tests in 153.119s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 384 tests in 2551.047s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 28`.
+- This is selected-root certificate coverage only. It does not close
+  `diagonal-instance-closure`, close
+  `substitution-graph-correctness-proof`, prove substitution
+  representability, prove bridge equality, prove the fixed-point equation,
+  introduce an arithmetized proof predicate, or claim self-consistency.
