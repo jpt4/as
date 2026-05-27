@@ -31,6 +31,7 @@ EXPECTED_EXTENDED_MODULES = {
     "tests.test_fixed_point_frontier_selector",
     "tests.test_fixed_point_obstruction",
     "tests.test_fixed_point_selected_root_certificate_coverage",
+    "tests.test_fixed_point_substitution_representability_certificate",
     "tests.test_fixed_point_substitution_representability_frontier_status",
     "tests.test_fixed_point_substitution_graph_correctness_certificate",
     "tests.test_fixed_point_substitution_graph_correctness_bridge",

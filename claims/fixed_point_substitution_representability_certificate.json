@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "certificate_set_id": "as-fixed-point-substitution-representability-certificate-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Finite certificate support for the substitution-representability-proof construction case. This composes accepted frontier support with available predecessor certificate coverage without claiming that substitution representability has been proved.",
+  "substitution_representability_frontier_status_path": "claims/fixed_point_substitution_representability_frontier_status.json",
+  "available_predecessor_certificate_coverage_path": "claims/fixed_point_available_predecessor_certificate_coverage.json",
+  "expected_certificate_count": 1,
+  "expected_step_ids": [
+    "accept-frontier-status",
+    "accept-available-predecessor-coverage",
+    "check-construction-case-open",
+    "check-predecessor-certificate-coverage",
+    "check-frontier-support-surfaces",
+    "check-witness-output-code-length",
+    "preserve-open-proof-boundary"
+  ],
+  "expected_selected_case_kind": "substitution-representability-proof",
+  "expected_construction_case_id": "AS-FIXED-POINT-CONSTRUCTION-SUBSTITUTION-REPRESENTABILITY",
+  "expected_covered_predecessor_case_kinds": [
+    "diagonal-instance-closure",
+    "substitution-graph-correctness-proof"
+  ],
+  "expected_missing_certificate_predecessor_count": 0,
+  "expected_frontier_support_surface_count": 5,
+  "expected_witness_output_code_length": 296,
+  "non_claims": [
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this finite certificate support for substitution representability to refresh downstream certificate coverage while keeping every affected proof case blocked until proof closure evidence exists."
+}

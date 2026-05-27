@@ -151,6 +151,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   the compact substitution-representability proof frontier for fixed-point
   construction: the case remains open, five support surfaces are present, and
   the blocker remains `substitution-representability-proof`.
+- `docs/fixed-point-substitution-representability-certificate.md` records one
+  finite certificate support object for the open
+  `substitution-representability-proof` construction case, using available
+  predecessor certificate coverage without promoting the proof case.
 - `docs/fixed-point-substitution-graph-correctness-bridge.md` records finite
   dependency-coverage evidence tying the fixed-point construction graph
   correctness case to the checked graph correctness target, correctness case

@@ -7144,3 +7144,48 @@
   substitution representability, prove bridge equality, prove the fixed-point
   equation, introduce an arithmetized proof predicate, or claim
   self-consistency.
+
+## 2026-05-27 - Fixed-Point Substitution Representability Certificate
+
+- Added ADR-0309 to expose finite certificate support for the open
+  `substitution-representability-proof` construction case, composing the
+  accepted substitution-representability frontier status with ADR-0308
+  available predecessor certificate coverage.
+- Added
+  `tests/test_fixed_point_substitution_representability_certificate.py` before
+  implementation. The red run failed as intended with `ImportError` because
+  `autarkic_systems.fixed_point_substitution_representability_certificate`
+  did not exist.
+- Added
+  `claims/fixed_point_substitution_representability_certificate.json`,
+  `autarkic_systems.fixed_point_substitution_representability_certificate`,
+  and `docs/fixed-point-substitution-representability-certificate.md`. The
+  validator derives one seven-step certificate support object for the
+  still-open substitution-representability construction case.
+- The focused substitution-representability certificate suite passed 6 tests
+  in 136.280s.
+- The focused certificate/frontier/available-coverage seam passed 24 tests in
+  144.087s.
+- Live JSON validation passed with `accepted=true`, `certificate_count=1`,
+  `certificate_step_count=7`, selected case
+  `substitution-representability-proof`, construction case
+  `AS-FIXED-POINT-CONSTRUCTION-SUBSTITUTION-REPRESENTABILITY`, covered
+  predecessors `diagonal-instance-closure` and
+  `substitution-graph-correctness-proof`,
+  `missing_certificate_predecessor_count=0`,
+  `observed_frontier_support_surface_count=5`,
+  `observed_witness_output_code_length=296`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Suite selection listed 162 discovered modules: 130 fast, 32
+  extended-fixed-point, and 162 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 163.742s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 408 tests in 2595.984s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 32`.
+- This is finite certificate support only. It does not prove substitution
+  representability, prove substitution graph correctness, prove bridge
+  equality, prove the fixed-point equation, introduce an arithmetized proof
+  predicate, or claim self-consistency.
