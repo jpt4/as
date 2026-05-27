@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "coverage_id": "as-fixed-point-construction-proof-readiness-coverage-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Aggregate coverage surface showing that all five open fixed-point construction proof cases have accepted certificate-ready but proof-open readiness handoffs.",
+  "fixed_point_construction_frontier_status_path": "claims/fixed_point_construction_frontier_status.json",
+  "readiness_paths": {
+    "diagonal-instance-closure": "claims/fixed_point_diagonal_instance_closure_proof_readiness.json",
+    "substitution-representability-proof": "claims/fixed_point_substitution_representability_proof_readiness.json",
+    "substitution-graph-correctness-proof": "claims/fixed_point_substitution_graph_correctness_proof_readiness.json",
+    "bridge-equality-proof": "claims/fixed_point_bridge_equality_proof_closure_readiness.json",
+    "fixed-point-equation-lifting": "claims/fixed_point_equation_lifting_proof_readiness.json"
+  },
+  "expected_frontier_status": "blocked",
+  "expected_frontier_blocker": "fixed-point-construction",
+  "expected_case_kinds": [
+    "diagonal-instance-closure",
+    "substitution-representability-proof",
+    "substitution-graph-correctness-proof",
+    "bridge-equality-proof",
+    "fixed-point-equation-lifting"
+  ],
+  "expected_open_case_count": 5,
+  "expected_readiness_count": 5,
+  "expected_missing_readiness_count": 0,
+  "expected_certificate_ready_count": 5,
+  "expected_readiness_status": "blocked-certificate-ready-proof-open",
+  "non_claims": [
+    "no diagonal-instance closure proof",
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no fixed-point construction proof",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this aggregate proof-readiness coverage surface as the current fixed-point construction handoff while keeping all proof cases and the aggregate fixed-point construction blocker open."
+}

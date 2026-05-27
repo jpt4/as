@@ -237,6 +237,11 @@ proof certificates, object languages, evidence bundles, and status reports:
   construction cases remain open, eight support surfaces are present, five
   compact construction-case status handoffs accept, and the blocker remains
   `fixed-point-construction`.
+- `docs/fixed-point-construction-proof-readiness-coverage.md` records
+  aggregate proof-readiness coverage for the five open fixed-point
+  construction proof cases: every case has an accepted certificate-ready but
+  proof-open readiness handoff while the aggregate construction blocker
+  remains open.
 - `docs/fixed-point-construction-obligation-graph.md` records the checked
   dependency graph over the five open fixed-point construction proof
   obligations, preserving the aggregate `fixed-point-construction` blocker.

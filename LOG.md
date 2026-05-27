@@ -7506,3 +7506,45 @@
 - This is terminal equation-lifting proof-readiness metadata only. It does
   not prove bridge equality, prove the fixed-point equation, introduce an
   arithmetized proof predicate, or claim self-consistency.
+
+## 2026-05-27 - Fixed-Point Construction Proof Readiness Coverage
+
+- Added ADR-0317 to expose one aggregate fixed-point construction
+  proof-readiness coverage surface after all five construction proof cases had
+  accepted certificate-ready/proof-open readiness handoffs.
+- Added
+  `tests/test_fixed_point_construction_proof_readiness_coverage.py` before
+  implementation. The red run failed as intended with `ImportError` because
+  `autarkic_systems.fixed_point_construction_proof_readiness_coverage` did not
+  exist.
+- Added
+  `claims/fixed_point_construction_proof_readiness_coverage.json`,
+  `autarkic_systems.fixed_point_construction_proof_readiness_coverage`, and
+  `docs/fixed-point-construction-proof-readiness-coverage.md`. The validator
+  derives aggregate coverage from the fixed-point construction frontier plus
+  the five readiness reports for diagonal-instance closure, substitution
+  representability, substitution graph correctness, bridge equality, and
+  equation lifting.
+- The focused construction proof-readiness coverage suite passed 7 tests in
+  165.414s.
+- The focused construction frontier/readiness seam passed 59 tests in
+  256.144s.
+- Live JSON validation passed with `accepted=true`, coverage id
+  `as-fixed-point-construction-proof-readiness-coverage-v1`, frontier status
+  `blocked`, frontier blocker `fixed-point-construction`, five open case kinds,
+  five readiness entries, zero missing readiness entries, five
+  certificate-ready handoffs, `observed_frontier_accepted=true`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Suite selection listed 170 discovered modules: 130 fast, 40
+  extended-fixed-point, and 170 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 181.681s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 466 tests in 3037.841s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 40`.
+- This is aggregate construction proof-readiness coverage only. It does not
+  prove any of the five construction proof cases, prove the fixed-point
+  equation, introduce an arithmetized proof predicate, prove fixed-point
+  construction, or claim self-consistency.

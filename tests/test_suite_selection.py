@@ -21,6 +21,7 @@ EXPECTED_EXTENDED_MODULES = {
     "tests.test_fixed_point_construction_cases",
     "tests.test_fixed_point_construction_frontier_status",
     "tests.test_fixed_point_construction_obligation_graph",
+    "tests.test_fixed_point_construction_proof_readiness_coverage",
     "tests.test_fixed_point_deferred_case_certificate_gap_analysis",
     "tests.test_fixed_point_deferred_case_certificate_readiness",
     "tests.test_fixed_point_diagonal_instance_candidate_surface",
