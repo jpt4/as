@@ -7419,3 +7419,49 @@
   does not prove substitution graph correctness, prove bridge equality, prove
   the fixed-point equation, introduce an arithmetized proof predicate, or
   claim self-consistency.
+
+## 2026-05-27 - Fixed-Point Bridge Predecessor Proof Readiness Coverage
+
+- Added ADR-0315 to verify that bridge equality's three open proof blockers
+  are exactly covered by the three individual certificate-ready/proof-open
+  readiness handoffs for `diagonal-instance-closure`,
+  `substitution-representability-proof`, and
+  `substitution-graph-correctness-proof`.
+- Added
+  `tests/test_fixed_point_bridge_predecessor_proof_readiness_coverage.py`
+  before implementation. The red run failed as intended with `ImportError`
+  because
+  `autarkic_systems.fixed_point_bridge_predecessor_proof_readiness_coverage`
+  did not exist.
+- Added
+  `claims/fixed_point_bridge_predecessor_proof_readiness_coverage.json`,
+  `autarkic_systems.fixed_point_bridge_predecessor_proof_readiness_coverage`,
+  and
+  `docs/fixed-point-bridge-predecessor-proof-readiness-coverage.md`. The
+  validator derives aggregate coverage from bridge-equality proof-closure
+  readiness plus the three predecessor readiness reports.
+- The focused coverage suite passed 7 tests in 150.235s.
+- The focused bridge/predecessor readiness seam passed 35 tests in 168.451s.
+- Live JSON validation passed with `accepted=true`, coverage id
+  `as-fixed-point-bridge-predecessor-proof-readiness-coverage-v1`, bridge case
+  kind `bridge-equality-proof`, bridge readiness status
+  `blocked-certificate-ready-proof-open`, open proof blockers
+  `diagonal-instance-closure`, `substitution-representability-proof`, and
+  `substitution-graph-correctness-proof`, three predecessor readiness entries,
+  zero missing predecessor readiness entries, three certificate-ready
+  predecessors, `observed_bridge_readiness_accepted=true`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Suite selection listed 168 discovered modules: 130 fast, 38
+  extended-fixed-point, and 168 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 175.676s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 451 tests in 2813.360s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 38`.
+- This is aggregate bridge predecessor proof-readiness coverage only. It does
+  not prove diagonal-instance closure, prove substitution representability,
+  prove substitution graph correctness, prove bridge equality, prove the
+  fixed-point equation, introduce an arithmetized proof predicate, or claim
+  self-consistency.

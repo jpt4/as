@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "coverage_id": "as-fixed-point-bridge-predecessor-proof-readiness-coverage-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Aggregate coverage handoff showing that every bridge-equality predecessor proof blocker has an accepted certificate-ready but proof-open readiness surface.",
+  "bridge_equality_readiness_path": "claims/fixed_point_bridge_equality_proof_closure_readiness.json",
+  "predecessor_readiness_paths": {
+    "diagonal-instance-closure": "claims/fixed_point_diagonal_instance_closure_proof_readiness.json",
+    "substitution-representability-proof": "claims/fixed_point_substitution_representability_proof_readiness.json",
+    "substitution-graph-correctness-proof": "claims/fixed_point_substitution_graph_correctness_proof_readiness.json"
+  },
+  "expected_bridge_case_kind": "bridge-equality-proof",
+  "expected_bridge_readiness_status": "blocked-certificate-ready-proof-open",
+  "expected_predecessor_case_kinds": [
+    "diagonal-instance-closure",
+    "substitution-representability-proof",
+    "substitution-graph-correctness-proof"
+  ],
+  "expected_predecessor_readiness_status": "blocked-certificate-ready-proof-open",
+  "expected_predecessor_readiness_count": 3,
+  "expected_missing_predecessor_readiness_count": 0,
+  "expected_certificate_ready_count": 3,
+  "non_claims": [
+    "no diagonal-instance closure proof",
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this bridge predecessor proof-readiness coverage surface to keep bridge equality blocked until the three predecessor proof cases are genuinely proved."
+}
