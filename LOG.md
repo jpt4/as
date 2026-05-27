@@ -7017,3 +7017,42 @@
   `substitution-graph-correctness-proof`, prove substitution
   representability, prove bridge equality, prove the fixed-point equation,
   introduce an arithmetized proof predicate, or claim self-consistency.
+
+## 2026-05-27 - Fixed-Point Deferred Case Certificate Readiness
+
+- Added ADR-0306 to expose compact certificate-readiness handoff evidence for
+  the three deferred downstream fixed-point construction proof cases.
+- Added `tests/test_fixed_point_deferred_case_certificate_readiness.py` before
+  implementation. The red run failed as intended with `ImportError` because
+  `autarkic_systems.fixed_point_deferred_case_certificate_readiness` did not
+  exist.
+- Added `claims/fixed_point_deferred_case_certificate_readiness.json`,
+  `autarkic_systems.fixed_point_deferred_case_certificate_readiness`, and
+  `docs/fixed-point-deferred-case-certificate-readiness.md`. The validator
+  derives readiness from the accepted obligation graph, frontier selector, and
+  selected-root certificate coverage surfaces.
+- The first implementation attempt caught that the manifest's JSON-object
+  count fields are intentionally dictionary-shaped and therefore not hashable
+  under `lru_cache`; the readiness validator now validates live manifests
+  directly.
+- The focused readiness suite passed 6 tests in 107.464s.
+- The focused readiness/coverage/selector/graph seam passed 24 tests in
+  112.882s.
+- Live JSON validation passed with `accepted=true`, `readiness_count=3`,
+  deferred cases `substitution-representability-proof`,
+  `bridge-equality-proof`, and `fixed-point-equation-lifting`, predecessor
+  counts 2, 3, and 1, selected-root certificate-covered predecessor counts 2,
+  2, and 0, `observed_selected_root_coverage_accepted=true`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Suite selection listed 159 discovered modules: 130 fast, 29
+  extended-fixed-point, and 159 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 153.178s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 390 tests in 2541.362s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 29`.
+- This is deferred-case readiness only. It does not prove substitution
+  representability, prove bridge equality, prove the fixed-point equation,
+  introduce an arithmetized proof predicate, or claim self-consistency.

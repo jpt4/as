@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "readiness_set_id": "as-fixed-point-deferred-case-certificate-readiness-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Compact readiness surface for deferred fixed-point construction proof cases, showing which predecessor roots have finite certificate coverage while preserving that downstream cases remain deferred and open.",
+  "obligation_graph_path": "claims/fixed_point_construction_obligation_graph.json",
+  "frontier_selector_path": "claims/fixed_point_frontier_selector.json",
+  "selected_root_certificate_coverage_path": "claims/fixed_point_selected_root_certificate_coverage.json",
+  "expected_deferred_case_count": 3,
+  "expected_deferred_case_kinds": [
+    "substitution-representability-proof",
+    "bridge-equality-proof",
+    "fixed-point-equation-lifting"
+  ],
+  "expected_predecessor_counts": {
+    "substitution-representability-proof": 2,
+    "bridge-equality-proof": 3,
+    "fixed-point-equation-lifting": 1
+  },
+  "expected_certificate_covered_predecessor_counts": {
+    "substitution-representability-proof": 2,
+    "bridge-equality-proof": 2,
+    "fixed-point-equation-lifting": 0
+  },
+  "non_claims": [
+    "no substitution representability proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this deferred-case readiness handoff to see which downstream obligations have selected-root certificate support, while keeping every deferred proof case blocked until predecessor proof cases actually close."
+}
