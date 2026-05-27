@@ -7465,3 +7465,44 @@
   prove substitution graph correctness, prove bridge equality, prove the
   fixed-point equation, introduce an arithmetized proof predicate, or claim
   self-consistency.
+
+## 2026-05-27 - Fixed-Point Equation Lifting Proof Readiness
+
+- Added ADR-0316 to expose the terminal `fixed-point-equation-lifting`
+  construction case as certificate-ready but proof-open after the
+  equation-lifting frontier status, bridge-equality proof-closure readiness,
+  and bridge predecessor proof-readiness coverage.
+- Added
+  `tests/test_fixed_point_equation_lifting_proof_readiness.py` before
+  implementation. The red run failed as intended with `ImportError` because
+  `autarkic_systems.fixed_point_equation_lifting_proof_readiness` did not
+  exist.
+- Added `claims/fixed_point_equation_lifting_proof_readiness.json`,
+  `autarkic_systems.fixed_point_equation_lifting_proof_readiness`, and
+  `docs/fixed-point-equation-lifting-proof-readiness.md`. The validator
+  derives one readiness entry from the equation-lifting frontier status,
+  bridge-equality readiness, and bridge predecessor readiness coverage.
+- The focused proof-readiness suite passed 8 tests in 174.437s.
+- The focused equation-lifting/bridge readiness seam passed 36 tests in
+  193.047s.
+- Live JSON validation passed with `accepted=true`, readiness id
+  `as-fixed-point-equation-lifting-proof-readiness-v1`, frontier status
+  `blocked`, frontier blocker `fixed-point-equation-lifting`, four support
+  surfaces, direct target code length 4528, bridge equation code length 4815,
+  one predecessor readiness entry `bridge-equality-proof`, zero missing
+  predecessor readiness entries, `observed_frontier_accepted=true`,
+  `observed_bridge_readiness_accepted=true`,
+  `observed_bridge_predecessor_coverage_accepted=true`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Suite selection listed 169 discovered modules: 130 fast, 39
+  extended-fixed-point, and 169 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 197.337s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 459 tests in 3047.714s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 39`.
+- This is terminal equation-lifting proof-readiness metadata only. It does
+  not prove bridge equality, prove the fixed-point equation, introduce an
+  arithmetized proof predicate, or claim self-consistency.

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "readiness_id": "as-fixed-point-equation-lifting-proof-readiness-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Certificate-ready but proof-open readiness surface for the terminal fixed-point-equation-lifting proof case.",
+  "equation_lifting_frontier_status_path": "claims/fixed_point_equation_lifting_frontier_status.json",
+  "bridge_equality_readiness_path": "claims/fixed_point_bridge_equality_proof_closure_readiness.json",
+  "bridge_predecessor_readiness_coverage_path": "claims/fixed_point_bridge_predecessor_proof_readiness_coverage.json",
+  "expected_readiness_case_id": "AS-FIXED-POINT-CONSTRUCTION-EQUATION-LIFTING",
+  "expected_readiness_case_kind": "fixed-point-equation-lifting",
+  "expected_readiness_status": "blocked-certificate-ready-proof-open",
+  "expected_construction_case_status": "proof-case-open",
+  "expected_frontier_status": "blocked",
+  "expected_frontier_blocker": "fixed-point-equation-lifting",
+  "expected_support_surface_count": 4,
+  "expected_direct_target_code_length": 4528,
+  "expected_bridge_equation_code_length": 4815,
+  "expected_predecessor_case_kinds": [
+    "bridge-equality-proof"
+  ],
+  "expected_predecessor_readiness_count": 1,
+  "expected_missing_predecessor_readiness_count": 0,
+  "non_claims": [
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this certificate-ready proof-open equation-lifting readiness surface as the terminal fixed-point construction handoff; do not promote the fixed-point equation until an actual equation proof is supplied."
+}

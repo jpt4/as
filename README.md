@@ -228,6 +228,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   open, four support surfaces are present, the direct target length is 4528,
   the bridge equation length is 4815, and the blocker remains
   `fixed-point-equation-lifting`.
+- `docs/fixed-point-equation-lifting-proof-readiness.md` records that the
+  terminal equation-lifting proof case is certificate-ready while still
+  proof-open after bridge-equality readiness and bridge predecessor coverage,
+  preserving the fixed-point equation proof boundary.
 - `docs/fixed-point-construction-frontier-status.md` records the compact
   post-ADR-0270 fixed-point construction frontier status: all five
   construction cases remain open, eight support surfaces are present, five
