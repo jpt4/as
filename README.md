@@ -160,6 +160,11 @@ proof certificates, object languages, evidence bundles, and status reports:
   finite certificate support object for the open
   `substitution-representability-proof` construction case, using available
   predecessor certificate coverage without promoting the proof case.
+- `docs/fixed-point-substitution-representability-proof-readiness.md` records
+  that the substitution-representability proof case is certificate-ready while
+  still proof-open: one finite certificate, seven steps, two covered
+  predecessor certificates, five frontier support surfaces, and the 296-token
+  witness output are accepted without promoting the proof case.
 - `docs/fixed-point-substitution-graph-correctness-bridge.md` records finite
   dependency-coverage evidence tying the fixed-point construction graph
   correctness case to the checked graph correctness target, correctness case

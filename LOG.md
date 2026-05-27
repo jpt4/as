@@ -7326,3 +7326,50 @@
   substitution graph correctness, prove bridge equality, prove the fixed-point
   equation, introduce an arithmetized proof predicate, or claim
   self-consistency.
+
+## 2026-05-27 - Fixed-Point Substitution Representability Proof Readiness
+
+- Added ADR-0313 to expose the selected
+  `substitution-representability-proof` construction case as certificate-ready
+  but proof-open after ADR-0309 certificate support and ADR-0299 frontier
+  status.
+- Added
+  `tests/test_fixed_point_substitution_representability_proof_readiness.py`
+  before implementation. The red run failed as intended with `ImportError`
+  because
+  `autarkic_systems.fixed_point_substitution_representability_proof_readiness`
+  did not exist.
+- Added
+  `claims/fixed_point_substitution_representability_proof_readiness.json`,
+  `autarkic_systems.fixed_point_substitution_representability_proof_readiness`,
+  and
+  `docs/fixed-point-substitution-representability-proof-readiness.md`. The
+  validator derives one readiness entry from the
+  substitution-representability frontier status and finite certificate support
+  reports.
+- The focused proof-readiness suite passed 7 tests in 142.701s.
+- The focused readiness/frontier/certificate seam passed 25 tests in
+  139.139s.
+- Live JSON validation passed with `accepted=true`, frontier status `blocked`,
+  frontier blocker `substitution-representability-proof`, five support
+  surfaces, one certificate, seven certificate steps, covered predecessor case
+  kinds `diagonal-instance-closure` and
+  `substitution-graph-correctness-proof`, zero missing certificate
+  predecessors, witness output code length 296,
+  `observed_frontier_accepted=true`, `observed_certificate_accepted=true`,
+  `observed_proof_boundary_preserved=true`, readiness case
+  `AS-FIXED-POINT-CONSTRUCTION-SUBSTITUTION-REPRESENTABILITY`, readiness
+  status `blocked-certificate-ready-proof-open`, and `failed_subjects=[]`.
+- Suite selection listed 166 discovered modules: 130 fast, 36
+  extended-fixed-point, and 166 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 151.266s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 437 tests in 2725.241s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 36`.
+- This is substitution-representability proof-readiness metadata only. It does
+  not prove substitution representability, prove substitution graph
+  correctness, prove bridge equality, prove the fixed-point equation,
+  introduce an arithmetized proof predicate, or claim self-consistency.
