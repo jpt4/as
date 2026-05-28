@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "target_id": "as-fixed-point-substitution-representability-proof-target-v1",
+  "reviewed_at": "2026-05-28T00:00:00Z",
+  "purpose": "Record the current blocked proof-closure target for the substitution representability fixed-point predecessor case without promoting certificate support into a proof.",
+  "substitution_representability_certificate_path": "claims/fixed_point_substitution_representability_certificate.json",
+  "substitution_representability_readiness_path": "claims/fixed_point_substitution_representability_proof_readiness.json",
+  "bridge_predecessor_readiness_coverage_path": "claims/fixed_point_bridge_predecessor_proof_readiness_coverage.json",
+  "expected_case_id": "AS-FIXED-POINT-CONSTRUCTION-SUBSTITUTION-REPRESENTABILITY",
+  "expected_case_kind": "substitution-representability-proof",
+  "expected_proof_target_status": "blocked-proof-closure-targeted",
+  "expected_readiness_status": "blocked-certificate-ready-proof-open",
+  "expected_certificate_count": 1,
+  "expected_certificate_step_count": 7,
+  "expected_covered_predecessor_case_kinds": [
+    "diagonal-instance-closure",
+    "substitution-graph-correctness-proof"
+  ],
+  "expected_missing_certificate_predecessor_count": 0,
+  "expected_support_surface_count": 5,
+  "expected_witness_output_code_length": 296,
+  "expected_missing_proof_artifacts": [
+    "formal substitution representability derivation",
+    "proof-rule derivation from certificate steps",
+    "bridge-predecessor promotion rule"
+  ],
+  "expected_missing_proof_artifact_count": 3,
+  "non_claims": [
+    "no substitution representability proof",
+    "no diagonal-instance closure proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no fixed-point construction proof",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this blocked proof target as the substitution representability proof-closure gate: do not promote the predecessor obligation until the missing proof artifacts are supplied and checked."
+}

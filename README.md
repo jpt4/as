@@ -168,6 +168,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   still proof-open: one finite certificate, seven steps, two covered
   predecessor certificates, five frontier support surfaces, and the 296-token
   witness output are accepted without promoting the proof case.
+- `docs/fixed-point-substitution-representability-proof-target.md` records the
+  blocked proof-closure target for the substitution representability
+  predecessor obligation and the missing proof artifacts required before
+  promotion.
 - `docs/fixed-point-substitution-graph-correctness-bridge.md` records finite
   dependency-coverage evidence tying the fixed-point construction graph
   correctness case to the checked graph correctness target, correctness case

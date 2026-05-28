@@ -7729,3 +7729,50 @@
   representability, bridge equality, the fixed-point equation, introduce an
   arithmetized proof predicate, prove fixed-point construction, or claim
   self-consistency.
+
+## 2026-05-28 - Fixed-Point Substitution Representability Proof Target
+
+- Added ADR-0322 to expose a checked blocked proof-closure target for the
+  `substitution-representability-proof` bridge predecessor obligation.
+- Added
+  `tests/test_fixed_point_substitution_representability_proof_target.py`
+  before implementation. The red run failed as intended with `ImportError`
+  because
+  `autarkic_systems.fixed_point_substitution_representability_proof_target`
+  did not exist.
+- Added
+  `claims/fixed_point_substitution_representability_proof_target.json`,
+  `autarkic_systems.fixed_point_substitution_representability_proof_target`,
+  and `docs/fixed-point-substitution-representability-proof-target.md`. The
+  validator composes the accepted substitution representability certificate,
+  proof-readiness handoff, and bridge predecessor proof-readiness coverage.
+- The focused proof-target suite passed 9 tests in 179.239s.
+- The focused certificate/readiness/bridge-predecessor seam passed 29 tests in
+  215.481s.
+- Live JSON validation passed with `accepted=true`, target id
+  `as-fixed-point-substitution-representability-proof-target-v1`, case id
+  `AS-FIXED-POINT-CONSTRUCTION-SUBSTITUTION-REPRESENTABILITY`, case kind
+  `substitution-representability-proof`, proof target status
+  `blocked-proof-closure-targeted`, readiness status
+  `blocked-certificate-ready-proof-open`, one accepted certificate, seven
+  certificate steps, covered predecessor case kinds
+  `diagonal-instance-closure` and
+  `substitution-graph-correctness-proof`, zero missing predecessor
+  certificates, five support surfaces, witness output code length 296, three
+  missing proof artifacts, `proof_closure_ready=false`,
+  `observed_certificate_accepted=true`, `observed_readiness_accepted=true`,
+  `observed_bridge_predecessor_coverage_accepted=true`,
+  `observed_proof_boundary_preserved=true`, and `failed_subjects=[]`.
+- Suite selection listed 175 discovered modules: 130 fast, 45
+  extended-fixed-point, and 175 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 207.010s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 505 tests in 3550.323s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 45`.
+- This is a blocked proof-closure target only. It does not prove substitution
+  representability, diagonal-instance closure, substitution graph correctness,
+  bridge equality, the fixed-point equation, introduce an arithmetized proof
+  predicate, prove fixed-point construction, or claim self-consistency.
