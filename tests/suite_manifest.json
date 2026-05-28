@@ -35,6 +35,7 @@
         "tests.test_fixed_point_frontier_selector",
         "tests.test_fixed_point_obstruction",
         "tests.test_fixed_point_selected_root_certificate_coverage",
+        "tests.test_fixed_point_selected_root_proof_target_coverage",
         "tests.test_fixed_point_selected_root_proof_readiness_coverage",
         "tests.test_fixed_point_substitution_representability_certificate",
         "tests.test_fixed_point_substitution_representability_frontier_status",

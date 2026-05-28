@@ -7686,3 +7686,46 @@
   graph correctness, bridge equality, the fixed-point equation, introduce an
   arithmetized proof predicate, prove fixed-point construction, or claim
   self-consistency.
+
+## 2026-05-27 - Fixed-Point Selected Root Proof Target Coverage
+
+- Added ADR-0321 to expose aggregate coverage showing that both selected
+  fixed-point root obligations have accepted blocked proof-closure targets
+  while neither selected root is ready for proof closure.
+- Added
+  `tests/test_fixed_point_selected_root_proof_target_coverage.py` before
+  implementation. The red run failed as intended with `ImportError` because
+  `autarkic_systems.fixed_point_selected_root_proof_target_coverage` did not
+  exist.
+- Added
+  `claims/fixed_point_selected_root_proof_target_coverage.json`,
+  `autarkic_systems.fixed_point_selected_root_proof_target_coverage`, and
+  `docs/fixed-point-selected-root-proof-target-coverage.md`. The validator
+  composes the selected-root proof-readiness coverage with the
+  diagonal-instance-closure and substitution-graph-correctness proof-target
+  reports.
+- The focused coverage suite passed 8 tests in 147.369s.
+- The focused selected-root/proof-target seam passed 30 tests in 146.357s.
+- Live JSON validation passed with `accepted=true`, coverage id
+  `as-fixed-point-selected-root-proof-target-coverage-v1`,
+  `observed_selected_root_readiness_coverage_accepted=true`,
+  `observed_proof_boundary_preserved=true`, selected case kinds
+  `diagonal-instance-closure` and
+  `substitution-graph-correctness-proof`, `selected_case_count=2`,
+  `proof_target_count=2`, `blocked_proof_target_count=2`,
+  `proof_closure_ready_count=0`, `missing_case_kinds=[]`,
+  `missing_proof_artifact_count=6`, and `failed_subjects=[]`.
+- Suite selection listed 174 discovered modules: 130 fast, 44
+  extended-fixed-point, and 174 all-suite modules.
+- Hygiene passed with `python -m compileall autarkic_systems tests` and
+  `git diff --check`.
+- The fast suite passed 1188 tests in 175.648s with
+  `manifest: as-test-suite-selection-v1 suite: fast module_count: 130`.
+- The extended fixed-point suite passed 496 tests in 3231.890s with
+  `manifest: as-test-suite-selection-v1 suite: extended-fixed-point
+  module_count: 44`.
+- This is aggregate blocked proof-target coverage only. It does not prove
+  diagonal-instance closure, substitution graph correctness, substitution
+  representability, bridge equality, the fixed-point equation, introduce an
+  arithmetized proof predicate, prove fixed-point construction, or claim
+  self-consistency.

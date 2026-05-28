@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "coverage_id": "as-fixed-point-selected-root-proof-target-coverage-v1",
+  "reviewed_at": "2026-05-27",
+  "purpose": "Coverage surface showing that the currently selected fixed-point construction root proof obligations have accepted blocked proof-closure targets without promoting either proof case.",
+  "selected_root_readiness_coverage_path": "claims/fixed_point_selected_root_proof_readiness_coverage.json",
+  "proof_target_paths": {
+    "diagonal-instance-closure": "claims/fixed_point_diagonal_instance_closure_proof_target.json",
+    "substitution-graph-correctness-proof": "claims/fixed_point_substitution_graph_correctness_proof_target.json"
+  },
+  "expected_selected_case_kinds": [
+    "diagonal-instance-closure",
+    "substitution-graph-correctness-proof"
+  ],
+  "expected_selected_count": 2,
+  "expected_proof_target_count": 2,
+  "expected_blocked_proof_target_count": 2,
+  "expected_proof_closure_ready_count": 0,
+  "expected_missing_proof_artifact_count": 6,
+  "expected_proof_target_status": "blocked-proof-closure-targeted",
+  "non_claims": [
+    "no diagonal-instance closure proof",
+    "no substitution graph correctness proof",
+    "no substitution representability proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no fixed-point construction proof",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this selected-root proof-target coverage surface as the current proof-target handoff: both selected roots have blocked proof targets, and neither root may be promoted until its missing proof artifacts are supplied and checked."
+}
